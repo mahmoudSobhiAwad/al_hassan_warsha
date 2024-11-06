@@ -15,7 +15,7 @@ double screenWidth=MediaQuery.sizeOf(context).width;
 
   return screenWidth/400;
  }
- else if(screenWidth<1200){
+ else if(screenWidth<1000){
 
   return screenWidth/600;
  }

@@ -8,7 +8,7 @@ class HomeItemsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
         HomeItem(homeModel: homeModelList[0]),
         const SizedBox(width: 35,),
