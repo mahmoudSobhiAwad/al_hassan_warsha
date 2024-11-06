@@ -2,6 +2,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_dialog_add_new_type.dart';
 import 'package:flutter/material.dart';
 
 class HeaderSetionInGallery extends StatelessWidget {
@@ -34,7 +35,12 @@ class HeaderSetionInGallery extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          const CustomPushContainerButton(
+          CustomPushContainerButton(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AddNewTypeDialog());
+            },
             pushButtomText: "إضافة جديد",
           ),
           const SizedBox(height: 14),
@@ -48,3 +54,5 @@ class HeaderSetionInGallery extends StatelessWidget {
     );
   }
 }
+
+

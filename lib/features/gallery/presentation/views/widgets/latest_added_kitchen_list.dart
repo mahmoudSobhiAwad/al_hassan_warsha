@@ -11,45 +11,45 @@ class AutoScrollingPageView extends StatefulWidget {
 }
 
 class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
-  // final PageController _pageController = PageController();
-  // Timer? _timer;
-  // int _currentPage = 0;
+  final PageController _pageController = PageController();
+  Timer? _timer;
+  int _currentPage = 0;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _startAutoScroll();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _startAutoScroll();
+  }
 
-  // void _startAutoScroll() {
-  //   _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
-  //     if (_pageController.hasClients) {
-  //       _currentPage++;
-  //       if (_currentPage >= 5) { // Assuming there are 5 pages
-  //         _currentPage = 0;
-  //       }
-  //       _pageController.animateToPage(
-  //         _currentPage,
-  //         duration: const Duration(milliseconds: 500),
-  //         curve: Curves.easeInOut,
-  //       );
-  //     }
-  //   });
-  // }
+  void _startAutoScroll() {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        _currentPage++;
+        if (_currentPage >= 5) { // Assuming there are 5 pages
+          _currentPage = 0;
+        }
+        _pageController.animateToPage(
+          _currentPage,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
-  // @override
-  // void dispose() {
-  //   _timer?.cancel();
-  //   _pageController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return  AspectRatio(
             aspectRatio: 1225/250,
             child: PageView.builder(
-             // controller: _pageController,
+              controller: _pageController,
               itemCount: 4,
               itemBuilder: (context,index){
               return const CustomImageWithInnerShadow();
