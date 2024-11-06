@@ -14,26 +14,23 @@ class CustomInnerShadowInLastKitchen extends StatelessWidget {
         alignment: Alignment.centerLeft,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24)),
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24)),
             color: AppColors.blackOpacity50),
-        child: Column(
-          children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text("مطبخ فرنسي مودرن",
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            children: [
+              Text("مطبخ فرنسي مودرن",
                   style: AppFontStyles.extraBold40(context).copyWith(
                     color: AppColors.white,
                   )),
-            ),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text("2 قطعة,مقاس كبير",
+              Text("2 قطعة,مقاس كبير",
                   style: AppFontStyles.extraBold25(context).copyWith(
                     color: AppColors.white,
                   )),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

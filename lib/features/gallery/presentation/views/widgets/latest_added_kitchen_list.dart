@@ -63,9 +63,13 @@ class CustomImageWithInnerShadow extends StatelessWidget {
     super.key,
     this.aspectRatio,
     this.aspectRatioInner,
+    this.fitType,
+    this.imageWidth,
   });
   final double? aspectRatio;
   final double? aspectRatioInner;
+  final BoxFit?fitType;
+  final double?imageWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +82,7 @@ class CustomImageWithInnerShadow extends StatelessWidget {
           aspectRatio:aspectRatio?? 1225/250,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: Image.network("https://www.muretti.com/wp-content/uploads/2023/08/Metal-Kitchen-Cabinets.jpeg",fit: BoxFit.fitWidth,),
+            child: Image.network("https://nolte-prod-ebcwh6b9axcgebb3.z01.azurefd.net/-/jssmedia/project/nolte-jss/corporate-website/produkt-moods/metal/nolte_kuechen_metal_stahl_grau_lux_weiss_2/3to2.jpg?mw=1440&as=0",fit:fitType?? BoxFit.fill,width: imageWidth,),
             ),
            ),
          CustomInnerShadowInLastKitchen(aspectRatio: aspectRatioInner,),
