@@ -11,7 +11,7 @@ class ListOfOneKitchenType extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return const SmallKitchenTypeImage();
+            return const SmallKitchenTypeImage(widthOfImage: 0.3,);
           },
           separatorBuilder: (context, index) => const SizedBox(
                 width: 14,

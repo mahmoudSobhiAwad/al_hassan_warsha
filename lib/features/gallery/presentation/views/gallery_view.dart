@@ -1,4 +1,4 @@
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gallery_body.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/all_kitchen_items_body.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/side_bar_gallery.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +13,7 @@ class GalleryView extends StatelessWidget {
           SideBarGallery(),
           Expanded(
             flex: 4,
-            child: GalleryBody(),
+            child: ShowingAllKitchenItemsGrid(),
           ),
         ],
       ),
