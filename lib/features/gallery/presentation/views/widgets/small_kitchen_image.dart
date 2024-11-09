@@ -3,8 +3,9 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class SmallKitchenTypeImage extends StatelessWidget {
-  const SmallKitchenTypeImage({super.key,required this.widthOfImage});
+  const SmallKitchenTypeImage({super.key,required this.widthOfImage,this.enableInner=true});
   final double widthOfImage;
+  final bool enableInner;
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -20,7 +21,7 @@ class SmallKitchenTypeImage extends StatelessWidget {
               fit: BoxFit.fitWidth,
             ),
           ),
-          Container(
+          enableInner? Container(
             height: 60,
             width: MediaQuery.sizeOf(context).width * widthOfImage,
             decoration: const BoxDecoration(
@@ -45,7 +46,7 @@ class SmallKitchenTypeImage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
+          ):const SizedBox(),
         ],
       ),
     );

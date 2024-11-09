@@ -13,7 +13,7 @@ class HomeScreenView extends StatelessWidget {
         body:CustomAdaptiveLayout(
           desktopLayout: (context)=> const  HomeScreenDesktopLayOut(),
           mobileLayout: (context)=>const Text("Mobile Layout"),
-          tabletLayout: (context)=>const Text("Tablet Layout"),)
+          tabletLayout: (context)=>const Text("Tablet Layout"),),
       ),
     );
   }
