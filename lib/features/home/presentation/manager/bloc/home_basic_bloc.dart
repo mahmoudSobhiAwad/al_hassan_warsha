@@ -10,7 +10,7 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   HomeBasicBloc() : super(HomeBasicInitialState()) {
     on<ChangeCurrentPageEvent>(changePage);
   }
-  FutureOr<void>changePage(ChangeCurrentPageEvent event,Emitter<HomeBasicState>emit)async{
+  FutureOr<void>changePage(ChangeCurrentPageEvent event,Emitter<HomeBasicState>emit) async {
     int currIndex=event.currIndex;
     emit(ToggleBetweenPagesState(currIndex: currIndex));
   }

@@ -33,7 +33,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      maxLines: maxLine,
+      maxLines: maxLine??1,
       inputFormatters: inputFormatters,
       keyboardType: textInputType,
       cursorColor: Colors.black,

@@ -3,8 +3,8 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWithLinking extends StatelessWidget {
-  const AppBarWithLinking({super.key});
-
+  const AppBarWithLinking({super.key,this.onBack});
+  final void Function()?onBack;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -15,7 +15,7 @@ class AppBarWithLinking extends StatelessWidget {
             color: AppColors.veryLightGray,
           ),
           child: IconButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: onBack??() => Navigator.pop(context),
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
               size: 38,

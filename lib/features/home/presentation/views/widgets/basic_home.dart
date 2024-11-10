@@ -10,29 +10,25 @@ class BasicHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeBasicBloc(),
-      child:
-          BlocBuilder<HomeBasicBloc, HomeBasicState>(builder: (context, state) {
-        var bloc = context.read<HomeBasicBloc>();
-
-        int index = 0;
-        if (state is ToggleBetweenPagesState) {
-          index = state.currIndex;
-        }
-        return Directionality(
-          textDirection: TextDirection.rtl,
-          child: SafeArea(
-            child: Scaffold(
-              backgroundColor: AppColors.white,
-              body: CustomAdaptiveLayout(
-                  mobileLayout: (context) => const Text("mobile Layout"),
-                  tabletLayout: (context) => const Text("tablet Layout"),
-                  desktopLayout: (context) =>BasicHomeDesktopLayOut(index: index, bloc: bloc)),
-            ),
-          ),
-        );
-      }),
-    );
+    return BlocBuilder<HomeBasicBloc, HomeBasicState>(builder: (context, state) {
+            var bloc = context.read<HomeBasicBloc>();
+    
+            int index = 0;
+            if (state is ToggleBetweenPagesState) {
+    index = state.currIndex;
+            }
+            return Directionality(
+    textDirection: TextDirection.rtl,
+    child: SafeArea(
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: CustomAdaptiveLayout(
+            mobileLayout: (context) => const Text("mobile Layout"),
+            tabletLayout: (context) => const Text("tablet Layout"),
+            desktopLayout: (context) =>BasicHomeDesktopLayOut(index: index, bloc: bloc)),
+      ),
+    ),
+            );
+          });
   }
 }

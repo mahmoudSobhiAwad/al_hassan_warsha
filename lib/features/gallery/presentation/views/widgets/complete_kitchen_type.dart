@@ -6,8 +6,9 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/sho
 import 'package:flutter/material.dart';
 
 class CompleteKitchenType extends StatelessWidget {
-  const CompleteKitchenType({super.key, this.isEmpty = false});
+  const CompleteKitchenType({super.key, this.isEmpty = false,required this.changeShowMore});
   final bool isEmpty;
+  final void Function(bool show)changeShowMore;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,14 +32,22 @@ class CompleteKitchenType extends StatelessWidget {
               )
             : SizedBox(
                 height: MediaQuery.sizeOf(context).height * 0.2,
-                child: const Row(
+                child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListOfOneKitchenType(),
-                    SizedBox(
+                    const ListOfOneKitchenType(),
+                    const SizedBox(
                       width: 16,
                     ),
-                    ShowMoreCirlcle()
+                    InkWell(
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.white,
+                        focusColor: Colors.white,
+                        splashColor: Colors.white,
+                        onTap: (){
+                          changeShowMore(true);
+                        },
+                        child: const ShowMoreCirlcle())
                   ],
                 ),
               ),

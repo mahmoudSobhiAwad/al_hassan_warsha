@@ -1,10 +1,10 @@
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/small_kitchen_image.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/add_new_kitchen_view.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/view_type_kitchen_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomGridKitchenTypes extends StatelessWidget {
-  const CustomGridKitchenTypes({super.key});
+  const CustomGridKitchenTypes({super.key,});
 
   @override
   Widget build(BuildContext context) {

@@ -22,9 +22,11 @@ class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
   }
 
   void _startAutoScroll() {
+    
     _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       if (_pageController.hasClients) {
         _currentPage++;
+     
         if (_currentPage >= 5) { // Assuming there are 5 pages
           _currentPage = 0;
         }

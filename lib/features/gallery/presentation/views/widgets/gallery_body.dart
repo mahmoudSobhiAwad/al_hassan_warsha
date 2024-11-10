@@ -1,11 +1,12 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/complete_kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/latest_added_kitchen_list.dart';
 import 'package:flutter/material.dart';
 
 class GalleryBody extends StatelessWidget {
-  const GalleryBody({super.key});
-
+  const GalleryBody({super.key,required this.bloc});
+  final GalleryBloc bloc;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,7 +37,9 @@ class GalleryBody extends StatelessWidget {
               ...List.generate(4, (index) {
                 return Padding(
                   padding:const EdgeInsets.only(bottom: 20.0),
-                  child: CompleteKitchenType(isEmpty: index==1,),
+                  child: CompleteKitchenType(isEmpty: index==1,changeShowMore: (bool show){
+                    bloc.add(ShowMoreKitcenTypeEvent(showMore: show));
+                  },),
                 );
               })
             ],

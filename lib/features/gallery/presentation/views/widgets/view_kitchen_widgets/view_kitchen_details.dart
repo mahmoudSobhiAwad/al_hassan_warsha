@@ -5,14 +5,13 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/media_view_in_gallery.dart';
 import 'package:flutter/material.dart';
 
-
-
 class ViewKitchenDetailsBody extends StatelessWidget {
-  const ViewKitchenDetailsBody({super.key});
-
+  const ViewKitchenDetailsBody({super.key,required this.changeEditState});
+  final void Function(bool enableEdit)changeEditState;
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,7 +20,10 @@ class ViewKitchenDetailsBody extends StatelessWidget {
               "مطبخ رقم 1",
               style: AppFontStyles.extraBold40(context),
             ),
-            const CustomPushContainerButton(
+             CustomPushContainerButton(
+              onTap: (){
+                changeEditState(true);
+              },
               iconBehind: Icons.create_rounded,
               pushButtomText: "تعديل",
             )
