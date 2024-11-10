@@ -21,7 +21,7 @@ class CustomPushContainerButton extends StatelessWidget {
         child: Container(
           padding:padding?? const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
+            borderRadius: BorderRadius.circular(borderRadius??25),
             color: color,
             gradient: color ==null? customLinearGradient():null,
           ),

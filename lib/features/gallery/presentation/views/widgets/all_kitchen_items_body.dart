@@ -2,8 +2,9 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/add_new_kitchen_view.dart';
+import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gride_view_list.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/add_new_kitchen_view.dart';
 import 'package:flutter/material.dart';
 
 class ShowingAllKitchenItemsGrid extends StatelessWidget {
@@ -30,10 +31,10 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
               Text("مطبخ كلاسيك",style: AppFontStyles.extraBold40(context),),
             ],
           ),
-          Align(
+           Align(
             alignment: Alignment.centerLeft,
-            child: CustomPushContainerButton(pushButtomText: "اضافة مطبخ جديد",onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const ViewKitchenInGalleryView()));
+            child: CustomPushContainerButton(pushButtomText: "اضافة مطبخ جديد",onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.add,)));
             },)),
           const SizedBox(height: 18,),
           const Expanded(child:CustomGridKitchenTypes()),

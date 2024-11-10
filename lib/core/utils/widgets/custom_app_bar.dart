@@ -22,11 +22,14 @@ class CustomAppBar extends StatelessWidget {
           const Spacer(),
           ...List.generate(homeBarData.length,(index)=>Padding(
             padding: EdgeInsets.symmetric(horizontal: index==1?spacing*0.05:0.0),
-            child: GestureDetector(
-              onTap: (){
-                changeIndex(index);
-              },
-              child: AppBarItem(text: homeBarData[index],enable: index==currIndex,)),
+            child: MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: (){
+                  changeIndex(index);
+                },
+                child: AppBarItem(text: homeBarData[index],enable: index==currIndex,)),
+            ),
           )),
            const Spacer(),
         ],

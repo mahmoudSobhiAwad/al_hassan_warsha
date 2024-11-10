@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/basic_home_desktop.dart';
@@ -23,6 +24,7 @@ class BasicHomeView extends StatelessWidget {
           textDirection: TextDirection.rtl,
           child: SafeArea(
             child: Scaffold(
+              backgroundColor: AppColors.white,
               body: CustomAdaptiveLayout(
                   mobileLayout: (context) => const Text("mobile Layout"),
                   tabletLayout: (context) => const Text("tablet Layout"),
