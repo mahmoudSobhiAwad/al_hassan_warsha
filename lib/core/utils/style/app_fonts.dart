@@ -131,4 +131,11 @@ class AppFontStyles {
       fontSize:getResponiveFontSize(context, baseFontSize:  12),
     );
   }
+  static TextStyle extraBold14(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w800,
+      fontSize:getResponiveFontSize(context, baseFontSize:  14),
+    );
+  }
 }

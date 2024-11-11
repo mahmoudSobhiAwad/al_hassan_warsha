@@ -24,7 +24,7 @@ class GalleryView extends StatelessWidget {
         return Expanded(
           child: Row(
             children: [
-              const SideBarGallery(),
+              const Expanded(child: SideBarGallery()),
               Expanded(
                 flex: 4,
                 child: showMoreKitchens

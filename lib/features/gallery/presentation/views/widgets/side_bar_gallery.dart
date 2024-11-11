@@ -10,18 +10,14 @@ class SideBarGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: AppColors.veryLightGray,
-        ),
-        child: const CustomScrollView(
-          slivers: [
-            HeaderSetionInGallery(),
-            ListOfKitchenTypes(),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      color: AppColors.veryLightGray,
+      child: const CustomScrollView(
+        slivers: [
+          HeaderSetionInGallery(),
+          ListOfKitchenTypes(),
+        ],
       ),
     );
   }

@@ -14,39 +14,40 @@ class CustomPushContainerButton extends StatelessWidget {
   final double?borderRadius;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          padding:padding?? const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(borderRadius??25),
-            color: color,
-            gradient: color ==null? customLinearGradient():null,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                  //fit: BoxFit.scaleDown,
-                  child: Text(
-                pushButtomText ?? "إضافة نوع جديد",
-                style: AppFontStyles.extraBold30(context).copyWith(
-                  color: AppColors.white,
-                ),
-              )),
-               enableIcon?const SizedBox(
-                width: 16,
-              ):const SizedBox(),
-              enableIcon?Icon(
-                iconBehind?? Icons.add,
-                color: Colors.white,
-                size: 50,
-              ):const SizedBox()
-            ],
-          ),
+    return InkWell(
+      hoverColor: Colors.white,
+      highlightColor: Colors.white,
+      focusColor: Colors.white,
+      splashColor: Colors.white,
+      onTap: onTap,
+      child: Container(
+        padding:padding?? const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(borderRadius??25),
+          color: color,
+          gradient: color ==null? customLinearGradient():null,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Flexible(
+                //fit: BoxFit.scaleDown,
+                child: Text(
+              pushButtomText ?? "إضافة نوع جديد",
+              style: AppFontStyles.extraBold30(context).copyWith(
+                color: AppColors.white,
+              ),
+            )),
+             enableIcon?const SizedBox(
+              width: 16,
+            ):const SizedBox(),
+            enableIcon?Icon(
+              iconBehind?? Icons.add,
+              color: Colors.white,
+              size: 50,
+            ):const SizedBox()
+          ],
         ),
       ),
     );
