@@ -6,25 +6,24 @@ class TableHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: Row(
-        children: [
-          Expanded(child: CustomTextWithTheSameStyle(text: "الطلب",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 2,child: CustomTextWithTheSameStyle(text: "تفاصيل الطلب",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "وقت التسليم",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "اسم العميل ",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "هاتف العميل",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "عنوان العميل",)),
-          Expanded(child: SizedBox()),
-          Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "المبلغ المطلوب",)),
-          
-        ],
-      ),
+    return const Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(child: CustomTextWithTheSameStyle(text: "الطلب",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 2,child: CustomTextWithTheSameStyle(text: "تفاصيل الطلب",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "وقت التسليم",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "اسم العميل ",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "هاتف العميل",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "عنوان العميل",)),
+        Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "المبلغ المطلوب",)),
+        
+      ],
     );
   }
 }

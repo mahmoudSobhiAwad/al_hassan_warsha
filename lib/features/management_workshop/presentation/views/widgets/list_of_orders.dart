@@ -7,30 +7,26 @@ class ListOfOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverList.builder(
-          itemCount: 15,
-          itemBuilder: (context, index) {
-            return  Padding(
-              padding: const EdgeInsets.only(bottom: 18),
-              child: Row(
-                children: [
-                  Expanded(child: InkWell(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddEditViewOrder()));
-                    },
-                    child: const OneOrderItem())),
-                  const SizedBox(
-                    width: 14,
-                  ),
-                  const Icon(Icons.more_vert)
-                ],
+    return SliverList.builder(
+      itemCount: 15,
+      itemBuilder: (context, index) {
+        return  Padding(
+          padding: const EdgeInsets.only(bottom: 18),
+          child: Row(
+            children: [
+              Expanded(child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const AddEditViewOrder()));
+                },
+                child: const OneOrderItem())),
+              const SizedBox(
+                width: 14,
               ),
-            );
-          },
-        )
-      ],
+              const Icon(Icons.more_vert)
+            ],
+          ),
+        );
+      },
     );
   }
 }

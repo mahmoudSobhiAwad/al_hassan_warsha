@@ -9,47 +9,45 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        
-        children: [
-          const Expanded( child: SizedBox()),
-          Text(
-            "الطلبات الحالية ل",
-            style: AppFontStyles.extraBold40(context),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      
+      children: [
+        const Expanded( child: SizedBox()),
+        Text(
+          "الطلبات الحالية ل",
+          style: AppFontStyles.extraBold40(context),
+        ),
+        const Expanded(flex: 5, child: SizedBox()),
+        CustomContainerToPickHistory(
+          child: Row(
+            children: [
+              Text(
+                "أكتوبر",
+                style: AppFontStyles.extraBold20(context),
+              ),
+              IconButton(
+                  onPressed: () {},
+                  icon:
+                      const Icon(Icons.arrow_back_ios_new).rotate(angle: 90))
+            ],
           ),
-          const Expanded(flex: 5, child: SizedBox()),
-          CustomContainerToPickHistory(
-            child: Row(
-              children: [
-                Text(
-                  "أكتوبر",
-                  style: AppFontStyles.extraBold20(context),
-                ),
-                IconButton(
-                    onPressed: () {},
-                    icon:
-                        const Icon(Icons.arrow_back_ios_new).rotate(angle: 90))
-              ],
-            ),
+        ),
+        const Expanded(child: SizedBox()),
+        CustomContainerToPickHistory(
+          child: Row(
+            children: [
+              Text(
+                "2024",
+                style: AppFontStyles.extraBold20(context),
+              ),
+              IconButton(
+                  onPressed: () {}, icon: const Icon(CupertinoIcons.calendar))
+            ],
           ),
-          const Expanded(child: SizedBox()),
-          CustomContainerToPickHistory(
-            child: Row(
-              children: [
-                Text(
-                  "2024",
-                  style: AppFontStyles.extraBold20(context),
-                ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(CupertinoIcons.calendar))
-              ],
-            ),
-          ),
-          const Expanded(child: SizedBox()),
-        ],
-      ),
+        ),
+        const Expanded(child: SizedBox()),
+      ],
     );
   }
 }

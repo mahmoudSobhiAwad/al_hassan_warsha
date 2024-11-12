@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/filter_orders.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/full_header.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/list_of_orders.dart';
@@ -19,20 +20,34 @@ class ManagementView extends StatelessWidget {
               flex: 4,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SearchBarInManagment(),
-                    SizedBox(
-                      height: 24,
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 24,
+                      ),
                     ),
-                    FilterOrdersWithMonthYear(),
-                    FullTableHeader(),
-                    Expanded(flex: 5,child: ListOfOrder()),
-                    SizedBox(
-                      height: 16,
+                    SliverToBoxAdapter(child: SearchBarInManagment()),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 24,
+                      ),
                     ),
-                    CustomPushContainerButton(pushButtomText: "طلب جديد",padding: EdgeInsets.symmetric(horizontal: 24,vertical: 10),borderRadius: 12,),
+                    SliverToBoxAdapter(child: FilterOrdersWithMonthYear()),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 12,
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: FullTableHeader()),
+                    SliverToBoxAdapter(child: ExpandedDivider()),
+                    ListOfOrder(),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 16,
+                      ),
+                    ),
+                    SliverToBoxAdapter(child: Center(child: CustomPushContainerButton(pushButtomText: "طلب جديد",padding: EdgeInsets.symmetric(horizontal: 24,vertical: 10),borderRadius: 12,))),
                   ],
                 ),
               ))
