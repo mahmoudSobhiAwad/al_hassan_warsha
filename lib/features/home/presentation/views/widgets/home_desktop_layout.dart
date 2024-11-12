@@ -11,41 +11,39 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          const ClippedContainer(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "آل حسن ",
-                      style: AppFontStyles.extraBold90(context),
-                    )),
-                const SizedBox(
-                  height: 24,
+    return Stack(
+      children: [
+        const ClippedContainer(),
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "آل حسن ",
+                    style: AppFontStyles.extraBold90(context),
+                  )),
+              const SizedBox(
+                height: 24,
+              ),
+              FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "اختيارك الأمثل لجميع أعمال الالوميتال",
+                    style: AppFontStyles.extraBold60(context),
+                  )),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.all(24.0),
+                  child: HomeItemsList(),
                 ),
-                FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      "اختيارك الأمثل لجميع أعمال الالوميتال",
-                      style: AppFontStyles.extraBold60(context),
-                    )),
-                const Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: EdgeInsets.all(24.0),
-                    child: HomeItemsList(),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const LogoWidget(),
-        ],
-      ),
+        ),
+        const LogoWidget(),
+      ],
     );
   }
 }

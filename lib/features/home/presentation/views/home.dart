@@ -9,7 +9,7 @@ class HomeScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.veryLightGray2,
+        backgroundColor: AppColors.white,
         body:CustomAdaptiveLayout(
           desktopLayout: (context)=> const  HomeScreenDesktopLayOut(),
           mobileLayout: (context)=>const Text("Mobile Layout"),

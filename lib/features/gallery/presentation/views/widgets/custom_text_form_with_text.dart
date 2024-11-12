@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text, required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false});
+      {super.key, required this.text, this.prefixIcon,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
   final String textLabel;
   final bool enableBorder;
+  final Widget?suffixIcon;
+  final Widget?prefixIcon;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +26,8 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
-          
+          prefixWidget: prefixIcon,
+          suffixWidget: suffixIcon,
           maxLine: maxLine,
           borderRadius: 12,
           enableBorder: enableBorder,

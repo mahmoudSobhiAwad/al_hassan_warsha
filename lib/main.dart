@@ -18,10 +18,11 @@ class Alwarsha extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context)=>HomeBasicBloc(),
+      create: (context) => HomeBasicBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          iconTheme: const IconThemeData(color: Colors.black),
           iconButtonTheme: const IconButtonThemeData(
               style: ButtonStyle(
                   iconColor: WidgetStatePropertyAll<Color>(Colors.black))),

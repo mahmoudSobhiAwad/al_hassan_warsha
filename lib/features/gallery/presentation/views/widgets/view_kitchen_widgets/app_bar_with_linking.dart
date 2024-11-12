@@ -3,8 +3,9 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWithLinking extends StatelessWidget {
-  const AppBarWithLinking({super.key,this.onBack});
-  final void Function()?onBack;
+  const AppBarWithLinking({super.key, this.onBack,required this.items});
+  final void Function()? onBack;
+  final List<String>items;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -15,7 +16,7 @@ class AppBarWithLinking extends StatelessWidget {
             color: AppColors.veryLightGray,
           ),
           child: IconButton(
-            onPressed: onBack??() => Navigator.pop(context),
+            onPressed: onBack ?? () => Navigator.pop(context),
             icon: const Icon(
               Icons.arrow_back_ios_rounded,
               size: 38,
@@ -26,30 +27,37 @@ class AppBarWithLinking extends StatelessWidget {
         const SizedBox(
           width: 24,
         ),
+        Row(
+          children: [
+            ...List.generate(items.length, (index)=>CustomItemInCustomLinkingAppBar(text: items[index],isLast: index!=items.length-1,)),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class CustomItemInCustomLinkingAppBar extends StatelessWidget {
+  const CustomItemInCustomLinkingAppBar(
+      {super.key, required this.text, this.isLast = false});
+  final String text;
+  final bool isLast;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
         Text(
-          "الرئيسية",
+          text,
           style: AppFontStyles.extraBold40(context),
         ),
-        const IconButton(
-            onPressed: null,
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 40,
-            )),
-        Text(
-          "مطبخ كلاسيك",
-          style: AppFontStyles.extraBold40(context),
-        ),
-        const IconButton(
-            onPressed: null,
-            icon: Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 40,
-            )),
-        Text(
-          "مطبخ رقم 1",
-          style: AppFontStyles.extraBold40(context),
-        ),
+        isLast
+            ? const IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 40,
+                ))
+            : const SizedBox(),
       ],
     );
   }

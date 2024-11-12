@@ -48,7 +48,7 @@ class CustomTextFormField extends StatelessWidget {
         suffixIcon: suffixWidget,
         fillColor: fillColor,
         filled: enableFill,
-        prefix: prefixWidget,
+        prefixIcon: prefixWidget,
         label: labelWidget,
         floatingLabelBehavior: FloatingLabelBehavior.never,
         border: OutlineInputBorder(

@@ -31,6 +31,11 @@ class KitchenGalleryCustomView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppBarWithLinking(
+                  items:  [
+                    "الرئيسية",
+                     "مطبخ كلاسيك",
+                    bloc.pagesGalleryEnum==PagesGalleryEnum.add?"إضافة مطبخ": "مطبخ رقم 1",
+                  ],
                   onBack: (){
                     switch(bloc.pagesGalleryEnum){
                       
