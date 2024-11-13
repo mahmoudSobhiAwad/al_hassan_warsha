@@ -6,8 +6,8 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class SearchBarInManagment extends StatelessWidget {
-  const SearchBarInManagment({super.key});
-
+  const SearchBarInManagment({super.key,this.enableLastIcon=true});
+  final bool enableLastIcon;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -65,12 +65,12 @@ class SearchBarInManagment extends StatelessWidget {
           ),
         ),
         const Expanded( child: SizedBox()),
-        const IconButton(
+        enableLastIcon? const IconButton(
             onPressed: null,
             icon: Icon(
               Icons.notifications,
               size: 40,
-            )),
+            )):const SizedBox(),
         const Expanded(flex: 2, child: SizedBox()),
       ],
     );

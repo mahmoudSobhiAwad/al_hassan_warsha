@@ -42,6 +42,10 @@ class OrderDetails extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+              /// incase of there are media 
+              // SizedBox(
+              //   height: MediaQuery.sizeOf(context).height*0.2,
+              //   child: const ListOfOneKitchenType(enableInner:false,enableClose: true,)),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 decoration: BoxDecoration(

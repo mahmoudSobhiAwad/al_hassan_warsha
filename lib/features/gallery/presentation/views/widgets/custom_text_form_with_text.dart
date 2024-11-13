@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text, this.prefixIcon,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
+      {super.key, required this.text, this.prefixIcon,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
   final String textLabel;
+  final String ?suffixText;
   final bool enableBorder;
   final Widget?suffixIcon;
   final Widget?prefixIcon;
+  final double?borderWidth;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -29,15 +31,18 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           prefixWidget: prefixIcon,
           suffixWidget: suffixIcon,
           maxLine: maxLine,
+          
           borderRadius: 12,
+          suffixText: suffixText,
           enableBorder: enableBorder,
           borderColor: AppColors.lightGray2,
-          borderWidth: 1,
+          borderWidth:borderWidth?? 1,
           fillColor: AppColors.white,
           labelWidget: Text(
             textLabel,
+            maxLines: 1,
             style: AppFontStyles.extraBold18(context)
-                .copyWith(color: AppColors.lightGray2),
+                .copyWith(color: AppColors.lightGray2,),
           ),
         ),
       ],

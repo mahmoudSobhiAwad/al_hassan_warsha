@@ -138,4 +138,11 @@ class AppFontStyles {
       fontSize:getResponiveFontSize(context, baseFontSize:  14),
     );
   }
+  static TextStyle regular22(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w400,
+      fontSize:getResponiveFontSize(context, baseFontSize:  22),
+    );
+  }
 }

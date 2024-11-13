@@ -18,4 +18,5 @@ class AppColors {
   static const Color blackOpacity20 = Color(0x33000000); // 20% opacity
   static const Color blueGray = Color(0xFF4A628A);
   static const Color orange = Color(0xFFEC8305);
+  static const Color brown = Color(0xFF4C4141);
 }

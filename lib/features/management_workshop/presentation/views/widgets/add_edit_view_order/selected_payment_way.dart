@@ -14,17 +14,26 @@ class SelectedPaymentWay extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Text("الدفع عند الاستلام",style: AppFontStyles.extraBold18(context),),
-                const IconButton(onPressed: null, icon: Icon(Icons.check_box_outline_blank_rounded))
-              ],
+            Expanded(
+              child: Row(
+                children: [
+                  Flexible(
+                    
+                    fit: FlexFit.loose,
+                    child: Text("الدفع عند الاستلام",style: AppFontStyles.extraBold18(context),)),
+                  const IconButton(onPressed: null, icon: Icon(Icons.check_box_outline_blank_rounded))
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Text("الدفع علي دفعات",style: AppFontStyles.extraBold18(context),),
-                const IconButton(onPressed: null, icon: Icon(Icons.check_box_outlined))
-              ],
+            Expanded(
+              child: Row(
+                children: [
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Text("الدفع علي دفعات",style: AppFontStyles.extraBold18(context),)),
+                  const IconButton(onPressed: null, icon: Icon(Icons.check_box_outlined))
+                ],
+              ),
             ),
           ],
         ),

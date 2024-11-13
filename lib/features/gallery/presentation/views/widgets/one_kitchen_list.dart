@@ -2,7 +2,9 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/sma
 import 'package:flutter/material.dart';
 
 class ListOfOneKitchenType extends StatelessWidget {
-  const ListOfOneKitchenType({super.key});
+  const ListOfOneKitchenType({super.key,this.enableInner=true,this.enableClose=false});
+  final bool enableInner;
+  final bool enableClose;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -11,7 +13,7 @@ class ListOfOneKitchenType extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {
-            return const SmallKitchenTypeImage(widthOfImage: 0.3,);
+            return SmallKitchenTypeImage(widthOfImage: 0.3,enableInner: enableInner,enableClose: enableClose,);
           },
           separatorBuilder: (context, index) => const SizedBox(
                 width: 14,

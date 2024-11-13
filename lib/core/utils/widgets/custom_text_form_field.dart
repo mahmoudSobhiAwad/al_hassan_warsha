@@ -10,6 +10,8 @@ class CustomTextFormField extends StatelessWidget {
       this.enableFocusBorder=true,
       this.inputFormatters,
       this.textInputType,
+      this.suffixText,
+      this.suffixTextStyle,
       this.labelWidget,
       this.contentPadding,
       this.borderColor,
@@ -28,6 +30,8 @@ class CustomTextFormField extends StatelessWidget {
   final bool enableBorder;
   final bool enableFill;
   final Widget? suffixWidget;
+  final String? suffixText;
+  final TextStyle? suffixTextStyle;
   final Widget? prefixWidget;
   final int? maxLine;
   final TextInputType? textInputType;
@@ -46,6 +50,8 @@ class CustomTextFormField extends StatelessWidget {
         contentPadding: contentPadding,
         focusColor: Colors.black,
         suffixIcon: suffixWidget,
+        suffixText: suffixText,
+        suffixStyle: suffixTextStyle,
         fillColor: fillColor,
         filled: enableFill,
         prefixIcon: prefixWidget,

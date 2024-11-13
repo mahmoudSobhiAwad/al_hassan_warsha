@@ -5,8 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FilterOrdersWithMonthYear extends StatelessWidget {
-  const FilterOrdersWithMonthYear({super.key});
-
+  const FilterOrdersWithMonthYear({super.key,this.title});
+  final String ?title;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -14,7 +14,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
       
       children: [
         const Expanded( child: SizedBox()),
-        Text(
+        Text(title??
           "الطلبات الحالية ل",
           style: AppFontStyles.extraBold40(context),
         ),
