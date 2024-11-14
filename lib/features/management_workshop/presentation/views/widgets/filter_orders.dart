@@ -53,15 +53,15 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
 }
 
 class CustomContainerToPickHistory extends StatelessWidget {
-  const CustomContainerToPickHistory({super.key, this.child});
+  const CustomContainerToPickHistory({super.key, this.child,this.fillColor});
   final Widget? child;
-
+  final Color?fillColor;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 4),
       decoration: BoxDecoration(
-          color: AppColors.white,
+          color: fillColor??AppColors.white,
           border: Border.all(color: AppColors.lightGray1, width: 2),
           borderRadius: BorderRadius.circular(12)),
       child: child,

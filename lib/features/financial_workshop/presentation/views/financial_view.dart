@@ -2,6 +2,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/side_bar_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/custom_side_bar_item.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/financial_body.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/pill_payment_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_view.dart';
 import 'package:flutter/material.dart';
 
@@ -47,7 +48,11 @@ class _FinancialViewState extends State<FinancialView> {
             )),
         Expanded(
           flex: 5,
-          child: const [FinancialBody(), TranscationView()][currIndex],
+          child: const [
+            FinancialBody(),
+            TranscationView(),
+            BillsPaymentView()
+          ][currIndex],
         )
       ]),
     );
