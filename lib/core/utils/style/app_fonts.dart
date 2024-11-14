@@ -19,6 +19,13 @@ class AppFontStyles {
       fontSize:getResponiveFontSize(context, baseFontSize:  30),
     );
   }
+  static TextStyle extraBold32(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w800,
+      fontSize:getResponiveFontSize(context, baseFontSize:  32),
+    );
+  }
 
   static TextStyle extraBold18(BuildContext context) {
     return  TextStyle(

@@ -6,8 +6,21 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/filter_orders.dart';
 import 'package:flutter/material.dart';
 
-class TranscationView extends StatelessWidget {
+class TranscationView extends StatefulWidget {
   const TranscationView({super.key});
+
+  @override
+  State<TranscationView> createState() => _TranscationViewState();
+}
+
+class _TranscationViewState extends State<TranscationView> {
+  final ScrollController controller = ScrollController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,35 +51,65 @@ class TranscationView extends StatelessWidget {
           const SliverToBoxAdapter(
             child: SizedBox(
               height: 24,
-            ),),
+            ),
+          ),
           const SliverToBoxAdapter(
-            child: FilterOrdersWithMonthYear(title: "تاريخ التحويلات",),
+            child: FilterOrdersWithMonthYear(
+              title: "تاريخ التحويلات",
+            ),
           ),
           const SliverToBoxAdapter(
             child: SizedBox(
               height: 35,
-            ),),
-          const SliverToBoxAdapter(
-            child: HeaderForTransactionHistory()
+            ),
           ),
-          const SliverToBoxAdapter(
-            child:  SizedBox(
-              height: 16,
-            ),),
-            SliverList.separated(
-              itemCount: 10,
-              itemBuilder: (context,index){  
-              return const ContentInTransactionHistory();
-            }, separatorBuilder: (context,index){
-              return const SizedBox(height: 16,);
-            }),
+          const SliverToBoxAdapter(child: HeaderForTransactionHistory()),
           const SliverToBoxAdapter(
             child: SizedBox(
               height: 16,
             ),
           ),
-        
-
+          SliverToBoxAdapter(
+            child: Row(
+              children: [
+                const Expanded(child: SizedBox(),),
+                Expanded(
+                  flex: 11,
+                  child: SizedBox(
+                    height: MediaQuery.sizeOf(context).height * 0.3,
+                    child: Scrollbar(
+                      thickness: 20,
+                      thumbVisibility: true,
+                      scrollbarOrientation: ScrollbarOrientation.right,
+                      controller: controller,
+                      child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context)
+                            .copyWith(scrollbars: false),
+                        child: ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                            controller: controller,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return const ContentInTransactionHistory();
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 16,
+                              );
+                            }),
+                      ),
+                    ),
+                  ),
+                ),
+                const Expanded(child: SizedBox(),),
+              ],
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 16,
+            ),
+          ),
         ],
       ),
     );

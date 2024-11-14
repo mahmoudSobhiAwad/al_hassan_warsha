@@ -4,7 +4,7 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_ingradient.dart';
 import 'package:flutter/material.dart';
 
 class CustomPushContainerButton extends StatelessWidget {
-  const CustomPushContainerButton({super.key, this.borderRadius,this.padding,this.pushButtomText,this.onTap,this.enableIcon=true,this.color,this.iconBehind});
+  const CustomPushContainerButton({super.key,this.iconSize,this.childInstead ,this.borderRadius,this.padding,this.pushButtomText,this.onTap,this.enableIcon=true,this.color,this.iconBehind});
   final String? pushButtomText;
   final void Function()?onTap;
   final bool enableIcon;
@@ -12,6 +12,8 @@ class CustomPushContainerButton extends StatelessWidget {
   final EdgeInsets?padding;
   final IconData?iconBehind;
   final double?borderRadius;
+  final Widget?childInstead;
+  final double?iconSize;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -27,7 +29,7 @@ class CustomPushContainerButton extends StatelessWidget {
           color: color,
           gradient: color ==null? customLinearGradient():null,
         ),
-        child: Row(
+        child:childInstead?? Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -45,7 +47,7 @@ class CustomPushContainerButton extends StatelessWidget {
             enableIcon?Icon(
               iconBehind?? Icons.add,
               color: Colors.white,
-              size: 50,
+              size:iconSize?? 50,
             ):const SizedBox()
           ],
         ),
