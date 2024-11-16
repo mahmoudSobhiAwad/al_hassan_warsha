@@ -4,8 +4,10 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/cus
 import 'package:flutter/material.dart';
 
 class AddNewTypeDialog extends StatelessWidget {
-  const AddNewTypeDialog({super.key});
-
+  const AddNewTypeDialog({super.key,required this.controller,required this.add,required this.formKey});
+  final void Function()?add;
+  final TextEditingController controller;
+  final GlobalKey<FormState> formKey;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
@@ -14,28 +16,34 @@ class AddNewTypeDialog extends StatelessWidget {
       child: Dialog(
         child: Container(
           constraints: BoxConstraints(maxWidth: width * 0.75),
-          padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: 12),
+          padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: 36),
           decoration: BoxDecoration(
               color: AppColors.veryLightGray,
               borderRadius: BorderRadius.circular(20)),
-          child: const Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomColumnWithTextInAddNewType(
+               CustomColumnWithTextInAddNewType(
+                validator: (value){
+                  if(value==null||value.isEmpty){
+                    return " اسم النوع لا يمكن ان يكون خاليا";
+                  }
+                  return null;
+                },
+                formKey: formKey,
+                controller: controller,
                 text: "اسم النوع",
                 textLabel: "ادخل نوع المطبخ الجديد.............",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24,
               ),
-              CustomColumnWithTextInAddNewType(
-                text: "تفاصيل",
-                textLabel: "ادخل وصف اللمطبخ الجديد.............",
+              DialogAddNewTypeActionButton(
+                onPressed_1: add,
+                onPressed_2: (){
+                  Navigator.pop(context);
+                },
               ),
-              SizedBox(
-                height: 24,
-              ),
-              DialogAddNewTypeActionButton()
             ],
           ),
         ),

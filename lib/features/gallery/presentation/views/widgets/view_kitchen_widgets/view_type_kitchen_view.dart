@@ -3,7 +3,6 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart'
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/custom_kitchen_gallery_parent.dart';
-import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,9 +36,9 @@ class ViewKitchenInGalleryView extends StatelessWidget {
               );
             },
             listener: (context,state){
-              if(state is ChangeBarIndexState){
-                context.read<HomeBasicBloc>().add(ChangeCurrentPageEvent(currIndex: state.barIndex));
-              }
+              // if(state is ChangeBarIndexState){
+              //   HomeBasicBloc().add(ChangeCurrentPageEvent(currIndex: state.barIndex));
+              // }
 
             }),
       ),

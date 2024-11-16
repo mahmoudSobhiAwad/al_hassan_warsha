@@ -9,7 +9,6 @@ class HomeItem extends StatelessWidget {
   final void Function()onTap;
   @override
   Widget build(BuildContext context) {
-    
     return Expanded(
       child: InkWell(
         onTap: onTap,
@@ -18,6 +17,7 @@ class HomeItem extends StatelessWidget {
         focusColor: Colors.white,
         splashColor: Colors.white,
         child: Container(
+          margin:const EdgeInsets.only(left: 35),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(35),

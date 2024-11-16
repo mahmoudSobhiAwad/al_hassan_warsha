@@ -6,8 +6,8 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class ViewKitchenDetailsBody extends StatelessWidget {
-  const ViewKitchenDetailsBody({super.key,required this.changeEditState});
-  final void Function(bool enableEdit)changeEditState;
+  const ViewKitchenDetailsBody({super.key, required this.changeEditState});
+  final void Function(bool enableEdit) changeEditState;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,13 +20,26 @@ class ViewKitchenDetailsBody extends StatelessWidget {
               "مطبخ رقم 1",
               style: AppFontStyles.extraBold40(context),
             ),
-             CustomPushContainerButton(
-              onTap: (){
-                changeEditState(true);
-              },
-              iconBehind: Icons.create_rounded,
-              pushButtomText: "تعديل",
-            )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomPushContainerButton(
+                  onTap: () {
+                    changeEditState(true);
+                  },
+                  iconBehind: Icons.create_rounded,
+                  borderRadius: 16,
+                  pushButtomText: "تعديل",
+                ),
+                const SizedBox(width: 24,),
+                const CustomPushContainerButton(
+                  borderRadius: 16,
+                  iconBehind: Icons.delete,
+                  color: AppColors.red,
+                  pushButtomText: "حذف",
+                ),
+              ],
+            ),
           ],
         ),
         const SizedBox(
@@ -49,22 +62,6 @@ class ViewKitchenDetailsBody extends StatelessWidget {
           height: 12,
         ),
         const MediaInViewGallryItem(),
-        const SizedBox(
-          height: 12,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "سعر المتر",
-              style: AppFontStyles.extraBold40(context),
-            ),
-            const CustomPushContainerButton(
-              pushButtomText: "٢٠٠٠ جنية",
-              enableIcon: false,
-            )
-          ],
-        ),
         const SizedBox(
           height: 12,
         ),

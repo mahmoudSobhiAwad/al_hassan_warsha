@@ -1,6 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/add_meter_price.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
@@ -44,10 +43,7 @@ class AddKitchenView extends StatelessWidget {
         const SizedBox(
           height: 24,
         ),
-        AddMeterPrice(width: width,),
-        const SizedBox(
-          height: 12,
-        ),
+        
         const Center(
             child: CustomPushContainerButton(
           pushButtomText: "إضافة",

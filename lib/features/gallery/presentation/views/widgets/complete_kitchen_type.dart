@@ -1,19 +1,19 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_new_type_with_kitchen_name.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/one_kitchen_list.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/show_more_kitchen_circle.dart';
 import 'package:flutter/material.dart';
 
 class CompleteKitchenType extends StatelessWidget {
-  const CompleteKitchenType({super.key, this.isEmpty = false,required this.changeShowMore});
+  const CompleteKitchenType({super.key, this.isEmpty = false,required this.changeShowMore,});
   final bool isEmpty;
   final void Function(bool show)changeShowMore;
+ 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const AddnewTypeWithKitchenName(),
+       // AddnewTypeWithKitchenName(model: model,),
         const SizedBox(
           height: 16,
         ),

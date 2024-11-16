@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
@@ -5,10 +7,25 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart'
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_dialog_add_new_type.dart';
 import 'package:flutter/material.dart';
 
-class HeaderSetionInGallery extends StatelessWidget {
+class HeaderSetionInGallery extends StatefulWidget {
   const HeaderSetionInGallery({
     super.key,
+    required this.addType,
   });
+  final void Function(String) addType;
+
+  @override
+  State<HeaderSetionInGallery> createState() => _HeaderSetionInGalleryState();
+}
+
+class _HeaderSetionInGalleryState extends State<HeaderSetionInGallery> {
+  final TextEditingController controller = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +56,19 @@ class HeaderSetionInGallery extends StatelessWidget {
             onTap: () {
               showDialog(
                   context: context,
-                  builder: (context) => const AddNewTypeDialog());
+                  builder: (context) => Form(
+                        key: formKey,
+                        child: AddNewTypeDialog(
+                          add: () {
+                            if (formKey.currentState!.validate() &&
+                                controller.text.trim().isNotEmpty) {
+                              widget.addType(controller.text);
+                            }
+                          },
+                          controller: controller,
+                          formKey: formKey,
+                        ),
+                      ));
             },
             pushButtomText: "إضافة جديد",
           ),
@@ -54,5 +83,3 @@ class HeaderSetionInGallery extends StatelessWidget {
     );
   }
 }
-
-
