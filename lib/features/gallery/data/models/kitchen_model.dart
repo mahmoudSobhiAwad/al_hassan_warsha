@@ -21,10 +21,10 @@ class KitchenModel {
   factory KitchenModel.fromJson(Map<String, dynamic> json) {
     return KitchenModel(
       addedDate: DateTime.parse(json["addedTime"] as String),
-      kitchenId: json['kitchenId'] as String,
+      kitchenId:   json['kitchenId'] as String,
       kitchenName: json['kitchenName'] as String,
       kitchenDesc: json['kitchenDesc']==null?"":json['kitchenDesc'] as String,
-      typeId: json['typeId'] as String,
+      typeId: json['typeId']==null?"":json['typeId'] as String,
       kitchenMediaList: (json['kitchenMediaList'] as List<dynamic>?)
           ?.map((item) => KitchenMedia.fromJson(item))
           .toList()??[], 

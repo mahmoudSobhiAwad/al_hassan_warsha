@@ -8,40 +8,48 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class KitchenGalleryCustomView extends StatelessWidget {
-  const KitchenGalleryCustomView({super.key,required this.bloc,this.titleOfAppBar,required this.typeId,required this.kitchenModel});
-  
+  const KitchenGalleryCustomView(
+      {super.key,
+      required this.bloc,
+      this.titleOfAppBar,
+      required this.typeId,
+      required this.kitchenModel});
+
   final ViewEditAddBloc bloc;
-  final String ?titleOfAppBar;
-  final String?typeId;
-  final KitchenModel?kitchenModel;
+  final String? titleOfAppBar;
+  final String? typeId;
+  final KitchenModel? kitchenModel;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomAppBar(currIndex: 0, changeIndex: (pageIndex) {
-          if(pageIndex!=0){
-            Navigator.pop(context);
-            bloc.add(ChangeBarIndexEvent(currBarIndex: pageIndex));
-          }  
-        }),
+        CustomAppBar(
+            currIndex: 0,
+            changeIndex: (pageIndex) {
+              if (pageIndex != 0) {
+                Navigator.pop(context);
+                bloc.add(ChangeBarIndexEvent(currBarIndex: pageIndex));
+              }
+            }),
         const SizedBox(
           height: 24,
         ),
-         Expanded(
+        Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppBarWithLinking(
-                  items:  [
+                  items: [
                     "الرئيسية",
-                    titleOfAppBar?? "مطبخ كلاسيك",
-                    bloc.pagesGalleryEnum==PagesGalleryEnum.add?"إضافة مطبخ": "مطبخ رقم 1",
+                    titleOfAppBar ?? "مطبخ كلاسيك",
+                    bloc.pagesGalleryEnum == PagesGalleryEnum.add
+                        ? "إضافة مطبخ"
+                        : "مطبخ رقم 1",
                   ],
-                  onBack: (){
-                    switch(bloc.pagesGalleryEnum){
-                      
+                  onBack: () {
+                    switch (bloc.pagesGalleryEnum) {
                       case PagesGalleryEnum.view:
                         Navigator.pop(context);
                         break;
@@ -56,16 +64,24 @@ class KitchenGalleryCustomView extends StatelessWidget {
                 const SizedBox(
                   height: 12,
                 ),
-                switch(bloc.pagesGalleryEnum){
+                switch (bloc.pagesGalleryEnum) {
                   PagesGalleryEnum.view => ViewKitchenDetailsBody(
-                    kitchenModel: kitchenModel,
-                    changeEditState: (edit){
-                    bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
-                  },),
+                      kitchenModel: kitchenModel,
+                      changeEditState: (edit) {
+                        bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
+                      },
+                      deleteKitchen: () {
+                        bloc.add(DeleteKitchenEvent(
+                            kitchenId: kitchenModel!.kitchenId,
+                            typeId: kitchenModel!.typeId));
+                      },
+                    ),
                   PagesGalleryEnum.edit => const Text("Edit is here"),
-                  PagesGalleryEnum.add => AddKitchenView(typeId: typeId,bloc: bloc,),
+                  PagesGalleryEnum.add => AddKitchenView(
+                      typeId: typeId,
+                      bloc: bloc,
+                    ),
                 },
-                
               ],
             ),
           ),

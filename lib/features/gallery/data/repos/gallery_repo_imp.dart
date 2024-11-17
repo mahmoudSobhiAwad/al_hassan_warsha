@@ -10,6 +10,7 @@ class GalleryRepoImp implements GalleryRepo {
   @override
   Future<bool> checkDbExistOfGalleryTables({required String tableName}) async {
     try {
+     
       return await dataBaseHelper.checkExistOfColumn(tableName: tableName);
     } catch (e) {
       throw Exception(e.toString());
@@ -45,18 +46,23 @@ class GalleryRepoImp implements GalleryRepo {
 
       List<KitchenTypeModel> kitchenTypesList = [];
       for (var item in result) {
-        String typeId = item["typeId"] as String;
-       
-        final kitchensResult = await dataBaseHelper.database.query(
+        String?typeId = item["typeId"]==null? null:item["typeId"] as String;
+        if(typeId!=null){
+          final kitchensResult = await dataBaseHelper.database.query(
             kitchenItemTableName,
             where: 'typeId = ?',
             whereArgs: [typeId]);
-       
-        kitchenTypesList
+             kitchenTypesList
             .add(KitchenTypeModel.fromJson(item, kitchensList: kitchensResult));
+        }
+        else{
+        
+        kitchenTypesList
+            .add(KitchenTypeModel.fromJson(item));}
       }
       return left(kitchenTypesList);
     } catch (e) {
+      
       return right(e.toString());
     }
   }

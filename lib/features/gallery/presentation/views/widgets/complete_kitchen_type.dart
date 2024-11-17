@@ -2,6 +2,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_new_type_with_kitchen_name.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/one_kitchen_list.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/show_more_kitchen_circle.dart';
@@ -9,15 +10,16 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class CompleteKitchenType extends StatelessWidget {
-  const CompleteKitchenType({super.key,required this.changeShowMore,required this.model});
+  const CompleteKitchenType({super.key,required this.changeShowMore,required this.model,required this.bloc});
   final void Function(bool show)changeShowMore;
   final KitchenTypeModel model;
+  final GalleryBloc bloc;
  
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AddnewTypeWithKitchenName(model: model,),
+        AddnewTypeWithKitchenName(model: model,bloc: bloc,),
         const SizedBox(
           height: 16,
         ),
@@ -34,7 +36,7 @@ class CompleteKitchenType extends StatelessWidget {
                   CustomPushContainerButton(
                     onTap: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.add,titleOfAppBar: model.typeName,typeId: model.typeId,);
+                        return ViewKitchenInGalleryView(galleryBloc: bloc,pagesGalleryEnum: PagesGalleryEnum.add,titleOfAppBar: model.typeName,typeId: model.typeId,);
                       }));
                     },
                   ),
@@ -45,7 +47,9 @@ class CompleteKitchenType extends StatelessWidget {
                 child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListOfOneKitchenType(kitchenModelList: model.kitchenList,typeName: model.typeName,),
+                    ListOfOneKitchenType(
+                      bloc: bloc,
+                      kitchenModelList: model.kitchenList,typeName: model.typeName,),
                     const SizedBox(
                       width: 16,
                     ),

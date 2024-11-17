@@ -29,10 +29,10 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
            Align(
             alignment: Alignment.centerLeft,
             child: CustomPushContainerButton(pushButtomText: "اضافة مطبخ جديد",onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>const ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.add,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewKitchenInGalleryView(galleryBloc: bloc,pagesGalleryEnum: PagesGalleryEnum.add,)));
             },)),
           const SizedBox(height: 18,),
-          const Expanded(child:CustomGridKitchenTypes()),
+          Expanded(child:CustomGridKitchenTypes(bloc: bloc,)),
           const SizedBox(height: 18,),
           const CustomPaginationWidget()
         ],

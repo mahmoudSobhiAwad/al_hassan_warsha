@@ -4,9 +4,12 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/act
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_box_shadow.dart';
 import 'package:flutter/material.dart';
 
-class AlertCheckOfDataBase extends StatelessWidget {
-  const AlertCheckOfDataBase({super.key,this.onPressed_2});
+class CustomAlert extends StatelessWidget {
+  const CustomAlert({super.key,this.onPressed_2,this.actionButtonsInstead,this.enableIcon=true,this.title});
   final void Function()?onPressed_2;
+  final String?title;
+  final bool enableIcon;
+  final Widget ?actionButtonsInstead;
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +31,19 @@ class AlertCheckOfDataBase extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "لا يوجد اي قاعدة بيانات حالية لديك هل لديك بيانات تود استراجعها ؟",
+             title?? "لا يوجد اي قاعدة بيانات حالية لديك هل لديك بيانات تود استراجعها ؟",
               style: AppFontStyles.extraBold40(context),
               textAlign: TextAlign.center,
             ),
-            const IconButton(
+           enableIcon? const IconButton(
               onPressed: null,
               icon: Icon(
                 Icons.warning,
                 color: AppColors.orange,
                 size: 70,
               ),
-            ),
-            DialogAddNewTypeActionButton(
+            ):const SizedBox(height: 20,),
+            actionButtonsInstead?? DialogAddNewTypeActionButton(
               color_1: AppColors.green,
               color_2: AppColors.blue,
               text_1: "استرجاع",

@@ -19,6 +19,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     on<ChangeBarIndexEvent>(changeBarIndex);
     on<OpenKitchenForEditEvent>(openOrCloseEdit);
     on<AddNewKitchenEvent>(addNewKitchen);
+    on<DeleteKitchenEvent>(deleteKitchen);
   }
   FutureOr<void> changeBarIndex(
       ChangeBarIndexEvent event, Emitter<ViewEditAddState> emit) {
@@ -46,9 +47,20 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
             kitchenName: event.name,
             addedDate: DateTime.now()));
     return result.fold((success) {
-      emit(SuccessAddNewKitchenState());
+      emit(SuccessAddNewKitchenState(model: success));
     }, (error) {
       emit(FailureAddNewKitchenState(errMessage: error.toString()));
+    });
+  }
+  FutureOr<void> deleteKitchen(
+      DeleteKitchenEvent event, Emitter<ViewEditAddState> emit) async {
+    emit(LoadingDeleteNewKitchenState());
+    final result = await addEditKitchenRepoImpl.deleteKitchen(
+        kitchenId: event.kitchenId,typeId: event.typeId);
+    return result.fold((success) {
+      emit(SuccessDeleteNewKitchenState(typeId: success));
+    }, (error) {
+      emit(FailureDeleteNewKitchenState(errMessage: error.toString()));
     });
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
@@ -5,6 +7,7 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo_impl.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/custom_kitchen_gallery_parent.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +20,13 @@ class ViewKitchenInGalleryView extends StatelessWidget {
     this.titleOfAppBar,
     this.typeId,
     this.kitchenModel,
+    required this.galleryBloc,
   });
   final PagesGalleryEnum pagesGalleryEnum;
   final String? titleOfAppBar;
   final String? typeId;
   final KitchenModel?kitchenModel;
-
+  final GalleryBloc galleryBloc;
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -49,8 +53,23 @@ class ViewKitchenInGalleryView extends StatelessWidget {
               );
             },
             listener: (context,state){
+              
               if(state is SuccessAddNewKitchenState){
                 showCustomSnackBar(context, "تمت اضافة مطبخ جديد");
+                galleryBloc.add(AddNewKitchenFromGalleryEvent(kitchenModel: state.model));
+              }
+              else if(state is FailureAddNewKitchenState){
+                showCustomSnackBar(context, "${state.errMessage}",backgroundColor: AppColors.red);
+              }
+              if(state is SuccessDeleteNewKitchenState){
+              
+                showCustomSnackBar(context, "تمت حذف المطبخ ");
+                 galleryBloc.add(ReomveKitchenFromGalleryEvent(typeId: state.typeId,kitchenId:kitchenModel!.kitchenId));
+                Navigator.pop(context);
+                Timer(const Duration(seconds: 2),(){
+                  Navigator.pop(context);
+                });
+                
               }
               else if(state is FailureAddNewKitchenState){
                 showCustomSnackBar(context, "${state.errMessage}",backgroundColor: AppColors.red);

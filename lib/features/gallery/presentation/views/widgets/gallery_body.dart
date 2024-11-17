@@ -12,42 +12,47 @@ class GalleryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "المضاف حديثا",
-            style: AppFontStyles.extraBold50(context),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          const AutoScrollingPageView(),
-          const SizedBox(
-            height: 24,
-          ),
-          Text(
-            "انواع المطابخ",
-            style: AppFontStyles.extraBold40(context),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Column(
-            children: [
-              ...List.generate(kitchenList.length, (index) {
-                return Padding(
-                  padding:const EdgeInsets.only(bottom: 20.0),
-                  child: CompleteKitchenType(model:kitchenList[index],changeShowMore: (bool show){
-                    bloc.add(ShowMoreKitcenTypeEvent(showMore: show));
-                  },),
-                );
-              })
-            ],
-          ),
-        ],
+    return Align(
+      alignment: Alignment.topCenter,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "المضاف حديثا",
+              style: AppFontStyles.extraBold50(context),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            const AutoScrollingPageView(),
+            const SizedBox(
+              height: 24,
+            ),
+            Text(
+              "انواع المطابخ",
+              style: AppFontStyles.extraBold40(context),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Column(
+              children: [
+                ...List.generate(kitchenList.length, (index) {
+                  return Padding(
+                    padding:const EdgeInsets.only(bottom: 20.0),
+                    child: CompleteKitchenType(
+                      bloc: bloc,
+                      model:kitchenList[index],changeShowMore: (bool show){
+                      bloc.add(ShowMoreKitcenTypeEvent(showMore: show));
+                    },),
+                  );
+                })
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

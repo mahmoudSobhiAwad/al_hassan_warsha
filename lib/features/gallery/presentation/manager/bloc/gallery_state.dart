@@ -5,6 +5,8 @@ sealed class GalleryState {}
 
 final class GalleryInitial extends GalleryState {}
 
+sealed class GalleryOutSideState extends GalleryState {}
+
 final class LoadingCreateOrGetData extends GalleryState {}
 
 final class SuccessCreateOrGetData extends GalleryState {
@@ -17,12 +19,14 @@ final class FailureCreateOrGetData extends GalleryState {
   FailureCreateOrGetData({this.errMessage});
 }
 
-final class LoadingAddedNewKitchenType extends GalleryState {}
+final class LoadingAddedNewKitchenType extends GalleryOutSideState {}
 
-final class SuccessAddedNewKitchenType extends GalleryState {
-  
+final class SuccessAddedNewKitchenType extends GalleryOutSideState {
+  final String typeId;
+  final String typeName;
+  SuccessAddedNewKitchenType({required this.typeId,required this.typeName});
 }
-final class FailureAddedNewKitchenType extends GalleryState {
+final class FailureAddedNewKitchenType extends GalleryOutSideState {
   final String? errMessage;
   FailureAddedNewKitchenType({this.errMessage});
 }
@@ -31,4 +35,15 @@ final class FailureAddedNewKitchenType extends GalleryState {
 final class ShowMoreOfKitchenTypeState extends GalleryState {
   final bool showMore;
   ShowMoreOfKitchenTypeState({this.showMore=false});
+}
+
+final class AddNewKitchenState extends GalleryOutSideState{
+  final KitchenModel kitchenModel;
+  AddNewKitchenState({required this.kitchenModel});
+}
+
+final class RemoveKitchenState extends GalleryOutSideState{
+  final String typeId;
+  final String kitcehnId;
+  RemoveKitchenState({required this.kitcehnId,required this.typeId});
 }

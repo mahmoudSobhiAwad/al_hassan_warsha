@@ -44,7 +44,7 @@ class HomeScreenView extends StatelessWidget {
                 useSafeArea: false,
                 context: context,
                 builder: (context) =>
-                    Dialog(child: AlertCheckOfDataBase(
+                    Dialog(child: CustomAlert(
                       onPressed_2: (){
                         bloc.add(CreateNewDBEvent());
                         Navigator.pop(context);

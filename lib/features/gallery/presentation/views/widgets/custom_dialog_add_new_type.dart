@@ -25,7 +25,7 @@ class AddNewTypeDialog extends StatelessWidget {
             children: [
                CustomColumnWithTextInAddNewType(
                 validator: (value){
-                  if(value==null||value.isEmpty){
+                  if(value==null||value.trim().isEmpty){
                     return " اسم النوع لا يمكن ان يكون خاليا";
                   }
                   return null;

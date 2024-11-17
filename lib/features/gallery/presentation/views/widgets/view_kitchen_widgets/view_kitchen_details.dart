@@ -3,12 +3,19 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_container_with_above_text.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/media_view_in_gallery.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:flutter/material.dart';
 
 class ViewKitchenDetailsBody extends StatelessWidget {
-  const ViewKitchenDetailsBody({super.key, required this.changeEditState,required this.kitchenModel});
+  const ViewKitchenDetailsBody(
+      {super.key,
+      required this.changeEditState,
+      required this.kitchenModel,
+      required this.deleteKitchen});
   final void Function(bool enableEdit) changeEditState;
+  final void Function() deleteKitchen;
   final KitchenModel? kitchenModel;
   @override
   Widget build(BuildContext context) {
@@ -21,13 +28,13 @@ class ViewKitchenDetailsBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
-                kitchenModel?.kitchenName??"",
+                kitchenModel?.kitchenName ?? "",
                 style: AppFontStyles.extraBold40(context),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
             ),
-            const Expanded(flex: 2,child: SizedBox()),
+            const Expanded(flex: 2, child: SizedBox()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -39,8 +46,34 @@ class ViewKitchenDetailsBody extends StatelessWidget {
                   borderRadius: 16,
                   pushButtomText: "تعديل",
                 ),
-                const SizedBox(width: 24,),
-                const CustomPushContainerButton(
+                const SizedBox(
+                  width: 24,
+                ),
+                CustomPushContainerButton(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        useSafeArea: true,
+                        builder: (context) {
+                          return Dialog(
+                            child: CustomAlert(
+                              title: "هل أنت متأكد من حذف هذا المطبخ ؟",
+                              enableIcon: false,
+                              actionButtonsInstead:
+                                  DialogAddNewTypeActionButton(
+                                onPressed_1: deleteKitchen,
+                                onPressed_2: () {
+                                  Navigator.pop(context);
+                                },
+                                text_1: "حذف",
+                                text_2: "إلغاء",
+                                color_1: AppColors.red,
+                                color_2: AppColors.green,
+                              ),
+                            ),
+                          );
+                        });
+                  },
                   borderRadius: 16,
                   iconBehind: Icons.delete,
                   color: AppColors.red,
@@ -55,8 +88,7 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         ),
         CustomContainerWithTextAbove(
           textAbove: "الوصف",
-          describtionInCont:
-              kitchenModel?.kitchenDesc??"",
+          describtionInCont: kitchenModel?.kitchenDesc ?? "",
         ),
         const SizedBox(
           height: 12,

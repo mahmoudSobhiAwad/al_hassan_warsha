@@ -8,13 +8,13 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
   final DataBaseHelper dataBaseHelper;
   AddEditKitchenRepoImpl({required this.dataBaseHelper});
   @override
-  Future<Either<String, Exception>> addNewKitchen(
+  Future<Either<KitchenModel, Exception>> addNewKitchen(
       {required KitchenModel model}) async {
     try {
       await dataBaseHelper.database
           .insert(kitchenItemTableName, model.toJson());
-      await updateCounterForType(model.typeId);
-      return left("تمت الاضافة بنجاح");
+      await updateCounterForType(model.typeId,"+");
+      return left(model);
     } catch (e) {
       return right(Exception(e.toString()));
     }
@@ -22,25 +22,37 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 
   @override
   Future<Either<String, Exception>> updateKitchen(
-      {required KitchenModel model}) {
+      {required KitchenModel model}) async{
     // TODO: implement updateKitchen
     throw UnimplementedError();
   }
 
-  Future<void> updateCounterForType(String typeId) async {
-    try{
+  Future<void> updateCounterForType(String typeId,String manuiplationChar) async {
+    try {
       await dataBaseHelper.database.rawUpdate(
-      '''
+        '''
     UPDATE $kitchenTypesTableName 
-    SET itemsCount = itemsCount + 1 
+    SET itemsCount = itemsCount $manuiplationChar 1 
     WHERE typeId = ?
     ''',
-      [typeId],
-    );
-    }
-    catch(e){
+        [typeId],
+      );
+    } catch (e) {
       throw Exception(e.toString());
     }
-    
+  }
+
+  @override
+  Future<Either<String, Exception>> deleteKitchen(
+      {required String kitchenId,required String typeId}) async {
+    try {
+      await dataBaseHelper.database.rawDelete('''
+      DELETE FROM $kitchenItemTableName WHERE kitchenId = ?;
+      ''', [kitchenId]);
+      await updateCounterForType(typeId, "-");
+      return left(typeId);
+    } catch (e) {
+      return right(Exception(e.toString()));
+    }
   }
 }

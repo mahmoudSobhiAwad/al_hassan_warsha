@@ -24,3 +24,8 @@ final class EditKitchenEvent extends ViewEditAddEvent {
   final KitchenModel model;
   EditKitchenEvent({required this.model});
 }
+final class DeleteKitchenEvent extends ViewEditAddEvent {
+  final String kitchenId;
+  final String typeId;
+  DeleteKitchenEvent({required this.kitchenId,required this.typeId});
+}

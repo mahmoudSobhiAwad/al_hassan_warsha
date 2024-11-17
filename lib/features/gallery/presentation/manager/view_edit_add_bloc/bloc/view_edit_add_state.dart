@@ -21,6 +21,21 @@ final class FailureAddNewKitchenState extends ViewEditAddState {
   FailureAddNewKitchenState({this.errMessage});
 }
 
-final class SuccessAddNewKitchenState extends ViewEditAddState {}
+final class SuccessAddNewKitchenState extends ViewEditAddState {
+  final KitchenModel model;
+  SuccessAddNewKitchenState({required this.model});
+}
 
 final class ClearDataAfterAddState extends ViewEditAddState {}
+
+final class LoadingDeleteNewKitchenState extends ViewEditAddState {}
+
+final class FailureDeleteNewKitchenState extends ViewEditAddState {
+  final String?errMessage;
+  FailureDeleteNewKitchenState({this.errMessage});
+}
+
+final class SuccessDeleteNewKitchenState extends ViewEditAddState {
+  final String typeId;
+  SuccessDeleteNewKitchenState({required this.typeId});
+}
