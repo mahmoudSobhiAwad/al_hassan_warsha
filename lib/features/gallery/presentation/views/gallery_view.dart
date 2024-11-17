@@ -1,6 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/all_kitchen_items_body.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gallery_body.dart';
@@ -23,70 +23,51 @@ class GalleryView extends StatelessWidget {
           showMoreKitchens = state.showMore;
         } else if (state is SuccessAddedNewKitchenType) {
           Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: AppColors.green,
-            content: Text(
-              "تم اضافة نوع جديد",
-              style: AppFontStyles.extraBold20(context)
-                  .copyWith(color: AppColors.white),
-            ),
-          ));
+          showCustomSnackBar(context, "تم اضافة نوع جديد",);
+          
         } else if (state is FailureCreateOrGetData) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: AppColors.red,
-            content: Text(
-              "${state.errMessage}",
-              style: AppFontStyles.extraBold20(context)
-                  .copyWith(color: AppColors.white),
-            ),
-          ));
-        }
-        else if (state is FailureAddedNewKitchenType) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: AppColors.red,
-            content: Text(
-              "${state.errMessage}",
-              style: AppFontStyles.extraBold20(context)
-                  .copyWith(color: AppColors.white),
-            ),
-          ));
+          showCustomSnackBar(context, " ${state.errMessage} ",backgroundColor: AppColors.red);
+        } else if (state is FailureAddedNewKitchenType) {
+          Navigator.pop(context);
+          showCustomSnackBar(context, " ${state.errMessage} ",backgroundColor: AppColors.red);
         }
       }, builder: (context, state) {
         var galleryBloc = context.read<GalleryBloc>();
         switch (state.runtimeType) {
           case const (LoadingCreateOrGetData):
-          
-          return const CircularProgressIndicator();
+            return const CircularProgressIndicator();
           case const (SuccessCreateOrGetData):
-          final successState = state as SuccessCreateOrGetData;
-          return Expanded(
-          child: Row(
-            children: [
-              Expanded(child: SideBarGallery(
-                addType: (value){
-                  galleryBloc.add(AddNewKitchenTypeEvent(typeName: value));
-                },
-                typesList: successState.kitchenTypesList,)),
-              Expanded(
-                flex: 4,
-                child: showMoreKitchens
-                    ? ShowingAllKitchenItemsGrid(
-                        bloc: galleryBloc,
-                      )
-                    : GalleryBody(
-                        bloc: galleryBloc,
-                      ),
+            final successState = state as SuccessCreateOrGetData;
+            return Expanded(
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SideBarGallery(
+                    addType: (value) {
+                      galleryBloc.add(AddNewKitchenTypeEvent(typeName: value));
+                    },
+                    typesList: successState.kitchenTypesList,
+                  )),
+                  Expanded(
+                    flex: 4,
+                    child: showMoreKitchens
+                        ? ShowingAllKitchenItemsGrid(
+                            bloc: galleryBloc,
+                          )
+                        : GalleryBody(
+                            kitchenList: state.kitchenTypesList,
+                            bloc: galleryBloc,
+                          ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ) ;
-        case  const (FailureCreateOrGetData):
-        final failedStated=state as FailureCreateOrGetData;
-        return Text("${failedStated.errMessage}");
-        default:
-        return const SizedBox();
+            );
+          case const (FailureCreateOrGetData):
+            final failedStated = state as FailureCreateOrGetData;
+            return Text("${failedStated.errMessage}");
+          default:
+            return const SizedBox();
         }
-        
       }),
     );
   }

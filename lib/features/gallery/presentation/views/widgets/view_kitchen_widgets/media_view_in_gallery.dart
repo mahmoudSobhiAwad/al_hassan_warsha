@@ -1,5 +1,5 @@
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_big_image_with_inner_shadow.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/small_kitchen_image.dart';
+//import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/small_kitchen_image.dart';
 import 'package:flutter/material.dart';
 
 class MediaInViewGallryItem extends StatelessWidget {
@@ -7,10 +7,10 @@ class MediaInViewGallryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.sizeOf(context).height;
-    return Column(
+    //double height = MediaQuery.sizeOf(context).height;
+    return const Column(
       children: [
-        const Row(
+         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
@@ -33,31 +33,31 @@ class MediaInViewGallryItem extends StatelessWidget {
                 )),
           ],
         ),
-        const SizedBox(
+         SizedBox(
           height: 12,
         ),
-        SizedBox(
-          height: height * 0.2,
-          child: Center(
-            child: ListView.separated(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return const SmallKitchenTypeImage(
-                    widthOfImage: 0.085,
-                    enableInner: false,
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    width: 12,
-                  );
-                },
-                itemCount: 10),
-          ),
-        ),
+        // SizedBox(
+        //   height: height * 0.2,
+        //   child: Center(
+        //     child: ListView.separated(
+        //         shrinkWrap: true,
+        //         physics: const BouncingScrollPhysics(),
+        //         padding: const EdgeInsets.symmetric(horizontal: 12),
+        //         scrollDirection: Axis.horizontal,
+        //         itemBuilder: (context, index) {
+        //           return const SmallKitchenTypeImage(
+        //             widthOfImage: 0.085,
+        //             enableInner: false,
+        //           );
+        //         },
+        //         separatorBuilder: (context, index) {
+        //           return const SizedBox(
+        //             width: 12,
+        //           );
+        //         },
+        //         itemCount: 10),
+        //   ),
+        // ),
       ],
     );
   }

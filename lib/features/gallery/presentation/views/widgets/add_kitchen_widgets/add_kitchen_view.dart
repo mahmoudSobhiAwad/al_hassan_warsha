@@ -1,21 +1,39 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
 
-class AddKitchenView extends StatelessWidget {
-  const AddKitchenView({super.key});
+class AddKitchenView extends StatefulWidget {
+  const AddKitchenView({super.key, required this.bloc,required this.typeId});
+  final ViewEditAddBloc bloc;
+  final String ?typeId;
 
+  @override
+  State<AddKitchenView> createState() => _AddKitchenViewState();
+}
+
+class _AddKitchenViewState extends State<AddKitchenView> {
+  final TextEditingController controller=TextEditingController();
+  final TextEditingController describController=TextEditingController();
+  @override
+  void dispose(){
+    controller.dispose();
+    describController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
             width: width * 0.5,
             child: CustomColumnWithTextInAddNewType(
+              controller:controller ,
               textStyle: AppFontStyles.extraBold25(context),
               text: "الاسم",
               textLabel: "اضف اسم للمنتج................",
@@ -25,6 +43,7 @@ class AddKitchenView extends StatelessWidget {
           height: 12,
         ),
         CustomColumnWithTextInAddNewType(
+          controller: describController,
           textStyle: AppFontStyles.extraBold25(context),
           maxLine: 2,
           text: "الوصف",
@@ -43,12 +62,16 @@ class AddKitchenView extends StatelessWidget {
         const SizedBox(
           height: 24,
         ),
-        
-        const Center(
+         Center(
             child: CustomPushContainerButton(
+              onTap: (){
+                widget.bloc.add(AddNewKitchenEvent(typeId: widget.typeId??"",name:controller.text ,desc:describController.text));
+                controller.clear();
+                describController.clear();
+              },
           pushButtomText: "إضافة",
           borderRadius: 15,
-          padding: EdgeInsets.symmetric(horizontal: 70, vertical: 12),
+          padding:const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
           enableIcon: false,
         )),
         const SizedBox(
@@ -58,4 +81,3 @@ class AddKitchenView extends StatelessWidget {
     );
   }
 }
-

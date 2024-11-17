@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text, this.validator,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
+      {super.key, required this.text, this.validator,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
@@ -18,6 +18,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
   final TextEditingController?controller;
   final GlobalKey<FormState>?formKey;
   final String? Function(String?v) ? validator;
+  final void Function(String?v) ? onChanged;
   
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
+          onChanged: onChanged,
           validator: validator,
           prefixWidget: prefixIcon,
           suffixWidget: suffixIcon,

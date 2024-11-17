@@ -27,10 +27,13 @@ class AppBarWithLinking extends StatelessWidget {
         const SizedBox(
           width: 24,
         ),
-        Row(
-          children: [
-            ...List.generate(items.length, (index)=>CustomItemInCustomLinkingAppBar(text: items[index],isLast: index!=items.length-1,)),
-          ],
+        Expanded(
+          flex: 5,
+          child: Row(
+            children: [
+              ...List.generate(items.length, (index)=>CustomItemInCustomLinkingAppBar(text: items[index],isLast: index!=items.length-1,)),
+            ],
+          ),
         ),
       ],
     );
@@ -46,9 +49,16 @@ class CustomItemInCustomLinkingAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          text,
-          style: AppFontStyles.extraBold40(context),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth:MediaQuery.sizeOf(context).width*0.15,
+          ),
+          child: Text(
+            text,
+            style: AppFontStyles.extraBold40(context),
+            overflow:TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
         ),
         isLast
             ? const IconButton(

@@ -14,3 +14,13 @@ final class ToggleBetweenEditAndViewState extends ViewEditAddState {
   final bool enableOpen;
   ToggleBetweenEditAndViewState({required this.enableOpen});
 }
+final class LoadingAddNewKitchenState extends ViewEditAddState {}
+
+final class FailureAddNewKitchenState extends ViewEditAddState {
+  final String?errMessage;
+  FailureAddNewKitchenState({this.errMessage});
+}
+
+final class SuccessAddNewKitchenState extends ViewEditAddState {}
+
+final class ClearDataAfterAddState extends ViewEditAddState {}

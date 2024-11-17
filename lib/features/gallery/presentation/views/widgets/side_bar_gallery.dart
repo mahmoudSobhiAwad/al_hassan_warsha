@@ -22,6 +22,7 @@ class SideBarGallery extends StatelessWidget {
         slivers: [
           HeaderSetionInGallery(
             addType: (value){
+            
               addType(value);
             },
           ),

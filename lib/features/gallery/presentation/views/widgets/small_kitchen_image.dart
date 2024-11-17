@@ -1,12 +1,15 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:flutter/material.dart';
 
 class SmallKitchenTypeImage extends StatelessWidget {
-  const SmallKitchenTypeImage({super.key,required this.widthOfImage,this.enableInner=true,this.enableClose=false});
+  const SmallKitchenTypeImage({super.key,required this.widthOfImage,required this.model,this.enableInner=true,this.enableClose=false});
   final double widthOfImage;
   final bool enableInner;
   final bool enableClose;
+  final KitchenModel model;
+  
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -25,29 +28,30 @@ class SmallKitchenTypeImage extends StatelessWidget {
           enableInner? Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 60,
+              height: 100,
               width: MediaQuery.sizeOf(context).width * widthOfImage,
               decoration: const BoxDecoration(
                   color: AppColors.blackOpacity50,
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Column(
-                  children: [
-                    Text(
-                      "مطبخ رقم 1 ",
-                      style: AppFontStyles.extraBold18(context)
-                          .copyWith(color: AppColors.white),
-                    ),
-                    Text(
-                      "15 قطعة مساحة 7 متر",
-                      style: AppFontStyles.extraBold18(context)
-                          .copyWith(color: AppColors.white),
-                    ),
-                  ],
-                ),
+              child: Column(
+                children: [
+                  Text(
+                    model.kitchenName??"",
+                    style: AppFontStyles.extraBold35(context)
+                        .copyWith(color: AppColors.white),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    model.kitchenDesc??"",
+                    style: AppFontStyles.extraBold24(context)
+                        .copyWith(color: AppColors.white),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ):const SizedBox(),

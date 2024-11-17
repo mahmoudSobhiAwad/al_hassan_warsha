@@ -9,6 +9,18 @@ final class ChangeBarIndexEvent extends ViewEditAddEvent {
 }
 
 final class OpenKitchenForEditEvent extends ViewEditAddEvent {
-  final bool enableEdit ;
+  final bool enableEdit;
   OpenKitchenForEditEvent({required this.enableEdit});
+}
+
+final class AddNewKitchenEvent extends ViewEditAddEvent {
+  final String typeId;
+  final String name;
+  final String?desc;
+  
+  AddNewKitchenEvent({required this.typeId,this.desc,required this.name});
+}
+final class EditKitchenEvent extends ViewEditAddEvent {
+  final KitchenModel model;
+  EditKitchenEvent({required this.model});
 }

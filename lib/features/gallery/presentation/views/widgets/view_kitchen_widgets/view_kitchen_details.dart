@@ -2,12 +2,14 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_container_with_above_text.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/media_view_in_gallery.dart';
 import 'package:flutter/material.dart';
 
 class ViewKitchenDetailsBody extends StatelessWidget {
-  const ViewKitchenDetailsBody({super.key, required this.changeEditState});
+  const ViewKitchenDetailsBody({super.key, required this.changeEditState,required this.kitchenModel});
   final void Function(bool enableEdit) changeEditState;
+  final KitchenModel? kitchenModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,10 +18,16 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "مطبخ رقم 1",
-              style: AppFontStyles.extraBold40(context),
+            Expanded(
+              flex: 2,
+              child: Text(
+                kitchenModel?.kitchenName??"",
+                style: AppFontStyles.extraBold40(context),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
             ),
+            const Expanded(flex: 2,child: SizedBox()),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -45,10 +53,10 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-        const CustomContainerWithTextAbove(
+        CustomContainerWithTextAbove(
           textAbove: "الوصف",
           describtionInCont:
-              "مطبخ يتميز بأسلوب حديث تم تصميمه سنة 2024 علي يد خبراء مطبخ يتميز بأسلوب حديث تم تصميمه سنة 2024 علي يد خبراء مطبخ يتميز بأسلوب حديث تم هراء ",
+              kitchenModel?.kitchenDesc??"",
         ),
         const SizedBox(
           height: 12,

@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_app_bar.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/add_kitchen_view.dart';
@@ -7,10 +8,12 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class KitchenGalleryCustomView extends StatelessWidget {
-  const KitchenGalleryCustomView({super.key,required this.bloc});
+  const KitchenGalleryCustomView({super.key,required this.bloc,this.titleOfAppBar,required this.typeId,required this.kitchenModel});
   
   final ViewEditAddBloc bloc;
-  
+  final String ?titleOfAppBar;
+  final String?typeId;
+  final KitchenModel?kitchenModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,7 +36,7 @@ class KitchenGalleryCustomView extends StatelessWidget {
                 AppBarWithLinking(
                   items:  [
                     "الرئيسية",
-                     "مطبخ كلاسيك",
+                    titleOfAppBar?? "مطبخ كلاسيك",
                     bloc.pagesGalleryEnum==PagesGalleryEnum.add?"إضافة مطبخ": "مطبخ رقم 1",
                   ],
                   onBack: (){
@@ -54,11 +57,13 @@ class KitchenGalleryCustomView extends StatelessWidget {
                   height: 12,
                 ),
                 switch(bloc.pagesGalleryEnum){
-                  PagesGalleryEnum.view => ViewKitchenDetailsBody(changeEditState: (edit){
+                  PagesGalleryEnum.view => ViewKitchenDetailsBody(
+                    kitchenModel: kitchenModel,
+                    changeEditState: (edit){
                     bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
                   },),
                   PagesGalleryEnum.edit => const Text("Edit is here"),
-                  PagesGalleryEnum.add => const AddKitchenView(),
+                  PagesGalleryEnum.add => AddKitchenView(typeId: typeId,bloc: bloc,),
                 },
                 
               ],
