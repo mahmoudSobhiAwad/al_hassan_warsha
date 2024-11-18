@@ -46,7 +46,7 @@ class KitchenGalleryCustomView extends StatelessWidget {
                     titleOfAppBar ?? "مطبخ كلاسيك",
                     bloc.pagesGalleryEnum == PagesGalleryEnum.add
                         ? "إضافة مطبخ"
-                        : "مطبخ رقم 1",
+                        : kitchenModel?.kitchenName??"",
                   ],
                   onBack: () {
                     switch (bloc.pagesGalleryEnum) {
@@ -76,7 +76,12 @@ class KitchenGalleryCustomView extends StatelessWidget {
                             typeId: kitchenModel!.typeId));
                       },
                     ),
-                  PagesGalleryEnum.edit => const Text("Edit is here"),
+                  PagesGalleryEnum.edit => AddKitchenView(
+                      typeId: typeId,
+                      bloc: bloc,
+                      enableEdit: true,
+                      kitchenModel: kitchenModel,
+                    ),
                   PagesGalleryEnum.add => AddKitchenView(
                       typeId: typeId,
                       bloc: bloc,

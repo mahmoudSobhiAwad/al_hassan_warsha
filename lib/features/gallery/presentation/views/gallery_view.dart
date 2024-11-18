@@ -15,7 +15,7 @@ class GalleryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<KitchenTypeModel> kitchenList = [];
-    
+
     return BlocProvider(
       create: (context) => GalleryBloc(galleryRepoImp: getIt.get())
         ..add(CheckExistOfGalleryDataEvent()),
@@ -24,7 +24,7 @@ class GalleryView extends StatelessWidget {
           buildWhen: (pervious, current) => current is! GalleryOutSideState,
           listener: (context, state) {
             var galleryBloc = context.read<GalleryBloc>();
-             if (state is SuccessAddedNewKitchenType) {
+            if (state is SuccessAddedNewKitchenType) {
               kitchenList.add(KitchenTypeModel(
                   typeId: state.typeId, typeName: state.typeName));
               Navigator.pop(context);
@@ -41,12 +41,10 @@ class GalleryView extends StatelessWidget {
               showCustomSnackBar(context, " ${state.errMessage} ",
                   backgroundColor: AppColors.red);
             } else if (state is AddNewKitchenState) {
-              for (int i = 0; i < kitchenList.length; i++) {
-                if (kitchenList[i].typeId == state.kitchenModel.typeId) {
-                  kitchenList[i].itemsCount++;
-                  kitchenList[i].kitchenList.add(state.kitchenModel);
-                }
-              }
+              int index = kitchenList.indexWhere(
+                  (model) => model.typeId == state.kitchenModel.typeId);
+              kitchenList[index].itemsCount++;
+              kitchenList[index].kitchenList.add(state.kitchenModel);
               galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
             } else if (state is RemoveKitchenState) {
               for (int i = 0; i < kitchenList.length; i++) {
@@ -55,8 +53,17 @@ class GalleryView extends StatelessWidget {
                   kitchenList[i]
                       .kitchenList
                       .removeWhere((item) => item.kitchenId == state.kitcehnId);
+                  break;
                 }
               }
+              galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
+            } else if (state is EditKitchenState) {
+              int bigIndex = kitchenList.indexWhere(
+                  (model) => model.typeId == state.kitchenModel.typeId);
+              int smallIndex = kitchenList[bigIndex].kitchenList.indexWhere(
+                  (model) => model.kitchenId == state.kitchenModel.kitchenId);
+              kitchenList[bigIndex].kitchenList[smallIndex] =
+                  state.kitchenModel;
               galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
             }
           },
@@ -73,10 +80,9 @@ class GalleryView extends StatelessWidget {
                     children: [
                       Expanded(
                           child: SideBarGallery(
-                            currIndex: galleryBloc.showingIndex,
+                              currIndex: galleryBloc.showingIndex,
                               changeIndex: (index) {
                                 if (index != galleryBloc.showingIndex) {
-                                  
                                   galleryBloc.add(ShowMoreKitcenTypeEvent(
                                       currIndex: index));
                                 }
@@ -107,7 +113,7 @@ class GalleryView extends StatelessWidget {
                     children: [
                       Expanded(
                           child: SideBarGallery(
-                            currIndex: showingState.currIndex,
+                              currIndex: showingState.currIndex,
                               changeIndex: (index) {
                                 if (index != showingState.currIndex) {
                                   galleryBloc.add(ShowMoreKitcenTypeEvent(
@@ -126,7 +132,6 @@ class GalleryView extends StatelessWidget {
                           onBack: () {
                             galleryBloc.add(
                                 UpdateCatchDataEvent(kitchenList: kitchenList));
-                            
                           },
                           kitchenList:
                               kitchenList[showingState.currIndex].kitchenList,

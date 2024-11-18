@@ -27,7 +27,7 @@ class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
       if (_pageController.hasClients) {
         _currentPage++;
      
-        if (_currentPage >= 5) { // Assuming there are 5 pages
+        if (_currentPage >= 5) { 
           _currentPage = 0;
         }
         _pageController.animateToPage(

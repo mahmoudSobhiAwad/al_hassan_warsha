@@ -13,7 +13,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
     try {
       await dataBaseHelper.database
           .insert(kitchenItemTableName, model.toJson());
-      await updateCounterForType(model.typeId,"+");
+      await updateCounterForType(model.typeId, "+");
       return left(model);
     } catch (e) {
       return right(Exception(e.toString()));
@@ -22,12 +22,22 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 
   @override
   Future<Either<String, Exception>> updateKitchen(
-      {required KitchenModel model}) async{
-    // TODO: implement updateKitchen
-    throw UnimplementedError();
+      {required KitchenModel model}) async {
+    try {
+      await dataBaseHelper.database.update(
+        kitchenItemTableName,
+        model.toJson(),
+        where:'kitchenId = ?',
+        whereArgs: [model.kitchenId],
+      );
+      return left(model.typeId);
+    } catch (e) {
+      return right( Exception(e.toString()));
+    }
   }
 
-  Future<void> updateCounterForType(String typeId,String manuiplationChar) async {
+  Future<void> updateCounterForType(
+      String typeId, String manuiplationChar) async {
     try {
       await dataBaseHelper.database.rawUpdate(
         '''
@@ -44,7 +54,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 
   @override
   Future<Either<String, Exception>> deleteKitchen(
-      {required String kitchenId,required String typeId}) async {
+      {required String kitchenId, required String typeId}) async {
     try {
       await dataBaseHelper.database.rawDelete('''
       DELETE FROM $kitchenItemTableName WHERE kitchenId = ?;

@@ -53,7 +53,7 @@ class ViewKitchenInGalleryView extends StatelessWidget {
               );
             },
             listener: (context,state){
-              
+              var bloc=context.read<ViewEditAddBloc>();
               if(state is SuccessAddNewKitchenState){
                 showCustomSnackBar(context, "تمت اضافة مطبخ جديد");
                 galleryBloc.add(AddNewKitchenFromGalleryEvent(kitchenModel: state.model));
@@ -61,7 +61,7 @@ class ViewKitchenInGalleryView extends StatelessWidget {
               else if(state is FailureAddNewKitchenState){
                 showCustomSnackBar(context, "${state.errMessage}",backgroundColor: AppColors.red);
               }
-              if(state is SuccessDeleteNewKitchenState){
+              else if(state is SuccessDeleteNewKitchenState){
               
                 showCustomSnackBar(context, "تمت حذف المطبخ ");
                  galleryBloc.add(ReomveKitchenFromGalleryEvent(typeId: state.typeId,kitchenId:kitchenModel!.kitchenId));
@@ -70,6 +70,10 @@ class ViewKitchenInGalleryView extends StatelessWidget {
                   Navigator.pop(context);
                 });
                 
+              }
+              else if(state is SuccessEditKitchenState){
+                showCustomSnackBar(context, "تمت تعديل المطبخ بنجاح ");
+                bloc.add(OpenKitchenForEditEvent(enableEdit: false));
               }
               else if(state is FailureAddNewKitchenState){
                 showCustomSnackBar(context, "${state.errMessage}",backgroundColor: AppColors.red);

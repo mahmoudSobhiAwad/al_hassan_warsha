@@ -18,6 +18,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<AddNewKitchenTypeEvent>(addNewKitchenType);
     on<AddNewKitchenFromGalleryEvent>(addNewKitchen);
     on<ReomveKitchenFromGalleryEvent>(removeKitchen);
+    on<EditKitchenFromGalleryEvent>(editKitchen);
     on<UpdateCatchDataEvent>(updateCatching);
   }
   int showingIndex=-1;
@@ -73,6 +74,10 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   FutureOr<void> removeKitchen(
       ReomveKitchenFromGalleryEvent event, Emitter<GalleryState> emit) async {
         emit(RemoveKitchenState(kitcehnId: event.kitchenId,typeId: event.typeId));
+  }
+  FutureOr<void> editKitchen(
+      EditKitchenFromGalleryEvent event, Emitter<GalleryState> emit) async {
+        emit(EditKitchenState(kitchenModel: event.kitchenModel));
   }
   FutureOr<void> updateCatching(
       UpdateCatchDataEvent event, Emitter<GalleryState> emit) async {

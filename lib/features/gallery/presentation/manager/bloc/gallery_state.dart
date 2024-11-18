@@ -42,6 +42,10 @@ final class AddNewKitchenState extends GalleryOutSideState{
   final KitchenModel kitchenModel;
   AddNewKitchenState({required this.kitchenModel});
 }
+final class EditKitchenState extends GalleryOutSideState{
+  final KitchenModel kitchenModel;
+  EditKitchenState({required this.kitchenModel});
+}
 
 final class RemoveKitchenState extends GalleryOutSideState{
   final String typeId;

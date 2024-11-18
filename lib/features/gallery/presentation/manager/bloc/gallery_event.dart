@@ -18,6 +18,10 @@ final class AddNewKitchenFromGalleryEvent extends GalleryEvent {
   final KitchenModel kitchenModel;
   AddNewKitchenFromGalleryEvent({required this.kitchenModel});
 }
+final class EditKitchenFromGalleryEvent extends GalleryEvent {
+  final KitchenModel kitchenModel;
+  EditKitchenFromGalleryEvent({required this.kitchenModel});
+}
 
 final class ReomveKitchenFromGalleryEvent extends GalleryEvent {
   final String kitchenId;

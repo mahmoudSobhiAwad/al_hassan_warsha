@@ -39,3 +39,15 @@ final class SuccessDeleteNewKitchenState extends ViewEditAddState {
   final String typeId;
   SuccessDeleteNewKitchenState({required this.typeId});
 }
+
+final class LoadingEditKitchenState extends ViewEditAddState {}
+
+final class FailureEditKitchenState extends ViewEditAddState {
+  final String?errMessage;
+  FailureEditKitchenState({this.errMessage});
+}
+
+final class SuccessEditKitchenState extends ViewEditAddState {
+  final String typeId;
+  SuccessEditKitchenState({required this.typeId});
+}

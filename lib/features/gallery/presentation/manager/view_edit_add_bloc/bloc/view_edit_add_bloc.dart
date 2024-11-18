@@ -20,6 +20,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     on<OpenKitchenForEditEvent>(openOrCloseEdit);
     on<AddNewKitchenEvent>(addNewKitchen);
     on<DeleteKitchenEvent>(deleteKitchen);
+    on<EditKitchenEvent>(editKitchen);
   }
   FutureOr<void> changeBarIndex(
       ChangeBarIndexEvent event, Emitter<ViewEditAddState> emit) {
@@ -52,15 +53,28 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
       emit(FailureAddNewKitchenState(errMessage: error.toString()));
     });
   }
+
   FutureOr<void> deleteKitchen(
       DeleteKitchenEvent event, Emitter<ViewEditAddState> emit) async {
     emit(LoadingDeleteNewKitchenState());
     final result = await addEditKitchenRepoImpl.deleteKitchen(
-        kitchenId: event.kitchenId,typeId: event.typeId);
+        kitchenId: event.kitchenId, typeId: event.typeId);
     return result.fold((success) {
       emit(SuccessDeleteNewKitchenState(typeId: success));
     }, (error) {
       emit(FailureDeleteNewKitchenState(errMessage: error.toString()));
+    });
+  }
+
+  FutureOr<void> editKitchen(
+      EditKitchenEvent event, Emitter<ViewEditAddState> emit) async {
+    emit(LoadingEditKitchenState());
+    final result =
+        await addEditKitchenRepoImpl.updateKitchen(model: event.model);
+    return result.fold((success) {
+      emit(SuccessEditKitchenState(typeId: success));
+    }, (error) {
+      emit(FailureEditKitchenState(errMessage: error.toString()));
     });
   }
 }
