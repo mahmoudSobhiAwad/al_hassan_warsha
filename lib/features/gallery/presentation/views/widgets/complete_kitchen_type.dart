@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class CompleteKitchenType extends StatelessWidget {
   const CompleteKitchenType({super.key,required this.changeShowMore,required this.model,required this.bloc});
-  final void Function(bool show)changeShowMore;
+  final void Function()changeShowMore;
   final KitchenTypeModel model;
   final GalleryBloc bloc;
  
@@ -59,7 +59,7 @@ class CompleteKitchenType extends StatelessWidget {
                         focusColor: Colors.white,
                         splashColor: Colors.white,
                         onTap: (){
-                          changeShowMore(true);
+                          changeShowMore();
                         },
                         child: const ShowMoreCirlcle()):const SizedBox()
                   ],

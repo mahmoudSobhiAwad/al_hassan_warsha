@@ -4,7 +4,8 @@ part of 'gallery_bloc.dart';
 sealed class GalleryEvent {}
 final class ShowMoreKitcenTypeEvent extends GalleryEvent {
   final bool showMore;
-  ShowMoreKitcenTypeEvent({this.showMore=false});
+  final int currIndex;
+  ShowMoreKitcenTypeEvent({this.showMore=false,required this.currIndex});
 }
 final class AddNewKitchenTypeEvent extends GalleryEvent {
   final String typeName;

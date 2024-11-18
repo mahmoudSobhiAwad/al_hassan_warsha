@@ -44,8 +44,8 @@ class GalleryBody extends StatelessWidget {
                     padding:const EdgeInsets.only(bottom: 20.0),
                     child: CompleteKitchenType(
                       bloc: bloc,
-                      model:kitchenList[index],changeShowMore: (bool show){
-                      bloc.add(ShowMoreKitcenTypeEvent(showMore: show));
+                      model:kitchenList[index],changeShowMore: (){
+                      bloc.add(ShowMoreKitcenTypeEvent(showMore: true,currIndex: index));
                     },),
                   );
                 })

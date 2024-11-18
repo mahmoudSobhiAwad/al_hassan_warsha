@@ -33,8 +33,9 @@ final class FailureAddedNewKitchenType extends GalleryOutSideState {
 
 
 final class ShowMoreOfKitchenTypeState extends GalleryState {
-  final bool showMore;
-  ShowMoreOfKitchenTypeState({this.showMore=false});
+  
+final int currIndex;
+  ShowMoreOfKitchenTypeState({required this.currIndex});
 }
 
 final class AddNewKitchenState extends GalleryOutSideState{

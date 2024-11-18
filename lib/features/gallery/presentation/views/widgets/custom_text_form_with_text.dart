@@ -33,6 +33,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
+          
           onChanged: onChanged,
           validator: validator,
           prefixWidget: prefixIcon,

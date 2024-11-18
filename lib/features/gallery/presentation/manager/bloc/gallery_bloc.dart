@@ -20,11 +20,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<ReomveKitchenFromGalleryEvent>(removeKitchen);
     on<UpdateCatchDataEvent>(updateCatching);
   }
-
+  int showingIndex=-1;
   FutureOr<void> showMoreKitchen(
       ShowMoreKitcenTypeEvent event, Emitter<GalleryState> emit) async {
-    bool showMore = event.showMore;
-    emit(ShowMoreOfKitchenTypeState(showMore: showMore));
+        showingIndex=event.currIndex;
+       emit(ShowMoreOfKitchenTypeState(currIndex: event.currIndex));
+   
   }
 
   FutureOr<void> checkExistOfGalleryData(
@@ -75,6 +76,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   }
   FutureOr<void> updateCatching(
       UpdateCatchDataEvent event, Emitter<GalleryState> emit) async {
+        showingIndex=-1;
         emit(SuccessCreateOrGetData(kitchenTypesList:event.kitchenList));
   }
 }

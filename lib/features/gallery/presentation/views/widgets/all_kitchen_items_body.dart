@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gride_view_list.dart';
@@ -8,9 +9,14 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class ShowingAllKitchenItemsGrid extends StatelessWidget {
-  const ShowingAllKitchenItemsGrid({super.key,required this.bloc});
+  const ShowingAllKitchenItemsGrid({super.key,required this.bloc,required this.onBack,required this.kitchenList,required this.typeName,required this.typeId});
   
   final GalleryBloc bloc;
+  final List<KitchenModel>kitchenList;
+  final String typeName;
+  final void Function()onBack;
+  final String typeId;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -18,21 +24,19 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
       child: Column(
         children: [
           AppBarWithLinking(
-            onBack:(){
-                  bloc.add(ShowMoreKitcenTypeEvent(showMore: false));
-                } ,
-            items: const [
+            onBack:onBack ,
+            items: [
             "الرئيسية",
-             "مطبخ كلاسيك",
+             typeName,
           ]),
          
            Align(
             alignment: Alignment.centerLeft,
             child: CustomPushContainerButton(pushButtomText: "اضافة مطبخ جديد",onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewKitchenInGalleryView(galleryBloc: bloc,pagesGalleryEnum: PagesGalleryEnum.add,)));
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>ViewKitchenInGalleryView(galleryBloc: bloc,pagesGalleryEnum: PagesGalleryEnum.add,typeId:typeId,titleOfAppBar: typeName,)));
             },)),
           const SizedBox(height: 18,),
-          Expanded(child:CustomGridKitchenTypes(bloc: bloc,)),
+          Expanded(child:CustomGridKitchenTypes(bloc: bloc,kitchenList:kitchenList,typeId: typeId,appBarTitle: typeName,)),
           const SizedBox(height: 18,),
           const CustomPaginationWidget()
         ],

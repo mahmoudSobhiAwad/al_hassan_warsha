@@ -28,7 +28,7 @@ class AppBarWithLinking extends StatelessWidget {
           width: 24,
         ),
         Expanded(
-          flex: 5,
+          flex: 10,
           child: Row(
             children: [
               ...List.generate(items.length, (index)=>CustomItemInCustomLinkingAppBar(text: items[index],isLast: index!=items.length-1,)),

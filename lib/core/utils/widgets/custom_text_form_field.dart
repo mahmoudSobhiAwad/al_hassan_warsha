@@ -10,7 +10,7 @@ class CustomTextFormField extends StatelessWidget {
       this.validator,
       this.controller,
       this.onChanged,
-      this.enableFocusBorder=true,
+      this.enableFocusBorder = true,
       this.inputFormatters,
       this.textInputType,
       this.suffixText,
@@ -27,8 +27,8 @@ class CustomTextFormField extends StatelessWidget {
       this.fillColor});
   final Widget? labelWidget;
   final double? borderRadius;
-  final void Function(String value)?onChanged;
-  final String? Function(String?value)?validator;
+  final void Function(String value)? onChanged;
+  final String? Function(String? value)? validator;
   final double? borderWidth;
   final Color? borderColor;
   final Color? fillColor;
@@ -43,11 +43,11 @@ class CustomTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final EdgeInsets? contentPadding;
   final bool enableFocusBorder;
-  final TextEditingController?controller;
+  final TextEditingController? controller;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
+    
       validator: validator,
       controller: controller,
       onChanged: onChanged,
@@ -57,7 +57,8 @@ class CustomTextFormField extends StatelessWidget {
       cursorColor: Colors.black,
       style: AppFontStyles.extraBold18(context),
       decoration: InputDecoration(
-      errorStyle: AppFontStyles.extraBold16(context),
+        
+        errorStyle: AppFontStyles.extraBold16(context),
         contentPadding: contentPadding,
         focusColor: Colors.black,
         suffixIcon: suffixWidget,

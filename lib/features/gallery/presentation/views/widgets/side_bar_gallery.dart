@@ -9,9 +9,13 @@ class SideBarGallery extends StatelessWidget {
     super.key,
     required this.addType,
     required this.typesList,
+    required this.changeIndex,
+    required this.currIndex
   });
   final List<KitchenTypeModel> typesList;
   final void Function(String) addType;
+  final void Function(int)changeIndex;
+  final int currIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,10 @@ class SideBarGallery extends StatelessWidget {
             },
           ),
           ListOfKitchenTypes(
+            currIndex: currIndex,
+            onTap: (index){
+              changeIndex(index);
+            },
             kitchenTypesList: typesList,
           ),
         ],
