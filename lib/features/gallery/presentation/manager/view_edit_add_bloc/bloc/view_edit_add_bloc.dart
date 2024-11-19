@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo_impl.dart';
@@ -21,6 +22,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     on<AddNewKitchenEvent>(addNewKitchen);
     on<DeleteKitchenEvent>(deleteKitchen);
     on<EditKitchenEvent>(editKitchen);
+    on<RecieveMediaToAddEvent>(addMediaList);
   }
   FutureOr<void> changeBarIndex(
       ChangeBarIndexEvent event, Emitter<ViewEditAddState> emit) {
@@ -40,18 +42,27 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
   FutureOr<void> addNewKitchen(
       AddNewKitchenEvent event, Emitter<ViewEditAddState> emit) async {
     emit(LoadingAddNewKitchenState());
-    final result = await addEditKitchenRepoImpl.addNewKitchen(
-        model: KitchenModel(
-            kitchenId: const Uuid().v1(),
-            typeId: event.typeId,
-            kitchenDesc: event.desc,
-            kitchenName: event.name,
-            addedDate: DateTime.now()));
-    return result.fold((success) {
-      emit(SuccessAddNewKitchenState(model: success));
-    }, (error) {
-      emit(FailureAddNewKitchenState(errMessage: error.toString()));
-    });
+    var kitchenId = const Uuid().v1();
+    bool mediaCheck = await addEditKitchenRepoImpl.addMediaInDataBase(
+        mediaPickedList: event.kitchenMediaList, kitchenID: kitchenId);
+    if (mediaCheck) {
+      final result = await addEditKitchenRepoImpl.addNewKitchen(
+          model: KitchenModel(
+              kitchenId: kitchenId,
+              typeId: event.typeId,
+              kitchenDesc: event.desc,
+              kitchenName: event.name,
+              addedDate: DateTime.now()));
+      return result.fold((success) {
+        emit(SuccessAddNewKitchenState(model: success));
+      }, (error) {
+        emit(FailureAddNewKitchenState(errMessage: error.toString()));
+      });
+    }
+    else {
+      emit(FailureAddNewKitchenState(
+          errMessage: "some problem in adding media"));
+    }
   }
 
   FutureOr<void> deleteKitchen(
@@ -76,5 +87,19 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     }, (error) {
       emit(FailureEditKitchenState(errMessage: error.toString()));
     });
+  }
+
+  FutureOr<void> addMediaList(
+      RecieveMediaToAddEvent event, Emitter<ViewEditAddState> emit) async {
+    emit(LoadingAddMediaState());
+    try {
+      List<PickedMedia> list = [];
+      for (var item in event.medialList) {
+        list.add(PickedMedia(mediaPath: item, mediaType: getMediaType(item),mediId:const Uuid().v4()));
+      }
+      emit(SuccessAddMediaState(list: list));
+    } catch (e) {
+      emit(FailureAddMediaState(errMessage: e.toString()));
+    }
   }
 }

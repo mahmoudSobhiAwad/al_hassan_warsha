@@ -22,6 +22,7 @@ class ListOfKitchenTypes extends StatelessWidget {
               onTap(index);
             },
             child: KitchenTypeItem(
+              
               picked: currIndex==index,
               model: kitchenTypesList[index],
             ));

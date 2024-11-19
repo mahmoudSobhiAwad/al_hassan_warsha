@@ -15,20 +15,14 @@ class KitchenTypeModel {
       'typeId': typeId,
       'typeName': typeName,
       'itemsCount': itemsCount,
-      if (kitchenList.isNotEmpty)
-        'kitchens': kitchenList.map((kitchen) => kitchen.toJson()).toList(),
     };
   }
 
-  factory KitchenTypeModel.fromJson(Map<String, dynamic> json,{List<dynamic> kitchensList=const []}) {
+  factory KitchenTypeModel.fromJson(Map<String, dynamic> json,) {
     return KitchenTypeModel(
       typeId: json['typeId'] as String,
       typeName: json['typeName'] as String,
-      itemsCount: json['itemsCount'] as int,
-      kitchenList: kitchensList
-              .map((kitchenJson) => KitchenModel.fromJson(kitchenJson))
-              .toList(),
-          
+      itemsCount: json['itemsCount'] as int,        
     );
   }
 }

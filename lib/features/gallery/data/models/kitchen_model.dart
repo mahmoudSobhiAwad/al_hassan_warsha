@@ -1,58 +1,84 @@
 class KitchenModel {
-  String?kitchenName;
-  String?kitchenDesc;
+  String? kitchenName;
+  String? kitchenDesc;
   String kitchenId;
   String typeId;
   DateTime addedDate;
-  List<KitchenMedia>kitchenMediaList;
-  KitchenModel({required this.kitchenId,required this.typeId,required this.addedDate,this.kitchenMediaList=const [],this.kitchenDesc,this.kitchenName});
-  
+  List<KitchenMedia> kitchenMediaList;
+  KitchenModel(
+      {required this.kitchenId,
+      required this.typeId,
+      required this.addedDate,
+      this.kitchenMediaList = const [],
+      this.kitchenDesc,
+      this.kitchenName});
+
   Map<String, dynamic> toJson() {
     return {
       'kitchenId': kitchenId,
       'kitchenName': kitchenName,
       'kitchenDesc': kitchenDesc,
       'typeId': typeId,
-      "addedTime":addedDate.toIso8601String(),
-     if(kitchenMediaList.isNotEmpty) "kitchenMediaList": kitchenMediaList.map((item) => item.toJson()).toList(),
+      "addedTime": addedDate.toIso8601String(),
     };
   }
+  List<PickedMedia>getPickedMedia(){
+    List<PickedMedia>list=[];
+    for(var item in  kitchenMediaList){
+      list.add(PickedMedia(mediaPath: item.path, mediaType: item.mediaType, mediId: item.kitchenMediaId));
+    }
+    return list;
+  }
 
-  factory KitchenModel.fromJson(Map<String, dynamic> json) {
+  factory KitchenModel.fromJson(Map<String, dynamic> json,
+      ) {
     return KitchenModel(
       addedDate: DateTime.parse(json["addedTime"] as String),
-      kitchenId:   json['kitchenId'] as String,
+      kitchenId: json['kitchenId'] as String,
       kitchenName: json['kitchenName'] as String,
-      kitchenDesc: json['kitchenDesc']==null?"":json['kitchenDesc'] as String,
-      typeId: json['typeId']==null?"":json['typeId'] as String,
-      kitchenMediaList: (json['kitchenMediaList'] as List<dynamic>?)
-          ?.map((item) => KitchenMedia.fromJson(item))
-          .toList()??[], 
+      kitchenDesc:
+          json['kitchenDesc'] == null ? "" : json['kitchenDesc'] as String,
+      typeId: json['typeId'] == null ? "" : json['typeId'] as String,
+
     );
   }
 }
 
-class KitchenMedia{
+class KitchenMedia {
+  String kitchenMediaId;
   String path;
   MediaType mediaType;
-  String?kitchenId;
-  KitchenMedia({required this.mediaType,required this.path,this.kitchenId});
-   Map<String, dynamic> toJson() {
+  String kitchenId;
+  KitchenMedia(
+      {required this.mediaType,
+      required this.path,
+      required this.kitchenId,
+      required this.kitchenMediaId});
+  Map<String, dynamic> toJson() {
     return {
+      'kitchenMediaId': kitchenMediaId,
       'path': path,
-      'mediaType': mediaType.index, // Store the enum as an integer
+      'mediaType': mediaType.index,
       'kitchenId': kitchenId,
     };
   }
 
-  // Convert from a Map fetched from the database
   factory KitchenMedia.fromJson(Map<String, dynamic> json) {
+   
     return KitchenMedia(
+      kitchenMediaId: json["kitchenMediaId"] as String,
       path: json['path'] as String,
-      mediaType: MediaType.values[json['mediaType'] as int], // Convert back to enum
+      mediaType: MediaType.values[json['mediaType'] as int],
       kitchenId: json['kitchenId'] as String,
     );
   }
 }
 
-enum MediaType {image,video}
+enum MediaType { image, video,unknown }
+
+class PickedMedia {
+  String mediaPath;
+  String mediId;
+  MediaType mediaType;
+  PickedMedia({required this.mediaPath, required this.mediaType,required this.mediId});
+}

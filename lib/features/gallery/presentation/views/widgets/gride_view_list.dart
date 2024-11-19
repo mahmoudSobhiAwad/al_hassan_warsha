@@ -40,7 +40,7 @@ class CustomGridKitchenTypes extends StatelessWidget {
                         )));
           },
           child: SmallKitchenTypeImage(
-            widthOfImage: 0.3,
+            
             model: kitchenList[index],
           ),
         );

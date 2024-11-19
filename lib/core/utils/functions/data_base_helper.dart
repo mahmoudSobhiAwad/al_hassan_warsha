@@ -11,4 +11,19 @@ class DataBaseHelper {
     );
     return result.isNotEmpty;
   }
+
+  Future<void> insertGroupOfRows(
+      {required List<Map<String, dynamic>> rows,
+      required String tableName}) async {
+    Batch batch = database.batch();
+    for (var row in rows) {
+      batch.insert(
+        tableName, // Replace with your table name
+        row,
+        conflictAlgorithm:
+            ConflictAlgorithm.replace, // Optional conflict resolution
+      );
+    }
+    await batch.commit(noResult: true);
+  }
 }

@@ -51,3 +51,15 @@ final class SuccessEditKitchenState extends ViewEditAddState {
   final String typeId;
   SuccessEditKitchenState({required this.typeId});
 }
+
+final class LoadingAddMediaState extends ViewEditAddState{}
+
+final class FailureAddMediaState extends ViewEditAddState{
+  final String? errMessage;
+  FailureAddMediaState({this.errMessage});
+}
+
+final class SuccessAddMediaState extends ViewEditAddState{
+  final List<PickedMedia>list;
+  SuccessAddMediaState({this.list=const[]});
+}

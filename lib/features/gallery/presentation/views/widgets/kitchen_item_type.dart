@@ -9,11 +9,13 @@ class KitchenTypeItem extends StatelessWidget {
       required this.model,
       this.mainAxisAlignment,
       this.picked=false,
+      this.onTap,
       this.enableUnderline = true});
   final MainAxisAlignment? mainAxisAlignment;
   final KitchenTypeModel model;
   final bool enableUnderline;
   final bool picked;
+  final void Function(int)?onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(

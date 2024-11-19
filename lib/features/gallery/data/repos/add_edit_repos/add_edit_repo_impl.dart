@@ -4,6 +4,7 @@ import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo.dart';
 import 'package:dartz/dartz.dart';
 
+
 class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
   final DataBaseHelper dataBaseHelper;
   AddEditKitchenRepoImpl({required this.dataBaseHelper});
@@ -27,12 +28,12 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       await dataBaseHelper.database.update(
         kitchenItemTableName,
         model.toJson(),
-        where:'kitchenId = ?',
+        where: 'kitchenId = ?',
         whereArgs: [model.kitchenId],
       );
       return left(model.typeId);
     } catch (e) {
-      return right( Exception(e.toString()));
+      return right(Exception(e.toString()));
     }
   }
 
@@ -63,6 +64,32 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       return left(typeId);
     } catch (e) {
       return right(Exception(e.toString()));
+    }
+  }
+
+  Future<bool> addMediaInDataBase(
+      {required List<PickedMedia> mediaPickedList,
+      required String kitchenID}) async {
+    if (mediaPickedList.isEmpty) {
+      return true;
+    } else {
+      List<KitchenMedia> kitchenMediaList = [];
+      for (var item in mediaPickedList) {
+        kitchenMediaList.add(KitchenMedia(
+            mediaType: item.mediaType,
+            path: item.mediaPath,
+            kitchenId: kitchenID,
+            kitchenMediaId: item.mediId));
+      }
+      try {
+        List<Map<String, dynamic>> rows =
+            kitchenMediaList.map((mediaModel) => mediaModel.toJson()).toList();
+        await dataBaseHelper.insertGroupOfRows(
+            rows: rows, tableName: galleryKitchenMediaTable);
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
   }
 }

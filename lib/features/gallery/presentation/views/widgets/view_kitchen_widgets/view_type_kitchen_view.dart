@@ -29,6 +29,7 @@ class ViewKitchenInGalleryView extends StatelessWidget {
   final GalleryBloc galleryBloc;
   @override
   Widget build(BuildContext context) {
+    List<PickedMedia>pickedMediaList=[];
     return Directionality(
       textDirection: TextDirection.rtl,
       child: BlocProvider(
@@ -45,6 +46,7 @@ class ViewKitchenInGalleryView extends StatelessWidget {
                       typeId: typeId,
                       kitchenModel: kitchenModel,
                       titleOfAppBar: titleOfAppBar,
+                      kitchenMediaList: pickedMediaList,
                     ),
                     mobileLayout: (context) => const Text("Mobile Layout"),
                     tabletLayout: (context) => const Text("Tablet Layout"),
@@ -78,8 +80,9 @@ class ViewKitchenInGalleryView extends StatelessWidget {
               else if(state is FailureAddNewKitchenState){
                 showCustomSnackBar(context, "${state.errMessage}",backgroundColor: AppColors.red);
               }
-              
-
+              else if(state is SuccessAddMediaState){
+                pickedMediaList=state.list;
+              }
             }),
       ),
     );

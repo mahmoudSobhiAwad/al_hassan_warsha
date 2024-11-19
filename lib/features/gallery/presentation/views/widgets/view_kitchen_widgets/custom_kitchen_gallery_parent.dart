@@ -13,12 +13,14 @@ class KitchenGalleryCustomView extends StatelessWidget {
       required this.bloc,
       this.titleOfAppBar,
       required this.typeId,
+      this.kitchenMediaList = const [],
       required this.kitchenModel});
 
   final ViewEditAddBloc bloc;
   final String? titleOfAppBar;
   final String? typeId;
   final KitchenModel? kitchenModel;
+  final List<PickedMedia> kitchenMediaList;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +48,7 @@ class KitchenGalleryCustomView extends StatelessWidget {
                     titleOfAppBar ?? "مطبخ كلاسيك",
                     bloc.pagesGalleryEnum == PagesGalleryEnum.add
                         ? "إضافة مطبخ"
-                        : kitchenModel?.kitchenName??"",
+                        : kitchenModel?.kitchenName ?? "",
                   ],
                   onBack: () {
                     switch (bloc.pagesGalleryEnum) {
@@ -80,9 +82,11 @@ class KitchenGalleryCustomView extends StatelessWidget {
                       typeId: typeId,
                       bloc: bloc,
                       enableEdit: true,
+                      mediaList: kitchenMediaList,
                       kitchenModel: kitchenModel,
                     ),
                   PagesGalleryEnum.add => AddKitchenView(
+                      mediaList: kitchenMediaList,
                       typeId: typeId,
                       bloc: bloc,
                     ),

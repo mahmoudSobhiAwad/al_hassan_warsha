@@ -3,11 +3,13 @@ import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_ba
 import 'package:al_hassan_warsha/features/home/presentation/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:media_kit/media_kit.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
   await windowManager.ensureInitialized();
   sqfliteFfiInit();
   windowManager.setMinimumSize(const Size(300, 500));

@@ -1,9 +1,12 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/small_kitchen_image.dart';
 import 'package:flutter/material.dart';
 
 class AddKitchenView extends StatefulWidget {
@@ -12,10 +15,12 @@ class AddKitchenView extends StatefulWidget {
       required this.bloc,
       required this.typeId,
       this.kitchenModel,
+      required this.mediaList,
       this.enableEdit = false});
   final ViewEditAddBloc bloc;
+  final List<PickedMedia> mediaList;
   final String? typeId;
-  final KitchenModel?kitchenModel;
+  final KitchenModel? kitchenModel;
   final bool enableEdit;
 
   @override
@@ -35,11 +40,15 @@ class _AddKitchenViewState extends State<AddKitchenView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    controller.text = widget.kitchenModel?.kitchenName??"";
-    describController.text = widget.kitchenModel?.kitchenDesc??"";
-    final double width = MediaQuery.sizeOf(context).width;
+  void initState() {
+    controller.text = widget.kitchenModel?.kitchenName ?? "";
+    describController.text = widget.kitchenModel?.kitchenDesc ?? "";
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
     return Form(
       key: formKey,
       child: Column(
@@ -73,30 +82,54 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             enableBorder: true,
           ),
           const SizedBox(
-            height: 12,
+            height: 22,
           ),
-          Text(
-            "الوسائط",
-            style: AppFontStyles.extraBold25(context),
+          Row(
+            children: [
+              Text(
+                "الوسائط",
+                style: AppFontStyles.extraBold25(context),
+              ),
+              const Spacer(),
+              TextButton(
+                  onPressed: null,
+                  child: Text(
+                    "عرض المزيد",
+                    style: AppFontStyles.extraBold30(context)
+                        .copyWith(color: AppColors.blue),
+                  ))
+            ],
           ),
-          const EmptyUploadMedia(),
           const SizedBox(
-            height: 24,
+            height: 22,
+          ),
+          widget.mediaList.isNotEmpty
+              ? MediaListExist(
+                  pickedList: widget.mediaList,
+                )
+              : EmptyUploadMedia(
+                  addMedia: (media) {
+                    widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
+                  },
+                ),
+          const SizedBox(
+            height: 32,
           ),
           Center(
               child: CustomPushContainerButton(
             onTap: () {
               if (formKey.currentState!.validate()) {
-                if (! widget.enableEdit) {
+                if (!widget.enableEdit) {
                   widget.bloc.add(AddNewKitchenEvent(
+                      kitchenMediaList: widget.mediaList,
                       typeId: widget.typeId ?? "",
                       name: controller.text,
                       desc: describController.text));
-                }
-                else{
-                  widget.kitchenModel?.kitchenName=controller.text;
-                  widget.kitchenModel?.kitchenDesc=describController.text;
-                  widget.bloc.add(EditKitchenEvent(model: widget.kitchenModel!));
+                } else {
+                  widget.kitchenModel?.kitchenName = controller.text;
+                  widget.kitchenModel?.kitchenDesc = describController.text;
+                  widget.bloc
+                      .add(EditKitchenEvent(model: widget.kitchenModel!));
                 }
                 controller.clear();
                 describController.clear();
@@ -115,3 +148,4 @@ class _AddKitchenViewState extends State<AddKitchenView> {
     );
   }
 }
+

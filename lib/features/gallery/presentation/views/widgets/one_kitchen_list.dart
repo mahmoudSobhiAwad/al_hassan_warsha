@@ -26,7 +26,7 @@ class ListOfOneKitchenType extends StatelessWidget {
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder:(context)=>ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.view,titleOfAppBar:typeName ,kitchenModel: kitchenModelList[index],galleryBloc: bloc,)));
               },
-              child: SmallKitchenTypeImage(widthOfImage: 0.3,enableInner: enableInner,enableClose: enableClose,model: kitchenModelList[index],));
+              child: SmallKitchenTypeImage(enableInner: enableInner,enableClose: enableClose,model: kitchenModelList[index],));
           },
           separatorBuilder: (context, index) => const SizedBox(
                 width: 14,

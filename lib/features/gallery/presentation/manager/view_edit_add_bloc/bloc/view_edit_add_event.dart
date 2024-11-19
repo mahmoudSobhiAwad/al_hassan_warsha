@@ -17,8 +17,9 @@ final class AddNewKitchenEvent extends ViewEditAddEvent {
   final String typeId;
   final String name;
   final String? desc;
+  final List<PickedMedia>kitchenMediaList;
 
-  AddNewKitchenEvent({required this.typeId, this.desc, required this.name});
+  AddNewKitchenEvent({required this.typeId, this.desc, required this.name,this.kitchenMediaList=const []});
 }
 
 final class EditKitchenEvent extends ViewEditAddEvent {
@@ -30,4 +31,8 @@ final class DeleteKitchenEvent extends ViewEditAddEvent {
   final String kitchenId;
   final String typeId;
   DeleteKitchenEvent({required this.kitchenId, required this.typeId});
+}
+final class RecieveMediaToAddEvent extends ViewEditAddEvent {
+  final List<String>medialList;
+  RecieveMediaToAddEvent({required this.medialList});
 }
