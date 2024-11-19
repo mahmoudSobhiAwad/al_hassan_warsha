@@ -40,30 +40,10 @@ class GalleryView extends StatelessWidget {
               Navigator.pop(context);
               showCustomSnackBar(context, " ${state.errMessage} ",
                   backgroundColor: AppColors.red);
-            } else if (state is AddNewKitchenState) {
+            } else if (state is FetchKitchenTypeAfterChangeState) {
               int index = kitchenList.indexWhere(
-                  (model) => model.typeId == state.kitchenModel.typeId);
-              kitchenList[index].itemsCount++;
-              kitchenList[index].kitchenList.add(state.kitchenModel);
-              galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
-            } else if (state is RemoveKitchenState) {
-              for (int i = 0; i < kitchenList.length; i++) {
-                if (kitchenList[i].typeId == state.typeId) {
-                  kitchenList[i].itemsCount--;
-                  kitchenList[i]
-                      .kitchenList
-                      .removeWhere((item) => item.kitchenId == state.kitcehnId);
-                  break;
-                }
-              }
-              galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
-            } else if (state is EditKitchenState) {
-              int bigIndex = kitchenList.indexWhere(
-                  (model) => model.typeId == state.kitchenModel.typeId);
-              int smallIndex = kitchenList[bigIndex].kitchenList.indexWhere(
-                  (model) => model.kitchenId == state.kitchenModel.kitchenId);
-              kitchenList[bigIndex].kitchenList[smallIndex] =
-                  state.kitchenModel;
+                  (model) => model.typeId == state.kitchenTypeModel.typeId);
+              kitchenList[index] = state.kitchenTypeModel;
               galleryBloc.add(UpdateCatchDataEvent(kitchenList: kitchenList));
             }
           },

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:al_hassan_warsha/core/utils/functions/create_custom_folder.dart';
 import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';
 import 'package:bloc/bloc.dart';
@@ -30,12 +31,13 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   FutureOr<void> checkExistDB(
       CheckDbExistEvent event, Emitter<HomeBasicState> emit) async {
     final directory = await getApplicationDocumentsDirectory();
+
     String dbPath = join(directory.path, dbFolder, dbName);
 
     final exists = await File(dbPath).exists();
     if (exists) {
       await setUp();
-      
+
       emit(FoundDbState());
     } else {
       emit(NotFoundDbState());
@@ -55,6 +57,10 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
 
     String dbPath = join(appDocumentsDir.path, dbFolder, dbName);
+    String imagePaths = join(appDocumentsDir.path, imageFolder);
+    String videoPaths = join(appDocumentsDir.path, videoFolder);
+    createFolder(imagePaths);
+    createFolder(videoPaths);
     try {
       await databaseFactory.openDatabase(
         dbPath,
@@ -66,3 +72,5 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     }
   }
 }
+
+

@@ -101,7 +101,7 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-       kitchenModel!.kitchenMediaList.isNotEmpty? MediaListExist(pickedList:kitchenModel!.getPickedMedia(),):const Text("No media for this item"),
+       kitchenModel!.kitchenMediaList.isNotEmpty? MediaListExist(enableClear: false,pickedList:kitchenModel!.getPickedMedia(),):const Text("No media for this item"),
         const SizedBox(
           height: 12,
         ),

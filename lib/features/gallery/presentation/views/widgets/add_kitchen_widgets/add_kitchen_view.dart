@@ -6,7 +6,6 @@ import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/small_kitchen_image.dart';
 import 'package:flutter/material.dart';
 
 class AddKitchenView extends StatefulWidget {
@@ -105,7 +104,8 @@ class _AddKitchenViewState extends State<AddKitchenView> {
           ),
           widget.mediaList.isNotEmpty
               ? MediaListExist(
-                  pickedList: widget.mediaList,
+                enableClear: true,
+                pickedList: widget.mediaList,
                 )
               : EmptyUploadMedia(
                   addMedia: (media) {

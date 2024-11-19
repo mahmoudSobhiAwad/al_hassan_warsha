@@ -6,4 +6,5 @@ abstract class GalleryRepo {
   Future<bool>checkDbExistOfGalleryTables({required String tableName});
   Future<Either<List<KitchenTypeModel>,String>> getAllKitchenTypes();
   Future<Either<String,Exception>> addNewKitchenType({required KitchenTypeModel model});
+  Future<Either<KitchenTypeModel,Exception>> getChangedTypeModel({required String typeId});
 }

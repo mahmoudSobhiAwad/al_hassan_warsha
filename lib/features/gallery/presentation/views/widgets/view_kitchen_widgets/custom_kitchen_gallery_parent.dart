@@ -82,7 +82,7 @@ class KitchenGalleryCustomView extends StatelessWidget {
                       typeId: typeId,
                       bloc: bloc,
                       enableEdit: true,
-                      mediaList: kitchenMediaList,
+                      mediaList: kitchenModel!.getPickedMedia(),
                       kitchenModel: kitchenModel,
                     ),
                   PagesGalleryEnum.add => AddKitchenView(

@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/custom_video_item.dart';
@@ -5,8 +6,9 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/sma
 import 'package:flutter/material.dart';
 
 class MediaListExist extends StatelessWidget {
-  const MediaListExist({super.key, required this.pickedList});
+  const MediaListExist({super.key, required this.pickedList,required this.enableClear});
   final List<PickedMedia> pickedList;
+  final bool enableClear;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -23,10 +25,26 @@ class MediaListExist extends StatelessWidget {
                   (index) => Padding(
                       padding: const EdgeInsets.only(left: 15.0),
                       child: switch (pickedList[index].mediaType) {
-                        MediaType.image => CustomSmallImageWithCustomWidth(
-                            widthOfImage: 0.2,
-                            pickedMedia: pickedList[index],
-                          ),
+                        MediaType.image => Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            CustomSmallImageWithCustomWidth(
+                                widthOfImage: 0.2,
+                                pickedMedia: pickedList[index],
+                              ),
+                             enableClear? Padding(
+                               padding: const EdgeInsets.all(8.0),
+                               child: Container(
+                                  decoration:const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.white,
+                                    
+                                  ),
+                                  child:const IconButton(onPressed: null, icon: Icon(Icons.close,color: AppColors.red,)),
+                                ),
+                             ):const SizedBox(),
+                          ],
+                        ),
                         MediaType.video => const CustomVideoItem(),
                         MediaType.unknown => const Text("Some Error"),
                       }))

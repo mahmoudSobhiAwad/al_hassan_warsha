@@ -38,17 +38,8 @@ final int currIndex;
   ShowMoreOfKitchenTypeState({required this.currIndex});
 }
 
-final class AddNewKitchenState extends GalleryOutSideState{
-  final KitchenModel kitchenModel;
-  AddNewKitchenState({required this.kitchenModel});
-}
-final class EditKitchenState extends GalleryOutSideState{
-  final KitchenModel kitchenModel;
-  EditKitchenState({required this.kitchenModel});
+final class FetchKitchenTypeAfterChangeState extends GalleryOutSideState{
+  final KitchenTypeModel  kitchenTypeModel;
+  FetchKitchenTypeAfterChangeState({required this.kitchenTypeModel});
 }
 
-final class RemoveKitchenState extends GalleryOutSideState{
-  final String typeId;
-  final String kitcehnId;
-  RemoveKitchenState({required this.kitcehnId,required this.typeId});
-}
