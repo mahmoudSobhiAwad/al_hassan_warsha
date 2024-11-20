@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_media_viewer.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/custom_video_item.dart';
@@ -31,41 +32,51 @@ class MediaListExist extends StatelessWidget {
             child: Row(children: [
               ...List.generate(
                   pickedList.length,
-                  (index) => Padding(
-                        padding: const EdgeInsets.only(left: 15),
-                        child: Stack(
-                          children: [
-                            switch (pickedList[index].mediaType) {
-                              MediaType.image =>
-                                CustomSmallImageWithCustomWidth(
-                                  widthOfImage: 0.2,
-                                  pickedMedia: pickedList[index],
-                                ),
-                              MediaType.video => const CustomVideoItem(),
-                              MediaType.unknown => const Text("Some Error"),
-                            },
-                            enableClear
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: AppColors.white,
+                  (index) => InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CsutomMediaView(
+                                      medialList: pickedList,
+                                      initialPage: index)));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Stack(
+                            children: [
+                              switch (pickedList[index].mediaType) {
+                                MediaType.image =>
+                                  CustomSmallImageWithCustomWidth(
+                                    widthOfImage: 0.2,
+                                    pickedMedia: pickedList[index],
+                                  ),
+                                MediaType.video => const CustomVideoItem(),
+                                MediaType.unknown => const Text("Some Error"),
+                              },
+                              enableClear
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.white,
+                                        ),
+                                        child: IconButton(
+                                            onPressed: () {
+                                              removeIndex != null
+                                                  ? removeIndex!(index)
+                                                  : () {};
+                                            },
+                                            icon: const Icon(
+                                              Icons.close,
+                                              color: AppColors.red,
+                                            )),
                                       ),
-                                      child: IconButton(
-                                          onPressed: () {
-                                            removeIndex != null
-                                                ? removeIndex!(index)
-                                                : () {};
-                                          },
-                                          icon: const Icon(
-                                            Icons.close,
-                                            color: AppColors.red,
-                                          )),
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ],
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
                         ),
                       ))
             ]),
@@ -75,8 +86,7 @@ class MediaListExist extends StatelessWidget {
           height: 12,
         ),
         enableClear
-            ? 
-             Center(
+            ? Center(
                 child: CustomPushContainerButton(
                 onTap: () async {
                   await picker.pickMultipleMedia().then((values) {
@@ -91,7 +101,8 @@ class MediaListExist extends StatelessWidget {
                 padding: const EdgeInsets.all(12),
                 enableIcon: false,
                 borderRadius: 14,
-              )):const SizedBox()
+              ))
+            : const SizedBox()
       ],
     );
   }
