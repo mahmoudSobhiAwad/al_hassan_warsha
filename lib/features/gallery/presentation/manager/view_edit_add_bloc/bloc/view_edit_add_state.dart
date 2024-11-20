@@ -49,6 +49,7 @@ final class FailureEditKitchenState extends ViewEditAddState {
 
 final class SuccessEditKitchenState extends ViewEditAddState {
   final String typeId;
+  
   SuccessEditKitchenState({required this.typeId});
 }
 

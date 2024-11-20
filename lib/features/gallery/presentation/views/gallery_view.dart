@@ -60,11 +60,13 @@ class GalleryView extends StatelessWidget {
                             typesList: galleryBloc.onlyTypeModelList)),
                     galleryBloc.enableMoreWidget
                         ? Expanded(
-                          flex: 4,
-                          child: ShowingAllKitchenItemsGrid(
+                            flex: 4,
+                            child: ShowingAllKitchenItemsGrid(
+                              currentTypeModel:
+                                  galleryBloc.currentShowMoreModel,
                               bloc: galleryBloc,
                             ),
-                        )
+                          )
                         : Expanded(
                             flex: 4,
                             child: GalleryBody(

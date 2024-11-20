@@ -116,6 +116,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                 )
               : EmptyUploadMedia(
                   addMedia: (media) {
+                    addedList.addAll(media);
                     widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
                   },
                 ),

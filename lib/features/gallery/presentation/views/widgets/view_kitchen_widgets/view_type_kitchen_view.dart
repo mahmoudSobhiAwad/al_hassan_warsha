@@ -70,7 +70,6 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
             showCustomSnackBar(context, "تمت اضافة مطبخ جديد");
             widget.galleryBloc.add(
                 FetchKitchenTypeAfterChangeEvent(typeId: state.model.typeId));
-                
           } else if (state is FailureAddNewKitchenState) {
             showCustomSnackBar(context, "${state.errMessage}",
                 backgroundColor: AppColors.red);
@@ -86,6 +85,7 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
           } else if (state is SuccessEditKitchenState) {
             showCustomSnackBar(context, "تمت تعديل المطبخ بنجاح ");
             
+
             widget.galleryBloc
                 .add(FetchKitchenTypeAfterChangeEvent(typeId: state.typeId));
             bloc.add(OpenKitchenForEditEvent(enableEdit: false));

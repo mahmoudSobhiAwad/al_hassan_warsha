@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gride_view_list.dart';
@@ -11,9 +12,11 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
   const ShowingAllKitchenItemsGrid({
     super.key,
     required this.bloc,
+    required this.currentTypeModel,
   });
 
   final GalleryBloc bloc;
+  final KitchenTypeModel currentTypeModel;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
               },
               items: [
                 "الرئيسية",
-                bloc.currentShowMoreModek.typeName,
+                currentTypeModel.typeName,
               ]),
           Align(
               alignment: Alignment.centerLeft,
@@ -43,9 +46,9 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
                           builder: (context) => ViewKitchenInGalleryView(
                                 galleryBloc: bloc,
                                 pagesGalleryEnum: PagesGalleryEnum.add,
-                                typeId: bloc.currentShowMoreModek.typeId,
+                                typeId: currentTypeModel.typeId,
                                 titleOfAppBar:
-                                    bloc.currentShowMoreModek.typeName,
+                                    currentTypeModel.typeName,
                               )));
                 },
               )),
@@ -55,16 +58,18 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
           Expanded(
               child: CustomGridKitchenTypes(
             bloc: bloc,
-            kitchenList: bloc.currentShowMoreModek.kitchenList,
-            typeId: bloc.currentShowMoreModek.typeId,
-            appBarTitle: bloc.currentShowMoreModek.typeName,
+            kitchenList: currentTypeModel.kitchenList,
+            typeId: currentTypeModel.typeId,
+            appBarTitle: currentTypeModel.typeName,
           )),
           const SizedBox(
             height: 18,
           ),
-          CustomPaginationWidget(
-            length: bloc.currentShowMoreModek.itemsCount,
-          ),
+          currentTypeModel.itemsCount>10? CustomPaginationWidget(
+            length: (currentTypeModel.itemsCount/10).ceil() ,currentPage: bloc.currPageInShowMore, onPageChanged: (int index) {
+              bloc.add(ChangePageIndexInShowMoreEvent(index:index ));
+              },
+          ): const SizedBox(),
         ],
       ),
     );

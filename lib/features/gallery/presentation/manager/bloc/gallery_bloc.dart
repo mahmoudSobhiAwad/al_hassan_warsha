@@ -16,15 +16,21 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<CheckExistOfGalleryDataEvent>(checkExistOfGalleryData);
     on<AddNewKitchenTypeEvent>(addNewKitchenType);
     on<FetchKitchenTypeAfterChangeEvent>(fetchKitchenTypeAfterChange);
-    on<UpdateCatchDataEvent>(updateCatching);
+
     on<FetchMoreTypesEvent>(fetchMoreTypes);
+    on<ChangePageIndexInShowMoreEvent>(changeCurrentPageOfPaginationInShowMore);
   }
   int showingIndex = -1;
   bool enableMoreWidget = false;
+  int currPageInShowMore = 1;
   bool isLoading = true;
+  bool isMoredLoading = true;
   List<KitchenTypeModel> basickitchenTypesList = [];
   List<OnlyTypeModel> onlyTypeModelList = [];
-  KitchenTypeModel currentShowMoreModek=KitchenTypeModel(typeId: "", typeName: "",);
+  KitchenTypeModel currentShowMoreModel = KitchenTypeModel(
+    typeId: "",
+    typeName: "",
+  );
   bool showMoreIndicator = false;
   bool hasMore = true;
   bool isMoreWidgetLoading = true;
@@ -32,7 +38,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   FutureOr<void> showMoreKitchen(
       ShowMoreKitcenTypeEvent event, Emitter<GalleryState> emit) async {
     enableMoreWidget = event.isOpen;
-
+    currPageInShowMore = 1;
     if (enableMoreWidget) {
       showingIndex = event.currIndex;
       emit(LoadingCreateOrGetData());
@@ -40,13 +46,15 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
           typeId: event.typeId, limit: 10);
       result.fold((kitchenModel) {
         isMoreWidgetLoading = false;
-        currentShowMoreModek=kitchenModel;
+        currentShowMoreModel = kitchenModel;
         emit(ShowMoreOfKitchenTypeState());
       }, (error) {
         throw (error);
       });
     } else {
       enableMoreWidget = false;
+      showingIndex = -1;
+
       emit(ShowMoreOfKitchenTypeState());
     }
   }
@@ -113,18 +121,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     });
   }
 
-  FutureOr<void> updateCatching(
-      UpdateCatchDataEvent event, Emitter<GalleryState> emit) async {
-    showingIndex = -1;
-    emit(SuccessCreateOrGetData());
-  }
-
   FutureOr<void> fetchMoreTypes(
       FetchMoreTypesEvent event, Emitter<GalleryState> emit) async {
     emit(LoadingFetchMoreKitchenState());
-    
-    final result =
-        await galleryRepoImp.getAllKitchenTypes(offset: basickitchenTypesList.length);
+
+    final result = await galleryRepoImp.getAllKitchenTypes(
+        offset: basickitchenTypesList.length);
     return result.fold((kitchenList) {
       if (kitchenList.isNotEmpty) {
         for (var item in kitchenList) {
@@ -140,6 +142,33 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     }, (error) {
       showMoreIndicator = false;
       emit(FailureAddedNewKitchenType(errMessage: error));
+    });
+  }
+
+  FutureOr<void> changeCurrentPageOfPaginationInShowMore(
+      ChangePageIndexInShowMoreEvent event, Emitter<GalleryState> emit) async {
+    if (event.index != currPageInShowMore) {
+      currPageInShowMore = event.index;
+      emit(ChangeCurrentPageState());
+      await loadMoreKitchenList(emit, offset: currPageInShowMore - 1);
+    }
+  }
+
+  Future<void> loadMoreKitchenList(Emitter<GalleryState> emit,
+      {required int offset}) async {
+    emit(LoadingCreateOrGetData());
+    isMoredLoading = true;
+    final result = await galleryRepoImp.getChangedTypeModel(
+        typeId: currentShowMoreModel.typeId,
+        offset: offset * currentShowMoreModel.kitchenList.length,
+        limit: 10);
+    result.fold((newModel) {
+      currentShowMoreModel.kitchenList = newModel.kitchenList;
+      isMoredLoading = false;
+      emit(SuccessCreateOrGetData());
+    }, (error) {
+      isMoredLoading = false;
+      emit(FailureCreateOrGetData(errMessage: error.toString()));
     });
   }
 }

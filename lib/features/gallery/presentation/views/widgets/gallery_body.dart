@@ -20,7 +20,7 @@ class _GalleryBodyState extends State<GalleryBody> {
   void initState() {
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-              scrollController.position.maxScrollExtent - 100 &&
+              scrollController.position.maxScrollExtent &&
           widget.bloc.hasMore) {
         widget.bloc.add(FetchMoreTypesEvent());
       }
@@ -73,8 +73,10 @@ class _GalleryBodyState extends State<GalleryBody> {
               bloc: widget.bloc,
               model: widget.kitchenList[index],
               changeShowMore: () {
-                widget.bloc.add(
-                    ShowMoreKitcenTypeEvent(currIndex: index, typeId: widget.kitchenList[index].typeId,isOpen: true));
+                widget.bloc.add(ShowMoreKitcenTypeEvent(
+                    currIndex: index,
+                    typeId: widget.kitchenList[index].typeId,
+                    isOpen: true));
               },
             );
           },

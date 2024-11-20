@@ -5,6 +5,8 @@ sealed class GalleryState {}
 
 final class GalleryInitial extends GalleryState {}
 
+
+
 sealed class GalleryOutSideState extends GalleryState {}
 
 final class LoadingCreateOrGetData extends GalleryState {}
@@ -52,3 +54,4 @@ final class FailureFetchMoreKitchenState extends GalleryState {
   final String? errMessage;
   FailureFetchMoreKitchenState({this.errMessage});
 }
+final class ChangeCurrentPageState extends GalleryState {}

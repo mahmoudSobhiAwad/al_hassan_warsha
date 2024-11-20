@@ -28,3 +28,7 @@ final class FetchMoreTypesEvent extends GalleryEvent {
   
   FetchMoreTypesEvent();
 }
+final class ChangePageIndexInShowMoreEvent extends GalleryEvent {
+  final int index;
+  ChangePageIndexInShowMoreEvent({required this.index});
+}
