@@ -94,15 +94,30 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-        const CustomPushContainerButton(
-          enableIcon: false,
-          pushButtomText: "الوسائط",
-          padding: EdgeInsets.all(20),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CustomPushContainerButton(
+              enableIcon: false,
+              pushButtomText: "الوسائط",
+              padding: EdgeInsets.all(20),
+            ),
+            const SizedBox(
+              width: 12,
+            ),
+            Text("( ${kitchenModel?.mediaCounter} )",
+                style: AppFontStyles.extraBold30(context))
+          ],
         ),
         const SizedBox(
           height: 12,
         ),
-       kitchenModel!.kitchenMediaList.isNotEmpty? MediaListExist(enableClear: false,pickedList:kitchenModel!.getPickedMedia(),):const EmptyUploadMedia(),
+        kitchenModel!.kitchenMediaList.isNotEmpty
+            ? MediaListExist(
+                enableClear: false,
+                pickedList: kitchenModel!.getPickedMedia(),
+              )
+            : const EmptyUploadMedia(),
         const SizedBox(
           height: 12,
         ),
@@ -120,4 +135,3 @@ class ViewKitchenDetailsBody extends StatelessWidget {
     );
   }
 }
-

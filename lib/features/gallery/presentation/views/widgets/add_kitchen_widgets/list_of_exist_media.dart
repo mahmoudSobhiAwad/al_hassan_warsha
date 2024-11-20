@@ -25,63 +25,60 @@ class MediaListExist extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 300),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.only(right: 15),
-            scrollDirection: Axis.horizontal,
-            child: Row(children: [
-              ...List.generate(
-                  pickedList.length,
-                  (index) => InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CsutomMediaView(
-                                      medialList: pickedList,
-                                      initialPage: index)));
+            constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height*0.2,),
+            child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CsutomMediaView(
+                                  medialList: pickedList, initialPage: index)));
+                    },
+                    child: Stack(
+                      children: [
+                        switch (pickedList[index].mediaType) {
+                          MediaType.image => CustomSmallImageWithCustomWidth(
+                              widthOfImage: 0.2,
+                              pickedMedia: pickedList[index],
+                            ),
+                          MediaType.video => const CustomVideoItem(),
+                          MediaType.unknown => const Text("Some Error"),
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: Stack(
-                            children: [
-                              switch (pickedList[index].mediaType) {
-                                MediaType.image =>
-                                  CustomSmallImageWithCustomWidth(
-                                    widthOfImage: 0.2,
-                                    pickedMedia: pickedList[index],
+                        enableClear
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.white,
                                   ),
-                                MediaType.video => const CustomVideoItem(),
-                                MediaType.unknown => const Text("Some Error"),
-                              },
-                              enableClear
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: AppColors.white,
-                                        ),
-                                        child: IconButton(
-                                            onPressed: () {
-                                              removeIndex != null
-                                                  ? removeIndex!(index)
-                                                  : () {};
-                                            },
-                                            icon: const Icon(
-                                              Icons.close,
-                                              color: AppColors.red,
-                                            )),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                            ],
-                          ),
-                        ),
-                      ))
-            ]),
-          ),
-        ),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        removeIndex != null
+                                            ? removeIndex!(index)
+                                            : () {};
+                                      },
+                                      icon: const Icon(
+                                        Icons.close,
+                                        color: AppColors.red,
+                                      )),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    width: 16,
+                  );
+                },
+                itemCount: pickedList.length)),
         const SizedBox(
           height: 12,
         ),

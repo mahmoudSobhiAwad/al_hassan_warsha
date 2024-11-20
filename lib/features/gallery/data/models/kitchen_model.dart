@@ -4,11 +4,13 @@ class KitchenModel {
   String kitchenId;
   String typeId;
   DateTime addedDate;
+  int mediaCounter;
   List<KitchenMedia> kitchenMediaList;
   KitchenModel(
       {required this.kitchenId,
       required this.typeId,
       required this.addedDate,
+      required this.mediaCounter,
       this.kitchenMediaList = const [],
       this.kitchenDesc,
       this.kitchenName});
@@ -20,6 +22,7 @@ class KitchenModel {
       'kitchenDesc': kitchenDesc,
       'typeId': typeId,
       "addedTime": addedDate.toIso8601String(),
+      "mediaCounter":mediaCounter,
     };
   }
   List<PickedMedia>getPickedMedia(){
@@ -34,13 +37,14 @@ class KitchenModel {
   factory KitchenModel.fromJson(Map<String, dynamic> json,
       ) {
     return KitchenModel(
+      
       addedDate: DateTime.parse(json["addedTime"] as String),
       kitchenId: json['kitchenId'] as String,
       kitchenName: json['kitchenName'] as String,
       kitchenDesc:
           json['kitchenDesc'] == null ? "" : json['kitchenDesc'] as String,
       typeId: json['typeId'] == null ? "" : json['typeId'] as String,
-
+      mediaCounter: json['mediaCounter'] as int,
     );
   }
 }
@@ -50,10 +54,12 @@ class KitchenMedia {
   String path;
   MediaType mediaType;
   String kitchenId;
+  
   KitchenMedia(
       {required this.mediaType,
       required this.path,
       required this.kitchenId,
+      
       required this.kitchenMediaId});
   Map<String, dynamic> toJson() {
     return {
@@ -61,6 +67,7 @@ class KitchenMedia {
       'path': path,
       'mediaType': mediaType.index,
       'kitchenId': kitchenId,
+      
     };
   }
 
@@ -71,6 +78,7 @@ class KitchenMedia {
       path: json['path'] as String,
       mediaType: MediaType.values[json['mediaType'] as int],
       kitchenId: json['kitchenId'] as String,
+      
     );
   }
 }

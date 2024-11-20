@@ -77,6 +77,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
             path: item.mediaPath,
+            
             kitchenId: kitchenID,
             kitchenMediaId: item.mediId));
       }

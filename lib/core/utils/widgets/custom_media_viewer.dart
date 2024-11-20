@@ -2,10 +2,9 @@ import 'dart:io';
 
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_video_player.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:flutter/material.dart';
-import 'package:media_kit/media_kit.dart';
-import 'package:media_kit_video/media_kit_video.dart';
 
 class CsutomMediaView extends StatefulWidget {
   const CsutomMediaView(
@@ -62,8 +61,8 @@ class _CsutomMediaViewState extends State<CsutomMediaView> {
                 IconButton(
                     onPressed: () {
                       controller.previousPage(
-                          duration: const Duration(milliseconds: 1500),
-                          curve: Curves.bounceIn);
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.bounceInOut);
                     },
                     icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
@@ -97,8 +96,8 @@ class _CsutomMediaViewState extends State<CsutomMediaView> {
                 IconButton(
                     onPressed: () {
                       controller.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.bounceIn);
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.bounceInOut);
                     },
                     icon: const Icon(
                       Icons.arrow_forward_ios_rounded,
@@ -111,34 +110,3 @@ class _CsutomMediaViewState extends State<CsutomMediaView> {
   }
 }
 
-class CustomVideoPlayer extends StatefulWidget {
-  const CustomVideoPlayer({super.key, required this.videoPath});
-  final String videoPath;
-  @override
-  State<CustomVideoPlayer> createState() => CustomVideoPlayerState();
-}
-
-class CustomVideoPlayerState extends State<CustomVideoPlayer> {
-  late final player = Player();
-  late final controller = VideoController(player);
-
-  @override
-  void initState() {
-    super.initState();
-    player.open(Media(widget.videoPath));
-  }
-
-  @override
-  void dispose() {
-    player.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.ltr,
-      child: Video(controller: controller),
-    );
-  }
-}

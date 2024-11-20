@@ -31,6 +31,7 @@ class GalleryRepoImp implements GalleryRepo {
   CREATE TABLE $kitchenItemTableName (
     kitchenId TEXT PRIMARY KEY,
     typeId TEXT NOT NULL,
+    mediaCounter INTEGER DEFAULT 0,
     kitchenName TEXT,
     kitchenDesc TEXT,
     addedTime TEXT,

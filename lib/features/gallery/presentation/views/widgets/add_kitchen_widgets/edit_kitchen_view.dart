@@ -103,8 +103,9 @@ class _EditKitchenViewState extends State<EditKitchenView> {
               ? MediaListExist(
                   addMore: (media) {
                     addedList.addAll(media);
-                    
-                    widget.bloc.add(RecieveMediaToAddMoreInEditEvent(medialList: media));
+
+                    widget.bloc.add(
+                        RecieveMediaToAddMoreInEditEvent(medialList: media));
                   },
                   enableClear: true,
                   pickedList: widget.pickedList,
@@ -129,7 +130,8 @@ class _EditKitchenViewState extends State<EditKitchenView> {
               if (formKey.currentState!.validate()) {
                 widget.model.kitchenName = editNameController.text;
                 widget.model.kitchenDesc = editDescribeController.text;
-
+                widget.model.mediaCounter +=
+                    (addedList.length - removedList.length);
                 widget.bloc.add(EditKitchenEvent(
                     addedItems: addedList,
                     model: widget.model,
