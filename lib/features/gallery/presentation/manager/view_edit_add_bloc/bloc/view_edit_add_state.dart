@@ -63,3 +63,11 @@ final class SuccessAddMediaState extends ViewEditAddState{
   final List<PickedMedia>list;
   SuccessAddMediaState({this.list=const[]});
 }
+final class SuccessAddMoreMediaState extends ViewEditAddState{
+  final List<PickedMedia>list;
+  SuccessAddMoreMediaState({this.list=const[]});
+}
+final class RemoveOneMediaState extends ViewEditAddState{
+  final int index;
+  RemoveOneMediaState({required this.index});
+}

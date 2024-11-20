@@ -12,13 +12,14 @@ class SmallKitchenTypeImage extends StatelessWidget {
   const SmallKitchenTypeImage(
       {super.key,
       required this.model,
+      this.imageWidth,
       this.enableInner = true,
       this.enableClose = false});
 
   final bool enableInner;
   final bool enableClose;
   final KitchenModel model;
-
+  final double? imageWidth;
   @override
   Widget build(BuildContext context) {
     return FittedBox(
@@ -27,13 +28,14 @@ class SmallKitchenTypeImage extends StatelessWidget {
         alignment: enableClose ? Alignment.topLeft : Alignment.bottomCenter,
         children: [
           CustomSmallImageWithCustomWidth(
+            widthOfImage: imageWidth,
               pickedMedia: model.getPickedMedia().tryIndex(0)),
           enableInner
               ? Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: 100,
-                    width: MediaQuery.sizeOf(context).width * 0.2,
+                    height: 70,
+                    width: MediaQuery.sizeOf(context).width *(imageWidth?? 0.2),
                     decoration: const BoxDecoration(
                         color: AppColors.blackOpacity50,
                         borderRadius: BorderRadius.only(

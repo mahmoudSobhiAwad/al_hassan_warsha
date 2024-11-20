@@ -20,7 +20,7 @@ class CustomGridKitchenTypes extends StatelessWidget {
           crossAxisCount: 3,
           mainAxisSpacing: 30,
           crossAxisSpacing: 30,
-          childAspectRatio: 350 / 250),
+          childAspectRatio: 2),
       itemBuilder: (context, index) {
         return InkWell(
           hoverColor: Colors.white,
@@ -40,7 +40,7 @@ class CustomGridKitchenTypes extends StatelessWidget {
                         )));
           },
           child: SmallKitchenTypeImage(
-            
+            imageWidth: 0.3,
             model: kitchenList[index],
           ),
         );

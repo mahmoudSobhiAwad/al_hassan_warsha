@@ -5,10 +5,12 @@ class KitchenTypeModel {
   String typeId;
   int itemsCount;
   List<KitchenModel> kitchenList;
+  List<OnlyTypeModel> onlyTypeModelList;
   KitchenTypeModel(
       {this.itemsCount = 0,
       required this.typeId,
       required this.typeName,
+      this.onlyTypeModelList = const [],
       this.kitchenList = const []});
   Map<String, dynamic> toJson() {
     return {
@@ -18,11 +20,30 @@ class KitchenTypeModel {
     };
   }
 
-  factory KitchenTypeModel.fromJson(Map<String, dynamic> json,) {
+  factory KitchenTypeModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return KitchenTypeModel(
       typeId: json['typeId'] as String,
       typeName: json['typeName'] as String,
-      itemsCount: json['itemsCount'] as int,        
+      itemsCount: json['itemsCount'] as int,
+    );
+  }
+}
+
+class OnlyTypeModel {
+  String typeName;
+  String typeId;
+  int itemsCount;
+  OnlyTypeModel(
+      {required this.itemsCount, required this.typeId, required this.typeName});
+  factory OnlyTypeModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    return OnlyTypeModel(
+      typeId: json['typeId'] as String,
+      typeName: json['typeName'] as String,
+      itemsCount: json['itemsCount'] as int,
     );
   }
 }

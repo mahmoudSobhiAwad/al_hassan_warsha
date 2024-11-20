@@ -3,8 +3,8 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class CustomPaginationWidget extends StatelessWidget {
-  const CustomPaginationWidget({super.key});
-
+  const CustomPaginationWidget({super.key,required this.length});
+  final int length;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +29,7 @@ class CustomPaginationWidget extends StatelessWidget {
                 Icons.arrow_back_ios_new_rounded,
                 size: 30,
               )),
-          ...List.generate(9, (index) {
+          ...List.generate((length/10).ceil(), (index) {
             return Center(
               child: Padding(
                   padding: const EdgeInsets.only(left: 16),

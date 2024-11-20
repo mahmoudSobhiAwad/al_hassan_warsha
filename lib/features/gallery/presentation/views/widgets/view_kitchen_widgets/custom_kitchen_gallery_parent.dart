@@ -3,6 +3,7 @@ import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart
 import 'package:al_hassan_warsha/features/gallery/data/pages_gallery_enum.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/add_kitchen_view.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/edit_kitchen_view.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/view_kitchen_details.dart';
 import 'package:flutter/material.dart';
@@ -78,12 +79,10 @@ class KitchenGalleryCustomView extends StatelessWidget {
                             typeId: kitchenModel!.typeId));
                       },
                     ),
-                  PagesGalleryEnum.edit => AddKitchenView(
-                      typeId: typeId,
+                  PagesGalleryEnum.edit => EditKitchenView(
                       bloc: bloc,
-                      enableEdit: true,
-                      mediaList: kitchenModel!.getPickedMedia(),
-                      kitchenModel: kitchenModel,
+                      model: kitchenModel!,
+                      pickedList: kitchenMediaList,
                     ),
                   PagesGalleryEnum.add => AddKitchenView(
                       mediaList: kitchenMediaList,

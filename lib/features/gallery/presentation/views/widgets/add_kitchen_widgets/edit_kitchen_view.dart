@@ -8,30 +8,37 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
 
-class AddKitchenView extends StatefulWidget {
-  const AddKitchenView({
-    super.key,
-    required this.bloc,
-    required this.typeId,
-    required this.mediaList,
-  });
+class EditKitchenView extends StatefulWidget {
+  const EditKitchenView(
+      {super.key,
+      required this.model,
+      required this.pickedList,
+      required this.bloc});
+  final List<PickedMedia> pickedList;
+  final KitchenModel model;
   final ViewEditAddBloc bloc;
-  final List<PickedMedia> mediaList;
-  final String? typeId;
-
   @override
-  State<AddKitchenView> createState() => _AddKitchenViewState();
+  State<EditKitchenView> createState() => _EditKitchenViewState();
 }
 
-class _AddKitchenViewState extends State<AddKitchenView> {
-  final TextEditingController controller = TextEditingController();
-  final TextEditingController describController = TextEditingController();
+class _EditKitchenViewState extends State<EditKitchenView> {
   final formKey = GlobalKey<FormState>();
+  final TextEditingController editNameController = TextEditingController();
+  final TextEditingController editDescribeController = TextEditingController();
+  List<String> addedList = [];
+  List<String> removedList = [];
+
+  @override
+  void initState() {
+    editNameController.text = widget.model.kitchenName ?? "";
+    editDescribeController.text = widget.model.kitchenDesc ?? "";
+    super.initState();
+  }
+
   @override
   void dispose() {
-    controller.dispose();
-    describController.dispose();
-
+    editNameController.dispose();
+    editDescribeController.dispose();
     super.dispose();
   }
 
@@ -52,7 +59,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                   }
                   return null;
                 },
-                controller: controller,
+                controller: editNameController,
                 textStyle: AppFontStyles.extraBold25(context),
                 text: "الاسم",
                 textLabel: "اضف اسم للمنتج................",
@@ -62,7 +69,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             height: 12,
           ),
           CustomColumnWithTextInAddNewType(
-            controller: describController,
+            controller: editDescribeController,
             textStyle: AppFontStyles.extraBold25(context),
             maxLine: 2,
             text: "الوصف",
@@ -92,16 +99,19 @@ class _AddKitchenViewState extends State<AddKitchenView> {
           const SizedBox(
             height: 22,
           ),
-          widget.mediaList.isNotEmpty
+          widget.pickedList.isNotEmpty
               ? MediaListExist(
                   addMore: (media) {
-                    widget.bloc.add(RecieveMediaToAddEvent(
-                        medialList: media, isMore: true));
+                    addedList.addAll(media);
+                    
+                    widget.bloc.add(RecieveMediaToAddMoreInEditEvent(medialList: media));
                   },
                   enableClear: true,
-                  pickedList: widget.mediaList,
+                  pickedList: widget.pickedList,
                   removeIndex: (index) {
+                    removedList.add(widget.pickedList[index].mediId);
                     widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
+                    addedList.remove(widget.pickedList[index].mediaPath);
                   },
                 )
               : EmptyUploadMedia(
@@ -116,16 +126,17 @@ class _AddKitchenViewState extends State<AddKitchenView> {
               child: CustomPushContainerButton(
             onTap: () {
               if (formKey.currentState!.validate()) {
-                widget.bloc.add(AddNewKitchenEvent(
-                    kitchenMediaList: widget.mediaList,
-                    typeId: widget.typeId ?? "",
-                    name: controller.text,
-                    desc: describController.text));
-                controller.clear();
-                describController.clear();
+                widget.model.kitchenName = editNameController.text;
+                widget.model.kitchenDesc = editDescribeController.text;
+
+                widget.bloc.add(EditKitchenEvent(
+                    addedItems: addedList,
+                    model: widget.model,
+                    deletedItems: removedList,
+                    pickedMediaList: widget.pickedList));
               }
             },
-            pushButtomText: "إضافة",
+            pushButtomText: "تعديل",
             borderRadius: 15,
             padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
             enableIcon: false,
@@ -138,4 +149,3 @@ class _AddKitchenViewState extends State<AddKitchenView> {
     );
   }
 }
-

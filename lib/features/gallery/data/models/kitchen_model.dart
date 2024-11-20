@@ -29,6 +29,7 @@ class KitchenModel {
     }
     return list;
   }
+  
 
   factory KitchenModel.fromJson(Map<String, dynamic> json,
       ) {
@@ -81,4 +82,8 @@ class PickedMedia {
   String mediId;
   MediaType mediaType;
   PickedMedia({required this.mediaPath, required this.mediaType,required this.mediId});
+
+  KitchenMedia intoKitchenMedia(String kitchenID){
+    return KitchenMedia(mediaType: mediaType, path: mediaPath, kitchenId: kitchenID, kitchenMediaId: mediId);
+  }
 }

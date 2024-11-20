@@ -12,7 +12,7 @@ class KitchenTypeItem extends StatelessWidget {
       this.onTap,
       this.enableUnderline = true});
   final MainAxisAlignment? mainAxisAlignment;
-  final KitchenTypeModel model;
+  final OnlyTypeModel model;
   final bool enableUnderline;
   final bool picked;
   final void Function(int)?onTap;

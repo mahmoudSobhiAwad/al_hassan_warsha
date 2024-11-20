@@ -17,14 +17,26 @@ final class AddNewKitchenEvent extends ViewEditAddEvent {
   final String typeId;
   final String name;
   final String? desc;
-  final List<PickedMedia>kitchenMediaList;
+  final List<PickedMedia> kitchenMediaList;
 
-  AddNewKitchenEvent({required this.typeId, this.desc, required this.name,this.kitchenMediaList=const []});
+  AddNewKitchenEvent(
+      {required this.typeId,
+      this.desc,
+      required this.name,
+      this.kitchenMediaList = const []});
 }
 
 final class EditKitchenEvent extends ViewEditAddEvent {
   final KitchenModel model;
-  EditKitchenEvent({required this.model});
+  final List<PickedMedia> pickedMediaList;
+  final List<String> deletedItems;
+  final List<String> addedItems;
+
+  EditKitchenEvent(
+      {required this.model,
+      this.pickedMediaList = const [],
+     required this.deletedItems,
+     required this.addedItems});
 }
 
 final class DeleteKitchenEvent extends ViewEditAddEvent {
@@ -32,7 +44,19 @@ final class DeleteKitchenEvent extends ViewEditAddEvent {
   final String typeId;
   DeleteKitchenEvent({required this.kitchenId, required this.typeId});
 }
+
 final class RecieveMediaToAddEvent extends ViewEditAddEvent {
-  final List<String>medialList;
-  RecieveMediaToAddEvent({required this.medialList});
+  final List<String> medialList;
+  final bool isMore;
+  RecieveMediaToAddEvent({required this.medialList, this.isMore = false});
+}
+final class RecieveMediaToAddMoreInEditEvent extends ViewEditAddEvent {
+  final List<String> medialList;
+  
+  RecieveMediaToAddMoreInEditEvent({required this.medialList,});
+}
+
+final class RemovePickedMediaIndexEvent extends ViewEditAddEvent {
+  final int index;
+  RemovePickedMediaIndexEvent({required this.index});
 }

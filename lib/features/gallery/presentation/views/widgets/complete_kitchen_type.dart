@@ -10,9 +10,10 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class CompleteKitchenType extends StatelessWidget {
-  const CompleteKitchenType({super.key,required this.changeShowMore,required this.model,required this.bloc});
+  const CompleteKitchenType({super.key,required this.changeShowMore,required this.model,required this.bloc,});
   final void Function()changeShowMore;
   final KitchenTypeModel model;
+ 
   final GalleryBloc bloc;
  
   @override

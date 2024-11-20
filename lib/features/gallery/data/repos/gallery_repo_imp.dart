@@ -49,11 +49,11 @@ class GalleryRepoImp implements GalleryRepo {
   }
 
   @override
-  Future<Either<List<KitchenTypeModel>, String>> getAllKitchenTypes() async {
+  Future<Either<List<KitchenTypeModel>, String>> getAllKitchenTypes(
+      {int offset = 0}) async {
     try {
-      final kitchenTypesResult =
-          await dataBaseHelper.database.query(kitchenTypesTableName);
-
+      final kitchenTypesResult = await dataBaseHelper.database
+          .query(kitchenTypesTableName, limit: 5, offset: offset);
       List<KitchenTypeModel> kitchenTypeList = [];
 
       for (var kitchenTypeItem in kitchenTypesResult) {
@@ -79,9 +79,9 @@ class GalleryRepoImp implements GalleryRepo {
               whereArgs: [kitchenId],
               limit: 5);
 
-          List<KitchenMedia> kitchenMediaList = kitchenMediaResult
-              .map((media) => KitchenMedia.fromJson(media))
-              .toList();
+          List<KitchenMedia> kitchenMediaList = kitchenMediaResult.map((media) {
+            return KitchenMedia.fromJson(media);
+          }).toList();
 
           // Create KitchenModel object
           KitchenModel kitchenModel = KitchenModel.fromJson(kitchenItem);
@@ -90,7 +90,6 @@ class GalleryRepoImp implements GalleryRepo {
           // Add the KitchenModel to the list
           kitchenModels.add(kitchenModel);
         }
-
         // Create KitchenTypeModel and add it to the list of KitchenType
         KitchenTypeModel kitchenType = KitchenTypeModel.fromJson(
           kitchenTypeItem,
@@ -119,7 +118,7 @@ class GalleryRepoImp implements GalleryRepo {
 
   @override
   Future<Either<KitchenTypeModel, Exception>> getChangedTypeModel(
-      {required String typeId}) async {
+      {required String typeId,int limit=5,int offset=0}) async {
     try {
       List<KitchenModel> kitchenModelList = [];
       final kitchenTypesResult = await dataBaseHelper.database.query(
@@ -131,7 +130,9 @@ class GalleryRepoImp implements GalleryRepo {
           kitchenItemTableName,
           where: 'typeId = ?',
           whereArgs: [typeId],
-          limit: 5);
+          limit: limit,
+          offset: offset
+          );
       for (var kitchenItem in kitchenItemsResult) {
         String kitchenId = kitchenItem["kitchenId"] as String;
 
@@ -161,4 +162,19 @@ class GalleryRepoImp implements GalleryRepo {
       return right(Exception(e.toString()));
     }
   }
+  
+ Future<Either<List<OnlyTypeModel>,Exception>> loadOnlyTypeList() async {
+    try {
+        final kitchenTypesAllResult =
+          await dataBaseHelper.database.query(kitchenTypesTableName,);
+          List<OnlyTypeModel>onlyTypeModelList=[];
+          for(var item in kitchenTypesAllResult){
+            onlyTypeModelList.add(OnlyTypeModel.fromJson(item));
+          }
+          return left(onlyTypeModelList);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  
 }

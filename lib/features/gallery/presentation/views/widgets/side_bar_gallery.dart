@@ -12,7 +12,7 @@ class SideBarGallery extends StatelessWidget {
     required this.changeIndex,
     required this.currIndex
   });
-  final List<KitchenTypeModel> typesList;
+  final List<OnlyTypeModel> typesList;
   final void Function(String) addType;
   final void Function(int)changeIndex;
   final int currIndex;

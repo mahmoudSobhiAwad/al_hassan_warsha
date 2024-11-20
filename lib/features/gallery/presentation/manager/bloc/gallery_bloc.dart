@@ -17,12 +17,38 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<AddNewKitchenTypeEvent>(addNewKitchenType);
     on<FetchKitchenTypeAfterChangeEvent>(fetchKitchenTypeAfterChange);
     on<UpdateCatchDataEvent>(updateCatching);
+    on<FetchMoreTypesEvent>(fetchMoreTypes);
   }
   int showingIndex = -1;
+  bool enableMoreWidget = false;
+  bool isLoading = true;
+  List<KitchenTypeModel> basickitchenTypesList = [];
+  List<OnlyTypeModel> onlyTypeModelList = [];
+  KitchenTypeModel currentShowMoreModek=KitchenTypeModel(typeId: "", typeName: "",);
+  bool showMoreIndicator = false;
+  bool hasMore = true;
+  bool isMoreWidgetLoading = true;
+
   FutureOr<void> showMoreKitchen(
       ShowMoreKitcenTypeEvent event, Emitter<GalleryState> emit) async {
-    showingIndex = event.currIndex;
-    emit(ShowMoreOfKitchenTypeState(currIndex: event.currIndex));
+    enableMoreWidget = event.isOpen;
+
+    if (enableMoreWidget) {
+      showingIndex = event.currIndex;
+      emit(LoadingCreateOrGetData());
+      final result = await galleryRepoImp.getChangedTypeModel(
+          typeId: event.typeId, limit: 10);
+      result.fold((kitchenModel) {
+        isMoreWidgetLoading = false;
+        currentShowMoreModek=kitchenModel;
+        emit(ShowMoreOfKitchenTypeState());
+      }, (error) {
+        throw (error);
+      });
+    } else {
+      enableMoreWidget = false;
+      emit(ShowMoreOfKitchenTypeState());
+    }
   }
 
   FutureOr<void> checkExistOfGalleryData(
@@ -31,10 +57,17 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
         tableName: kitchenTypesTableName);
     if (result) {
       emit(LoadingCreateOrGetData());
+      final typesList = await galleryRepoImp.loadOnlyTypeList();
+      typesList.fold((list) {
+        onlyTypeModelList.addAll(list);
+      }, (error) {});
       var result = await galleryRepoImp.getAllKitchenTypes();
       return result.fold((list) {
-        emit(SuccessCreateOrGetData(kitchenTypesList: list));
+        isLoading = false;
+        basickitchenTypesList.addAll(list);
+        emit(SuccessCreateOrGetData());
       }, (error) {
+        isLoading = false;
         emit(FailureCreateOrGetData(
           errMessage: error,
         ));
@@ -43,7 +76,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       emit(LoadingCreateOrGetData());
       try {
         await galleryRepoImp.createDataTablesForGallery();
-        emit(SuccessCreateOrGetData(kitchenTypesList: const []));
+        emit(SuccessCreateOrGetData());
       } catch (e) {
         emit(FailureCreateOrGetData(errMessage: e.toString()));
       }
@@ -57,7 +90,9 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     var result = await galleryRepoImp.addNewKitchenType(
         model: KitchenTypeModel(typeId: v1, typeName: event.typeName));
     return result.fold((success) {
-      emit(SuccessAddedNewKitchenType(typeId: v1, typeName: event.typeName));
+      basickitchenTypesList
+          .add(KitchenTypeModel(typeId: v1, typeName: event.typeName));
+      emit(SuccessAddedNewKitchenType());
     }, (error) {
       emit(FailureAddedNewKitchenType(errMessage: error.toString()));
     });
@@ -69,7 +104,10 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     final result =
         await galleryRepoImp.getChangedTypeModel(typeId: event.typeId);
     result.fold((kitchenList) {
-      emit(FetchKitchenTypeAfterChangeState(kitchenTypeModel: kitchenList));
+      int changedIndex = basickitchenTypesList
+          .indexWhere((model) => model.typeId == event.typeId);
+      basickitchenTypesList[changedIndex] = kitchenList;
+      emit(FetchKitchenTypeAfterChangeState());
     }, (error) {
       throw error;
     });
@@ -78,6 +116,30 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   FutureOr<void> updateCatching(
       UpdateCatchDataEvent event, Emitter<GalleryState> emit) async {
     showingIndex = -1;
-    emit(SuccessCreateOrGetData(kitchenTypesList: event.kitchenList));
+    emit(SuccessCreateOrGetData());
+  }
+
+  FutureOr<void> fetchMoreTypes(
+      FetchMoreTypesEvent event, Emitter<GalleryState> emit) async {
+    emit(LoadingFetchMoreKitchenState());
+    
+    final result =
+        await galleryRepoImp.getAllKitchenTypes(offset: basickitchenTypesList.length);
+    return result.fold((kitchenList) {
+      if (kitchenList.isNotEmpty) {
+        for (var item in kitchenList) {
+          basickitchenTypesList.add(item);
+          showMoreIndicator = false;
+          emit(SuccessFetchMoreKitchenState());
+        }
+      } else {
+        hasMore = false;
+        showMoreIndicator = false;
+        emit(SuccessFetchMoreKitchenState());
+      }
+    }, (error) {
+      showMoreIndicator = false;
+      emit(FailureAddedNewKitchenType(errMessage: error));
+    });
   }
 }

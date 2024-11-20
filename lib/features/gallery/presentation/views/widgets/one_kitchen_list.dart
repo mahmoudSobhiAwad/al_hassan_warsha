@@ -18,7 +18,7 @@ class ListOfOneKitchenType extends StatelessWidget {
     return Expanded(
       flex: 4,
       child: ListView.separated(
-        
+        padding: const EdgeInsets.symmetric(horizontal: 20),
           scrollDirection: Axis.horizontal,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {

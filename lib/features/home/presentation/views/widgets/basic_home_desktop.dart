@@ -29,10 +29,10 @@ class BasicHomeDesktopLayOut extends StatelessWidget {
                 bloc.add(ChangeCurrentPageEvent(currIndex: pageIndex));
               },
             ),
-            const [
+             [
               GalleryView(),
-              ManagementView(),
-              FinancialView(),
+             const ManagementView(),
+             const FinancialView(),
             ][index],
           ],
         );

@@ -4,7 +4,6 @@ import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo.dart';
 import 'package:dartz/dartz.dart';
 
-
 class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
   final DataBaseHelper dataBaseHelper;
   AddEditKitchenRepoImpl({required this.dataBaseHelper});
@@ -90,6 +89,19 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       } catch (e) {
         return false;
       }
+    }
+  }
+
+  Future<bool> removeMediaWithId(List<String> mediaIdList) async {
+    try {
+      for (var item in mediaIdList) {
+        dataBaseHelper.database.rawDelete('''
+ DELETE FROM $galleryKitchenMediaTable WHERE kitchenMediaId = ?;
+''', [item]);
+      }
+      return true;
+    } catch (e) {
+      throw Exception(e.toString());
     }
   }
 }

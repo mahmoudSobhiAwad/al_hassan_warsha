@@ -22,7 +22,9 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     on<AddNewKitchenEvent>(addNewKitchen);
     on<DeleteKitchenEvent>(deleteKitchen);
     on<EditKitchenEvent>(editKitchen);
+    on<RemovePickedMediaIndexEvent>(removePickedMediaIndex);
     on<RecieveMediaToAddEvent>(addMediaList);
+    on<RecieveMediaToAddMoreInEditEvent>(addMediaListInEdit);
   }
   FutureOr<void> changeBarIndex(
       ChangeBarIndexEvent event, Emitter<ViewEditAddState> emit) {
@@ -58,8 +60,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
       }, (error) {
         emit(FailureAddNewKitchenState(errMessage: error.toString()));
       });
-    }
-    else {
+    } else {
       emit(FailureAddNewKitchenState(
           errMessage: "some problem in adding media"));
     }
@@ -79,14 +80,47 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
 
   FutureOr<void> editKitchen(
       EditKitchenEvent event, Emitter<ViewEditAddState> emit) async {
-    emit(LoadingEditKitchenState());
-    final result =
-        await addEditKitchenRepoImpl.updateKitchen(model: event.model);
-    return result.fold((success) {
-      emit(SuccessEditKitchenState(typeId: success));
-    }, (error) {
-      emit(FailureEditKitchenState(errMessage: error.toString()));
-    });
+    bool deletedSuccess = true;
+    bool addedSuccess = true;
+    if (event.deletedItems.isNotEmpty) {
+      deletedSuccess =
+          await addEditKitchenRepoImpl.removeMediaWithId(event.deletedItems);
+    }
+    if (event.addedItems.isNotEmpty) {
+      addedSuccess = await checkAddNewMedia(event, addedSuccess);
+    }
+    if (addedSuccess && deletedSuccess) {
+      final result =
+          await addEditKitchenRepoImpl.updateKitchen(model: event.model);
+      return result.fold((success) {
+        emit(SuccessEditKitchenState(typeId: success));
+      }, (error) {
+        emit(FailureEditKitchenState(errMessage: error.toString()));
+      });
+    }
+    else{
+      emit(FailureEditKitchenState(errMessage: "some problem while edit media"));
+    }
+  }
+
+  Future<bool> checkAddNewMedia(EditKitchenEvent event, bool addedSuccess) async {
+     List<PickedMedia> list = [];
+    for (var item in event.addedItems) {
+      list.add(PickedMedia(
+          mediaPath: item,
+          mediaType: getMediaType(item),
+          mediId: const Uuid().v4()));
+      addedSuccess = await addEditKitchenRepoImpl.addMediaInDataBase(
+          mediaPickedList: list, kitchenID: event.model.kitchenId);
+    }
+    return addedSuccess;
+  }
+  FutureOr<void>addMediaListInEdit(RecieveMediaToAddMoreInEditEvent event, Emitter<ViewEditAddState> emit)async{
+    List<PickedMedia> list = [];
+    for(var item in event.medialList){
+      list.add(PickedMedia(mediaPath: item, mediaType: getMediaType(item), mediId: const Uuid().v1()));
+    }
+    emit(SuccessAddMoreMediaState(list: list));
   }
 
   FutureOr<void> addMediaList(
@@ -95,11 +129,23 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     try {
       List<PickedMedia> list = [];
       for (var item in event.medialList) {
-        list.add(PickedMedia(mediaPath: item, mediaType: getMediaType(item),mediId:const Uuid().v4()));
+        list.add(PickedMedia(
+            mediaPath: item,
+            mediaType: getMediaType(item),
+            mediId: const Uuid().v4()));
       }
-      emit(SuccessAddMediaState(list: list));
+      if (event.isMore) {
+        emit(SuccessAddMoreMediaState(list: list));
+      } else {
+        emit(SuccessAddMediaState(list: list));
+      }
     } catch (e) {
       emit(FailureAddMediaState(errMessage: e.toString()));
     }
+  }
+
+  FutureOr<void> removePickedMediaIndex(
+      RemovePickedMediaIndexEvent event, Emitter<ViewEditAddState> emit) async {
+    emit(RemoveOneMediaState(index: event.index));
   }
 }

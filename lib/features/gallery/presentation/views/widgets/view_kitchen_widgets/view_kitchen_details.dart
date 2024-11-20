@@ -4,6 +4,7 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_container_with_above_
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +102,7 @@ class ViewKitchenDetailsBody extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-       kitchenModel!.kitchenMediaList.isNotEmpty? MediaListExist(enableClear: false,pickedList:kitchenModel!.getPickedMedia(),):const Text("No media for this item"),
+       kitchenModel!.kitchenMediaList.isNotEmpty? MediaListExist(enableClear: false,pickedList:kitchenModel!.getPickedMedia(),):EmptyUploadMedia(),
         const SizedBox(
           height: 12,
         ),

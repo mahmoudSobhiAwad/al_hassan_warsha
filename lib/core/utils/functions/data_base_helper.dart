@@ -18,12 +18,13 @@ class DataBaseHelper {
     Batch batch = database.batch();
     for (var row in rows) {
       batch.insert(
-        tableName, // Replace with your table name
+        tableName,
         row,
         conflictAlgorithm:
-            ConflictAlgorithm.replace, // Optional conflict resolution
+            ConflictAlgorithm.replace,
       );
     }
     await batch.commit(noResult: true);
   }
+
 }

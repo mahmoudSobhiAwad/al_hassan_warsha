@@ -3,28 +3,30 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class EmptyUploadMedia extends StatelessWidget {
-  const EmptyUploadMedia({super.key,required this.addMedia});
-  final void Function(List<String>)addMedia;
-  
+  const EmptyUploadMedia({super.key, this.addMedia});
+  final void Function(List<String>)? addMedia;
+
   @override
   Widget build(BuildContext context) {
     final ImagePicker picker = ImagePicker();
 
     return InkWell(
       onTap: () async {
-       await picker.pickMultipleMedia().then((values){
-        List<String>list=[];
-        for (var item in values) {
-          list.add(item.path);
-        }
-        addMedia(list);
-       });
+        addMedia != null
+            ? {
+                await picker.pickMultipleMedia().then((values) {
+                  List<String> list = [];
+                  for (var item in values) {
+                    list.add(item.path);
+                  }
+                  addMedia!(list);
+                })
+              }
+            : () {};
       },
       child: Container(
         width: double.infinity,
-        
         padding: const EdgeInsets.symmetric(vertical: 70),
         decoration: BoxDecoration(
           color: AppColors.veryLightGray,
@@ -48,4 +50,3 @@ class EmptyUploadMedia extends StatelessWidget {
     );
   }
 }
-

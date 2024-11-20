@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class ListOfKitchenTypes extends StatelessWidget {
   const ListOfKitchenTypes({super.key, required this.kitchenTypesList,required this.onTap,required this.currIndex});
-  final List<KitchenTypeModel> kitchenTypesList;
+  final List<OnlyTypeModel> kitchenTypesList;
   final void Function(int index) onTap;
   final int currIndex;
   @override

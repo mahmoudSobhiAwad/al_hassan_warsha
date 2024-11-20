@@ -10,8 +10,8 @@ sealed class GalleryOutSideState extends GalleryState {}
 final class LoadingCreateOrGetData extends GalleryState {}
 
 final class SuccessCreateOrGetData extends GalleryState {
-  final List<KitchenTypeModel>kitchenTypesList;
-  SuccessCreateOrGetData({required this.kitchenTypesList});
+  
+  SuccessCreateOrGetData();
   
 }
 final class FailureCreateOrGetData extends GalleryState {
@@ -22,9 +22,8 @@ final class FailureCreateOrGetData extends GalleryState {
 final class LoadingAddedNewKitchenType extends GalleryOutSideState {}
 
 final class SuccessAddedNewKitchenType extends GalleryOutSideState {
-  final String typeId;
-  final String typeName;
-  SuccessAddedNewKitchenType({required this.typeId,required this.typeName});
+
+  SuccessAddedNewKitchenType();
 }
 final class FailureAddedNewKitchenType extends GalleryOutSideState {
   final String? errMessage;
@@ -34,12 +33,22 @@ final class FailureAddedNewKitchenType extends GalleryOutSideState {
 
 final class ShowMoreOfKitchenTypeState extends GalleryState {
   
-final int currIndex;
-  ShowMoreOfKitchenTypeState({required this.currIndex});
+
+  ShowMoreOfKitchenTypeState();
 }
 
 final class FetchKitchenTypeAfterChangeState extends GalleryOutSideState{
-  final KitchenTypeModel  kitchenTypeModel;
-  FetchKitchenTypeAfterChangeState({required this.kitchenTypeModel});
+  
+  FetchKitchenTypeAfterChangeState();
 }
 
+final class LoadingFetchMoreKitchenState extends GalleryState {}
+
+final class SuccessFetchMoreKitchenState extends GalleryState {
+ SuccessFetchMoreKitchenState();
+}
+
+final class FailureFetchMoreKitchenState extends GalleryState {
+  final String? errMessage;
+  FailureFetchMoreKitchenState({this.errMessage});
+}

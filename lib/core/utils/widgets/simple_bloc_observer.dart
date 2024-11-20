@@ -32,7 +32,7 @@ class SimpleBlocObserver implements BlocObserver{
 
   @override
   void onTransition(Bloc bloc, Transition transition) {
-     log('Transition in ${bloc.runtimeType}: $transition');
+     
   }
 
 
