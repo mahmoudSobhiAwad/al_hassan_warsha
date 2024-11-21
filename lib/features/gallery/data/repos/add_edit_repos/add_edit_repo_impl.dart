@@ -1,7 +1,9 @@
+import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo.dart';
+import 'package:al_hassan_warsha/features/home/data/constants.dart';
 import 'package:dartz/dartz.dart';
 
 class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
@@ -76,7 +78,8 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       for (var item in mediaPickedList) {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
-            path: item.mediaPath,
+            path: await copyMediaFile(item.mediaPath,
+                item.mediaType == MediaType.image ? imageFolder : videoFolder),
             kitchenId: kitchenID,
             kitchenMediaId: item.mediId));
       }
@@ -92,12 +95,14 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
     }
   }
 
-  Future<bool> removeMediaWithId(List<String> mediaIdList) async {
+  Future<bool> removeMediaWithId(List<PickedMedia> mediaIdList) async {
     try {
+      
       for (var item in mediaIdList) {
+        await deleteMediaFile(item.mediaPath);
         dataBaseHelper.database.rawDelete('''
  DELETE FROM $galleryKitchenMediaTable WHERE kitchenMediaId = ?;
-''', [item]);
+''', [item.mediId]);
       }
       return true;
     } catch (e) {

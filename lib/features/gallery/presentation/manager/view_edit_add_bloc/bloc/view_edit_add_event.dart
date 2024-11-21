@@ -29,7 +29,7 @@ final class AddNewKitchenEvent extends ViewEditAddEvent {
 final class EditKitchenEvent extends ViewEditAddEvent {
   final KitchenModel model;
   final List<PickedMedia> pickedMediaList;
-  final List<String> deletedItems;
+  final List<PickedMedia> deletedItems;
   final List<String> addedItems;
 
   EditKitchenEvent(

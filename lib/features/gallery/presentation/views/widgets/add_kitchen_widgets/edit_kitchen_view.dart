@@ -25,7 +25,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
   final TextEditingController editNameController = TextEditingController();
   final TextEditingController editDescribeController = TextEditingController();
   List<String> addedList = [];
-  List<String> removedList = [];
+  List<PickedMedia> removedList = [];
 
   @override
   void initState() {
@@ -108,7 +108,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                   },
                   pickedList: widget.pickedList,
                   removeIndex: (index) {
-                    removedList.add(widget.pickedList[index].mediId);
+                    removedList.add(widget.pickedList[index]);
                     widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
                     addedList.remove(widget.pickedList[index].mediaPath);
                   },
