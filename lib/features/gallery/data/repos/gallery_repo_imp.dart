@@ -119,7 +119,7 @@ class GalleryRepoImp implements GalleryRepo {
 
   @override
   Future<Either<KitchenTypeModel, Exception>> getChangedTypeModel(
-      {required String typeId,int limit=5,int offset=0}) async {
+      {required String typeId, int limit = 5, int offset = 0}) async {
     try {
       List<KitchenModel> kitchenModelList = [];
       final kitchenTypesResult = await dataBaseHelper.database.query(
@@ -132,8 +132,7 @@ class GalleryRepoImp implements GalleryRepo {
           where: 'typeId = ?',
           whereArgs: [typeId],
           limit: limit,
-          offset: offset
-          );
+          offset: offset);
       for (var kitchenItem in kitchenItemsResult) {
         String kitchenId = kitchenItem["kitchenId"] as String;
 
@@ -163,19 +162,49 @@ class GalleryRepoImp implements GalleryRepo {
       return right(Exception(e.toString()));
     }
   }
-  
- Future<Either<List<OnlyTypeModel>,Exception>> loadOnlyTypeList() async {
+
+  Future<Either<List<OnlyTypeModel>, Exception>> loadOnlyTypeList() async {
     try {
-        final kitchenTypesAllResult =
-          await dataBaseHelper.database.query(kitchenTypesTableName,);
-          List<OnlyTypeModel>onlyTypeModelList=[];
-          for(var item in kitchenTypesAllResult){
-            onlyTypeModelList.add(OnlyTypeModel.fromJson(item));
-          }
-          return left(onlyTypeModelList);
+      final kitchenTypesAllResult = await dataBaseHelper.database.query(
+        kitchenTypesTableName,
+      );
+      List<OnlyTypeModel> onlyTypeModelList = [];
+      for (var item in kitchenTypesAllResult) {
+        onlyTypeModelList.add(OnlyTypeModel.fromJson(item));
+      }
+      return left(onlyTypeModelList);
     } catch (e) {
       throw Exception(e.toString());
     }
   }
-  
+
+  Future<Either<List<KitchenModel>, Exception>> loadLastAdded() async {
+    try {
+      final kitchenTypesAllResult = await dataBaseHelper.database.query(
+        kitchenItemTableName,
+        orderBy:
+            'addedTime DESC', // Sort by the addedTime column in descending order
+        limit: 4,
+      );
+      List<KitchenModel> onlyTypeModelList = [];
+      for (var item in kitchenTypesAllResult) {
+        String kitchenId = item["kitchenId"] as String;
+        final kitchenMediaResult = await dataBaseHelper.database.query(
+            galleryKitchenMediaTable,
+            where: 'kitchenId = ?',
+            whereArgs: [kitchenId],
+            limit: 5);
+        List<KitchenMedia> kitchenMediaList = kitchenMediaResult.map((media) {
+          return KitchenMedia.fromJson(media);
+        }).toList();
+        KitchenModel model = KitchenModel.fromJson(item);
+        model.kitchenMediaList = kitchenMediaList;
+
+        onlyTypeModelList.add(model);
+      }
+      return left(onlyTypeModelList);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

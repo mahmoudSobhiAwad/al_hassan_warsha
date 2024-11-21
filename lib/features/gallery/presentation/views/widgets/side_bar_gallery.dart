@@ -10,12 +10,14 @@ class SideBarGallery extends StatelessWidget {
     required this.addType,
     required this.typesList,
     required this.changeIndex,
-    required this.currIndex
+    required this.currIndex,
+    required this.isTypingLoading,
   });
   final List<OnlyTypeModel> typesList;
   final void Function(String) addType;
   final void Function(int)changeIndex;
   final int currIndex;
+  final bool isTypingLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,13 @@ class SideBarGallery extends StatelessWidget {
               addType(value);
             },
           ),
-          ListOfKitchenTypes(
+         isTypingLoading? const SliverToBoxAdapter(child: CircularProgressIndicator()): ListOfKitchenTypes(
             currIndex: currIndex,
             onTap: (index){
               changeIndex(index);
             },
             kitchenTypesList: typesList,
-          ),
+          )
         ],
       ),
     );

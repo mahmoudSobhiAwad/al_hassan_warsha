@@ -2,6 +2,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/complete_kitchen_type.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/latest_added_kitchen_list.dart';
 //import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/latest_added_kitchen_list.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +53,11 @@ class _GalleryBodyState extends State<GalleryBody> {
                 const SizedBox(
                   height: 8,
                 ),
-                //const AutoScrollingPageView(),
+                widget.bloc.loadNewest
+                    ? const Center(child: CircularProgressIndicator())
+                    : AutoScrollingPageView(
+                        kitchenModelList: widget.bloc.newestKitchenTypeList,
+                      ),
                 const SizedBox(
                   height: 24,
                 ),
@@ -67,26 +72,28 @@ class _GalleryBodyState extends State<GalleryBody> {
             ),
           ),
         ),
-        SliverList.separated(
-          itemBuilder: (context, index) {
-            return CompleteKitchenType(
-              bloc: widget.bloc,
-              model: widget.kitchenList[index],
-              changeShowMore: () {
-                widget.bloc.add(ShowMoreKitcenTypeEvent(
-                    currIndex: index,
-                    typeId: widget.kitchenList[index].typeId,
-                    isOpen: true));
-              },
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const SizedBox(
-              height: 20,
-            );
-          },
-          itemCount: widget.kitchenList.length,
-        ),
+        widget.bloc.isLoading
+            ? const SliverToBoxAdapter(child: CircularProgressIndicator())
+            : SliverList.separated(
+                itemBuilder: (context, index) {
+                  return CompleteKitchenType(
+                    bloc: widget.bloc,
+                    model: widget.kitchenList[index],
+                    changeShowMore: () {
+                      widget.bloc.add(ShowMoreKitcenTypeEvent(
+                          currIndex: index,
+                          typeId: widget.kitchenList[index].typeId,
+                          isOpen: true));
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 20,
+                  );
+                },
+                itemCount: widget.kitchenList.length,
+              ),
         widget.bloc.showMoreIndicator
             ? const SliverToBoxAdapter(
                 child: Padding(

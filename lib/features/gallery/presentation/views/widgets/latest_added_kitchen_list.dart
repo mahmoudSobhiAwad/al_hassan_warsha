@@ -1,11 +1,12 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_big_image_with_inner_shadow.dart';
 import 'package:flutter/material.dart';
 
 class AutoScrollingPageView extends StatefulWidget {
-  const AutoScrollingPageView({super.key});
-
+  const AutoScrollingPageView({super.key,required this.kitchenModelList});
+  final List<KitchenModel>kitchenModelList;
   @override
   AutoScrollingPageViewState createState() => AutoScrollingPageViewState();
 }
@@ -27,7 +28,7 @@ class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
       if (_pageController.hasClients) {
         _currentPage++;
      
-        if (_currentPage >= 5) { 
+        if (_currentPage >= widget.kitchenModelList.length) { 
           _currentPage = 0;
         }
         _pageController.animateToPage(
@@ -52,9 +53,9 @@ class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
             aspectRatio: 1225/250,
             child: PageView.builder(
               controller: _pageController,
-              itemCount: 4,
+              itemCount: widget.kitchenModelList.length,
               itemBuilder: (context,index){
-              return const CustomImageWithInnerShadow();
+              return CustomImageWithInnerShadow(model: widget.kitchenModelList[index],);
             }),
           );
   }

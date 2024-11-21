@@ -3,8 +3,10 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class CustomInnerShadowInLastKitchen extends StatelessWidget {
-  const CustomInnerShadowInLastKitchen({super.key, this.aspectRatio});
+  const CustomInnerShadowInLastKitchen({super.key, this.aspectRatio,required this.desc,required this.name});
   final double? aspectRatio;
+  final String name;
+  final String desc;
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
@@ -21,11 +23,11 @@ class CustomInnerShadowInLastKitchen extends StatelessWidget {
           fit: BoxFit.scaleDown,
           child: Column(
             children: [
-              Text("مطبخ فرنسي مودرن",
+              Text(name,
                   style: AppFontStyles.extraBold40(context).copyWith(
                     color: AppColors.white,
                   )),
-              Text("2 قطعة,مقاس كبير",
+              Text(desc,
                   style: AppFontStyles.extraBold25(context).copyWith(
                     color: AppColors.white,
                   )),

@@ -36,9 +36,7 @@ class GalleryView extends StatelessWidget {
         }
       }, builder: (context, state) {
         var galleryBloc = context.read<GalleryBloc>();
-        return galleryBloc.isLoading
-            ? const CircularProgressIndicator()
-            : Expanded(
+        return  Expanded(
                 child: Row(
                   children: [
                     Expanded(
@@ -57,7 +55,7 @@ class GalleryView extends StatelessWidget {
                               galleryBloc
                                   .add(AddNewKitchenTypeEvent(typeName: value));
                             },
-                            typesList: galleryBloc.onlyTypeModelList)),
+                            typesList: galleryBloc.onlyTypeModelList, isTypingLoading: galleryBloc.isLoadingtypes,)),
                     galleryBloc.enableMoreWidget
                         ? Expanded(
                             flex: 4,

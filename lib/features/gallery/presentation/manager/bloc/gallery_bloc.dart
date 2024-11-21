@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/gallery_repo_imp.dart';
 import 'package:bloc/bloc.dart';
@@ -24,8 +25,11 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   bool enableMoreWidget = false;
   int currPageInShowMore = 1;
   bool isLoading = true;
+  bool isLoadingtypes = true;
   bool isMoredLoading = true;
+  bool loadNewest = true;
   List<KitchenTypeModel> basickitchenTypesList = [];
+  List<KitchenModel> newestKitchenTypeList = [];
   List<OnlyTypeModel> onlyTypeModelList = [];
   KitchenTypeModel currentShowMoreModel = KitchenTypeModel(
     typeId: "",
@@ -59,27 +63,53 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     }
   }
 
+  Future<void> loadAllTypes(Emitter<GalleryState> emit) async {
+    emit(LoadingCreateOrGetData());
+    final typesList = await galleryRepoImp.loadOnlyTypeList();
+    typesList.fold((list) {
+      isLoadingtypes = false;
+      onlyTypeModelList.addAll(list);
+      emit(SuccessCreateOrGetData());
+    }, (error) {
+      isLoadingtypes = false;
+    });
+  }
+
+  Future<void> loadLastAdded(Emitter<GalleryState> emit) async {
+    emit(LoadingCreateOrGetData());
+    final lastAdded = await galleryRepoImp.loadLastAdded();
+    lastAdded.fold((list) {
+      loadNewest = false;
+      newestKitchenTypeList.addAll(list);
+      emit(SuccessCreateOrGetData());
+    }, (error) {
+      loadNewest = false;
+      emit(FailureCreateOrGetData());
+    });
+  }
+
+  Future<void> getAllKitchenTypes(Emitter<GalleryState> emit) async {
+    var data = await galleryRepoImp.getAllKitchenTypes();
+    return data.fold((list) {
+      isLoading = false;
+      basickitchenTypesList.addAll(list);
+      emit(SuccessCreateOrGetData());
+    }, (error) {
+      isLoading = false;
+      emit(FailureCreateOrGetData(
+        errMessage: error,
+      ));
+    });
+  }
+
   FutureOr<void> checkExistOfGalleryData(
       CheckExistOfGalleryDataEvent event, Emitter<GalleryState> emit) async {
     bool result = await galleryRepoImp.checkDbExistOfGalleryTables(
         tableName: kitchenTypesTableName);
     if (result) {
-      emit(LoadingCreateOrGetData());
-      final typesList = await galleryRepoImp.loadOnlyTypeList();
-      typesList.fold((list) {
-        onlyTypeModelList.addAll(list);
-      }, (error) {});
-      var result = await galleryRepoImp.getAllKitchenTypes();
-      return result.fold((list) {
-        isLoading = false;
-        basickitchenTypesList.addAll(list);
-        emit(SuccessCreateOrGetData());
-      }, (error) {
-        isLoading = false;
-        emit(FailureCreateOrGetData(
-          errMessage: error,
-        ));
-      });
+      await loadAllTypes(emit);
+      await loadLastAdded(emit);
+      await getAllKitchenTypes(emit);
     } else {
       emit(LoadingCreateOrGetData());
       try {
