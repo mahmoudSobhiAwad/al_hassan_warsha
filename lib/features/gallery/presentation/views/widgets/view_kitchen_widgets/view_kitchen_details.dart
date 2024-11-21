@@ -114,10 +114,13 @@ class ViewKitchenDetailsBody extends StatelessWidget {
             const Spacer(),
             kitchenModel!.mediaCounter > 5
                 ? TextButton(
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowMoreMediaGridView(
-                        bloc: bloc,
-                        pickedMedia:kitchenModel!.kitchenMediaList)));
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShowMoreMediaGridView(
+                                    kitchenId: kitchenModel!.kitchenId,
+                                  )));
                     },
                     child: Text(
                       "عرض المزيد",

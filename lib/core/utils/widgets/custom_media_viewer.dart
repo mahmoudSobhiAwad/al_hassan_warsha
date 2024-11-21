@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_video_player.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +38,9 @@ class _CustomMediaViewState extends State<CustomMediaView> {
             backgroundColor: AppColors.white,
             appBar: AppBar(
               toolbarHeight: 70,
-              
               automaticallyImplyLeading: false,
               backgroundColor: AppColors.white,
               title: Container(
-               
                 decoration: const BoxDecoration(
                     color: AppColors.lightGray1, shape: BoxShape.circle),
                 child: IconButton(
