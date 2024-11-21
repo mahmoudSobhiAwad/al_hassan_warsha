@@ -69,6 +69,7 @@ class KitchenGalleryCustomView extends StatelessWidget {
                 ),
                 switch (bloc.pagesGalleryEnum) {
                   PagesGalleryEnum.view => ViewKitchenDetailsBody(
+                    bloc: bloc,
                       kitchenModel: kitchenModel,
                       changeEditState: (edit) {
                         bloc.add(OpenKitchenForEditEvent(enableEdit: edit));

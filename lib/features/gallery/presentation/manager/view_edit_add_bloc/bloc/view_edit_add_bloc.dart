@@ -25,7 +25,11 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
     on<RemovePickedMediaIndexEvent>(removePickedMediaIndex);
     on<RecieveMediaToAddEvent>(addMediaList);
     on<RecieveMediaToAddMoreInEditEvent>(addMediaListInEdit);
+    on<ShowMoreHorizontalMedia>(showMoreHorizontalMedia);
   }
+
+  bool isLoadingEnabled = true;
+
   FutureOr<void> changeBarIndex(
       ChangeBarIndexEvent event, Emitter<ViewEditAddState> emit) {
     emit(ChangeBarIndexState(barIndex: event.currBarIndex));
@@ -33,6 +37,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
 
   FutureOr<void> openOrCloseEdit(
       OpenKitchenForEditEvent event, Emitter<ViewEditAddState> emit) {
+    isLoadingEnabled = true;
     if (event.enableEdit) {
       pagesGalleryEnum = PagesGalleryEnum.edit;
     } else {
@@ -154,5 +159,19 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
   FutureOr<void> removePickedMediaIndex(
       RemovePickedMediaIndexEvent event, Emitter<ViewEditAddState> emit) async {
     emit(RemoveOneMediaState(index: event.index));
+  }
+
+  FutureOr<void> showMoreHorizontalMedia(
+      ShowMoreHorizontalMedia event, Emitter<ViewEditAddState> emit) async {
+        emit(LoadingFetchMoreMediaListState());
+      final result = await addEditKitchenRepoImpl.loadMoreMedia(
+          kitchenId: event.kitchenId, offset: event.offset);
+
+      return result.fold((mediaList) {
+        if (mediaList.isNotEmpty) {
+          emit(SuccessFetchMoreMediaListState(list: mediaList));
+        }
+        isLoadingEnabled = false;
+      }, (error) {}); 
   }
 }

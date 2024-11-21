@@ -72,3 +72,9 @@ final class RemoveOneMediaState extends ViewEditAddState{
   final int index;
   RemoveOneMediaState({required this.index});
 }
+
+final class SuccessFetchMoreMediaListState extends ViewEditAddState {
+  final List<PickedMedia>list;
+  SuccessFetchMoreMediaListState({required this.list});
+}
+final class LoadingFetchMoreMediaListState extends ViewEditAddState {}

@@ -3,9 +3,11 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_container_with_above_text.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/show_more_media_grid.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:flutter/material.dart';
 
@@ -14,9 +16,11 @@ class ViewKitchenDetailsBody extends StatelessWidget {
       {super.key,
       required this.changeEditState,
       required this.kitchenModel,
+      required this.bloc,
       required this.deleteKitchen});
   final void Function(bool enableEdit) changeEditState;
   final void Function() deleteKitchen;
+  final ViewEditAddBloc bloc;
   final KitchenModel? kitchenModel;
   @override
   Widget build(BuildContext context) {
@@ -106,7 +110,21 @@ class ViewKitchenDetailsBody extends StatelessWidget {
               width: 12,
             ),
             Text("( ${kitchenModel?.mediaCounter} )",
-                style: AppFontStyles.extraBold30(context))
+                style: AppFontStyles.extraBold30(context)),
+            const Spacer(),
+            kitchenModel!.mediaCounter > 5
+                ? TextButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>ShowMoreMediaGridView(
+                        bloc: bloc,
+                        pickedMedia:kitchenModel!.kitchenMediaList)));
+                    },
+                    child: Text(
+                      "عرض المزيد",
+                      style: AppFontStyles.extraBold30(context)
+                          .copyWith(color: AppColors.blue),
+                    ))
+                : const SizedBox()
           ],
         ),
         const SizedBox(

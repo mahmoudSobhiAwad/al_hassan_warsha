@@ -84,8 +84,6 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
             });
           } else if (state is SuccessEditKitchenState) {
             showCustomSnackBar(context, "تمت تعديل المطبخ بنجاح ");
-            
-
             widget.galleryBloc
                 .add(FetchKitchenTypeAfterChangeEvent(typeId: state.typeId));
             bloc.add(OpenKitchenForEditEvent(enableEdit: false));
@@ -103,6 +101,9 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
               pickedMediaList = widget.kitchenModel!.getPickedMedia();
             }
           }
+          else if(state is SuccessFetchMoreMediaListState){
+              pickedMediaList.addAll(state.list);
+            }
         }),
       ),
     );

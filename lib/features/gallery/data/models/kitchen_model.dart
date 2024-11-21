@@ -22,22 +22,25 @@ class KitchenModel {
       'kitchenDesc': kitchenDesc,
       'typeId': typeId,
       "addedTime": addedDate.toIso8601String(),
-      "mediaCounter":mediaCounter,
+      "mediaCounter": mediaCounter,
     };
   }
-  List<PickedMedia>getPickedMedia(){
-    List<PickedMedia>list=[];
-    for(var item in  kitchenMediaList){
-      list.add(PickedMedia(mediaPath: item.path, mediaType: item.mediaType, mediId: item.kitchenMediaId));
+
+  List<PickedMedia> getPickedMedia() {
+    List<PickedMedia> list = [];
+    for (var item in kitchenMediaList) {
+      list.add(PickedMedia(
+          mediaPath: item.path,
+          mediaType: item.mediaType,
+          mediId: item.kitchenMediaId));
     }
     return list;
   }
-  
 
-  factory KitchenModel.fromJson(Map<String, dynamic> json,
-      ) {
+  factory KitchenModel.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return KitchenModel(
-      
       addedDate: DateTime.parse(json["addedTime"] as String),
       kitchenId: json['kitchenId'] as String,
       kitchenName: json['kitchenName'] as String,
@@ -54,12 +57,11 @@ class KitchenMedia {
   String path;
   MediaType mediaType;
   String kitchenId;
-  
+
   KitchenMedia(
       {required this.mediaType,
       required this.path,
       required this.kitchenId,
-      
       required this.kitchenMediaId});
   Map<String, dynamic> toJson() {
     return {
@@ -67,31 +69,44 @@ class KitchenMedia {
       'path': path,
       'mediaType': mediaType.index,
       'kitchenId': kitchenId,
-      
     };
+  }
+  PickedMedia toPicekedMedi() {
+    return 
+      PickedMedia(mediaPath: path, mediaType: mediaType , mediId: kitchenMediaId,);
+    
   }
 
   factory KitchenMedia.fromJson(Map<String, dynamic> json) {
-   
     return KitchenMedia(
       kitchenMediaId: json["kitchenMediaId"] as String,
       path: json['path'] as String,
       mediaType: MediaType.values[json['mediaType'] as int],
       kitchenId: json['kitchenId'] as String,
-      
     );
   }
 }
 
-enum MediaType { image, video,unknown }
+enum MediaType { image, video, unknown }
 
 class PickedMedia {
   String mediaPath;
   String mediId;
   MediaType mediaType;
-  PickedMedia({required this.mediaPath, required this.mediaType,required this.mediId});
+  PickedMedia(
+      {required this.mediaPath, required this.mediaType, required this.mediId});
 
-  KitchenMedia intoKitchenMedia(String kitchenID){
-    return KitchenMedia(mediaType: mediaType, path: mediaPath, kitchenId: kitchenID, kitchenMediaId: mediId);
+  KitchenMedia intoKitchenMedia(String kitchenID) {
+    return KitchenMedia(
+        mediaType: mediaType,
+        path: mediaPath,
+        kitchenId: kitchenID,
+        kitchenMediaId: mediId);
   }
+
+  factory PickedMedia.fromJson(Map<String, dynamic> json) => PickedMedia(
+        mediId: json["kitchenMediaId"] as String,
+        mediaPath: json['path'] as String,
+        mediaType: MediaType.values[json['mediaType'] as int],
+      );
 }

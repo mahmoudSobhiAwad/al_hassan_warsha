@@ -60,3 +60,10 @@ final class RemovePickedMediaIndexEvent extends ViewEditAddEvent {
   final int index;
   RemovePickedMediaIndexEvent({required this.index});
 }
+
+final class ShowMoreHorizontalMedia extends ViewEditAddEvent {
+  final int offset;
+  final String kitchenId;
+  ShowMoreHorizontalMedia({required this.offset,required this.kitchenId});
+
+}

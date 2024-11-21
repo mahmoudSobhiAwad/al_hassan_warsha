@@ -77,7 +77,6 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
             path: item.mediaPath,
-            
             kitchenId: kitchenID,
             kitchenMediaId: item.mediId));
       }
@@ -101,6 +100,26 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 ''', [item]);
       }
       return true;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<List<PickedMedia>, Exception>> loadMoreMedia(
+      {required String kitchenId, required int offset}) async {
+    try {
+      List<PickedMedia> list = [];
+      final result = await dataBaseHelper.database.query(
+          galleryKitchenMediaTable,
+          where: 'kitchenId = ?',
+          whereArgs: [kitchenId],
+          limit: 5,
+          offset: offset);
+      for (var item in result) {
+        list.add(PickedMedia.fromJson(item));
+      }
+      return left(list);
     } catch (e) {
       throw Exception(e.toString());
     }

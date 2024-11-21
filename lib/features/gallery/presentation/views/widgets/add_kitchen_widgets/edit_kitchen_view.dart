@@ -1,10 +1,9 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/view_edit_add_bloc/bloc/view_edit_add_bloc.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/custom_media_list_with_pagination.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
 
@@ -81,39 +80,50 @@ class _EditKitchenViewState extends State<EditKitchenView> {
             height: 22,
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 "الوسائط",
                 style: AppFontStyles.extraBold25(context),
               ),
-              const Spacer(),
-              TextButton(
-                  onPressed: null,
-                  child: Text(
-                    "عرض المزيد",
-                    style: AppFontStyles.extraBold30(context)
-                        .copyWith(color: AppColors.blue),
-                  ))
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
+                "( ${widget.model.mediaCounter} )",
+                style: AppFontStyles.extraBold24(context),
+              ),
             ],
           ),
           const SizedBox(
             height: 22,
           ),
           widget.pickedList.isNotEmpty
-              ? MediaListExist(
+              ? MediaListInEditView(
                   addMore: (media) {
                     addedList.addAll(media);
 
                     widget.bloc.add(
                         RecieveMediaToAddMoreInEditEvent(medialList: media));
                   },
-                  enableClear: true,
                   pickedList: widget.pickedList,
                   removeIndex: (index) {
                     removedList.add(widget.pickedList[index].mediId);
                     widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
                     addedList.remove(widget.pickedList[index].mediaPath);
                   },
+                  fetchMoreKitchen: () {
+                    widget.model.mediaCounter >= 5
+                        ? widget.bloc.add(ShowMoreHorizontalMedia(
+                            kitchenId: widget.model.kitchenId,
+                            offset: (widget.pickedList.length -
+                                addedList.length +
+                                removedList.length)))
+                        : () {
+                          
+                        };
+                  },
+                  enableShowMore: widget.bloc.isLoadingEnabled,
                 )
               : EmptyUploadMedia(
                   addMedia: (media) {
