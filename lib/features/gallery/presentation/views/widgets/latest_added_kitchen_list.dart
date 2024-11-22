@@ -52,6 +52,7 @@ class AutoScrollingPageViewState extends State<AutoScrollingPageView> {
     return  AspectRatio(
             aspectRatio: 1225/250,
             child: PageView.builder(
+              
               controller: _pageController,
               itemCount: widget.kitchenModelList.length,
               itemBuilder: (context,index){
