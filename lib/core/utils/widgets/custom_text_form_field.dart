@@ -7,8 +7,10 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField(
       {super.key,
       this.maxLine,
+      this.initialValue,
       this.validator,
       this.controller,
+      this.textAlign,
       this.onChanged,
       this.enableFocusBorder = true,
       this.inputFormatters,
@@ -23,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
       this.enableBorder = true,
       this.prefixWidget,
       this.suffixWidget,
+      this.textStyle,
       this.enableFill = true,
       this.fillColor});
   final Widget? labelWidget;
@@ -44,20 +47,24 @@ class CustomTextFormField extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final bool enableFocusBorder;
   final TextEditingController? controller;
+  final TextAlign?textAlign;
+  final String?initialValue;
+  final TextStyle ?textStyle;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
     
+      textAlign: textAlign??TextAlign.start,
       validator: validator,
       controller: controller,
+      initialValue: initialValue,
       onChanged: onChanged,
       maxLines: maxLine ?? 1,
       inputFormatters: inputFormatters,
       keyboardType: textInputType,
       cursorColor: Colors.black,
-      style: AppFontStyles.extraBold18(context),
+      style:textStyle?? AppFontStyles.extraBold18(context),
       decoration: InputDecoration(
-        
         errorStyle: AppFontStyles.extraBold16(context),
         contentPadding: contentPadding,
         focusColor: Colors.black,

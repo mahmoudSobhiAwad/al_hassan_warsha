@@ -1,23 +1,23 @@
-class ColorModel {
+class ColorOrderModel {
   String colorId;
   String? colorName;
   int? colorDegree;
   String orderId;
-  ColorModel(
-      {required this.colorId,
+  ColorOrderModel(
+      {this.colorId = '',
       this.colorDegree,
       this.colorName,
-      required this.orderId});
-  Map<String, dynamic> toJson() {
+      this.orderId=''});
+  Map<String, dynamic> toJson({required String orderIdd}) {
     return {
       "colorId": colorId,
-      "orderId": orderId,
+      "orderId": orderIdd,
       if (colorName != null) "colorName": colorName,
       if (colorDegree != null) "colorDegree": colorDegree,
     };
   }
 
-  factory ColorModel.fromJson(Map<String, dynamic> json) => ColorModel(
+  factory ColorOrderModel.fromJson(Map<String, dynamic> json) => ColorOrderModel(
         orderId: json['orderId'] as String,
         colorId: json['colorId'] as String,
         colorDegree:

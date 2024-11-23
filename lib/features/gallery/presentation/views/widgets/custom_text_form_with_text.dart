@@ -2,10 +2,11 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text, this.validator,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
+      {super.key, required this.text,this.textAlign,this.textInnerStyle,this.initalText,this.validator,this.textInputType,this.inputFormatters,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
@@ -19,6 +20,11 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
   final GlobalKey<FormState>?formKey;
   final String? Function(String?v) ? validator;
   final void Function(String?v) ? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextInputType? textInputType;
+  final TextAlign? textAlign;
+  final String? initalText;
+  final TextStyle?textInnerStyle;
   
   @override
   Widget build(BuildContext context) {
@@ -33,9 +39,13 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
-          
+          textStyle: textInnerStyle,
+          textAlign:textAlign ,
+          textInputType: textInputType,
+          inputFormatters: inputFormatters,
           onChanged: onChanged,
           validator: validator,
+        
           prefixWidget: prefixIcon,
           suffixWidget: suffixIcon,
           maxLine: maxLine,
@@ -49,7 +59,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           labelWidget: Text(
             textLabel,
             maxLines: 1,
-            style: AppFontStyles.extraBold18(context)
+            style: AppFontStyles.extraBold14(context)
                 .copyWith(color: AppColors.lightGray2,),
           ),
         ),

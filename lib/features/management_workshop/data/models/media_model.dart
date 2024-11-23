@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
+import 'package:uuid/uuid.dart';
 
 class MediaOrderModel {
   String mediaId;
@@ -10,10 +11,18 @@ class MediaOrderModel {
       required this.mediaPath,
       required this.mediaType,
       required this.orderId});
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toEditJson() {
     return {
       "mediaId": mediaId,
       "orderId": orderId,
+      "mediaPath": mediaPath,
+      "mediaType": mediaType.index,
+    };
+  }
+   Map<String, dynamic> toAddJson({required String orderIdd}) {
+    return {
+      "mediaId":const Uuid().v4(),
+      "orderId": orderIdd,
       "mediaPath": mediaPath,
       "mediaType": mediaType.index,
     };

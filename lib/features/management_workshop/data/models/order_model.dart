@@ -6,23 +6,27 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_m
 
 class OrderModel {
   String orderId;
+  String orderName;
   String customerId;
   CustomerModel? customerModel;
-  ColorModel? colorModel;
+  ColorOrderModel? colorModel;
   String? kitchenType;
-  DateTime recieveTime;
+  DateTime? recieveTime;
   String? notice;
+  int mediaCounter;
   List<MediaOrderModel> mediaOrderList;
   List<ExtraInOrderModel> extraOrdersList;
   PillModel? pillModel;
 
   OrderModel(
       {this.mediaOrderList = const [],
-      required this.orderId,
+      this.orderId='',
       this.pillModel,
-      required this.customerId,
+      this.mediaCounter = 0,
+      this.customerId='',
       this.customerModel,
-      required this.recieveTime,
+      this.orderName='',
+      this.recieveTime,
       this.notice,
       this.colorModel,
       this.kitchenType,
@@ -31,8 +35,10 @@ class OrderModel {
   Map<String, dynamic> toJson() {
     return {
       "orderId": orderId,
-      "customerId":customerId,
-      "recieveTime": recieveTime.toIso8601String(),
+      "orderName":orderName,
+      "customerId": customerId,
+      "mediaCounter": mediaCounter,
+      "recieveTime": recieveTime?.toIso8601String(),
       if (notice != null) "notice": notice,
       if (kitchenType != null) "kitchenType": kitchenType,
     };
@@ -40,8 +46,10 @@ class OrderModel {
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
       orderId: json["orderId"] as String,
+      orderName: json["orderName"] as String,
       recieveTime: DateTime.parse(json['recieveTime'] as String),
       kitchenType: json['kitchenType'] as String,
       notice: json['notice'] as String,
+      mediaCounter: json['mediaCounter'] as int,
       customerId: json['customerId'] as String);
 }

@@ -1,0 +1,60 @@
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/show_color_in_big_pic.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/show_color_picker.dart';
+import 'package:flutter/material.dart';
+
+class GetColorForOrder extends StatelessWidget {
+  const GetColorForOrder({
+    super.key,
+    required this.colorOrderModel,
+    required this.changeColorValue,
+  });
+
+  final ColorOrderModel colorOrderModel;
+  final void Function(int p1) changeColorValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        flex: 2,
+        child: CustomColumnWithTextInAddNewType(
+          text: "اللون المطلوب",
+          onChanged: (value) {
+            colorOrderModel.colorName = value ?? "";
+          },
+          enableBorder: true,
+          textStyle: AppFontStyles.extraBold18(context),
+          textLabel: "حدد اسم اللون او اختار الدرجة المناسبة",
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              colorOrderModel.colorDegree != null
+                  ? IconButton(
+                      onPressed: () {
+                        showColorInBigMood(
+                            context,
+                            Color(
+                              colorOrderModel.colorDegree!,
+                            ));
+                      },
+                      icon: Icon(
+                        Icons.square,
+                        color:
+                            Color(colorOrderModel.colorDegree!),
+                      ))
+                  : const SizedBox(),
+              IconButton(
+                  onPressed: () {
+                    showColorPicker(context,
+                        onColorChanged: (color) {
+                      changeColorValue(color.value);
+                    });
+                  },
+                  icon: const Icon(Icons.color_lens_rounded)),
+            ],
+          ),
+        ));
+  }
+}

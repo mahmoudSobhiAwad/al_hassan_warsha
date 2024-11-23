@@ -4,9 +4,10 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:flutter/material.dart';
 
 class EmptyDataScreen extends StatelessWidget {
-  const EmptyDataScreen({super.key,this.emptyPushButtonText,this.emptyText});
+  const EmptyDataScreen({super.key,this.emptyPushButtonText,this.emptyText,this.onTap});
   final String? emptyText;
   final String? emptyPushButtonText;
+  final void Function() ?onTap;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -20,7 +21,7 @@ class EmptyDataScreen extends StatelessWidget {
               Image.asset(HomeAssets.emptySceen,width: 500,fit: BoxFit.scaleDown,),
               Text(emptyText??"",style: AppFontStyles.extraBold50(context),),
               const SizedBox(height: 24,),
-              CustomPushContainerButton(pushButtomText: emptyPushButtonText,),
+              CustomPushContainerButton(pushButtomText: emptyPushButtonText,borderRadius: 16,onTap: onTap,),
               const SizedBox(height: 24,),
             ],
           ),

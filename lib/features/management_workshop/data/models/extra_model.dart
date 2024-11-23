@@ -1,15 +1,24 @@
+import 'package:uuid/uuid.dart';
+
 class ExtraInOrderModel {
   String extraName;
   String orderId;
   String extraId;
   ExtraInOrderModel(
-      {required this.extraId, required this.extraName, required this.orderId});
+      {required this.extraId, required this.extraName, this.orderId=''});
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toEditJson() {
     return {
       "extraName": extraName,
       "orderId": orderId,
       "extraId": extraId,
+    };
+  }
+  Map<String, dynamic> toAddJson({required String orderIdd}) {
+    return {
+      "extraName": extraName,
+      "orderId": orderIdd,
+      "extraId":const Uuid().v4(),
     };
   }
 

@@ -2,27 +2,33 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/order_
 
 class CustomerModel {
   String customerId;
-  String customerName;
+  String? customerName;
   String? phone;
   String? secondPhone;
+  String? homeAddress;
   List<OrderModel> orderModelList;
   CustomerModel(
-      {required this.customerId,
-      required this.customerName,
+      {required this.customerId ,
+      this.customerName = '',
       this.orderModelList = const [],
       this.phone,
+      this.homeAddress,
       this.secondPhone});
   factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
       customerId: json['customerId'] as String,
-      phone: json['phone'] as String,
-      secondPhone: json['secondPhone'] as String,
+      phone: json['phone'] != null ? json['phone'] as String : null,
+      secondPhone:
+          json['secondPhone'] != null ? json['secondPhone'] as String : null,
+      homeAddress:
+          json['homeAddress'] != null ? json['homeAddress'] as String : null,
       customerName: json['customerName'] as String);
   Map<String, dynamic> toJson() {
     return {
       'customerId': customerId,
       'customerName': customerName,
       if (phone != null) 'phone': phone,
-      if (phone != null) 'secondPhone': secondPhone,
+      if (secondPhone != null) 'secondPhone': secondPhone,
+      if (homeAddress != null) 'homeAddress': homeAddress,
     };
   }
 }

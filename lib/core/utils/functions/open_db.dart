@@ -6,6 +6,6 @@ Future<Database> openDatabaseHelper() async {
   var databaseFactory = databaseFactoryFfi;
   return databaseFactory.openDatabase(path,
       options: OpenDatabaseOptions(
-        version: 3,
+        version: 5,
       ));
 }
