@@ -1,5 +1,7 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/extra_model.dart';
@@ -9,17 +11,19 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class OrderDetails extends StatelessWidget {
-  const OrderDetails({
-    super.key,
-    required this.orderModel,
-    required this.colorOrderModel,
-    required this.changeColorValue,
-    required this.changeDate,
-    required this.changekitchenTypeValue,
-    required this.addMore,
-    required this.extraList,
-    required this.delteItem,
-  });
+  const OrderDetails(
+      {super.key,
+      required this.orderModel,
+      required this.colorOrderModel,
+      required this.changeColorValue,
+      required this.changeDate,
+      required this.changekitchenTypeValue,
+      required this.addMore,
+      required this.extraList,
+      required this.delteItem,
+      required this.pickedMeidaList,
+      required this.addMoreMedia,
+      required this.delteMedia});
   final OrderModel orderModel;
   final ColorOrderModel colorOrderModel;
   final void Function(int) changeColorValue;
@@ -28,6 +32,10 @@ class OrderDetails extends StatelessWidget {
   final List<ExtraInOrderModel> extraList;
   final void Function() addMore;
   final void Function(int index) delteItem;
+  final void Function(List<String>) addMoreMedia;
+  final void Function(int index) delteMedia;
+  final List<PickedMedia> pickedMeidaList;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,32 +82,22 @@ class OrderDetails extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-
-              /// incase of there are media
-              // SizedBox(
-              //   height: MediaQuery.sizeOf(context).height*0.2,
-              //   child: const ListOfOneKitchenType(enableInner:false,enableClose: true,)),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                decoration: BoxDecoration(
-                  color: AppColors.veryLightGray,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Text(
-                        "ارفع بعض الصور ومقاطع الفيديو الخاصة بالمنتج ",
-                        style: AppFontStyles.extraBold28(context),
-                      ),
-                      const Icon(
-                        Icons.cloud_upload,
-                        size: 40,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              pickedMeidaList.isNotEmpty
+                  ? MediaListExist(
+                      addMore: (media) {
+                        addMoreMedia(media);
+                      },
+                      enableClear: true,
+                      pickedList: pickedMeidaList,
+                      removeIndex: (index) {
+                        delteMedia(index);
+                      },
+                    )
+                  : EmptyUploadMedia(
+                      addMedia: (media) {
+                        addMoreMedia(media);
+                      },
+                    ),
               const SizedBox(
                 height: 16,
               ),

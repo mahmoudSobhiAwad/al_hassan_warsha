@@ -34,3 +34,5 @@ final class ChangeKitchenTypeState extends ManagementState {}
 final class ChangeRecieveDateState extends ManagementState {}
 
 final class ChangeExtraListLengthState extends ManagementState {}
+
+final class ChangeMediaPickingOrRemovingState extends ManagementState {}

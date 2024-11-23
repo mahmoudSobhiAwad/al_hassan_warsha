@@ -47,11 +47,12 @@ class AddOrderBody extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: OrderDetails(
-                addMore: (){
+                pickedMeidaList: bloc.mediaOrderList,
+                addMore: () {
                   bloc.add(AddExtraInOrder());
                 },
-                delteItem: (index){
-                  bloc.add(RemoveExtraItem(index:index));
+                delteItem: (index) {
+                  bloc.add(RemoveExtraItem(index: index));
                 },
                 extraList: bloc.extraOrdersList,
                 colorOrderModel: bloc.colorModel,
@@ -64,6 +65,12 @@ class AddOrderBody extends StatelessWidget {
                 },
                 changekitchenTypeValue: (type) {
                   bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
+                },
+                addMoreMedia: (media) {
+                  bloc.add(AddMediaInAddOrder(list: media));
+                },
+                delteMedia: (int index) {
+                  bloc.add(RemoveMediItemEvent(index: index));
                 },
               ),
             ),
@@ -83,7 +90,6 @@ class AddOrderBody extends StatelessWidget {
                 },
               ),
             ),
-            
             const SliverToBoxAdapter(
               child: SizedBox(
                 height: 20,

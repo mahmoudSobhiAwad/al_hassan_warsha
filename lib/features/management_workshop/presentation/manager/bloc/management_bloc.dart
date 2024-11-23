@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/extra_model.dart';
@@ -24,6 +26,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<ChangeKitchenTypeEvent>(changeType);
     on<AddExtraInOrder>(addMoreExtra);
     on<RemoveExtraItem>(deleteMoreExtra);
+    on<AddMediaInAddOrder>(addMediaInOrder);
+    on<RemoveMediItemEvent>(delteMediaItem);
   }
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
@@ -31,7 +35,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   // add order
   bool isLoadingAddOrder = true;
   OrderModel orderModel = OrderModel(orderId: const Uuid().v1());
-  List<MediaOrderModel> mediaOrderList = [];
+  List<PickedMedia> mediaOrderList = [];
   CustomerModel customerModel = CustomerModel(customerId: const Uuid().v8());
   PillModel pillModel = PillModel(pillId: const Uuid().v4());
 
@@ -87,12 +91,21 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   }
 
   void prepareOrderModelBeforeSend() {
+    List<MediaOrderModel> mediaList = [];
     orderModel.colorModel = colorModel;
     orderModel.customerId = customerModel.customerId;
     orderModel.customerModel = customerModel;
     orderModel.extraOrdersList = extraOrdersList;
     orderModel.mediaCounter = mediaOrderList.length;
-    orderModel.mediaOrderList = mediaOrderList;
+    orderModel.pillModel = pillModel;
+    for (var item in mediaOrderList) {
+      mediaList.add(MediaOrderModel(
+          mediaId: "",
+          mediaPath: item.mediaPath,
+          mediaType: item.mediaType,
+          orderId: ""));
+    }
+    orderModel.mediaOrderList = mediaList;
   }
 
   FutureOr<void> changeColor(
@@ -123,5 +136,20 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       RemoveExtraItem event, Emitter<ManagementState> emit) async {
     extraOrdersList.removeAt(event.index);
     emit(ChangeExtraListLengthState());
+  }
+
+  FutureOr<void> delteMediaItem(
+      RemoveMediItemEvent event, Emitter<ManagementState> emit) async {
+    mediaOrderList.removeAt(event.index);
+    emit(ChangeMediaPickingOrRemovingState());
+  }
+
+  FutureOr<void> addMediaInOrder(
+      AddMediaInAddOrder event, Emitter<ManagementState> emit) async {
+    for (var item in event.list) {
+      mediaOrderList.add(PickedMedia(
+          mediaPath: item, mediaType: getMediaType(item), mediId: ''));
+    }
+    emit(ChangeMediaPickingOrRemovingState());
   }
 }

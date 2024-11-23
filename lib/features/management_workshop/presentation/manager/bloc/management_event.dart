@@ -39,3 +39,11 @@ final class RemoveExtraItem extends ManagementEvent {
   final int index;
   RemoveExtraItem({required this.index});
 }
+final class AddMediaInAddOrder extends ManagementEvent {
+  final List<String> list;
+  AddMediaInAddOrder({required this.list});
+}
+final class RemoveMediItemEvent extends ManagementEvent {
+  final int index;
+  RemoveMediItemEvent({required this.index});
+}
