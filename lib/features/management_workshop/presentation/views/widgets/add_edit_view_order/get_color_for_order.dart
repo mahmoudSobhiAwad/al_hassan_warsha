@@ -13,7 +13,7 @@ class GetColorForOrder extends StatelessWidget {
   });
 
   final ColorOrderModel colorOrderModel;
-  final void Function(int p1) changeColorValue;
+  final void Function(int p1)? changeColorValue;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +24,8 @@ class GetColorForOrder extends StatelessWidget {
           onChanged: (value) {
             colorOrderModel.colorName = value ?? "";
           },
+          controller: TextEditingController(text: colorOrderModel.colorName??""),
+          readOnly:changeColorValue==null?true:false ,
           enableBorder: true,
           textStyle: AppFontStyles.extraBold18(context),
           textLabel: "حدد اسم اللون او اختار الدرجة المناسبة",
@@ -41,18 +43,18 @@ class GetColorForOrder extends StatelessWidget {
                       },
                       icon: Icon(
                         Icons.square,
-                        color:
-                            Color(colorOrderModel.colorDegree!),
+                        color: Color(colorOrderModel.colorDegree!),
                       ))
                   : const SizedBox(),
-              IconButton(
-                  onPressed: () {
-                    showColorPicker(context,
-                        onColorChanged: (color) {
-                      changeColorValue(color.value);
-                    });
-                  },
-                  icon: const Icon(Icons.color_lens_rounded)),
+              changeColorValue != null
+                  ? IconButton(
+                      onPressed: () {
+                        showColorPicker(context, onColorChanged: (color) {
+                          changeColorValue!(color.value);
+                        });
+                      },
+                      icon: const Icon(Icons.color_lens_rounded))
+                  : const SizedBox(),
             ],
           ),
         ));

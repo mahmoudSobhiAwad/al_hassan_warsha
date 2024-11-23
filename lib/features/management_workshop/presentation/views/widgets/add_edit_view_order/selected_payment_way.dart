@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class SelectedPaymentWay extends StatelessWidget {
   const SelectedPaymentWay(
-      {super.key, required this.onPressed, required this.optionPaymentWay});
-  final void Function(OptionPaymentWay) onPressed;
+      {super.key, this.onPressed, required this.optionPaymentWay});
+  final void Function(OptionPaymentWay)? onPressed;
   final OptionPaymentWay optionPaymentWay;
   @override
   Widget build(BuildContext context) {
@@ -21,12 +21,15 @@ class SelectedPaymentWay extends StatelessWidget {
           PaymentOptionWidget(
             label: "الدفع عند الاستلام",
             isSelected: optionPaymentWay == OptionPaymentWay.atRecieve,
-            onPressed: () => onPressed(OptionPaymentWay.atRecieve),
+            onPressed: () => onPressed == null
+                ? null
+                : onPressed!(OptionPaymentWay.atRecieve),
           ),
           PaymentOptionWidget(
             label: "الدفع علي دفعات",
             isSelected: optionPaymentWay == OptionPaymentWay.onSteps,
-            onPressed: () => onPressed(OptionPaymentWay.onSteps),
+            onPressed: () =>
+                onPressed == null ? null : onPressed!(OptionPaymentWay.onSteps),
           ),
         ],
       )
@@ -39,12 +42,12 @@ class PaymentOptionWidget extends StatelessWidget {
     super.key,
     required this.label,
     required this.isSelected,
-    required this.onPressed,
+    this.onPressed,
   });
 
   final String label;
   final bool isSelected;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

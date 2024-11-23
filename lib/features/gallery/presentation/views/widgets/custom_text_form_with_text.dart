@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text,this.textAlign,this.textInnerStyle,this.initalText,this.validator,this.textInputType,this.inputFormatters,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
+      {super.key, required this.text,this.textAlign,this.readOnly=false,this.textInnerStyle,this.initalText,this.validator,this.textInputType,this.inputFormatters,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
   final String textLabel;
   final String ?suffixText;
   final bool enableBorder;
+  final bool readOnly;
   final Widget?suffixIcon;
   final Widget?prefixIcon;
   final double?borderWidth;
@@ -39,13 +40,13 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
+          readOnly: readOnly,
           textStyle: textInnerStyle,
           textAlign:textAlign ,
           textInputType: textInputType,
           inputFormatters: inputFormatters,
           onChanged: onChanged,
           validator: validator,
-        
           prefixWidget: prefixIcon,
           suffixWidget: suffixIcon,
           maxLine: maxLine,

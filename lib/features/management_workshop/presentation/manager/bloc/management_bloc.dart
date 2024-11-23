@@ -9,7 +9,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/order_
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/repos/management_repo_impl.dart';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 part 'management_event.dart';
 part 'management_state.dart';
@@ -28,19 +28,24 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<RemoveExtraItem>(deleteMoreExtra);
     on<AddMediaInAddOrder>(addMediaInOrder);
     on<RemoveMediItemEvent>(delteMediaItem);
+    on<AddNewOrderEvent>(addNewOrder);
   }
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
 
   // add order
+  String orderId = const Uuid().v1();
+  String customerId = const Uuid().v4();
+
   bool isLoadingAddOrder = true;
-  OrderModel orderModel = OrderModel(orderId: const Uuid().v1());
+  OrderModel orderModel = OrderModel();
   List<PickedMedia> mediaOrderList = [];
-  CustomerModel customerModel = CustomerModel(customerId: const Uuid().v8());
+  CustomerModel customerModel = CustomerModel(customerId: "");
   PillModel pillModel = PillModel(pillId: const Uuid().v4());
 
   ColorOrderModel colorModel = ColorOrderModel(colorId: const Uuid().v6());
   List<ExtraInOrderModel> extraOrdersList = [];
+  final fromKey=GlobalKey<FormState>();
   //
 
   FutureOr<void> getAllOrders(
@@ -92,11 +97,14 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
 
   void prepareOrderModelBeforeSend() {
     List<MediaOrderModel> mediaList = [];
+    orderModel.orderId = orderId;
+    orderModel.customerId = customerId;
+    customerModel.customerId = customerId;
     orderModel.colorModel = colorModel;
-    orderModel.customerId = customerModel.customerId;
     orderModel.customerModel = customerModel;
     orderModel.extraOrdersList = extraOrdersList;
     orderModel.mediaCounter = mediaOrderList.length;
+    pillModel.customerName = customerModel.customerName ?? "";
     orderModel.pillModel = pillModel;
     for (var item in mediaOrderList) {
       mediaList.add(MediaOrderModel(

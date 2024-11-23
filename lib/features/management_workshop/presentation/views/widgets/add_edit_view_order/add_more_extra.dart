@@ -6,22 +6,25 @@ import 'package:flutter/material.dart';
 
 class AddsForOrder extends StatelessWidget {
   const AddsForOrder(
-      {super.key,
-      required this.list,
-      required this.addMore,
-      required this.removeItem});
+      {super.key, required this.list, this.addMore, this.removeItem});
   final List<ExtraInOrderModel> list;
-  final void Function() addMore;
-  final void Function(int) removeItem;
+  final void Function()? addMore;
+  final void Function(int)? removeItem;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "اضافات للمنتج",
-          style: AppFontStyles.extraBold18(context),
-        ),
+        addMore == null && list.isEmpty
+            ? Text(
+                "لا يوجد اي اضافات ",
+                style: AppFontStyles.bold24(context),
+                textAlign: TextAlign.center,
+              )
+            : Text(
+                "اضافات للمنتج",
+                style: AppFontStyles.extraBold18(context),
+              ),
         const SizedBox(
           height: 10,
         ),
@@ -33,18 +36,23 @@ class AddsForOrder extends StatelessWidget {
               return SizedBox(
                 width: 200,
                 child: CustomTextFormField(
+                  readOnly: removeItem == null ? true : false,
+                  controller:
+                      TextEditingController(text: list[index].extraName),
                   onChanged: (value) {
                     list[index].extraName = value;
                   },
                   borderRadius: 12,
-                  suffixWidget: IconButton(
-                      onPressed: () {
-                        removeItem(index);
-                      },
-                      icon: const Icon(
-                        Icons.delete,
-                        color: AppColors.red,
-                      )),
+                  suffixWidget: removeItem != null
+                      ? IconButton(
+                          onPressed: () {
+                            removeItem!(index);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: AppColors.red,
+                          ))
+                      : null,
                   borderColor: AppColors.lightGray2,
                   borderWidth: 1,
                   fillColor: AppColors.white,
@@ -53,25 +61,27 @@ class AddsForOrder extends StatelessWidget {
                 ),
               );
             }),
-            InkWell(
-              onTap: addMore,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    color: AppColors.lightGray1,
-                    borderRadius: BorderRadius.circular(12)),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "المزيد",
-                      style: AppFontStyles.extraBold18(context),
+            addMore == null
+                ? const SizedBox()
+                : InkWell(
+                    onTap: addMore,
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          color: AppColors.lightGray1,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "المزيد",
+                            style: AppFontStyles.extraBold18(context),
+                          ),
+                          const Icon(Icons.add)
+                        ],
+                      ),
                     ),
-                    const Icon(Icons.add)
-                  ],
-                ),
-              ),
-            ),
+                  ),
           ],
         ),
       ],

@@ -11,16 +11,18 @@ class RowOrderItems extends StatelessWidget {
     super.key,
     required this.orderModel,
     required this.colorOrderModel,
-    required this.changeColorValue,
-    required this.changekitchenTypeValue,
-    required this.changeDate,
+    this.changeColorValue,
+    this.changekitchenTypeValue,
+    this.changeDate,
+    this.formKey,
   });
 
   final OrderModel orderModel;
   final ColorOrderModel colorOrderModel;
-  final void Function(int p1) changeColorValue;
-  final void Function(String p1) changekitchenTypeValue;
-  final void Function(DateTime p1) changeDate;
+  final void Function(int p1)? changeColorValue;
+  final void Function(String p1)? changekitchenTypeValue;
+  final void Function(DateTime p1)? changeDate;
+  final GlobalKey<FormState>? formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +31,20 @@ class RowOrderItems extends StatelessWidget {
         Expanded(
             flex: 3,
             child: CustomColumnWithTextInAddNewType(
-                text: "اسم المطبخ",
+                formKey: formKey,
+                text: "اسم الطلب",
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return "اسم الطلب لا يمكن ان يكون خاليا ";
+                  }
+                  return null;
+                },
                 onChanged: (value) {
                   orderModel.orderName = value ?? "";
                 },
                 enableBorder: true,
+                readOnly: formKey == null ? true : false,
+                controller: TextEditingController(text: orderModel.orderName),
                 textStyle: AppFontStyles.extraBold18(context),
                 textLabel: "")),
         const Expanded(child: SizedBox()),
@@ -51,46 +62,59 @@ class RowOrderItems extends StatelessWidget {
               },
               textStyle: AppFontStyles.extraBold18(context),
               textLabel: "",
+              readOnly: formKey == null ? true : false,
               controller: TextEditingController(text: orderModel.kitchenType),
-              suffixIcon: PopupMenuButton(
-                onSelected: (value) {
-                  changekitchenTypeValue(value);
-                },
-                color: AppColors.lightGray1,
-                icon: const Icon(Icons.expand_more_outlined),
-                itemBuilder: (BuildContext context) {
-                  return [
-                    ...List.generate(
-                        5,
-                        (index) => PopupMenuItem(
-                              value: "$index",
-                              child: Text("$index"),
-                            ))
-                  ];
-                },
-              ),
+              suffixIcon: changekitchenTypeValue != null
+                  ? PopupMenuButton(
+                      onSelected: (value) {
+                        changekitchenTypeValue!(value);
+                      },
+                      color: AppColors.lightGray1,
+                      icon: const Icon(Icons.expand_more_outlined),
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          ...List.generate(
+                              5,
+                              (index) => PopupMenuItem(
+                                    value: "$index",
+                                    child: Text("$index"),
+                                  ))
+                        ];
+                      },
+                    )
+                  : null,
             )),
         const Expanded(child: SizedBox()),
         Expanded(
             flex: 2,
             child: CustomColumnWithTextInAddNewType(
+              formKey: formKey,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "تاريخ الاستلام لا يمكن ان يكون خاليا ";
+                }
+                return null;
+              },
               controller: TextEditingController(
                   text: orderModel.recieveTime?.toString() ?? ""),
               text: " تاريخ الاستلام ",
               enableBorder: true,
+              readOnly: true,
               textStyle: AppFontStyles.extraBold18(context),
               textLabel: "",
               suffixIcon: IconButton(
                 onPressed: () {
-                  showDatePicker(
-                          context: context,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(DateTime.now().year + 1))
-                      .then((value) {
-                    if (value != null) {
-                      changeDate(value);
-                    }
-                  });
+                  changeDate != null
+                      ? showDatePicker(
+                              context: context,
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(DateTime.now().year + 1))
+                          .then((value) {
+                          if (value != null) {
+                            changeDate!(value);
+                          }
+                        })
+                      : null;
                 },
                 icon: const Icon(Icons.calendar_month_rounded),
               ),

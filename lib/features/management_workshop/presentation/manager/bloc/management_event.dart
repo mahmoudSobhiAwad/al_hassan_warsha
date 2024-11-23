@@ -47,3 +47,4 @@ final class RemoveMediItemEvent extends ManagementEvent {
   final int index;
   RemoveMediItemEvent({required this.index});
 }
+

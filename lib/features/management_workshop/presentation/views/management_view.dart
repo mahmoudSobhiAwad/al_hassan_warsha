@@ -33,7 +33,12 @@ class ManagementView extends StatelessWidget {
                 ? ManagmentBody(bloc: bloc)
                 : EmptyDataScreen(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AddEditViewOrder(bloc: bloc,)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddEditViewOrder(
+                                    bloc: bloc,
+                                  )));
                     },
                     emptyPushButtonText: "اضافة طلب جديد",
                     emptyText: "لا يوجد اي طلبات حاليا لدي الورشة",
@@ -93,6 +98,7 @@ class ManagmentBody extends StatelessWidget {
                     const SliverToBoxAdapter(child: FullTableHeader()),
                     const SliverToBoxAdapter(child: ExpandedDivider()),
                     ListOfOrder(
+                      bloc: bloc,
                       orderList: bloc.ordersList,
                     ),
                     const SliverToBoxAdapter(
@@ -100,12 +106,19 @@ class ManagmentBody extends StatelessWidget {
                         height: 16,
                       ),
                     ),
-                    const SliverToBoxAdapter(
+                    SliverToBoxAdapter(
                         child: Center(
                             child: CustomPushContainerButton(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AddEditViewOrder(bloc: bloc)));
+                      },
                       pushButtomText: "طلب جديد",
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 10),
                       borderRadius: 12,
                     ))),
                   ],

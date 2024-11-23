@@ -1,4 +1,7 @@
+import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
+import 'package:al_hassan_warsha/features/home/data/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
@@ -16,6 +19,15 @@ class ManagementRepoImpl implements ManagementRepo {
   Future<Either<String, String>> createManagmentTables() async {
     try {
       await dataBaseHelper.database.execute('''
+CREATE TABLE $customerTableName (
+ customerId TEXT PRIMARY KEY,
+  customerName TEXT NOT NULL,
+  phone TEXT,
+  secondPhone TEXT,
+  homeAddress TEXT,
+);
+''');
+      await dataBaseHelper.database.execute('''
 CREATE TABLE $orderTableName (
   orderId TEXT PRIMARY KEY,
   customerId TEXT NOT NULL,
@@ -27,14 +39,7 @@ CREATE TABLE $orderTableName (
   FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
 );
 ''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $customerTableName (
- customerId TEXT PRIMARY KEY,
-  customerName TEXT NOT NULL,
-  phone TEXT,
-  secondPhone TEXT
-);
-''');
+
       await dataBaseHelper.database.execute('''
 CREATE TABLE $colorTableName (
  colorId TEXT PRIMARY KEY,
@@ -90,26 +95,31 @@ pillId TEXT PRIMARY KEY,
           where: 'customerId = ?',
           whereArgs: [item['customerId']],
         );
+        
         final colorResult = await dataBaseHelper.database.query(
           colorTableName,
           where: 'orderId   = ?',
           whereArgs: [item['orderId']],
         );
+        
         final mediaResult = await dataBaseHelper.database.query(
           mediaOrderTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
+       
         final extraResult = await dataBaseHelper.database.query(
           extraOrderTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
+        
         final pillResult = await dataBaseHelper.database.query(
           pillTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
+       
 
         CustomerModel? customerModel = customerResult.isNotEmpty
             ? CustomerModel.fromJson(customerResult.first)
@@ -148,6 +158,7 @@ pillId TEXT PRIMARY KEY,
 
       // add customer model into db
       if (model.customerModel != null) {
+       
         await dataBaseHelper.database
             .insert(customerTableName, model.customerModel!.toJson());
       }
@@ -155,25 +166,27 @@ pillId TEXT PRIMARY KEY,
       if (model.colorModel != null) {
         await dataBaseHelper.database.insert(
             colorTableName, model.colorModel!.toJson(orderIdd: model.orderId));
-        // add extra list into db
-        if (model.extraOrdersList.isNotEmpty) {
-          for (var item in model.extraOrdersList) {
-            await dataBaseHelper.database.insert(
-                extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
-          }
-        }
-        // add media into db
-        if (model.mediaOrderList.isNotEmpty) {
-          for (var item in model.mediaOrderList) {
-            await dataBaseHelper.database.insert(
-                mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
-          }
-        }
-        // add pill payment
-        if (model.pillModel != null) {
+      }
+      // add extra list into db
+      if (model.extraOrdersList.isNotEmpty) {
+        for (var item in model.extraOrdersList) {
           await dataBaseHelper.database.insert(
-              pillTableName, model.pillModel!.toJson(orderIdd: model.orderId));
+              extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
         }
+      }
+      // add media into db
+      if (model.mediaOrderList.isNotEmpty) {
+        for (var item in model.mediaOrderList) {
+          item.mediaPath = await copyMediaFile(item.mediaPath,
+              item.mediaType == MediaType.image ? imageFolder : videoFolder);
+          await dataBaseHelper.database.insert(
+              mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+        }
+      }
+      // add pill payment
+      if (model.pillModel != null) {
+        await dataBaseHelper.database.insert(
+            pillTableName, model.pillModel!.toJson(orderIdd: model.orderId));
       }
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {

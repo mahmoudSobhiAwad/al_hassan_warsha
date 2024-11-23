@@ -26,20 +26,8 @@ class KitchenGalleryCustomView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomAppBar(
-            currIndex: 0,
-            changeIndex: (pageIndex) {
-              if (pageIndex != 0) {
-                Navigator.pop(context);
-                bloc.add(ChangeBarIndexEvent(currBarIndex: pageIndex));
-              }
-            }),
-        const SizedBox(
-          height: 24,
-        ),
         Expanded(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

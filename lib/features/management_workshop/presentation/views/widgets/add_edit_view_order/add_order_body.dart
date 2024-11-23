@@ -15,97 +15,99 @@ class AddOrderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        child: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  AppBarWithLinking(items: ["إدارة الورشة", "اضافة عمل جديد"]),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomPushContainerButton(
-                      pushButtomText: "استيراد من المعرض",
-                      iconBehind: Icons.file_upload_outlined,
-                      borderRadius: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: CustomerInfoInOrder(
-                model: bloc.customerModel,
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 16,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: OrderDetails(
-                pickedMeidaList: bloc.mediaOrderList,
-                addMore: () {
-                  bloc.add(AddExtraInOrder());
-                },
-                delteItem: (index) {
-                  bloc.add(RemoveExtraItem(index: index));
-                },
-                extraList: bloc.extraOrdersList,
-                colorOrderModel: bloc.colorModel,
-                orderModel: bloc.orderModel,
-                changeColorValue: (value) {
-                  bloc.add(ChangeColorOfOrderEvent(colorValue: value));
-                },
-                changeDate: (time) {
-                  bloc.add(ChangeDateOfOrderEvent(dateTime: time));
-                },
-                changekitchenTypeValue: (type) {
-                  bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
-                },
-                addMoreMedia: (media) {
-                  bloc.add(AddMediaInAddOrder(list: media));
-                },
-                delteMedia: (int index) {
-                  bloc.add(RemoveMediItemEvent(index: index));
-                },
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 16,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: BillDetails(
-                changeStepsCounter: (increase) {
-                  bloc.add(ChangeCounterOfStepsInPillEvent(increase: increase));
-                },
-                pillModel: bloc.pillModel,
-                onChangePayment: (paymentWay) {
-                  bloc.add(ChangeOptionPaymentEvent(paymentWay: paymentWay));
-                },
-              ),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 20,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: Center(
+    return Form(
+      key: bloc.fromKey,
+      child: Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
+          child: CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(
+                child: Align(
+                  alignment: Alignment.centerLeft,
                   child: CustomPushContainerButton(
-                onTap: () {
-                  bloc.prepareOrderModelBeforeSend();
-                },
-                pushButtomText: "اضافة الطلب",
-                borderRadius: 16,
-              )),
-            ),
-          ],
+                    pushButtomText: "استيراد من المعرض",
+                    iconBehind: Icons.file_upload_outlined,
+                    borderRadius: 16,
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: CustomerInfoInOrder(
+                  formKey: bloc.fromKey,
+                  model: bloc.customerModel,
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 16,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: OrderDetails(
+                  pickedMeidaList: bloc.mediaOrderList,
+                  formKey: bloc.fromKey,
+                  addMore: () {
+                    bloc.add(AddExtraInOrder());
+                  },
+                  delteItem: (index) {
+                    bloc.add(RemoveExtraItem(index: index));
+                  },
+                  extraList: bloc.extraOrdersList,
+                  colorOrderModel: bloc.colorModel,
+                  orderModel: bloc.orderModel,
+                  changeColorValue: (value) {
+                    bloc.add(ChangeColorOfOrderEvent(colorValue: value));
+                  },
+                  changeDate: (time) {
+                    bloc.add(ChangeDateOfOrderEvent(dateTime: time));
+                  },
+                  changekitchenTypeValue: (type) {
+                    bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
+                  },
+                  addMoreMedia: (media) {
+                    bloc.add(AddMediaInAddOrder(list: media));
+                  },
+                  delteMedia: (int index) {
+                    bloc.add(RemoveMediItemEvent(index: index));
+                  },
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 16,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: BillDetails(
+                  changeStepsCounter: (increase) {
+                    bloc.add(ChangeCounterOfStepsInPillEvent(increase: increase));
+                  },
+                  pillModel: bloc.pillModel,
+                  onChangePayment: (paymentWay) {
+                    bloc.add(ChangeOptionPaymentEvent(paymentWay: paymentWay));
+                  },
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 20,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Center(
+                    child: CustomPushContainerButton(
+                  onTap: () {
+                    if (bloc.fromKey.currentState!.validate()) {
+                      bloc.add(AddNewOrderEvent());
+                    }
+                  },
+                  pushButtomText: "اضافة الطلب",
+                  borderRadius: 16,
+                )),
+              ),
+            ],
+          ),
         ),
       ),
     );

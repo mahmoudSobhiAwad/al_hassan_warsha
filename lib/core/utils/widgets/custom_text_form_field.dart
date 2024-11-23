@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
       this.enableFocusBorder = true,
       this.inputFormatters,
       this.textInputType,
+      this.readOnly = false,
       this.suffixText,
       this.suffixTextStyle,
       this.labelWidget,
@@ -47,14 +48,15 @@ class CustomTextFormField extends StatelessWidget {
   final EdgeInsets? contentPadding;
   final bool enableFocusBorder;
   final TextEditingController? controller;
-  final TextAlign?textAlign;
-  final String?initialValue;
-  final TextStyle ?textStyle;
+  final TextAlign? textAlign;
+  final String? initialValue;
+  final TextStyle? textStyle;
+  final bool readOnly;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-    
-      textAlign: textAlign??TextAlign.start,
+      readOnly: readOnly,
+      textAlign: textAlign ?? TextAlign.start,
       validator: validator,
       controller: controller,
       initialValue: initialValue,
@@ -63,7 +65,7 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       keyboardType: textInputType,
       cursorColor: Colors.black,
-      style:textStyle?? AppFontStyles.extraBold18(context),
+      style: textStyle ?? AppFontStyles.extraBold18(context),
       decoration: InputDecoration(
         errorStyle: AppFontStyles.extraBold16(context),
         contentPadding: contentPadding,

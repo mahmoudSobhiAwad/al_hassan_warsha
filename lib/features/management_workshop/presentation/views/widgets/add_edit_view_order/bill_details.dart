@@ -10,11 +10,13 @@ class BillDetails extends StatelessWidget {
   const BillDetails(
       {super.key,
       required this.pillModel,
-      required this.onChangePayment,
-      required this.changeStepsCounter});
+      this.onChangePayment,
+      this.formKey,
+      this.changeStepsCounter});
   final PillModel pillModel;
-  final void Function(OptionPaymentWay) onChangePayment;
-  final void Function(bool) changeStepsCounter;
+  final void Function(OptionPaymentWay)? onChangePayment;
+  final void Function(bool)? changeStepsCounter;
+  final GlobalKey<FormState>? formKey;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,6 +38,16 @@ class BillDetails extends StatelessWidget {
                   child: CustomColumnWithTextInAddNewType(
                     text: "المبلغ الكلي",
                     textLabel: "",
+                    readOnly: changeStepsCounter == null ? true : false,
+                    controller:
+                        TextEditingController(text: pillModel.totalMoney),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "المبلغ الكلي لا يمكن ان يكون خاليا ";
+                      }
+                      return null;
+                    },
+                    formKey: formKey,
                     textInnerStyle: AppFontStyles.extraBold24(context),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
@@ -58,8 +70,17 @@ class BillDetails extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: CustomColumnWithTextInAddNewType(
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "المقدم لا يمكن ان يكون خاليا ";
+                      }
+                      return null;
+                    },
                     text: "المقدم ",
                     textLabel: "",
+                    readOnly: changeStepsCounter == null ? true : false,
+                    controller: TextEditingController(text: pillModel.interior),
+                    formKey: formKey,
                     textInnerStyle: AppFontStyles.extraBold24(context),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
@@ -96,6 +117,7 @@ class BillDetails extends StatelessWidget {
                       },
                       text: "عدد الدفعات",
                       textAlign: TextAlign.center,
+                      readOnly: changeStepsCounter == null ? true : false,
                       textLabel: "",
                       controller: TextEditingController(
                           text: pillModel.stepsCounter.toString()),
@@ -107,30 +129,33 @@ class BillDetails extends StatelessWidget {
                       ],
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
-                      suffixIcon: IconButton(
-                          onPressed: () {
-                            changeStepsCounter(true);
-                          },
-                          icon: const Icon(
-                            Icons.add_circle_outlined,
-                            size: 30,
-                          )),
-                      prefixIcon: IconButton(
-                          onPressed: () {
-                            changeStepsCounter(false);
-                          },
-                          icon: const Icon(
-                            CupertinoIcons.minus_circle_fill,
-                            color: Colors.black,
-                            size: 30,
-                          )),
+                      suffixIcon: changeStepsCounter != null
+                          ? IconButton(
+                              onPressed: () {
+                                changeStepsCounter!(true);
+                              },
+                              icon: const Icon(
+                                Icons.add_circle_outlined,
+                                size: 30,
+                              ))
+                          : const SizedBox(),
+                      prefixIcon: changeStepsCounter != null
+                          ? IconButton(
+                              onPressed: () {
+                                changeStepsCounter!(false);
+                              },
+                              icon: const Icon(
+                                CupertinoIcons.minus_circle_fill,
+                                color: Colors.black,
+                                size: 30,
+                              ))
+                          : const SizedBox(),
                     )),
                 OptionPaymentWay.atRecieve => const SizedBox()
               }
             ],
           ),
         ),
-        
       ],
     );
   }

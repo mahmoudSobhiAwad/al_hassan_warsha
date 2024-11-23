@@ -20,6 +20,7 @@ class OrderDetails extends StatelessWidget {
       required this.changekitchenTypeValue,
       required this.addMore,
       required this.extraList,
+      this.formKey,
       required this.delteItem,
       required this.pickedMeidaList,
       required this.addMoreMedia,
@@ -35,6 +36,7 @@ class OrderDetails extends StatelessWidget {
   final void Function(List<String>) addMoreMedia;
   final void Function(int index) delteMedia;
   final List<PickedMedia> pickedMeidaList;
+  final GlobalKey<FormState>?formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class OrderDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RowOrderItems(
+                formKey: formKey,
                   orderModel: orderModel,
                   colorOrderModel: colorOrderModel,
                   changeColorValue: changeColorValue,

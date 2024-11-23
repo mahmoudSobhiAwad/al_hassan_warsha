@@ -7,8 +7,12 @@ class CustomerInfoInOrder extends StatelessWidget {
   const CustomerInfoInOrder({
     super.key,
     required this.model,
+    this.formKey,
+    this.isReadOnly = false,
   });
   final CustomerModel model;
+  final GlobalKey<FormState>? formKey;
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,11 +32,21 @@ class CustomerInfoInOrder extends StatelessWidget {
               Expanded(
                   flex: 3,
                   child: CustomColumnWithTextInAddNewType(
+                      formKey: formKey,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "اسم العميل  لا يمكن ان يكون خاليا ";
+                        }
+                        return null;
+                      },
                       onChanged: (String? value) {
                         model.customerName = value ?? "";
                       },
+                      controller:
+                          TextEditingController(text: model.customerName ?? ""),
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
+                      readOnly: isReadOnly,
                       text: "اسم العميل",
                       textLabel: "")),
               const Expanded(child: SizedBox()),
@@ -44,6 +58,9 @@ class CustomerInfoInOrder extends StatelessWidget {
                       },
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
+                      readOnly: isReadOnly,
+                      controller:
+                          TextEditingController(text: model.phone ?? ""),
                       text: "رقم الهاتف",
                       textLabel: "")),
               const Expanded(child: SizedBox()),
@@ -55,6 +72,9 @@ class CustomerInfoInOrder extends StatelessWidget {
                       },
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
+                      readOnly: isReadOnly,
+                      controller:
+                          TextEditingController(text: model.secondPhone ?? ""),
                       text: "رقم هاتف احتياطي ",
                       textLabel: "")),
               const Expanded(child: SizedBox()),
@@ -66,6 +86,9 @@ class CustomerInfoInOrder extends StatelessWidget {
                       },
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
+                      readOnly: isReadOnly,
+                      controller:
+                          TextEditingController(text: model.homeAddress ?? ""),
                       text: "عنوان المنزل",
                       textLabel: "")),
             ],

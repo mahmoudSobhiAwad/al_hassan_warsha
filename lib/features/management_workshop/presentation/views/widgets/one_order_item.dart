@@ -1,68 +1,62 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
 import 'package:flutter/material.dart';
 
 class OneOrderItem extends StatelessWidget {
-  const OneOrderItem({super.key});
-
+  const OneOrderItem({super.key, required this.orderModel});
+  final OrderModel orderModel;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
       decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          width: 2,
-          color: AppColors.lightGray2
-        )
-      ),
-      child: const Row(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(width: 2, color: AppColors.lightGray2)),
+      child: Row(
         children: [
           Expanded(
               child: CustomTextWithTheSameStyle(
-            text: "مطبخ امريكي-فرز اول",
+            text: orderModel.orderName,
           )),
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 2,
               child: CustomTextWithTheSameStyle(
-                text:
-                    "مطبخ امريكي-فرز اول- استيراد خارجي خالص من اي عيوب وضد الكسر و ....",
+                text: orderModel.notice ?? "غير محدد",
               )),
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: "14/10/2024",
+                text: orderModel.recieveTime.toString(),
               )),
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: "محمد علي السيد",
+                text: orderModel.customerModel?.customerName ?? "",
               )),
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: "011145469898",
+                text: orderModel.customerModel?.phone ?? "غير محدد",
               )),
-          Expanded(child: SizedBox()),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: " تل البلد-الحمادة ",
-              )),
-          Expanded(child: SizedBox()),
+                  text: orderModel.customerModel?.homeAddress ??"غير محدد",)),
+          const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: " 15000 جنية",
+                text: orderModel.pillModel?.totalMoney ?? "",
               )),
         ],
       ),
     );
   }
 }
-
