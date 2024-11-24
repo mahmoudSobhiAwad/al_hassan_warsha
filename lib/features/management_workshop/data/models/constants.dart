@@ -1,3 +1,6 @@
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
+import 'package:flutter/material.dart';
+
 const String orderTableName = 'orderTable';
 const String customerTableName = 'customer';
 const String colorTableName = 'colorTable';
@@ -39,3 +42,35 @@ List<SearchModel> searchList = [
   SearchModel(valueArSearh: " عنوان العميل", valueEnSearh: "homeAddress"),
   SearchModel(valueArSearh: "نوع المطبخ", valueEnSearh: "kitchenType"),
 ];
+
+enum MoreVertAction { edit, delete, viewProfile, deliver, notDeliever }
+
+class MoreVerModel {
+  String text;
+  IconData icon;
+  MoreVertAction moreVertEnum;
+  MoreVerModel(
+      {required this.icon, required this.moreVertEnum, required this.text});
+}
+
+List<MoreVerModel> moreVerList(OrderStatus orderStatus) {
+  return [
+    MoreVerModel(
+        icon: Icons.edit, moreVertEnum: MoreVertAction.edit, text: "تعديل "),
+    MoreVerModel(
+        icon: Icons.delete, moreVertEnum: MoreVertAction.delete, text: "حذف "),
+    MoreVerModel(
+        icon: Icons.person,
+        moreVertEnum: MoreVertAction.viewProfile,
+        text: "عرض الملف الشخصي"),
+    orderStatus == OrderStatus.finished
+        ? MoreVerModel(
+            icon: Icons.restart_alt_outlined,
+            moreVertEnum: MoreVertAction.notDeliever,
+            text: " عدم تسليم الطلب")
+        : MoreVerModel(
+            icon: Icons.check,
+            moreVertEnum: MoreVertAction.deliver,
+            text: " تسليم الطلب"),
+  ];
+}

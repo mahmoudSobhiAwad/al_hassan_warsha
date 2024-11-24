@@ -284,10 +284,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     final result = await managementRepoImpl.deleteCurrentOrder(
         event.orderId, event.mediaList);
     result.fold((success) {
-      int index =
-          ordersList.indexWhere((test) => test.orderId == event.orderId);
-      ordersList.removeAt(index);
-      categorizedList.where((item) => item.orderId == event.orderId);
+      ordersList.removeWhere((test) => test.orderId == event.orderId);
+      categorizedList.removeWhere((item) => item.orderId == event.orderId);
       emit(DeletedOrderSuccessState());
     }, (error) {
       emit(DeletedOrderFailureState(errMessage: error));

@@ -70,7 +70,6 @@ class SearchBarInManagment extends StatelessWidget {
                       onPressed: searchFunc,
                       icon: const Icon(
                         Icons.search,
-                        color: AppColors.lightGray2,
                         size: 30,
                       )),
                 ],

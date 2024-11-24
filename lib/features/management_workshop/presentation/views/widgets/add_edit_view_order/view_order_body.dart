@@ -5,6 +5,7 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/act
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/media_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_more_extra.dart';
@@ -131,12 +132,36 @@ class ShowOneOrderBody extends StatelessWidget {
                     },
                     text_2: "حذف الطلب",
                     onPressed_2: () {
-                      deleteOrder(
-                          orderModel.orderId, orderModel.mediaOrderList);
+                      showDialog(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (context) {
+                            return Dialog(
+                              child: CustomAlert(
+                                title: "هل أنت متأكد من حذف هذا الطلب ؟",
+                                enableIcon: false,
+                                actionButtonsInstead:
+                                    DialogAddNewTypeActionButton(
+                                  onPressed_1: () {
+                                    Navigator.pop(context);
+                                    deleteOrder(orderModel.orderId,
+                                        orderModel.mediaOrderList);
+                                  },
+                                  onPressed_2: () {
+                                    Navigator.pop(context);
+                                  },
+                                  text_1: "حذف",
+                                  text_2: "إلغاء",
+                                  color_1: AppColors.red,
+                                  color_2: AppColors.green,
+                                ),
+                              ),
+                            );
+                          });
                     },
                   )
                 : Center(
-                  child: CustomPushContainerButton(
+                    child: CustomPushContainerButton(
                       onTap: () {
                         markAsDone(orderModel.orderId, false);
                       },
@@ -145,7 +170,7 @@ class ShowOneOrderBody extends StatelessWidget {
                       iconBehind: Icons.restart_alt_rounded,
                       pushButtomText: " تمييز كغير مسلم",
                     ),
-                ),
+                  ),
           )
         ],
       ),
