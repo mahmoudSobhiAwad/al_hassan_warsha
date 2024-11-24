@@ -94,3 +94,14 @@ final class SearchForOrderEvent extends ManagementEvent {
   final bool enable;
   SearchForOrderEvent({required this.enable});
 }
+
+final class ChangeCategrizedListEvent extends ManagementEvent {
+  final int index;
+  ChangeCategrizedListEvent({required this.index});
+}
+
+final class MarkOrderAsDelievredEvent extends ManagementEvent {
+  final String orderId;
+  final bool makeItDone;
+  MarkOrderAsDelievredEvent({required this.orderId,required this.makeItDone});
+}

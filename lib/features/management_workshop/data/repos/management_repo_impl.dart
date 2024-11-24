@@ -33,6 +33,7 @@ CREATE TABLE $orderTableName (
   customerId TEXT NOT NULL,
   recieveTime TEXT NOT NULL,
   orderName TEXT NOT NULL,
+  orderStatus INTEGER DEFAULT 0,
   kitchenType TEXT,
   notice TEXT,
   mediaCounter INTEGER DEFAULT 0,
@@ -320,8 +321,21 @@ pillId TEXT PRIMARY KEY,
       orderModel.pillModel = pillModel;
       return orderModel;
     } catch (e) {
-      print(e.toString());
+     
       throw (e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, String>> markOrderAsDone(
+      String orderId, int status) async {
+    try {
+      await dataBaseHelper.database.rawUpdate(
+          'Update $orderTableName SET orderStatus = ? WHERE orderId = ? ',
+          [status, orderId]);
+      return left("success");
+    } catch (e) {
+      return right(e.toString());
     }
   }
 }

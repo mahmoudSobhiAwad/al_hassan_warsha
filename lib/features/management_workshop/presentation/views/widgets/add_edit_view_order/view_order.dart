@@ -25,15 +25,17 @@ class ShowOneOrderView extends StatelessWidget {
                   builder: (context) =>
                       EditOrderView(bloc: bloc, orderModel: state.model)));
         } else if (state is DeletedOrderSuccessState) {
-        Navigator.pop(context);
-           showCustomSnackBar(
+          Navigator.pop(context);
+          showCustomSnackBar(
             context,
             "تم الحذف بنجاح",
           );
-          
         } else if (state is DeletedOrderFailureState) {
           showCustomSnackBar(context, state.errMessage ?? "",
               backgroundColor: AppColors.red);
+        } else if (state is MakeOrderDeliverOrNotSuccessState) {
+          Navigator.pop(context);
+          showCustomSnackBar(context, state.successMessage ?? "");
         }
       },
       child: Directionality(
@@ -51,6 +53,10 @@ class ShowOneOrderView extends StatelessWidget {
                   ],
                 ),
                 ShowOneOrderBody(
+                  markAsDone: (orderId, check) {
+                    bloc.add(MarkOrderAsDelievredEvent(
+                        orderId: orderId, makeItDone: check));
+                  },
                   deleteOrder: (orderId, list) {
                     bloc.add(
                         DeleteOrderEvent(mediaList: list, orderId: orderId));

@@ -1,6 +1,5 @@
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/one_table_content.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/table_header.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 
 class FinancialBody extends StatefulWidget {

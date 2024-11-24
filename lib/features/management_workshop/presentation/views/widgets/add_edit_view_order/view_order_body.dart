@@ -14,16 +14,17 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class ShowOneOrderBody extends StatelessWidget {
-  const ShowOneOrderBody({
-    super.key,
-    required this.orderModel,
-    required this.navToEdit,
-    required this.deleteOrder,
-  });
+  const ShowOneOrderBody(
+      {super.key,
+      required this.orderModel,
+      required this.navToEdit,
+      required this.deleteOrder,
+      required this.markAsDone});
 
   final OrderModel orderModel;
   final void Function(OrderModel orderModel) navToEdit;
-  final void Function( String , List<MediaOrderModel>) deleteOrder;
+  final void Function(String, List<MediaOrderModel>) deleteOrder;
+  final void Function(String, bool) markAsDone;
 
   @override
   Widget build(BuildContext context) {
@@ -122,14 +123,30 @@ class ShowOneOrderBody extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-              child: DialogAddNewTypeActionButton(
-            text_1: "تم تسليمة",
-            onPressed_1: () {},
-            text_2: "حذف الطلب",
-            onPressed_2: () {
-              deleteOrder(orderModel.orderId,orderModel.mediaOrderList);
-            },
-          )),
+            child: orderModel.orderStatus != OrderStatus.finished
+                ? DialogAddNewTypeActionButton(
+                    text_1: " تسليم الطلب",
+                    onPressed_1: () {
+                      markAsDone(orderModel.orderId, true);
+                    },
+                    text_2: "حذف الطلب",
+                    onPressed_2: () {
+                      deleteOrder(
+                          orderModel.orderId, orderModel.mediaOrderList);
+                    },
+                  )
+                : Center(
+                  child: CustomPushContainerButton(
+                      onTap: () {
+                        markAsDone(orderModel.orderId, false);
+                      },
+                      color: AppColors.red,
+                      borderRadius: 14,
+                      iconBehind: Icons.restart_alt_rounded,
+                      pushButtomText: " تمييز كغير مسلم",
+                    ),
+                ),
+          )
         ],
       ),
     ));

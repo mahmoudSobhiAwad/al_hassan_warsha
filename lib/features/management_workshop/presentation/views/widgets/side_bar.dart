@@ -3,11 +3,23 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/side_bar_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/side_bar_item.dart';
 import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 
 class SideBarManagement extends StatelessWidget {
-  const SideBarManagement({super.key});
-
+  const SideBarManagement(
+      {super.key,
+      required this.finishedLength,
+      required this.nearLenght,
+      required this.changeIndex,
+      required this.currIndex,
+      required this.neverLength,
+      required this.totalLength});
+  final int totalLength;
+  final int finishedLength;
+  final int neverLength;
+  final int nearLenght;
+  final int currIndex;
+  final void Function(int) changeIndex;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,8 +41,47 @@ class SideBarManagement extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                   (context, index) => Padding(
                         padding: const EdgeInsets.only(bottom: 18),
-                        child: SideBarManagementItem(
-                          model: sideBarManagementItemList[index],
+                        child: InkWell(
+                          onTap: () {
+                            changeIndex(index);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: index == currIndex
+                                ? BoxDecoration(
+                                    border: Border.all(
+                                        width: 2, color: AppColors.brown),
+                                    borderRadius: BorderRadius.circular(12))
+                                : null,
+                            child: [
+                              SideBarManagementItem(
+                                model: SideBarManagementModel(
+                                    backgroundColor: AppColors.blueGray,
+                                    numberOfItem: totalLength.toString(),
+                                    title: 'العدد الكلي'),
+                              ),
+                              SideBarManagementItem(
+                                model: SideBarManagementModel(
+                                    backgroundColor: AppColors.green,
+                                    numberOfItem: finishedLength.toString(),
+                                    title: 'تم التسليم',
+                                    icon: Icons.check),
+                              ),
+                              SideBarManagementItem(
+                                model: SideBarManagementModel(
+                                    backgroundColor: AppColors.orange,
+                                    numberOfItem: nearLenght.toString(),
+                                    title: 'اقترب تسليمه',
+                                    icon: Icons.hourglass_empty_rounded),
+                              ),
+                              SideBarManagementItem(
+                                  model: SideBarManagementModel(
+                                      backgroundColor: AppColors.red,
+                                      numberOfItem: neverLength.toString(),
+                                      title: 'لم يتم تسليمه',
+                                      icon: Icons.close_rounded)),
+                            ][index],
+                          ),
                         ),
                       ),
                   childCount: sideBarManagementItemList.length))

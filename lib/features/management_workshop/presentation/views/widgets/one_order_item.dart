@@ -21,7 +21,6 @@ class OneOrderItem extends StatelessWidget {
               child: CustomTextWithTheSameStyle(
             text: orderModel.orderName,
           )),
-          
           const Expanded(child: SizedBox()),
           Expanded(
               flex: 1,
@@ -51,7 +50,18 @@ class OneOrderItem extends StatelessWidget {
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-                text: NumberFormat.decimalPattern('ar').format(double.parse(orderModel.pillModel!.totalMoney)),
+                  text: switch (orderModel.orderStatus) {
+                null => "",
+                OrderStatus.neverDone => "لم يتم التسليم",
+                OrderStatus.veryNear => "اقترب التسليم",
+                OrderStatus.finished => "تم التسليم"
+              })),
+          const Expanded(child: SizedBox()),
+          Expanded(
+              flex: 1,
+              child: CustomTextWithTheSameStyle(
+                text: NumberFormat.decimalPattern('ar')
+                    .format(double.parse(orderModel.pillModel!.totalMoney)),
               )),
         ],
       ),

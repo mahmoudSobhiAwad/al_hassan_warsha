@@ -12,6 +12,7 @@ class SearchBarInManagment extends StatelessWidget {
       this.enableLastIcon = true,
       required this.changeSearchType,
       required this.searchFunc,
+      this.searchKeyWord,
       required this.changeSearchText,
       required this.searchKey});
   final bool enableLastIcon;
@@ -19,7 +20,7 @@ class SearchBarInManagment extends StatelessWidget {
   final void Function(String) changeSearchText;
   final void Function() searchFunc;
   final SearchModel searchKey;
-  
+  final String? searchKeyWord;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class SearchBarInManagment extends StatelessWidget {
               fillColor: Colors.white,
               borderRadius: 12,
               onChanged: changeSearchText,
+              controller: TextEditingController(text: searchKeyWord),
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
               labelWidget: Text(

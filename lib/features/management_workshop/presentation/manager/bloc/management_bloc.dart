@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
@@ -37,6 +38,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<ChangeCurrentYearEvent>(changeCurrentYear);
     on<ChangeSearchKeyEvent>(changeSearchKey);
     on<SearchForOrderEvent>(searchForOrder);
+    on<ChangeCategrizedListEvent>(categorizeList);
+    on<MarkOrderAsDelievredEvent>(markOrderAsDoneOrNotDone);
   }
   // get all order
   bool isLoadingAllOrders = true;
@@ -44,8 +47,10 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   //
 
   //filter
+  List<OrderModel> categorizedList = [];
   SearchModel searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
   String searchKeyWord = '';
+  int currIndex = 0;
   List<OrderModel> searchList = [];
   bool enableSearchMode = false;
   int currentYear = DateTime.now().year;
@@ -54,7 +59,6 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   // add order
   String orderId = const Uuid().v1();
   String customerId = const Uuid().v4();
-
   bool isLoadingAddOrder = true;
   OrderModel orderModel = OrderModel();
   List<PickedMedia> mediaOrderList = [];
@@ -75,13 +79,15 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   // functions
   FutureOr<void> getAllOrders(
       GetAllOrdersEvent event, Emitter<ManagementState> emit) async {
-    ordersList = [];
+    ordersList.clear();
+    categorizedList.clear();
     isLoadingAllOrders = true;
     emit(LoadingGetAllOrdersState());
     final result = await managementRepoImpl.getAllOrders(
         month: currentMonth, year: currentYear);
     result.fold((list) {
       ordersList.addAll(list);
+      categorizedList.addAll(list);
       isLoadingAllOrders = false;
       emit(SuccessGetAllOrdersState());
     }, (error) {
@@ -281,6 +287,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       int index =
           ordersList.indexWhere((test) => test.orderId == event.orderId);
       ordersList.removeAt(index);
+      categorizedList.where((item) => item.orderId == event.orderId);
       emit(DeletedOrderSuccessState());
     }, (error) {
       emit(DeletedOrderFailureState(errMessage: error));
@@ -328,5 +335,59 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
       emit(CloseSearchState());
     }
+  }
+
+  FutureOr<void> categorizeList(
+      ChangeCategrizedListEvent event, Emitter<ManagementState> emit) async {
+    if (currIndex != event.index) {
+      currIndex = event.index;
+      categorizedList.clear();
+      switch (event.index) {
+        case 0:
+          categorizedList.addAll(ordersList);
+          break;
+        case 1:
+          categorizedList = ordersList
+              .where((item) => item.orderStatus == OrderStatus.finished)
+              .toList();
+          break;
+        case 2:
+          categorizedList = ordersList
+              .where((item) => item.orderStatus == OrderStatus.veryNear)
+              .toList();
+          break;
+        case 3:
+          categorizedList = ordersList
+              .where((item) => item.orderStatus != OrderStatus.finished)
+              .toList();
+          break;
+      }
+      emit(ChangeCategorizedState());
+    }
+  }
+
+  FutureOr<void> markOrderAsDoneOrNotDone(
+      MarkOrderAsDelievredEvent event, Emitter<ManagementState> emit) async {
+    emit(LoadingEditOrderModelState());
+
+    final result = await managementRepoImpl.markOrderAsDone(
+        event.orderId, event.makeItDone ? 2 : 0);
+    return result.fold((success) {
+      ordersList
+              .firstWhere((item) => item.orderId == event.orderId)
+              .orderStatus =
+          event.makeItDone ? OrderStatus.finished : OrderStatus.neverDone;
+      categorizedList
+              .firstWhere((item) => item.orderId == event.orderId)
+              .orderStatus =
+          event.makeItDone ? OrderStatus.finished : OrderStatus.neverDone;
+      emit(MakeOrderDeliverOrNotSuccessState(
+          successMessage: event.makeItDone
+              ? "تم تسليم الطلب بنجاح "
+              : "ارجاع الطلب الي العناصر الغير المسلمة"));
+    }, (error) {
+      log(error);
+      emit(FailureEditOrderModelState(errMessage: error));
+    });
   }
 }

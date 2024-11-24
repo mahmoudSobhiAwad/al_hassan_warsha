@@ -85,3 +85,11 @@ final class FailureGetSearchedOrderState extends ManagementState {
   final String? errMessage;
   FailureGetSearchedOrderState({this.errMessage});
 }
+final class ChangeCategorizedState extends ManagementState {
+  
+  ChangeCategorizedState();
+}
+final class MakeOrderDeliverOrNotSuccessState extends ManagementState {
+  final String ?successMessage;
+  MakeOrderDeliverOrNotSuccessState({this.successMessage});
+}

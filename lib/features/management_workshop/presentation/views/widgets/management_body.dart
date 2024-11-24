@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
@@ -24,7 +25,23 @@ class ManagmentBody extends StatelessWidget {
     return Expanded(
       child: Row(
         children: [
-          const Expanded(child: SideBarManagement()),
+          Expanded(
+              child: SideBarManagement(
+            neverLength: bloc.ordersList
+                .where((item) => item.orderStatus != OrderStatus.finished)
+                .length,
+            finishedLength: bloc.ordersList
+                .where((item) => item.orderStatus == OrderStatus.finished)
+                .length,
+            totalLength: bloc.ordersList.length,
+            nearLenght: bloc.ordersList
+                .where((item) => item.orderStatus == OrderStatus.veryNear)
+                .length,
+            changeIndex: (index) {
+              bloc.add(ChangeCategrizedListEvent(index: index));
+            },
+            currIndex: bloc.currIndex,
+          )),
           Expanded(
             flex: 4,
             child: Padding(
@@ -43,10 +60,9 @@ class ManagmentBody extends StatelessWidget {
                         if (bloc.searchKeyWord.trim().isNotEmpty &&
                             bloc.searchKey.valueArSearh.isNotEmpty) {
                           bloc.add(SearchForOrderEvent(enable: true));
-                        } else {
-                          print("empty types");
                         }
                       },
+                      searchKeyWord: bloc.searchKeyWord,
                       searchKey: bloc.searchKey,
                       changeSearchText: (text) {
                         bloc.searchKeyWord = text;
@@ -63,7 +79,9 @@ class ManagmentBody extends StatelessWidget {
                               bloc: bloc,
                               backToMain: () {
                                 bloc.add(SearchForOrderEvent(enable: false));
-                              }, searchedList: bloc.searchList, isSearchLoading: bloc.isSearchLoading,
+                              },
+                              searchedList: bloc.searchList,
+                              isSearchLoading: bloc.isSearchLoading,
                             ),
                           );
                         }),
@@ -116,13 +134,13 @@ class OrderListWithFilter extends StatelessWidget {
             ? const Center(
                 child: CircularProgressIndicator(),
               )
-            : bloc.ordersList.isNotEmpty
+            : bloc.categorizedList.isNotEmpty
                 ? Expanded(
                     child: CustomScrollView(
                       slivers: [
                         ListOfOrder(
                           bloc: bloc,
-                          orderList: bloc.ordersList,
+                          orderList: bloc.categorizedList,
                         ),
                       ],
                     ),

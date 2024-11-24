@@ -18,6 +18,7 @@ class OrderModel {
   List<MediaOrderModel> mediaOrderList;
   List<ExtraInOrderModel> extraOrdersList;
   PillModel? pillModel;
+  OrderStatus? orderStatus;
 
   OrderModel(
       {this.mediaOrderList = const [],
@@ -28,6 +29,7 @@ class OrderModel {
       this.customerModel,
       this.orderName = '',
       this.recieveTime,
+      this.orderStatus,
       this.notice,
       this.colorModel,
       this.kitchenType,
@@ -42,14 +44,17 @@ class OrderModel {
       "recieveTime": recieveTime?.toIso8601String(),
       if (notice != null) "notice": notice,
       if (kitchenType != null) "kitchenType": kitchenType,
+      if (orderStatus != null) "orderStatus": orderStatus!.index,
     };
   }
+
   OrderModel copyWith({
     String? orderId,
     String? customerId,
     String? orderName,
     CustomerModel? customerModel,
     ColorOrderModel? colorModel,
+    OrderStatus? orderStatus,
     String? kitchenType,
     DateTime? recieveTime,
     String? notice,
@@ -60,6 +65,7 @@ class OrderModel {
   }) {
     return OrderModel(
       orderId: orderId ?? this.orderId,
+      orderStatus: orderStatus ?? this.orderStatus,
       orderName: orderName ?? this.orderName,
       customerId: customerId ?? this.customerId,
       customerModel: customerModel ?? this.customerModel,
@@ -89,9 +95,20 @@ class OrderModel {
       orderId: json["orderId"] as String,
       orderName: json["orderName"] as String,
       recieveTime: DateTime.parse(json['recieveTime'] as String),
+      orderStatus: json['orderStatus'] as int == 2
+          ? OrderStatus.finished
+          : DateTime.parse(json['recieveTime'] as String)
+                      .difference(DateTime.now())
+                      .inDays
+                      .abs() <=
+                  3
+              ? OrderStatus.veryNear
+              : OrderStatus.neverDone,
       kitchenType:
           json['kitchenType'] != null ? json['kitchenType'] as String : null,
       notice: json['notice'] != null ? json['notice'] as String : null,
       mediaCounter: json['mediaCounter'] as int,
       customerId: json['customerId'] as String);
 }
+
+enum OrderStatus { neverDone, veryNear, finished }

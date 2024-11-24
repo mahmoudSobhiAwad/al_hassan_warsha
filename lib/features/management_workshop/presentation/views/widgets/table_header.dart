@@ -19,6 +19,8 @@ class TableHeader extends StatelessWidget {
         Expanded(child: SizedBox()),
         Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "عنوان العميل",)),
         Expanded(child: SizedBox()),
+        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: " حالة الطلب",)),
+        Expanded(child: SizedBox()),
         Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "المبلغ المطلوب",)),
         
       ],

@@ -9,4 +9,5 @@ abstract class ManagementRepo {
   Future<Either<String, String>> editCurrentOrder(OrderModel model,List<String> removedMediPaths, List<String> removedExtra);
   Future<Either<String, String>> deleteCurrentOrder(String orderId,List<MediaOrderModel>list);
   Future<Either<List<OrderModel>, String>> searchForOrders(String searchKey,String parma);
+  Future<Either<String, String>> markOrderAsDone(String orderId,int status);
 }
