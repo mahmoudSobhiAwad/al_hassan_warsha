@@ -85,9 +85,15 @@ pillId TEXT PRIMARY KEY,
   }
 
   @override
-  Future<Either<List<OrderModel>, String>> getAllOrders() async {
+  Future<Either<List<OrderModel>, String>> getAllOrders({required int month,required int year}) async {
     try {
-      final orderReuslt = await dataBaseHelper.database.query(orderTableName);
+      String monthString =
+          month.toString().padLeft(2, '0'); // Ensure 2-digit format
+      String yearString = year.toString();
+      final orderReuslt = await dataBaseHelper.database.query(orderTableName,
+          where:
+              "strftime('%Y', recieveTime) = ? AND strftime('%m', recieveTime) = ?",
+          whereArgs: [yearString, monthString]);
       List<OrderModel> orderModelList = [];
       for (var item in orderReuslt) {
         final customerResult = await dataBaseHelper.database.query(

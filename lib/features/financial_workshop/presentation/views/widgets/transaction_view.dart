@@ -53,9 +53,9 @@ class _TranscationViewState extends State<TranscationView> {
               height: 24,
             ),
           ),
-          const SliverToBoxAdapter(
+           SliverToBoxAdapter(
             child: FilterOrdersWithMonthYear(
-              title: "تاريخ التحويلات",
+              title: "تاريخ التحويلات", changeMonth: (month ) {  }, searchFor: () {  }, changeYear: (time ) {  },
             ),
           ),
           const SliverToBoxAdapter(

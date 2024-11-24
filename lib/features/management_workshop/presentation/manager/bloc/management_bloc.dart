@@ -32,11 +32,11 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<NavToEditEvent>(navToEdit);
     on<EditOrderEvent>(editCurrentOrder);
     on<DeleteOrderEvent>(deleteCurrentOrder);
-   
   }
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
-
+  int currentYear = DateTime.now().year;
+  int currentMonth = DateTime.now().month;
   // add order
   String orderId = const Uuid().v1();
   String customerId = const Uuid().v4();
@@ -58,7 +58,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       GetAllOrdersEvent event, Emitter<ManagementState> emit) async {
     isLoadingAllOrders = true;
     emit(LoadingGetAllOrdersState());
-    final result = await managementRepoImpl.getAllOrders();
+    final result = await managementRepoImpl.getAllOrders(month: currentMonth,year: currentYear);
     result.fold((list) {
       ordersList.addAll(list);
       isLoadingAllOrders = false;

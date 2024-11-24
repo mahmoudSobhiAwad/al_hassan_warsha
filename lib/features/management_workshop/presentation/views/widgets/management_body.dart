@@ -37,7 +37,11 @@ class ManagmentBody extends StatelessWidget {
                     const SizedBox(
                       height: 24,
                     ),
-                    const FilterOrdersWithMonthYear(),
+                    FilterOrdersWithMonthYear(
+                      changeMonth: (month) {},
+                      changeYear: (time) {},
+                      searchFor: () {},
+                    ),
                     const SizedBox(
                       height: 12,
                     ),
