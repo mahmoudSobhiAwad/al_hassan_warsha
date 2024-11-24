@@ -5,20 +5,14 @@ class ExtraInOrderModel {
   String orderId;
   String extraId;
   ExtraInOrderModel(
-      {required this.extraId, required this.extraName, this.orderId=''});
+      {required this.extraId, required this.extraName, this.orderId = ''});
 
-  Map<String, dynamic> toEditJson() {
+  
+  Map<String, dynamic> toAddJson({String? orderIdd}) {
     return {
       "extraName": extraName,
-      "orderId": orderId,
-      "extraId": extraId,
-    };
-  }
-  Map<String, dynamic> toAddJson({required String orderIdd}) {
-    return {
-      "extraName": extraName,
-      "orderId": orderIdd,
-      "extraId":const Uuid().v4(),
+      "orderId": orderIdd ?? orderId,
+      "extraId": const Uuid().v4(),
     };
   }
 

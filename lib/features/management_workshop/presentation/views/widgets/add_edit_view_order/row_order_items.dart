@@ -5,6 +5,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/color_
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/get_color_for_order.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class RowOrderItems extends StatelessWidget {
   const RowOrderItems({
@@ -96,7 +97,10 @@ class RowOrderItems extends StatelessWidget {
                 return null;
               },
               controller: TextEditingController(
-                  text: orderModel.recieveTime?.toString() ?? ""),
+                  text: orderModel.recieveTime != null
+                      ? DateFormat('d MMMM y', 'ar')
+                          .format(orderModel.recieveTime ?? DateTime.now())
+                      : ""),
               text: " تاريخ الاستلام ",
               enableBorder: true,
               readOnly: true,
@@ -106,6 +110,7 @@ class RowOrderItems extends StatelessWidget {
                 onPressed: () {
                   changeDate != null
                       ? showDatePicker(
+                              locale: const Locale('ar'),
                               context: context,
                               firstDate: DateTime.now(),
                               lastDate: DateTime(DateTime.now().year + 1))

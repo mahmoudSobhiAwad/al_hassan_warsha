@@ -3,6 +3,7 @@ import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_ba
 import 'package:al_hassan_warsha/features/home/presentation/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:window_manager/window_manager.dart';
@@ -24,6 +25,14 @@ class Alwarsha extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBasicBloc()..add(CheckDbExistEvent()),
       child: MaterialApp(
+        supportedLocales: const [
+          Locale('ar'), // Arabic
+          Locale('en'), // English (if needed)
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           iconTheme: const IconThemeData(color: Colors.black),

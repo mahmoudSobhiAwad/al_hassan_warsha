@@ -7,17 +7,17 @@ class PillModel {
   int stepsCounter;
   String customerName;
   PillModel({
-     this.customerName='',
-     this.interior="0.0",
-     this.optionPaymentWay=OptionPaymentWay.atRecieve,
-     this.orderId='',
-     this.pillId='',
-     this.stepsCounter=0,
-     this.totalMoney="0.0",
+    this.customerName = '',
+    this.interior = "0.0",
+    this.optionPaymentWay = OptionPaymentWay.atRecieve,
+    this.orderId = '',
+    this.pillId = '',
+    this.stepsCounter = 0,
+    this.totalMoney = "0.0",
   });
-  Map<String, dynamic> toJson({required String orderIdd}) {
+  Map<String, dynamic> toJson({String? orderIdd}) {
     return {
-      "orderId": orderIdd,
+      "orderId": orderIdd ?? orderId,
       "pillId": pillId,
       "totalMoney": totalMoney,
       "interior": interior,
@@ -26,7 +26,6 @@ class PillModel {
       "customerName": customerName,
     };
   }
- 
 
   factory PillModel.fromJson(Map<String, dynamic> json) => PillModel(
       customerName: json["customerName"] as String,

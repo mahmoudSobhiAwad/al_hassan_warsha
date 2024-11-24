@@ -95,31 +95,30 @@ pillId TEXT PRIMARY KEY,
           where: 'customerId = ?',
           whereArgs: [item['customerId']],
         );
-        
+
         final colorResult = await dataBaseHelper.database.query(
           colorTableName,
           where: 'orderId   = ?',
           whereArgs: [item['orderId']],
         );
-        
+
         final mediaResult = await dataBaseHelper.database.query(
           mediaOrderTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
-       
+
         final extraResult = await dataBaseHelper.database.query(
           extraOrderTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
-        
+
         final pillResult = await dataBaseHelper.database.query(
           pillTableName,
           where: 'orderId = ?',
           whereArgs: [item['orderId']],
         );
-       
 
         CustomerModel? customerModel = customerResult.isNotEmpty
             ? CustomerModel.fromJson(customerResult.first)
@@ -158,7 +157,6 @@ pillId TEXT PRIMARY KEY,
 
       // add customer model into db
       if (model.customerModel != null) {
-       
         await dataBaseHelper.database
             .insert(customerTableName, model.customerModel!.toJson());
       }
@@ -189,6 +187,79 @@ pillId TEXT PRIMARY KEY,
             pillTableName, model.pillModel!.toJson(orderIdd: model.orderId));
       }
       return left(" تمت الاضافة بنجاح ");
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, String>> deleteCurrentOrder(
+      String orderId, List<MediaOrderModel> mediaList) async {
+    try {
+      for (var item in mediaList) {
+        deleteMediaFile(item.mediaPath);
+      }
+      await dataBaseHelper.database
+          .delete(orderTableName, where: 'orderId = ?', whereArgs: [orderId]);
+      return left("deltedSuccess");
+    } catch (e) {
+      return right("error:${e.toString()}");
+    }
+  }
+
+  @override
+  Future<Either<String, String>> editCurrentOrder(OrderModel model,
+      List<String> removedMediPaths, List<String> removedExtra) async {
+    try {
+      final batch = dataBaseHelper.database.batch();
+
+      for (var item in removedMediPaths) {
+        deleteMediaFile(item); // This is fine as it's a file operation.
+      }
+
+      for (var item in removedExtra) {
+        batch.delete(extraOrderTableName,
+            where: 'extraId = ?', whereArgs: [item]);
+      }
+
+// Update order
+      batch.update(orderTableName, model.toJson(),
+          where: 'orderId = ?', whereArgs: [model.orderId]);
+
+// Update customer
+      batch.update(customerTableName, model.customerModel!.toJson(),
+          where: 'customerId = ?', whereArgs: [model.customerId]);
+
+// Update color
+      batch.update(colorTableName, model.colorModel!.toJson(),
+          where: 'colorId = ?', whereArgs: [model.colorModel!.colorId]);
+
+// Handle extras (new and updated)
+      for (var item in model.extraOrdersList) {
+        if (item.extraId.isEmpty) {
+          batch.insert(
+              extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
+        } else {
+          batch.update(extraOrderTableName, item.toAddJson(),
+              where: 'extraId = ?', whereArgs: [item.extraId]);
+        }
+      }
+
+// Handle media (new only)
+      for (var item in model.mediaOrderList) {
+        if (item.mediaId.isEmpty) {
+          batch.insert(
+              mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+        }
+      }
+
+// Update pill
+      batch.update(pillTableName, model.pillModel!.toJson(),
+          where: 'pillId = ?', whereArgs: [model.pillModel!.pillId]);
+
+// Commit the batch
+      await batch.commit();
+      return left("successUpdated");
     } catch (e) {
       return right(e.toString());
     }

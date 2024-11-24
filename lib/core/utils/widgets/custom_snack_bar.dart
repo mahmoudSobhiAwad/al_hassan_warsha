@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 void showCustomSnackBar(BuildContext context, String message,
     {Color backgroundColor = AppColors.green,
     
-    Duration duration = const Duration(seconds: 3)}) {
+    Duration duration = const Duration(milliseconds: 1500)}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      
       content: Text(
         message,
         style: AppFontStyles.extraBold18(context).copyWith(color: AppColors.white),

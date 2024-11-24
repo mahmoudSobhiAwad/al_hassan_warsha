@@ -8,10 +8,10 @@ class ColorOrderModel {
       this.colorDegree,
       this.colorName,
       this.orderId=''});
-  Map<String, dynamic> toJson({required String orderIdd}) {
+  Map<String, dynamic> toJson({String? orderIdd}) {
     return {
       "colorId": colorId,
-      "orderId": orderIdd,
+      "orderId": orderIdd??orderId,
       if (colorName != null) "colorName": colorName,
       if (colorDegree != null) "colorDegree": colorDegree,
     };

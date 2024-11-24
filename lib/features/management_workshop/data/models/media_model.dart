@@ -11,18 +11,11 @@ class MediaOrderModel {
       required this.mediaPath,
       required this.mediaType,
       required this.orderId});
-  Map<String, dynamic> toEditJson() {
+
+  Map<String, dynamic> toAddJson({String? orderIdd}) {
     return {
-      "mediaId": mediaId,
-      "orderId": orderId,
-      "mediaPath": mediaPath,
-      "mediaType": mediaType.index,
-    };
-  }
-   Map<String, dynamic> toAddJson({required String orderIdd}) {
-    return {
-      "mediaId":const Uuid().v4(),
-      "orderId": orderIdd,
+      "mediaId": const Uuid().v4(),
+      "orderId": orderIdd ?? orderId,
       "mediaPath": mediaPath,
       "mediaType": mediaType.index,
     };

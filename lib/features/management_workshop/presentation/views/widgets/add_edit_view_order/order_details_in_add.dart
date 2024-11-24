@@ -70,6 +70,7 @@ class OrderDetails extends StatelessWidget {
                 textLabel: "",
                 enableBorder: true,
                 maxLine: 4,
+                controller: TextEditingController(text: orderModel.notice),
                 onChanged: (value) {
                   orderModel.notice = value;
                 },

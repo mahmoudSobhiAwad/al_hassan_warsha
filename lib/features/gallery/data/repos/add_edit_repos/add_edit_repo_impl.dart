@@ -97,7 +97,6 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 
   Future<bool> removeMediaWithId(List<PickedMedia> mediaIdList) async {
     try {
-      
       for (var item in mediaIdList) {
         await deleteMediaFile(item.mediaPath);
         dataBaseHelper.database.rawDelete('''

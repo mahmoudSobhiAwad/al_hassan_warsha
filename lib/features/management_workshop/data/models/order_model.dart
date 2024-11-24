@@ -44,6 +44,35 @@ class OrderModel {
       if (kitchenType != null) "kitchenType": kitchenType,
     };
   }
+  OrderModel copyWith({
+    String? orderId,
+    String? customerId,
+    String? orderName,
+    CustomerModel? customerModel,
+    ColorOrderModel? colorModel,
+    String? kitchenType,
+    DateTime? recieveTime,
+    String? notice,
+    int? mediaCounter,
+    List<MediaOrderModel>? mediaOrderList,
+    List<ExtraInOrderModel>? extraOrdersList,
+    PillModel? pillModel,
+  }) {
+    return OrderModel(
+      orderId: orderId ?? this.orderId,
+      orderName: orderName ?? this.orderName,
+      customerId: customerId ?? this.customerId,
+      customerModel: customerModel ?? this.customerModel,
+      colorModel: colorModel ?? this.colorModel,
+      kitchenType: kitchenType ?? this.kitchenType,
+      recieveTime: recieveTime ?? this.recieveTime,
+      notice: notice ?? this.notice,
+      mediaCounter: mediaCounter ?? this.mediaCounter,
+      mediaOrderList: mediaOrderList ?? List.from(this.mediaOrderList),
+      extraOrdersList: extraOrdersList ?? List.from(this.extraOrdersList),
+      pillModel: pillModel ?? this.pillModel,
+    );
+  }
 
   List<PickedMedia> getPickedMedia() {
     List<PickedMedia> list = [];

@@ -1,17 +1,11 @@
 import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/empty_data_screen.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/repos/management_repo_impl.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/filter_orders.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/full_header.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/list_of_orders.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_bar.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/side_bar.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/management_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -50,82 +44,8 @@ class ManagementView extends StatelessWidget {
             state.errMessage ?? "",
             backgroundColor: AppColors.red,
           );
-        }
+        } 
       }),
-    );
-  }
-}
-
-class ManagmentBody extends StatelessWidget {
-  const ManagmentBody({
-    super.key,
-    required this.bloc,
-  });
-
-  final ManagementBloc bloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          const Expanded(child: SideBarManagement()),
-          Expanded(
-              flex: 4,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 24,
-                      ),
-                    ),
-                    const SliverToBoxAdapter(child: SearchBarInManagment()),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 24,
-                      ),
-                    ),
-                    const SliverToBoxAdapter(
-                        child: FilterOrdersWithMonthYear()),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 12,
-                      ),
-                    ),
-                    const SliverToBoxAdapter(child: FullTableHeader()),
-                    const SliverToBoxAdapter(child: ExpandedDivider()),
-                    ListOfOrder(
-                      bloc: bloc,
-                      orderList: bloc.ordersList,
-                    ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 16,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                        child: Center(
-                            child: CustomPushContainerButton(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AddEditViewOrder(bloc: bloc)));
-                      },
-                      pushButtomText: "طلب جديد",
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 10),
-                      borderRadius: 12,
-                    ))),
-                  ],
-                ),
-              ))
-        ],
-      ),
     );
   }
 }
