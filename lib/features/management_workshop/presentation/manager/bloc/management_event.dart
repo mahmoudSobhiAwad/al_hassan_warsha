@@ -69,6 +69,16 @@ final class RemoveMediItemEvent extends ManagementEvent {
 
 final class EditOrderEvent extends ManagementEvent {}
 
+final class ChangeCurrentMonthEvent extends ManagementEvent {
+  final int month;
+  ChangeCurrentMonthEvent({required this.month});
+}
+
+final class ChangeCurrentYearEvent extends ManagementEvent {
+  final int year;
+  ChangeCurrentYearEvent({required this.year});
+}
+
 
 final class DeleteOrderEvent extends ManagementEvent {
   final List<MediaOrderModel>mediaList;

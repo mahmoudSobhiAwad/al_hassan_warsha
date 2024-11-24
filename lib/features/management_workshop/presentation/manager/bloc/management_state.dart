@@ -70,3 +70,5 @@ final class DeletedOrderFailureState extends ManagementState {
   final String? errMessage;
   DeletedOrderFailureState({this.errMessage});
 }
+
+final class ChangeSearchedTimeState extends ManagementState {}

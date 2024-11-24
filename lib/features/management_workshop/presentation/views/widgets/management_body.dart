@@ -1,4 +1,6 @@
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/empty_data_screen.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
@@ -38,25 +40,47 @@ class ManagmentBody extends StatelessWidget {
                       height: 24,
                     ),
                     FilterOrdersWithMonthYear(
-                      changeMonth: (month) {},
-                      changeYear: (time) {},
-                      searchFor: () {},
+                      year: bloc.currentYear,
+                      month: bloc.currentMonth,
+                      changeMonth: (month) {
+                        bloc.add(ChangeCurrentMonthEvent(month: month));
+                      },
+                      changeYear: (time) {
+                        bloc.add(ChangeCurrentYearEvent(year: time.year));
+                        Navigator.pop(context);
+                      },
+                      searchFor: () {
+                        bloc.add(GetAllOrdersEvent());
+                      },
                     ),
                     const SizedBox(
                       height: 12,
                     ),
                     const FullTableHeader(),
                     const ExpandedDivider(),
-                    Expanded(
-                      child: CustomScrollView(
-                        slivers: [
-                          ListOfOrder(
-                            bloc: bloc,
-                            orderList: bloc.ordersList,
-                          ),
-                        ],
-                      ),
-                    ),
+                    bloc.isLoadingAllOrders
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : bloc.ordersList.isNotEmpty
+                            ? Expanded(
+                                child: CustomScrollView(
+                                  slivers: [
+                                    ListOfOrder(
+                                      bloc: bloc,
+                                      orderList: bloc.ordersList,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Expanded(
+                              child: Center(
+                                child: Text(
+                                     "لا يوجد طلبات لهذ الشهر",
+                                    style: AppFontStyles.extraBold50(context),
+                                  ),
+                              ),
+                            ),
                     const SizedBox(
                       height: 12,
                     ),

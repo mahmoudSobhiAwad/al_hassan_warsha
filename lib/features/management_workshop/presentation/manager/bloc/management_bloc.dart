@@ -32,6 +32,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<NavToEditEvent>(navToEdit);
     on<EditOrderEvent>(editCurrentOrder);
     on<DeleteOrderEvent>(deleteCurrentOrder);
+    on<ChangeCurrentMonthEvent>(changeCurrentMonth);
+    on<ChangeCurrentYearEvent>(changeCurrentYear);
   }
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
@@ -56,9 +58,11 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   List<String> removedExtra = [];
   FutureOr<void> getAllOrders(
       GetAllOrdersEvent event, Emitter<ManagementState> emit) async {
+    ordersList = [];
     isLoadingAllOrders = true;
     emit(LoadingGetAllOrdersState());
-    final result = await managementRepoImpl.getAllOrders(month: currentMonth,year: currentYear);
+    final result = await managementRepoImpl.getAllOrders(
+        month: currentMonth, year: currentYear);
     result.fold((list) {
       ordersList.addAll(list);
       isLoadingAllOrders = false;
@@ -264,5 +268,17 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     }, (error) {
       emit(DeletedOrderFailureState(errMessage: error));
     });
+  }
+
+  FutureOr<void> changeCurrentMonth(
+      ChangeCurrentMonthEvent event, Emitter<ManagementState> emit) {
+    currentMonth = event.month;
+    emit(ChangeSearchedTimeState());
+  }
+
+  FutureOr<void> changeCurrentYear(
+      ChangeCurrentYearEvent event, Emitter<ManagementState> emit) {
+    currentYear = event.year;
+    emit(ChangeSearchedTimeState());
   }
 }

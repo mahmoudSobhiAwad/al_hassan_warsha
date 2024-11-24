@@ -11,11 +11,15 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
       this.title,
       required this.changeMonth,
       required this.changeYear,
+      required this.month,
+      required this.year,
       required this.searchFor});
   final String? title;
   final void Function(int) changeMonth;
   final void Function(DateTime) changeYear;
   final void Function() searchFor;
+  final int year;
+  final int month;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,7 +35,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "أكتوبر",
+                monthModelList[month - 1].monthName,
                 style: AppFontStyles.extraBold20(context),
               ),
               const SizedBox(
@@ -66,7 +70,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                "2024",
+                year.toString(),
                 style: AppFontStyles.extraBold20(context),
               ),
               const SizedBox(
@@ -96,7 +100,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
         ),
         const Expanded(child: SizedBox()),
         IconButton(
-            onPressed: () {},
+            onPressed: searchFor,
             icon: const Icon(
               Icons.search,
               size: 40,
