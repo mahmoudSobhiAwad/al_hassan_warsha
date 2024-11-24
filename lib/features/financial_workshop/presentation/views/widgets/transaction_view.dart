@@ -55,8 +55,8 @@ class _TranscationViewState extends State<TranscationView> {
           ),
            SliverToBoxAdapter(
             child: FilterOrdersWithMonthYear(
-              month: 0,
-              year: 0,
+              month: 1,
+              year: 2024,
               title: "تاريخ التحويلات", changeMonth: (month ) {  }, searchFor: () {  }, changeYear: (time ) {  },
             ),
           ),

@@ -33,11 +33,11 @@ class _FinancialBodyState extends State<FinancialBody> {
               child: SizedBox(
             height: 16,
           )),
-          const SliverToBoxAdapter(
-            child: SearchBarInManagment(
-              enableLastIcon: false,
-            ),
-          ),
+          // const SliverToBoxAdapter(
+          //   child: SearchBarInManagment(
+          //     enableLastIcon: false,
+          //   ),
+          // ),
           const SliverToBoxAdapter(
               child: SizedBox(
             height: 24,

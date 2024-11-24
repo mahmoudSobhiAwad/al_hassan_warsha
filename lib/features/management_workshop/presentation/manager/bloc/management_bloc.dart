@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/extra_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/media_model.dart';
@@ -34,11 +35,22 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<DeleteOrderEvent>(deleteCurrentOrder);
     on<ChangeCurrentMonthEvent>(changeCurrentMonth);
     on<ChangeCurrentYearEvent>(changeCurrentYear);
+    on<ChangeSearchKeyEvent>(changeSearchKey);
+    on<SearchForOrderEvent>(searchForOrder);
   }
+  // get all order
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
+  //
+
+  //filter
+  SearchModel searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
+  String searchKeyWord = '';
+  List<OrderModel> searchList = [];
+  bool enableSearchMode = false;
   int currentYear = DateTime.now().year;
   int currentMonth = DateTime.now().month;
+  bool isSearchLoading = true;
   // add order
   String orderId = const Uuid().v1();
   String customerId = const Uuid().v4();
@@ -52,10 +64,15 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   ColorOrderModel colorModel = ColorOrderModel(colorId: const Uuid().v6());
   List<ExtraInOrderModel> extraOrdersList = [];
   final fromKey = GlobalKey<FormState>();
-  OrderModel editableOrderModel = OrderModel();
   //
+
+  //Edit order
   List<String> removedMedia = [];
   List<String> removedExtra = [];
+  OrderModel editableOrderModel = OrderModel();
+  //
+
+  // functions
   FutureOr<void> getAllOrders(
       GetAllOrdersEvent event, Emitter<ManagementState> emit) async {
     ordersList = [];
@@ -280,5 +297,36 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       ChangeCurrentYearEvent event, Emitter<ManagementState> emit) {
     currentYear = event.year;
     emit(ChangeSearchedTimeState());
+  }
+
+  FutureOr<void> changeSearchKey(
+      ChangeSearchKeyEvent event, Emitter<ManagementState> emit) async {
+    searchKey = event.searchKey;
+    emit(ChangeSearchKeyState());
+  }
+
+  FutureOr<void> searchForOrder(
+      SearchForOrderEvent event, Emitter<ManagementState> emit) async {
+    if (event.enable) {
+      searchList = [];
+      enableSearchMode = true;
+      isSearchLoading = true;
+      emit(LoadingGetSearchedOrderState());
+      final result = await managementRepoImpl.searchForOrders(
+          searchKeyWord, searchKey.valueEnSearh);
+      result.fold((orders) {
+        isSearchLoading = false;
+        searchList.addAll(orders);
+        emit(SuccessGetSearchedOrderState());
+      }, (error) {
+        isSearchLoading = false;
+        emit(FailureGetSearchedOrderState(errMessage: error));
+      });
+    } else {
+      enableSearchMode = false;
+      searchKeyWord = '';
+      searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
+      emit(CloseSearchState());
+    }
   }
 }

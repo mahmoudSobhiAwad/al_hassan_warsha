@@ -1,6 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/empty_data_screen.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
@@ -8,6 +7,7 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/full_header.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/list_of_orders.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_bar.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/searched_order.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/side_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -35,74 +35,122 @@ class ManagmentBody extends StatelessWidget {
                     const SizedBox(
                       height: 24,
                     ),
-                    const SearchBarInManagment(),
+                    SearchBarInManagment(
+                      changeSearchType: (text) {
+                        bloc.add(ChangeSearchKeyEvent(searchKey: text));
+                      },
+                      searchFunc: () {
+                        if (bloc.searchKeyWord.trim().isNotEmpty &&
+                            bloc.searchKey.valueArSearh.isNotEmpty) {
+                          bloc.add(SearchForOrderEvent(enable: true));
+                        } else {
+                          print("empty types");
+                        }
+                      },
+                      searchKey: bloc.searchKey,
+                      changeSearchText: (text) {
+                        bloc.searchKeyWord = text;
+                      },
+                    ),
                     const SizedBox(
                       height: 24,
                     ),
-                    FilterOrdersWithMonthYear(
-                      year: bloc.currentYear,
-                      month: bloc.currentMonth,
-                      changeMonth: (month) {
-                        bloc.add(ChangeCurrentMonthEvent(month: month));
-                      },
-                      changeYear: (time) {
-                        bloc.add(ChangeCurrentYearEvent(year: time.year));
-                        Navigator.pop(context);
-                      },
-                      searchFor: () {
-                        bloc.add(GetAllOrdersEvent());
-                      },
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const FullTableHeader(),
-                    const ExpandedDivider(),
-                    bloc.isLoadingAllOrders
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : bloc.ordersList.isNotEmpty
-                            ? Expanded(
-                                child: CustomScrollView(
-                                  slivers: [
-                                    ListOfOrder(
-                                      bloc: bloc,
-                                      orderList: bloc.ordersList,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Expanded(
-                              child: Center(
-                                child: Text(
-                                     "لا يوجد طلبات لهذ الشهر",
-                                    style: AppFontStyles.extraBold50(context),
-                                  ),
-                              ),
+                    switch (bloc.enableSearchMode) {
+                      true => Builder(builder: (context) {
+                          return Expanded(
+                            child: SearchedOrderResutl(
+                              searchKey: bloc.searchKeyWord,
+                              bloc: bloc,
+                              backToMain: () {
+                                bloc.add(SearchForOrderEvent(enable: false));
+                              }, searchedList: bloc.searchList, isSearchLoading: bloc.isSearchLoading,
                             ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Center(
-                        child: CustomPushContainerButton(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AddEditViewOrder(bloc: bloc)));
-                      },
-                      pushButtomText: "طلب جديد",
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 10),
-                      borderRadius: 12,
-                    )),
+                          );
+                        }),
+                      false => Expanded(
+                            child: OrderListWithFilter(
+                          bloc: bloc,
+                        )),
+                    }
                   ],
                 )),
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderListWithFilter extends StatelessWidget {
+  const OrderListWithFilter({
+    super.key,
+    required this.bloc,
+  });
+
+  final ManagementBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        FilterOrdersWithMonthYear(
+          year: bloc.currentYear,
+          month: bloc.currentMonth,
+          changeMonth: (month) {
+            bloc.add(ChangeCurrentMonthEvent(month: month));
+          },
+          changeYear: (time) {
+            bloc.add(ChangeCurrentYearEvent(year: time.year));
+            Navigator.pop(context);
+          },
+          searchFor: () {
+            bloc.add(GetAllOrdersEvent());
+          },
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        const FullTableHeader(),
+        const ExpandedDivider(),
+        bloc.isLoadingAllOrders
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : bloc.ordersList.isNotEmpty
+                ? Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        ListOfOrder(
+                          bloc: bloc,
+                          orderList: bloc.ordersList,
+                        ),
+                      ],
+                    ),
+                  )
+                : Expanded(
+                    child: Center(
+                      child: Text(
+                        "لا يوجد طلبات لهذ الشهر",
+                        style: AppFontStyles.extraBold50(context),
+                      ),
+                    ),
+                  ),
+        const SizedBox(
+          height: 12,
+        ),
+        Center(
+            child: CustomPushContainerButton(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AddEditViewOrder(bloc: bloc)));
+          },
+          pushButtomText: "طلب جديد",
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+          borderRadius: 12,
+        )),
+      ],
     );
   }
 }

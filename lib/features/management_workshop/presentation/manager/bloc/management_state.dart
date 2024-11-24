@@ -20,6 +20,7 @@ final class FailureAddNewOrderState extends ManagementState {
   final String? errMessage;
   FailureAddNewOrderState({this.errMessage});
 }
+
 final class SuccessEditOrdersState extends ManagementState {}
 
 final class LoadingEditOrderState extends ManagementState {}
@@ -58,11 +59,10 @@ final class FailureEditOrderModelState extends ManagementState {
   final String? errMessage;
   FailureEditOrderModelState({this.errMessage});
 }
+
 final class LoadingDeleteOrderModelState extends ManagementState {}
 
-final class DeletedOrderSuccessState extends ManagementState {
-  
-}
+final class DeletedOrderSuccessState extends ManagementState {}
 
 final class DeletedOrderSuccessAgainState extends ManagementState {}
 
@@ -72,3 +72,16 @@ final class DeletedOrderFailureState extends ManagementState {
 }
 
 final class ChangeSearchedTimeState extends ManagementState {}
+
+final class ChangeSearchKeyState extends ManagementState {}
+
+final class CloseSearchState extends ManagementState {}
+
+final class LoadingGetSearchedOrderState extends ManagementState {}
+
+final class SuccessGetSearchedOrderState extends ManagementState {}
+
+final class FailureGetSearchedOrderState extends ManagementState {
+  final String? errMessage;
+  FailureGetSearchedOrderState({this.errMessage});
+}

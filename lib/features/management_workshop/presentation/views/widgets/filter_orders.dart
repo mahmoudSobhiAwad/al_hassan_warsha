@@ -1,7 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/rotate_extension.dart';
-import 'package:al_hassan_warsha/features/management_workshop/data/constants.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -87,7 +87,8 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
                               child: YearPicker(
                                 firstDate: DateTime(DateTime.now().year - 10),
                                 lastDate: DateTime(DateTime.now().year + 5),
-                                selectedDate: DateTime.now(),
+                                selectedDate:
+                                    DateTime.now().copyWith(year: year),
                                 onChanged: changeYear,
                               ),
                             ),

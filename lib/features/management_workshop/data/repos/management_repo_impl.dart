@@ -85,7 +85,8 @@ pillId TEXT PRIMARY KEY,
   }
 
   @override
-  Future<Either<List<OrderModel>, String>> getAllOrders({required int month,required int year}) async {
+  Future<Either<List<OrderModel>, String>> getAllOrders(
+      {required int month, required int year}) async {
     try {
       String monthString =
           month.toString().padLeft(2, '0'); // Ensure 2-digit format
@@ -96,58 +97,7 @@ pillId TEXT PRIMARY KEY,
           whereArgs: [yearString, monthString]);
       List<OrderModel> orderModelList = [];
       for (var item in orderReuslt) {
-        final customerResult = await dataBaseHelper.database.query(
-          customerTableName,
-          where: 'customerId = ?',
-          whereArgs: [item['customerId']],
-        );
-
-        final colorResult = await dataBaseHelper.database.query(
-          colorTableName,
-          where: 'orderId   = ?',
-          whereArgs: [item['orderId']],
-        );
-
-        final mediaResult = await dataBaseHelper.database.query(
-          mediaOrderTableName,
-          where: 'orderId = ?',
-          whereArgs: [item['orderId']],
-        );
-
-        final extraResult = await dataBaseHelper.database.query(
-          extraOrderTableName,
-          where: 'orderId = ?',
-          whereArgs: [item['orderId']],
-        );
-
-        final pillResult = await dataBaseHelper.database.query(
-          pillTableName,
-          where: 'orderId = ?',
-          whereArgs: [item['orderId']],
-        );
-
-        CustomerModel? customerModel = customerResult.isNotEmpty
-            ? CustomerModel.fromJson(customerResult.first)
-            : null;
-        ColorOrderModel? colorModel = colorResult.isNotEmpty
-            ? ColorOrderModel.fromJson(colorResult.first)
-            : null;
-        List<MediaOrderModel> mediaOrderList = mediaResult
-            .map((mediaRow) => MediaOrderModel.fromJson(mediaRow))
-            .toList();
-        List<ExtraInOrderModel> extraOrdersList = extraResult
-            .map((extraRow) => ExtraInOrderModel.fromJson(extraRow))
-            .toList();
-        PillModel? pillModel =
-            pillResult.isNotEmpty ? PillModel.fromJson(pillResult.first) : null;
-
-        OrderModel orderModel = OrderModel.fromJson(item);
-        orderModel.colorModel = colorModel;
-        orderModel.customerModel = customerModel;
-        orderModel.mediaOrderList = mediaOrderList;
-        orderModel.extraOrdersList = extraOrdersList;
-        orderModel.pillModel = pillModel;
-        orderModelList.add(orderModel);
+        orderModelList.add(await getOtherDataInOrderModel(item));
       }
       return left(orderModelList);
     } catch (e) {
@@ -268,6 +218,110 @@ pillId TEXT PRIMARY KEY,
       return left("successUpdated");
     } catch (e) {
       return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<List<OrderModel>, String>> searchForOrders(
+      String searchKey, String parmater) async {
+    try {
+      String searchPattern = '%$searchKey%';
+      String columnToSearch;
+      switch (parmater) {
+        case 'customerName':
+          columnToSearch = 'c.customerName';
+          break;
+        case 'phone':
+          columnToSearch = 'c.phone';
+          break;
+        case 'secondPhone':
+          columnToSearch = 'c.secondPhone';
+          break;
+        case 'homeAddress':
+          columnToSearch = 'c.homeAddress';
+          break;
+        case 'orderName':
+          columnToSearch = 'o.orderName';
+          break;
+        case 'kitchenType':
+          columnToSearch = 'o.kitchenType';
+          break;
+        default:
+          throw ArgumentError('Invalid search parameter: $parmater');
+      }
+
+      // Execute the SQL query for the specific column
+      final List<Map<String, dynamic>> results =
+          await dataBaseHelper.database.rawQuery('''
+    SELECT o.*
+    FROM $orderTableName o
+    LEFT JOIN $customerTableName c ON o.customerId = c.customerId
+    WHERE $columnToSearch LIKE ?
+  ''', [searchPattern]);
+      List<OrderModel> searchedList = [];
+      for (var item in results) {
+        searchedList.add(await getOtherDataInOrderModel(item));
+      }
+      return left(searchedList);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  Future<OrderModel> getOtherDataInOrderModel(Map<String, dynamic> item) async {
+    try {
+      final List<Map<String, dynamic>> results =
+          await dataBaseHelper.database.rawQuery('''
+      SELECT 
+        o.*,
+        c.customerName, c.phone, c.secondPhone, c.homeAddress,
+        cl.colorId, cl.colorName, cl.colorDegree,
+        m.mediaId, m.mediaPath, m.mediaType,
+        e.extraId, e.extraName,
+        p.pillId, p.customerName, p.stepsCounter, p.optionPaymentWay, p.interior, p.totalMoney
+      FROM $orderTableName o
+      LEFT JOIN $customerTableName c ON o.customerId = c.customerId
+      LEFT JOIN $colorTableName cl ON o.orderId = cl.orderId
+      LEFT JOIN $mediaOrderTableName m ON o.orderId = m.orderId
+      LEFT JOIN $extraOrderTableName e ON o.orderId = e.orderId
+      LEFT JOIN $pillTableName p ON o.orderId = p.orderId
+      WHERE o.orderId = ?
+    ''', [item['orderId']]);
+
+      if (results.isEmpty) {
+        throw Exception('Order not found');
+      }
+
+      // Extract the main order data from the first row
+      final orderData = results.first;
+
+      CustomerModel? customerModel = orderData['customerId'] != null
+          ? CustomerModel.fromJson(orderData)
+          : null;
+      ColorOrderModel? colorModel = orderData['colorId'] != null
+          ? ColorOrderModel.fromJson(orderData)
+          : null;
+      List<MediaOrderModel> mediaOrderList = results
+          .where((row) => row['mediaId'] != null)
+          .map((row) => MediaOrderModel.fromJson(row))
+          .toList();
+      List<ExtraInOrderModel> extraOrdersList = results
+          .where((row) => row['extraId'] != null)
+          .map((row) => ExtraInOrderModel.fromJson(row))
+          .toList();
+      PillModel? pillModel =
+          orderData['pillId'] != null ? PillModel.fromJson(orderData) : null;
+
+      OrderModel orderModel = OrderModel.fromJson(item);
+      orderModel.colorModel = colorModel;
+      orderModel.customerModel = customerModel;
+      orderModel.mediaOrderList = mediaOrderList;
+      orderModel.extraOrdersList = extraOrdersList;
+      orderModel.pillModel = pillModel;
+      return orderModel;
+    } catch (e) {
+      print(e.toString());
+      throw (e.toString());
     }
   }
 }

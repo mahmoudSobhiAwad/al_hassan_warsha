@@ -79,9 +79,18 @@ final class ChangeCurrentYearEvent extends ManagementEvent {
   ChangeCurrentYearEvent({required this.year});
 }
 
-
 final class DeleteOrderEvent extends ManagementEvent {
-  final List<MediaOrderModel>mediaList;
+  final List<MediaOrderModel> mediaList;
   final String orderId;
-  DeleteOrderEvent({required this.mediaList,required this.orderId});
+  DeleteOrderEvent({required this.mediaList, required this.orderId});
+}
+
+final class ChangeSearchKeyEvent extends ManagementEvent {
+  final SearchModel searchKey;
+  ChangeSearchKeyEvent({required this.searchKey});
+}
+
+final class SearchForOrderEvent extends ManagementEvent {
+  final bool enable;
+  SearchForOrderEvent({required this.enable});
 }
