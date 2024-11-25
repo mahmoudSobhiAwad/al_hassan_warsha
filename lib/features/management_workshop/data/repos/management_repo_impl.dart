@@ -73,6 +73,7 @@ pillId TEXT PRIMARY KEY,
   orderId TEXT NOT NULL,
   totalMoney TEXT NOT NULL,
   interior TEXT NOT NULL,
+  remainMoney TEXT NOT NULL,
   optionPaymentWay INTEGER NOT NULL,
   stepsCounter INTEGER NOT NULL,
   customerName TEXT NOT NULL,
@@ -279,7 +280,7 @@ pillId TEXT PRIMARY KEY,
         cl.colorId, cl.colorName, cl.colorDegree,
         m.mediaId, m.mediaPath, m.mediaType,
         e.extraId, e.extraName,
-        p.pillId, p.customerName, p.stepsCounter, p.optionPaymentWay, p.interior, p.totalMoney
+        p.pillId, p.customerName, p.stepsCounter, p.optionPaymentWay, p.interior, p.totalMoney, p.remainMoney
       FROM $orderTableName o
       LEFT JOIN $customerTableName c ON o.customerId = c.customerId
       LEFT JOIN $colorTableName cl ON o.orderId = cl.orderId

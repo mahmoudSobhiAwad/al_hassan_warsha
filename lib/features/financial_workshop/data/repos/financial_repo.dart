@@ -4,5 +4,6 @@ import 'package:dartz/dartz.dart';
 
 abstract class FinancialRepo {
   Future<Either<(List<OrderModel>, int), String>>  getAllBills({int? offset});
+  Future<Either<List<OrderModel>, String>>  searchForOrder({ required String searchKeyWord,required String parameterSearch});
   Future<Either<PillModel, String>>  downStep(String id,String amount);
 }

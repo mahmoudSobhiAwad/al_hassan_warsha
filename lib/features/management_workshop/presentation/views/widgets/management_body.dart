@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
@@ -53,6 +54,7 @@ class ManagmentBody extends StatelessWidget {
                       height: 24,
                     ),
                     SearchBarInManagment(
+                      searchList: searchListInOrders,
                       changeSearchType: (text) {
                         bloc.add(ChangeSearchKeyEvent(searchKey: text));
                       },

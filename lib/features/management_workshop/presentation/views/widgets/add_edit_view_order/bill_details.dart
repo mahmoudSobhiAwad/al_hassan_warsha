@@ -58,6 +58,7 @@ class BillDetails extends StatelessWidget {
                     ],
                     onChanged: (value) {
                       pillModel.totalMoney = value ?? "";
+                      
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,

@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +61,9 @@ class OneOrderItem extends StatelessWidget {
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
+              textStyle: AppFontStyles.bold24(context),
                 text: NumberFormat.decimalPattern('ar')
-                    .format(double.parse(orderModel.pillModel!.totalMoney)),
+                    .format(double.parse(orderModel.pillModel!.remian)),
               )),
         ],
       ),

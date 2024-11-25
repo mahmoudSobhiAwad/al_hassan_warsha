@@ -14,6 +14,7 @@ class SearchBarInManagment extends StatelessWidget {
       required this.searchFunc,
       this.searchKeyWord,
       required this.changeSearchText,
+      required this.searchList,
       required this.searchKey});
   
   final void Function(SearchModel) changeSearchType;
@@ -21,6 +22,7 @@ class SearchBarInManagment extends StatelessWidget {
   final void Function() searchFunc;
   final SearchModel searchKey;
   final String? searchKeyWord;
+  final List<SearchModel>searchList;
 
   @override
   Widget build(BuildContext context) {

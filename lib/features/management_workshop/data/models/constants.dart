@@ -35,7 +35,7 @@ List<MonthModel> monthModelList = [
   MonthModel(monthName: 'ديسمبر', monthValue: 12),
 ];
 
-List<SearchModel> searchList = [
+List<SearchModel> searchListInOrders = [
   SearchModel(valueArSearh: "اسم العميل", valueEnSearh: "customerName"),
   SearchModel(valueArSearh: " رقم الهاتف", valueEnSearh: "phone"),
   SearchModel(valueArSearh: "اسم الطلب", valueEnSearh: "orderName"),

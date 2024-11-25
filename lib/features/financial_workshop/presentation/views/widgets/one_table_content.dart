@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
@@ -16,6 +17,7 @@ class ContentOfFinancialTable extends StatelessWidget {
   final String orderName;
   final void Function({required String pillId, required String amount})
       downStep;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -52,21 +54,22 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
+                      textStyle: AppFontStyles.bold24(context),
                       text: pillModel.interior,
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
+                      textStyle: AppFontStyles.bold24(context),
                       text: pillModel.remian,
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
-                    child: Center(
-                      child: CustomTextWithTheSameStyle(
-                          text: pillModel.stepsCounter.toString()),
-                    )),
+                    child: CustomTextWithTheSameStyle(
+                        textStyle: AppFontStyles.bold24(context),
+                        text: pillModel.stepsCounter.toString())),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
@@ -81,6 +84,12 @@ class ContentOfFinancialTable extends StatelessWidget {
                           RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9.]'),
                         ),
                       ],
+                      validator: (value) {
+                        if (value == null || value == "0.0") {
+                          return "المبلغ لا يمكن ان يكون خاليا ";
+                        }
+                        return null;
+                      },
                       borderRadius: 8,
                       controller:
                           TextEditingController(text: pillModel.payedAmount),
@@ -105,12 +114,27 @@ class ContentOfFinancialTable extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
+            // Check if stepsCounter is greater than 0
             if (pillModel.stepsCounter > 0) {
-              downStep(
-                  amount: (double.parse(pillModel.remian) -
-                          double.parse(pillModel.payedAmount))
-                      .toString(),
-                  pillId: pillModel.pillId);
+              // Validate if payedAmount is not empty, not "0.0", and a valid number
+              final payedAmount = double.tryParse(pillModel.payedAmount.trim());
+              final remainAmount = double.tryParse(pillModel.remian.trim());
+
+              if (payedAmount != null && remainAmount != null) {
+                if (payedAmount <= remainAmount) {
+                  final difference =
+                      (remainAmount - payedAmount).toStringAsFixed(2);
+
+                  // Call the function with calculated amount and pillId
+                  downStep(amount: difference, pillId: pillModel.pillId);
+                } else {
+                  showCustomSnackBar(context, "المبلغ غير صحيح",
+                      backgroundColor: AppColors.red);
+                }
+              } else {
+                showCustomSnackBar(context, "المبلغ غير صحيح",
+                    backgroundColor: AppColors.red);
+              }
             }
           },
           child: Container(

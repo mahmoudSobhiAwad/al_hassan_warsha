@@ -9,6 +9,8 @@ final class ChangeIndexState extends FinanicalState {}
 
 final class ChangeCurrentPageState extends FinanicalState {}
 
+final class ChangeSearchMoodState extends FinanicalState {}
+
 final class LoadingFetchOrderState extends FinanicalState {}
 
 final class SuccessFetchOrderState extends FinanicalState {}
@@ -25,3 +27,5 @@ final class FailureUpdateCounterOrderState extends FinanicalState {
   final String? errMessage;
   FailureUpdateCounterOrderState({required this.errMessage});
 }
+
+final class ChangeSearchModelState extends FinanicalState {}

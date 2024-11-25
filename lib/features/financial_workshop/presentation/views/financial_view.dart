@@ -67,18 +67,8 @@ class FinancialView extends StatelessWidget {
                     flex: 5,
                     child: [
                       FinancialBody(
-                        orderList: bloc.orderList,
-                        downStep: (
-                            {required String amount, required String pillId}) {
-                          bloc.add(DownStepCounterEvent(
-                              pillId: pillId, remianAmount: amount));
-                        },
-                        onChangeIndex: (pageIndex) {
-                          bloc.add(
-                              ChangePageInFetchOrderEvent(index: pageIndex));
-                        },
-                        totalLength: bloc.totalLengthOfAllOrders,
-                        currentPage: bloc.pageIndex,
+                        
+                        bloc: bloc,
                       ),
                       const TranscationView(),
                       const BillsPaymentView(),

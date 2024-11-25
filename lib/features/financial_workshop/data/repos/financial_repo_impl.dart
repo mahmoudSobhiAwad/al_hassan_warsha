@@ -12,10 +12,8 @@ class FinancialRepoImpl implements FinancialRepo {
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset}) async {
     try {
-      final result = await dataBaseHelper.database.query(
-        orderTableName,
-        limit: 8,
-      );
+      final result = await dataBaseHelper.database
+          .query(orderTableName, limit: 8, offset: offset);
       List<OrderModel> orderList = [];
       for (var item in result) {
         final pillresult = await dataBaseHelper.database.query(pillTableName,
@@ -74,6 +72,49 @@ class FinancialRepoImpl implements FinancialRepo {
     } catch (e) {
       // Handle error, optionally log or throw
       return 0;
+    }
+  }
+
+  @override
+  Future<Either<List<OrderModel>, String>> searchForOrder(
+      {required String searchKeyWord, required String parameterSearch}) async {
+    try {
+      String searchPattern = '%$searchKeyWord%';
+      String columnToSearch;
+      switch (parameterSearch) {
+        case 'customerName':
+          columnToSearch = 'c.customerName';
+          break;
+        case 'orderName':
+          columnToSearch = 'o.orderName';
+          break;
+        default:
+          throw ArgumentError('Invalid search parameter: $parameterSearch');
+      }
+
+      // Execute the SQL query for the specific column
+      final List<Map<String, dynamic>> results =
+          await dataBaseHelper.database.rawQuery('''
+    SELECT o.*
+    FROM $orderTableName o
+    LEFT JOIN $customerTableName c ON o.customerId = c.customerId
+    WHERE $columnToSearch LIKE ?
+  ''', [searchPattern]);
+      List<OrderModel> searchedList = [];
+      for (var item in results) {
+        print(item);
+        PillModel pillModel = PillModel();
+        final result = await dataBaseHelper.database.query(pillTableName,
+            where: 'orderId = ?', whereArgs: [item['orderId']]);
+        pillModel = PillModel.fromJson(result.first);
+        searchedList.add(OrderModel(
+            orderId: item['orderId'],
+            pillModel: pillModel,
+            orderName: item['orderName']));
+      }
+      return left(searchedList);
+    } catch (e) {
+      return right(e.toString());
     }
   }
 }
