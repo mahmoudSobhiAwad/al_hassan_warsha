@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 class SearchBarInManagment extends StatelessWidget {
   const SearchBarInManagment(
       {super.key,
-      this.enableLastIcon = true,
+      
       required this.changeSearchType,
       required this.searchFunc,
       this.searchKeyWord,
       required this.changeSearchText,
       required this.searchKey});
-  final bool enableLastIcon;
+  
   final void Function(SearchModel) changeSearchType;
   final void Function(String) changeSearchText;
   final void Function() searchFunc;

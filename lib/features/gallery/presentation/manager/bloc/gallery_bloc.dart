@@ -174,6 +174,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       emit(FailureAddedNewKitchenType(errMessage: error));
     });
   }
+  
 
   FutureOr<void> changeCurrentPageOfPaginationInShowMore(
       ChangePageIndexInShowMoreEvent event, Emitter<GalleryState> emit) async {

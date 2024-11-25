@@ -1,12 +1,21 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ContentOfFinancialTable extends StatelessWidget {
-  const ContentOfFinancialTable({super.key});
-
+  const ContentOfFinancialTable(
+      {super.key,
+      required this.orderName,
+      required this.pillModel,
+      required this.downStep});
+  final PillModel pillModel;
+  final String orderName;
+  final void Function({required String pillId, required String amount})
+      downStep;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,41 +32,40 @@ class ContentOfFinancialTable extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Expanded(
-                    child: CustomTextWithTheSameStyle(
-                  text: "مطبخ امريكي-فرز اول",
-                )),
+                Expanded(child: CustomTextWithTheSameStyle(text: orderName)),
                 const Expanded(child: SizedBox()),
-                const Expanded(
+                Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      text: "الحاج محمد ابو محمد",
+                      text: pillModel.customerName,
                     )),
                 const Expanded(child: SizedBox()),
-                const Expanded(
+                Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      text: "دفع بالتقسيط",
+                      text: pillModel.optionPaymentWay ==
+                              OptionPaymentWay.atRecieve
+                          ? "دفع عند الاستلام"
+                          : "دفع بالتقسيط",
                     )),
                 const Expanded(child: SizedBox()),
-                const Expanded(
+                Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      text: "10000 جنية",
+                      text: pillModel.interior,
                     )),
                 const Expanded(child: SizedBox()),
-                const Expanded(
+                Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      text: "30000 جنية",
+                      text: pillModel.remian,
                     )),
                 const Expanded(child: SizedBox()),
-                const Expanded(
+                Expanded(
                     flex: 1,
                     child: Center(
                       child: CustomTextWithTheSameStyle(
-                        text: "3",
-                      ),
+                          text: pillModel.stepsCounter.toString()),
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
@@ -66,7 +74,19 @@ class ContentOfFinancialTable extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       fillColor: AppColors.white,
                       enableFill: true,
+                      textInputType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9.]'),
+                        ),
+                      ],
                       borderRadius: 8,
+                      controller:
+                          TextEditingController(text: pillModel.payedAmount),
+                      onChanged: (value) {
+                        pillModel.payedAmount = value;
+                      },
                       borderWidth: 2,
                       borderColor: AppColors.lightGray1,
                       suffixText: "جنية",
@@ -83,16 +103,29 @@ class ContentOfFinancialTable extends StatelessWidget {
         const SizedBox(
           width: 12,
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          decoration: BoxDecoration(
-            color: AppColors.green,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            "تنزيل دفعة",
-            style: AppFontStyles.extraBold16(context)
-                .copyWith(color: AppColors.white),
+        InkWell(
+          onTap: () {
+            if (pillModel.stepsCounter > 0) {
+              downStep(
+                  amount: (double.parse(pillModel.remian) -
+                          double.parse(pillModel.payedAmount))
+                      .toString(),
+                  pillId: pillModel.pillId);
+            }
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+            decoration: BoxDecoration(
+              color: pillModel.stepsCounter == 0
+                  ? AppColors.green.withOpacity(0.5)
+                  : AppColors.green,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              "تنزيل دفعة",
+              style: AppFontStyles.extraBold16(context)
+                  .copyWith(color: AppColors.white),
+            ),
           ),
         )
       ],

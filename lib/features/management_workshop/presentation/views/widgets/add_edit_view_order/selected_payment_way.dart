@@ -12,27 +12,22 @@ class SelectedPaymentWay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
-        "المبلغ المتبقي",
+        "طريقة التسديد",
         style: AppFontStyles.extraBold18(context),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          PaymentOptionWidget(
-            label: "الدفع عند الاستلام",
-            isSelected: optionPaymentWay == OptionPaymentWay.atRecieve,
-            onPressed: () => onPressed == null
-                ? null
-                : onPressed!(OptionPaymentWay.atRecieve),
-          ),
-          PaymentOptionWidget(
-            label: "الدفع علي دفعات",
-            isSelected: optionPaymentWay == OptionPaymentWay.onSteps,
-            onPressed: () =>
-                onPressed == null ? null : onPressed!(OptionPaymentWay.onSteps),
-          ),
-        ],
-      )
+      
+      PaymentOptionWidget(
+        label: "الدفع عند الاستلام",
+        isSelected: optionPaymentWay == OptionPaymentWay.atRecieve,
+        onPressed: () =>
+            onPressed == null ? null : onPressed!(OptionPaymentWay.atRecieve),
+      ),
+      PaymentOptionWidget(
+        label: "الدفع علي دفعات",
+        isSelected: optionPaymentWay == OptionPaymentWay.onSteps,
+        onPressed: () =>
+            onPressed == null ? null : onPressed!(OptionPaymentWay.onSteps),
+      ),
     ]);
   }
 }
@@ -51,35 +46,33 @@ class PaymentOptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Flexible(
-            fit: FlexFit.loose,
-            child: Text(
-              label,
-              style: AppFontStyles.extraBold18(context),
-            ),
+    return Row(
+      children: [
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            label,
+            style: AppFontStyles.extraBold18(context),
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              IconButton(
-                onPressed: onPressed,
-                icon: const Icon(
-                  Icons.check_box_outline_blank_rounded,
-                  size: 33,
-                ),
+        ),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            IconButton(
+              onPressed: onPressed,
+              icon: const Icon(
+                Icons.check_box_outline_blank_rounded,
+                size: 33,
               ),
-              if (isSelected)
-                const Icon(
-                  Icons.check,
-                  color: AppColors.vibrantGreen,
-                ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check,
+                color: AppColors.vibrantGreen,
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

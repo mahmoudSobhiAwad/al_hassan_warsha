@@ -321,7 +321,6 @@ pillId TEXT PRIMARY KEY,
       orderModel.pillModel = pillModel;
       return orderModel;
     } catch (e) {
-     
       throw (e.toString());
     }
   }

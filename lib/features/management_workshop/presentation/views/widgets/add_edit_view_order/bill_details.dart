@@ -101,58 +101,94 @@ class BillDetails extends StatelessWidget {
                   )),
               const Expanded(flex: 1, child: SizedBox()),
               Expanded(
-                  flex: 3,
-                  child: SelectedPaymentWay(
-                    onPressed: onChangePayment,
-                    optionPaymentWay: pillModel.optionPaymentWay,
+                  flex: 2,
+                  child: CustomColumnWithTextInAddNewType(
+                    text: "المتبقي ",
+                    textLabel: "",
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: pillModel.remian,
+                    ),
+                    textInnerStyle: AppFontStyles.extraBold24(context),
+                    textInputType:
+                        const TextInputType.numberWithOptions(decimal: true),
+                    textStyle: AppFontStyles.extraBold18(context),
+                    enableBorder: true,
+                    suffixIcon: Text(
+                      "جنية",
+                      style: AppFontStyles.extraBold18(context),
+                    ),
                   )),
-              const Expanded(child: SizedBox()),
-              switch (pillModel.optionPaymentWay) {
-                OptionPaymentWay.onSteps => Expanded(
-                    flex: 1,
-                    child: CustomColumnWithTextInAddNewType(
-                      onChanged: (value) {
-                        pillModel.stepsCounter =
-                            int.tryParse(value ?? "0") ?? 0;
-                      },
-                      text: "عدد الدفعات",
-                      textAlign: TextAlign.center,
-                      readOnly: changeStepsCounter == null ? true : false,
-                      textLabel: "",
-                      controller: TextEditingController(
-                          text: pillModel.stepsCounter.toString()),
-                      textInputType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                          RegExp(r'^[0-9\u0660-\u0669\u06F0-\u06F9]+$'),
-                        ),
-                      ],
-                      textStyle: AppFontStyles.extraBold18(context),
-                      enableBorder: true,
-                      suffixIcon: changeStepsCounter != null
-                          ? IconButton(
-                              onPressed: () {
-                                changeStepsCounter!(true);
-                              },
-                              icon: const Icon(
-                                Icons.add_circle_outlined,
-                                size: 30,
-                              ))
-                          : const SizedBox(),
-                      prefixIcon: changeStepsCounter != null
-                          ? IconButton(
-                              onPressed: () {
-                                changeStepsCounter!(false);
-                              },
-                              icon: const Icon(
-                                CupertinoIcons.minus_circle_fill,
-                                color: Colors.black,
-                                size: 30,
-                              ))
-                          : const SizedBox(),
-                    )),
-                OptionPaymentWay.atRecieve => const SizedBox()
-              }
+              const Expanded(flex: 1, child: SizedBox()),
+              pillModel.stepsCounter == 0
+                  ? Center(
+                    child: Text(
+                        "تم استلام كل المبالغ المتبقية",
+                        style: AppFontStyles.bold24(context),
+                      ),
+                  )
+                  : Expanded(
+                      flex: 4,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 2,
+                              child: SelectedPaymentWay(
+                                onPressed: onChangePayment,
+                                optionPaymentWay: pillModel.optionPaymentWay,
+                              )),
+                          const Expanded(child: SizedBox()),
+                          switch (pillModel.optionPaymentWay) {
+                            OptionPaymentWay.onSteps => Expanded(
+                                flex: 1,
+                                child: CustomColumnWithTextInAddNewType(
+                                  onChanged: (value) {
+                                    pillModel.stepsCounter =
+                                        int.tryParse(value ?? "0") ?? 0;
+                                  },
+                                  text: "عدد الدفعات",
+                                  textAlign: TextAlign.center,
+                                  readOnly:
+                                      changeStepsCounter == null ? true : false,
+                                  textLabel: "",
+                                  controller: TextEditingController(
+                                      text: pillModel.stepsCounter.toString()),
+                                  textInputType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                      RegExp(
+                                          r'^[0-9\u0660-\u0669\u06F0-\u06F9]+$'),
+                                    ),
+                                  ],
+                                  textStyle: AppFontStyles.extraBold18(context),
+                                  enableBorder: true,
+                                  suffixIcon: changeStepsCounter != null
+                                      ? IconButton(
+                                          onPressed: () {
+                                            changeStepsCounter!(true);
+                                          },
+                                          icon: const Icon(
+                                            Icons.add_circle_outlined,
+                                            size: 30,
+                                          ))
+                                      : const SizedBox(),
+                                  prefixIcon: changeStepsCounter != null
+                                      ? IconButton(
+                                          onPressed: () {
+                                            changeStepsCounter!(false);
+                                          },
+                                          icon: const Icon(
+                                            CupertinoIcons.minus_circle_fill,
+                                            color: Colors.black,
+                                            size: 30,
+                                          ))
+                                      : const SizedBox(),
+                                )),
+                            OptionPaymentWay.atRecieve => const SizedBox()
+                          },
+                        ],
+                      ),
+                    )
             ],
           ),
         ),

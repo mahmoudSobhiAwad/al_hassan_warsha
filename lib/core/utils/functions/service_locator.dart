@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
 import 'package:al_hassan_warsha/core/utils/functions/open_db.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo_impl.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/fetch_media_gallery/fetch_medi.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/gallery_repo_imp.dart';
@@ -15,5 +16,6 @@ Future<void>setUp()async{
   getIt.registerLazySingleton<AddEditKitchenRepoImpl>(()=>AddEditKitchenRepoImpl(dataBaseHelper: getIt.get<DataBaseHelper>()));
   getIt.registerLazySingleton<FetchMediaRepoImpl>(()=>FetchMediaRepoImpl(dataBaseHelper: getIt.get<DataBaseHelper>()));
   getIt.registerLazySingleton<ManagementRepoImpl>(()=>ManagementRepoImpl(dataBaseHelper: getIt.get<DataBaseHelper>()));
+  getIt.registerLazySingleton<FinancialRepoImpl>(()=>FinancialRepoImpl(dataBaseHelper: getIt.get<DataBaseHelper>()));
 }
  

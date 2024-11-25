@@ -103,7 +103,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     prepareOrderModelBeforeSend();
     var result = await managementRepoImpl.createNewOrder(orderModel);
     return result.fold((success) {
-      ordersList.add(orderModel.copyWith());
+      ordersList.add(orderModel);
       isLoadingAddOrder = false;
       orderId = const Uuid().v1();
       customerId = const Uuid().v4();
