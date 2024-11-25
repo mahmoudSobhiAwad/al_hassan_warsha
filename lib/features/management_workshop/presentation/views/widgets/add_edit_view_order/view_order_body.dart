@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
@@ -11,8 +13,10 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/order_
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_more_extra.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/bill_details.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_info.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/get_contract.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/row_order_items.dart';
 import 'package:flutter/material.dart';
+
 
 class ShowOneOrderBody extends StatelessWidget {
   const ShowOneOrderBody(
@@ -218,13 +222,16 @@ class UpperButtonsInViewOrder extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          const CustomPushContainerButton(
+          CustomPushContainerButton(
             borderRadius: 12,
+            onTap: () async {
+              await getPdfContract(orderModel);
+            },
             pushButtomText: " استخراج نسخة عقد",
             iconBehind: Icons.file_present_sharp,
             color: AppColors.blueGray,
             iconSize: 30,
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
         ],
       ),

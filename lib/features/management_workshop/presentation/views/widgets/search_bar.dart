@@ -119,15 +119,6 @@ class SearchBarInManagment extends StatelessWidget {
             ],
           ),
         ),
-        const Expanded(child: SizedBox()),
-        enableLastIcon
-            ? const IconButton(
-                onPressed: null,
-                icon: Icon(
-                  Icons.notifications,
-                  size: 40,
-                ))
-            : const SizedBox(),
         const Expanded(flex: 2, child: SizedBox()),
       ],
     );
