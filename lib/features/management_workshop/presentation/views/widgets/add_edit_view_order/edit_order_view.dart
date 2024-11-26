@@ -64,6 +64,7 @@ class EditOrderView extends StatelessWidget {
                                 height: 10,
                               ),
                               RowOrderItems(
+                                  allKitchenTypes: bloc.allKitchenTypes,
                                   changeColorValue: (value) {
                                     bloc.add(ChangeColorOfOrderEvent(
                                         colorValue: value, isEdit: true));

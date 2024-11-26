@@ -93,3 +93,10 @@ final class MakeOrderDeliverOrNotSuccessState extends ManagementState {
   final String ?successMessage;
   MakeOrderDeliverOrNotSuccessState({this.successMessage});
 }
+
+final class LoadingGetAllKitchenTypesState extends ManagementState{}
+final class SuccessGetAllKitchenTypesState extends ManagementState{}
+final class FailureGetAllKitchenTypesState extends ManagementState{
+  final String? errMessage;
+  FailureGetAllKitchenTypesState({this.errMessage});
+}

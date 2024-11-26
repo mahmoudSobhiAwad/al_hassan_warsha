@@ -103,5 +103,7 @@ final class ChangeCategrizedListEvent extends ManagementEvent {
 final class MarkOrderAsDelievredEvent extends ManagementEvent {
   final String orderId;
   final bool makeItDone;
-  MarkOrderAsDelievredEvent({required this.orderId,required this.makeItDone});
+  MarkOrderAsDelievredEvent({required this.orderId, required this.makeItDone});
 }
+
+final class GetAllKitchenTypesEvent extends ManagementEvent {}

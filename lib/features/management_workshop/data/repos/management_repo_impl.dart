@@ -28,6 +28,12 @@ CREATE TABLE $customerTableName (
 );
 ''');
       await dataBaseHelper.database.execute('''
+CREATE TABLE $kitchenTypesInOrder (
+ kitchenTypeName TEXT 
+);
+''');
+
+      await dataBaseHelper.database.execute('''
 CREATE TABLE $orderTableName (
   orderId TEXT PRIMARY KEY,
   customerId TEXT NOT NULL,
@@ -81,6 +87,19 @@ pillId TEXT PRIMARY KEY,
 );
 ''');
       return left("Success Created");
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  Future<Either<List<String>, String>> getAllKitchenTypes() async {
+    try {
+      final result = await dataBaseHelper.database.query(kitchenTypesInOrder);
+      List<String> kitchenTypesList = [];
+      for (var item in result) {
+        kitchenTypesList.add(item['kitchenTypeName'] as String);
+      }
+      return left(kitchenTypesList);
     } catch (e) {
       return right(e.toString());
     }
@@ -289,7 +308,6 @@ pillId TEXT PRIMARY KEY,
       LEFT JOIN $pillTableName p ON o.orderId = p.orderId
       WHERE o.orderId = ?
     ''', [item['orderId']]);
-      print(results);
 
       if (results.isEmpty) {
         throw Exception('Order not found');

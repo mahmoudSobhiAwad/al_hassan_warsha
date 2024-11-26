@@ -16,7 +16,7 @@ class ManagementView extends StatelessWidget {
     return BlocProvider(
       create: (context) =>
           ManagementBloc(managementRepoImpl: getIt.get<ManagementRepoImpl>())
-            ..add(GetAllOrdersEvent()),
+            ..add(GetAllOrdersEvent())..add(GetAllKitchenTypesEvent()),
       child: BlocConsumer<ManagementBloc, ManagementState>(
           builder: (context, state) {
         var bloc = context.read<ManagementBloc>();

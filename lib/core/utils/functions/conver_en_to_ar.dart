@@ -1,25 +1,29 @@
-double convertArabicToEnglishNumbers(String input) {
-  double reFormated = 0;
-  input = input.trim();
-  final arabicToEnglishMap = {
-    '٠': 0,
-    '١': 1,
-    '٢': 2,
-    '٣': 3,
-    '٤': 4,
-    '٥': 5,
-    '٦': 6,
-    '٧': 7,
-    '٨': 9,
-    '٩': 10,
-  };
-  double? result = double.tryParse(input);
-  if (result == null) {
-    reFormated = double.parse(
-        input.split('').map((char) => arabicToEnglishMap[char] ?? char).join());
-    
-  } else {
-    reFormated = result;
+String convertToEnglishNumbers(String arabicNumber) {
+  if (arabicNumber.isNotEmpty) {
+    const arabicToEnglishMap = {
+      '٠': '0',
+      '١': '1',
+      '٢': '2',
+      '٣': '3',
+      '٤': '4',
+      '٥': '5',
+      '٦': '6',
+      '٧': '7',
+      '٨': '8',
+      '٩': '9',
+    };
+
+    return arabicNumber.replaceAllMapped(RegExp(r'[٠-٩]'), (match) {
+      return arabicToEnglishMap[match.group(0)!]!;
+    });
   }
-  return reFormated;
+  return '0';
+}
+
+String convertToArabicNumbers(String number) {
+  const arabicDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  return number.replaceAllMapped(RegExp(r'\d'), (match) {
+    int digit = int.parse(match.group(0)!);
+    return arabicDigits[digit];
+  });
 }

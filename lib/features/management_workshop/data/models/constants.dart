@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 const String orderTableName = 'orderTable';
 const String customerTableName = 'customer';
+const String kitchenTypesInOrder = 'kitchenTypesInOrder';
 const String colorTableName = 'colorTable';
 const String mediaOrderTableName = 'mediaOrder';
 const String extraOrderTableName = 'extraOrder';

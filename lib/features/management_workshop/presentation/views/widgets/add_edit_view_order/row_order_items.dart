@@ -16,6 +16,7 @@ class RowOrderItems extends StatelessWidget {
     this.changekitchenTypeValue,
     this.changeDate,
     this.formKey,
+    this.allKitchenTypes = const [],
   });
 
   final OrderModel orderModel;
@@ -24,6 +25,7 @@ class RowOrderItems extends StatelessWidget {
   final void Function(String p1)? changekitchenTypeValue;
   final void Function(DateTime p1)? changeDate;
   final GlobalKey<FormState>? formKey;
+  final List<String> allKitchenTypes;
 
   @override
   Widget build(BuildContext context) {
@@ -70,15 +72,22 @@ class RowOrderItems extends StatelessWidget {
                       onSelected: (value) {
                         changekitchenTypeValue!(value);
                       },
-                      color: AppColors.lightGray1,
+                      constraints: const BoxConstraints(maxHeight: 350),
+                      color: AppColors.veryLightGray,
                       icon: const Icon(Icons.expand_more_outlined),
                       itemBuilder: (BuildContext context) {
                         return [
                           ...List.generate(
-                              5,
+                              allKitchenTypes.length,
                               (index) => PopupMenuItem(
-                                    value: "$index",
-                                    child: Text("$index"),
+                                    value: allKitchenTypes[index],
+                                    child: Center(
+                                      child: Text(
+                                        allKitchenTypes[index],
+                                        style:
+                                            AppFontStyles.extraBold18(context),
+                                      ),
+                                    ),
                                   ))
                         ];
                       },

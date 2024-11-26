@@ -49,12 +49,14 @@ class BillDetails extends StatelessWidget {
                       return null;
                     },
                     formKey: formKey,
-                    textInnerStyle: AppFontStyles.extraBold24(context),
+                    textInnerStyle: AppFontStyles.extraBold24(context)
+                        .copyWith(letterSpacing: 3),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
-                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9.]'),
+                        RegExp(
+                            r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
                       ),
                     ],
                     onChanged: (value) {
@@ -82,17 +84,18 @@ class BillDetails extends StatelessWidget {
                     readOnly: changeStepsCounter == null ? true : false,
                     controller: TextEditingController(text: pillModel.interior),
                     formKey: formKey,
-                    textInnerStyle: AppFontStyles.extraBold24(context),
+                    textInnerStyle: AppFontStyles.extraBold24(context)
+                        .copyWith(letterSpacing: 3),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
-                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9.]'),
+                        RegExp(
+                            r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
                       ),
                     ],
                     onChanged: (value) {
                       pillModel.interior = value ?? "";
-                      print(convertArabicToEnglishNumbers(pillModel.interior));
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
@@ -111,7 +114,8 @@ class BillDetails extends StatelessWidget {
                     controller: TextEditingController(
                       text: pillModel.remian,
                     ),
-                    textInnerStyle: AppFontStyles.extraBold24(context),
+                    textInnerStyle: AppFontStyles.extraBold24(context)
+                        .copyWith(letterSpacing: 3),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
                     textStyle: AppFontStyles.extraBold18(context),
@@ -130,11 +134,11 @@ class BillDetails extends StatelessWidget {
                       ),
                     )
                   : Expanded(
-                      flex: 4,
+                      flex: 6,
                       child: Row(
                         children: [
                           Expanded(
-                              flex: 2,
+                              flex: 3,
                               child: SelectedPaymentWay(
                                 onPressed: onChangePayment,
                                 optionPaymentWay: pillModel.optionPaymentWay,
@@ -142,11 +146,16 @@ class BillDetails extends StatelessWidget {
                           const Expanded(child: SizedBox()),
                           switch (pillModel.optionPaymentWay) {
                             OptionPaymentWay.onSteps => Expanded(
-                                flex: 1,
+                                flex: 2,
                                 child: CustomColumnWithTextInAddNewType(
+                                  textInnerStyle:
+                                      AppFontStyles.extraBold20(context),
                                   onChanged: (value) {
-                                    pillModel.stepsCounter =
-                                        int.tryParse(value ?? "0") ?? 0;
+                                    if (value == null || value.isEmpty) {
+                                    } else {
+                                      pillModel.stepsCounter = int.parse(
+                                          convertToEnglishNumbers(value));
+                                    }
                                   },
                                   text: "عدد الدفعات",
                                   textAlign: TextAlign.center,
@@ -154,12 +163,13 @@ class BillDetails extends StatelessWidget {
                                       changeStepsCounter == null ? true : false,
                                   textLabel: "",
                                   controller: TextEditingController(
-                                      text: pillModel.stepsCounter.toString()),
+                                      text: convertToArabicNumbers(
+                                          pillModel.stepsCounter.toString())),
                                   textInputType: TextInputType.number,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(
                                       RegExp(
-                                          r'^[0-9\u0660-\u0669\u06F0-\u06F9]+$'),
+                                          r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
                                     ),
                                   ],
                                   textStyle: AppFontStyles.extraBold18(context),

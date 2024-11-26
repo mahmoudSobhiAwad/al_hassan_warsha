@@ -40,10 +40,12 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<SearchForOrderEvent>(searchForOrder);
     on<ChangeCategrizedListEvent>(categorizeList);
     on<MarkOrderAsDelievredEvent>(markOrderAsDoneOrNotDone);
+    on<GetAllKitchenTypesEvent>(getAllKitchenTypes);
   }
   // get all order
   bool isLoadingAllOrders = true;
   List<OrderModel> ordersList = [];
+  List<String> allKitchenTypes = [];
   //
 
   //filter
@@ -75,6 +77,17 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   List<String> removedExtra = [];
   OrderModel editableOrderModel = OrderModel();
   //
+  FutureOr<void> getAllKitchenTypes(
+      GetAllKitchenTypesEvent event, Emitter<ManagementState> emit) async {
+    emit(LoadingGetAllKitchenTypesState());
+    final result = await managementRepoImpl.getAllKitchenTypes();
+    result.fold((types) {
+      allKitchenTypes.addAll(types);
+      emit(SuccessGetAllKitchenTypesState());
+    }, (error) {
+      emit(FailureGetAllKitchenTypesState(errMessage: error));
+    });
+  }
 
   // functions
   FutureOr<void> getAllOrders(
@@ -141,9 +154,9 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     } else {
       event.isEdit
           ? editableOrderModel.pillModel!.stepsCounter--
-          : pillModel.stepsCounter > 0
+          : pillModel.stepsCounter > 1
               ? pillModel.stepsCounter--
-              : 0;
+              : 1;
     }
     emit(ChangePaymentWayState());
   }

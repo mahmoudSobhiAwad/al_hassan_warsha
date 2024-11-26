@@ -61,9 +61,9 @@ class OneOrderItem extends StatelessWidget {
           Expanded(
               flex: 1,
               child: CustomTextWithTheSameStyle(
-              textStyle: AppFontStyles.bold24(context),
-                text: NumberFormat.decimalPattern('ar')
-                    .format(double.parse(orderModel.pillModel!.remian)),
+                
+                textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                text: orderModel.pillModel!.remian,
               )),
         ],
       ),

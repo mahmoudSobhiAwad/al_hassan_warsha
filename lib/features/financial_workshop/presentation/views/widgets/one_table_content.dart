@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
@@ -54,14 +55,14 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context),
+                      textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 2),
                       text: pillModel.interior,
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context),
+                      textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
                       text: pillModel.remian,
                     )),
                 const Expanded(child: SizedBox()),
@@ -69,11 +70,12 @@ class ContentOfFinancialTable extends StatelessWidget {
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.bold24(context),
-                        text: pillModel.stepsCounter.toString())),
+                        text:convertToArabicNumbers(pillModel.stepsCounter.toString()))),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
                     child: CustomTextFormField(
+                      textStyle: AppFontStyles.extraBold20(context).copyWith(letterSpacing: 3),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       fillColor: AppColors.white,
                       enableFill: true,
@@ -81,7 +83,8 @@ class ContentOfFinancialTable extends StatelessWidget {
                           const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                          RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9.]'),
+                          RegExp(
+                              r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
                         ),
                       ],
                       validator: (value) {
@@ -98,7 +101,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                       },
                       borderWidth: 2,
                       borderColor: AppColors.lightGray1,
-                      suffixText: "جنية",
+                      suffixWidget:Text("جنية",style: AppFontStyles.extraBold18(context),),
                       labelWidget: Text(
                         "...................",
                         style: AppFontStyles.extraBold12(context)
@@ -114,18 +117,15 @@ class ContentOfFinancialTable extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            // Check if stepsCounter is greater than 0
             if (pillModel.stepsCounter > 0) {
-              // Validate if payedAmount is not empty, not "0.0", and a valid number
-              final payedAmount = double.tryParse(pillModel.payedAmount.trim());
-              final remainAmount = double.tryParse(pillModel.remian.trim());
+              final payedAmount =
+                  int.parse(convertToEnglishNumbers(pillModel.payedAmount));
+              final remainAmount =
+                  int.parse(convertToEnglishNumbers(pillModel.remian));
 
-              if (payedAmount != null && remainAmount != null) {
+              if (payedAmount != 0) {
                 if (payedAmount <= remainAmount) {
-                  final difference =
-                      (remainAmount - payedAmount).toStringAsFixed(2);
-
-                  // Call the function with calculated amount and pillId
+                  final difference = (remainAmount - payedAmount).toString();
                   downStep(amount: difference, pillId: pillModel.pillId);
                 } else {
                   showCustomSnackBar(context, "المبلغ غير صحيح",
