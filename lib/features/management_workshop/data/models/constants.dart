@@ -75,3 +75,20 @@ List<MoreVerModel> moreVerList(OrderStatus orderStatus) {
             text: " تسليم الطلب"),
   ];
 }
+
+ final kitchenTypesInOrderList = [
+    {'kitchenTypeName': 'مطابخ خشب'},
+    {'kitchenTypeName': 'مطابخ أكريليك'},
+    {'kitchenTypeName': 'مطابخ PVC'},
+    {'kitchenTypeName': 'مطابخ ألمنيوم'},
+    {'kitchenTypeName': 'مطابخ ستانلس ستيل'},
+    {'kitchenTypeName': 'مطابخ زجاجية'},
+    {'kitchenTypeName': 'مطابخ MDF'},
+    {'kitchenTypeName': 'مطابخ بولي لاك'},
+    {'kitchenTypeName': 'مطابخ فورميكا'},
+    {'kitchenTypeName': 'مطابخ لاكيه'},
+    {'kitchenTypeName': 'مطابخ مودرن'},
+    {'kitchenTypeName': 'مطابخ كلاسيك'},
+  ];
+
+  

@@ -48,7 +48,8 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
     emit(LoadingFetchOrderState());
     final result = await financialRepoImpl.getAllBills(
-        offset: event.offset * orderList.length,optionPaymentWay: event.farzIndex);
+        offset: event.offset * orderList.length,
+        optionPaymentWay: event.farzIndex == -1 ? null : event.farzIndex);
     result.fold((data) {
       orderList.clear();
       orderList.addAll(data.$1);
@@ -57,7 +58,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       emit(SuccessFetchOrderState());
     }, (error) {
       isLoading = false;
-      
+
       emit(FailureFetchOrderState(errMessage: error));
     });
   }

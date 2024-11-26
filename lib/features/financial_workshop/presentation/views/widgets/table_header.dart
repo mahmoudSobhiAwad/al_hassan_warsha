@@ -1,10 +1,15 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
 import 'package:flutter/material.dart';
 
 class TableHeaderInFinancial extends StatelessWidget {
-  const TableHeaderInFinancial({super.key,});
- 
+  const TableHeaderInFinancial({
+    super.key,
+    required this.onFarz,
+  });
+  final void Function(SearchModel) onFarz;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -66,17 +71,50 @@ class TableHeaderInFinancial extends StatelessWidget {
         const SizedBox(
           width: 12,
         ),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.veryLightGray2, width: 2),
-            borderRadius: BorderRadius.circular(10),
+        InkWell(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.veryLightGray2, width: 2),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                Text(
+                  "فرز",
+                  style: AppFontStyles.extraBold18(context),
+                ),
+                PopupMenuButton<SearchModel>(
+                    color: AppColors.veryLightGray,
+                    itemBuilder: (context) {
+                      return [
+                        ...List.generate(3, (index) {
+                          return PopupMenuItem(
+                            value: farzList[index],
+                            child: Text(
+                              farzList[index].valueArSearh,
+                              style: AppFontStyles.extraBold18(context),
+                            ),
+                          );
+                        })
+                      ];
+                    },
+                    onSelected: (value) {
+                      onFarz(value);
+                    },
+                    child: const Icon(Icons.filter_list_rounded))
+              ],
+            ),
           ),
-         
         )
       ],
     );
   }
 }
 
-
+List<SearchModel> farzList = [
+  SearchModel(valueArSearh: "الكل", valueEnSearh: "-1"),
+  SearchModel(valueArSearh: "عند الاستلام", valueEnSearh: "0"),
+  SearchModel(valueArSearh: "نظام التقسيط", valueEnSearh: "1"),
+];

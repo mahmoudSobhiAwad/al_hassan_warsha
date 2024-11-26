@@ -114,6 +114,16 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     emit(LoadingAddNewOrderState());
     isLoadingAddOrder = true;
     prepareOrderModelBeforeSend();
+    if (orderModel.kitchenType != null &&
+        !allKitchenTypes.contains(orderModel.kitchenType)) {
+      final resultType =
+          await managementRepoImpl.addNewKitchenType(orderModel.kitchenType!);
+      resultType.fold((success) {
+        emit(SuccessGetAllKitchenTypesState());
+      }, (error) {
+        emit(FailureGetAllKitchenTypesState(errMessage: error));
+      });
+    }
     var result = await managementRepoImpl.createNewOrder(orderModel);
     return result.fold((success) {
       ordersList.add(orderModel);

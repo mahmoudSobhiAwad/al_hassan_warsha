@@ -28,12 +28,6 @@ CREATE TABLE $customerTableName (
 );
 ''');
       await dataBaseHelper.database.execute('''
-CREATE TABLE $kitchenTypesInOrder (
- kitchenTypeName TEXT 
-);
-''');
-
-      await dataBaseHelper.database.execute('''
 CREATE TABLE $orderTableName (
   orderId TEXT PRIMARY KEY,
   customerId TEXT NOT NULL,
@@ -86,6 +80,15 @@ pillId TEXT PRIMARY KEY,
   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 );
 ''');
+      await dataBaseHelper.database.execute('''
+CREATE TABLE $kitchenTypesInOrder (
+ kitchenTypeName TEXT 
+);
+''');
+      for (final kitchenType in kitchenTypesInOrderList) {
+        await dataBaseHelper.database.insert(kitchenTypesInOrder, kitchenType);
+      }
+
       return left("Success Created");
     } catch (e) {
       return right(e.toString());
@@ -100,6 +103,17 @@ pillId TEXT PRIMARY KEY,
         kitchenTypesList.add(item['kitchenTypeName'] as String);
       }
       return left(kitchenTypesList);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  Future<Either<bool, String>> addNewKitchenType(String value) async {
+    try {
+       await dataBaseHelper.database
+          .insert(kitchenTypesInOrder, {"KitchenTypeName": value});
+
+      return left(true);
     } catch (e) {
       return right(e.toString());
     }

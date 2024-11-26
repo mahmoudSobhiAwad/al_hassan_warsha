@@ -44,7 +44,11 @@ class FinancialBody extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          const TableHeaderInFinancial(),
+          TableHeaderInFinancial(
+            onFarz: (value){
+              bloc.add(ChangeSearchModelEvent(model: value,isFarz:true ));
+            },
+          ),
           const SizedBox(
             height: 10,
           ),

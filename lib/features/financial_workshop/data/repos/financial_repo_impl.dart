@@ -12,6 +12,10 @@ class FinancialRepoImpl implements FinancialRepo {
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset, int? optionPaymentWay}) async {
     try {
+      String whereClause = optionPaymentWay != null
+          ? "orderId = ? AND optionPaymentWay = ?"
+          : "orderId = ?";
+
       final result = await dataBaseHelper.database.query(
         orderTableName,
         limit: 8,
@@ -19,15 +23,21 @@ class FinancialRepoImpl implements FinancialRepo {
       );
       List<OrderModel> orderList = [];
       for (var item in result) {
-        final pillresult = await dataBaseHelper.database
-            .query(pillTableName, where: 'orderId = ?', whereArgs: [
-          item['orderId'],
-        ]);
-        PillModel pillModel = PillModel.fromJson(pillresult.first);
-        OrderModel orderModel = OrderModel.fromJson(item);
-        orderModel.pillModel = pillModel;
-        orderList.add(orderModel);
+        final whereArgs =
+            optionPaymentWay != null ? [item['orderId'], optionPaymentWay] : [item['orderId']];
+        final pillresult = await dataBaseHelper.database.query(
+          pillTableName,
+          where: whereClause,
+          whereArgs: whereArgs,
+        );
+        if (pillresult.isNotEmpty) {
+          PillModel pillModel = PillModel.fromJson(pillresult.first);
+          OrderModel orderModel = OrderModel.fromJson(item);
+          orderModel.pillModel = pillModel;
+          orderList.add(orderModel);
+        }
       }
+
       int? totalLength = await getTableCount(orderTableName) ?? 0;
 
       return left((orderList, totalLength));
