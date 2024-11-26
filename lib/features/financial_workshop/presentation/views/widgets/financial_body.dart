@@ -93,4 +93,3 @@ class FinancialBody extends StatelessWidget {
     );
   }
 }
-

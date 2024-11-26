@@ -289,6 +289,7 @@ pillId TEXT PRIMARY KEY,
       LEFT JOIN $pillTableName p ON o.orderId = p.orderId
       WHERE o.orderId = ?
     ''', [item['orderId']]);
+      print(results);
 
       if (results.isEmpty) {
         throw Exception('Order not found');

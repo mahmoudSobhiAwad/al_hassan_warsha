@@ -25,6 +25,12 @@ class FinancialView extends StatelessWidget {
           listener: (context, state) {
         if (state is SuccessUpdateCounterOrderState) {
           showCustomSnackBar(context, "تم تنزيل دفعة بنجاح ");
+        } else if (state is FailureFetchOrderState) {
+          showCustomSnackBar(context, "${state.errMessage}",
+              backgroundColor: AppColors.red);
+        } else if (state is FailureUpdateCounterOrderState) {
+          showCustomSnackBar(context, "${state.errMessage}",
+              backgroundColor: AppColors.red);
         }
       }, builder: (context, state) {
         var bloc = context.read<FinanicalBloc>();
@@ -67,7 +73,6 @@ class FinancialView extends StatelessWidget {
                     flex: 5,
                     child: [
                       FinancialBody(
-                        
                         bloc: bloc,
                       ),
                       const TranscationView(),

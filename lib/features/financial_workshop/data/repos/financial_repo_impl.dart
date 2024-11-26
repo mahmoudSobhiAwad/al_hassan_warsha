@@ -10,14 +10,19 @@ class FinancialRepoImpl implements FinancialRepo {
   FinancialRepoImpl({required this.dataBaseHelper});
   @override
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
-      {int? offset}) async {
+      {int? offset, int? optionPaymentWay}) async {
     try {
-      final result = await dataBaseHelper.database
-          .query(orderTableName, limit: 8, offset: offset);
+      final result = await dataBaseHelper.database.query(
+        orderTableName,
+        limit: 8,
+        offset: offset,
+      );
       List<OrderModel> orderList = [];
       for (var item in result) {
-        final pillresult = await dataBaseHelper.database.query(pillTableName,
-            where: 'orderId =?', whereArgs: [item['orderId']]);
+        final pillresult = await dataBaseHelper.database
+            .query(pillTableName, where: 'orderId = ?', whereArgs: [
+          item['orderId'],
+        ]);
         PillModel pillModel = PillModel.fromJson(pillresult.first);
         OrderModel orderModel = OrderModel.fromJson(item);
         orderModel.pillModel = pillModel;
@@ -102,7 +107,6 @@ class FinancialRepoImpl implements FinancialRepo {
   ''', [searchPattern]);
       List<OrderModel> searchedList = [];
       for (var item in results) {
-        print(item);
         PillModel pillModel = PillModel();
         final result = await dataBaseHelper.database.query(pillTableName,
             where: 'orderId = ?', whereArgs: [item['orderId']]);

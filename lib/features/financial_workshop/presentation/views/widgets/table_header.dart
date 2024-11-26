@@ -1,11 +1,10 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_text_style_in_header.dart';
 import 'package:flutter/material.dart';
 
 class TableHeaderInFinancial extends StatelessWidget {
-  const TableHeaderInFinancial({super.key});
-
+  const TableHeaderInFinancial({super.key,});
+ 
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -73,18 +72,11 @@ class TableHeaderInFinancial extends StatelessWidget {
             border: Border.all(color: AppColors.veryLightGray2, width: 2),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Row(
-            children: [
-              Text(
-                "فرز",
-                style: AppFontStyles.extraBold18(context),
-              ),
-              const IconButton(
-                  onPressed: null, icon: Icon(Icons.filter_list_rounded))
-            ],
-          ),
+         
         )
       ],
     );
   }
 }
+
+

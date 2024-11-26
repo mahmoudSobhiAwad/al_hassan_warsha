@@ -5,7 +5,8 @@ sealed class FinanicalEvent {}
 
 final class FetchAllOrderWithThierBillEvent extends FinanicalEvent {
   final int offset;
-  FetchAllOrderWithThierBillEvent({this.offset = 0});
+  final int farzIndex;
+  FetchAllOrderWithThierBillEvent({this.offset = 0,this.farzIndex=-1});
 }
 
 final class DownStepCounterEvent extends FinanicalEvent {
@@ -36,7 +37,8 @@ final class SearchForOrderDataEvent extends FinanicalEvent {
 
 final class ChangeSearchModelEvent extends FinanicalEvent {
   final SearchModel model;
-  ChangeSearchModelEvent({required this.model});
+  final bool isFarz;
+  ChangeSearchModelEvent({required this.model,this.isFarz=false});
 }
 final class ChangeSearchKeyWordEvent extends FinanicalEvent {
   final String text;

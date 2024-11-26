@@ -3,7 +3,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_m
 import 'package:dartz/dartz.dart';
 
 abstract class FinancialRepo {
-  Future<Either<(List<OrderModel>, int), String>>  getAllBills({int? offset});
+  Future<Either<(List<OrderModel>, int), String>>  getAllBills({int? offset,int optionPaymentWay=-1});
   Future<Either<List<OrderModel>, String>>  searchForOrder({ required String searchKeyWord,required String parameterSearch});
   Future<Either<PillModel, String>>  downStep(String id,String amount);
 }

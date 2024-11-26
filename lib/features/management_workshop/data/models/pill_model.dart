@@ -1,3 +1,5 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
+
 class PillModel {
   String orderId;
   String pillId;
@@ -12,7 +14,7 @@ class PillModel {
     this.customerName = '',
     this.interior = "0.0",
     this.remian = "0.0",
-    this.payedAmount="0.0",
+    this.payedAmount = "0.0",
     this.optionPaymentWay = OptionPaymentWay.atRecieve,
     this.orderId = '',
     this.pillId = '',
@@ -23,8 +25,9 @@ class PillModel {
     return {
       "orderId": orderIdd ?? orderId,
       "pillId": pillId,
-      "remainMoney":
-          (double.parse(totalMoney) - double.parse(interior)).toString(),
+      "remainMoney": (convertArabicToEnglishNumbers(totalMoney) -
+              convertArabicToEnglishNumbers(interior))
+          .toString(),
       "totalMoney": totalMoney,
       "interior": interior,
       "optionPaymentWay": optionPaymentWay.index,

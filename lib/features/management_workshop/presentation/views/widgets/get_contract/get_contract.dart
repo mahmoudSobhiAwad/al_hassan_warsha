@@ -6,8 +6,8 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/header_customer_info.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/pill_contract.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/signature.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -20,13 +20,17 @@ Future<void> getPdfContract(OrderModel orderModel) async {
   const headerContent = ContentForCustomerInfo();
   const contentForOrderDetails = ContentForOrderInfo();
   const contractSignature = ContractSignature();
+  final Uint8List watermarkImageData = await rootBundle
+      .load('assets/home_assets/financial.png')
+      .then((data) => data.buffer.asUint8List());
   const pillInfo = PillInfo();
   pdf.addPage(pw.Page(
       pageFormat: PdfPageFormat.a4,
       build: (pw.Context context) {
         return pw.Directionality(
-            textDirection: pw.TextDirection.rtl,
-            child: pw.Column(
+          textDirection: pw.TextDirection.rtl,
+          child: pw.Stack(children: [
+            pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [
                   pw.Center(
@@ -96,9 +100,25 @@ Future<void> getPdfContract(OrderModel orderModel) async {
                   pillInfo.build(font, pillModel: orderModel.pillModel!),
                   pw.Spacer(),
                   contractSignature.build(font),
-                ]));
+                ]),
+            pw.Positioned(
+              left: 100,
+              top: 300,
+              child: pw.Opacity(
+                opacity: 0.3, // Adjust opacity for the watermark effect
+                child: pw.Image(
+                  pw.MemoryImage(watermarkImageData),
+                  fit: pw.BoxFit.contain,
+                  width: 300, // Adjust the size of the watermark image
+                ),
+              ),
+            ),
+          ]),
+        );
       }));
-  final output = await getApplicationDocumentsDirectory();
-  final file = File("${output.path}/${orderModel.orderId}.pdf");
-  await file.writeAsBytes(await pdf.save());
+  String? directoryPath = await FilePicker.platform.getDirectoryPath();
+  if (directoryPath != null) {
+    final file = File("$directoryPath/${orderModel.orderId}.pdf");
+    await file.writeAsBytes(await pdf.save());
+  }
 }

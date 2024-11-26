@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
@@ -58,7 +59,6 @@ class BillDetails extends StatelessWidget {
                     ],
                     onChanged: (value) {
                       pillModel.totalMoney = value ?? "";
-                      
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
@@ -92,6 +92,7 @@ class BillDetails extends StatelessWidget {
                     ],
                     onChanged: (value) {
                       pillModel.interior = value ?? "";
+                      print(convertArabicToEnglishNumbers(pillModel.interior));
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
@@ -123,11 +124,11 @@ class BillDetails extends StatelessWidget {
               const Expanded(flex: 1, child: SizedBox()),
               pillModel.stepsCounter == 0
                   ? Center(
-                    child: Text(
+                      child: Text(
                         "تم استلام كل المبالغ المتبقية",
                         style: AppFontStyles.bold24(context),
                       ),
-                  )
+                    )
                   : Expanded(
                       flex: 4,
                       child: Row(

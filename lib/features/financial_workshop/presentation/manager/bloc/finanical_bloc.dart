@@ -28,6 +28,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   bool searchMood = false;
   bool isLoadingSearch = false;
   String searchKeyWord = '';
+  SearchModel farzModel = SearchModel(valueArSearh: "الكل", valueEnSearh: "-1");
   SearchModel searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
   //
 
@@ -47,7 +48,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
     emit(LoadingFetchOrderState());
     final result = await financialRepoImpl.getAllBills(
-        offset: event.offset * orderList.length);
+        offset: event.offset * orderList.length,optionPaymentWay: event.farzIndex);
     result.fold((data) {
       orderList.clear();
       orderList.addAll(data.$1);
@@ -56,6 +57,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       emit(SuccessFetchOrderState());
     }, (error) {
       isLoading = false;
+      
       emit(FailureFetchOrderState(errMessage: error));
     });
   }
@@ -68,6 +70,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       final result =
           await financialRepoImpl.downStep(event.pillId, event.remianAmount);
       return result.fold((changedPill) {
+        if (searchedList.isNotEmpty) {
+          searchedList
+              .firstWhere((item) => item.pillModel!.pillId == event.pillId)
+              .pillModel = changedPill;
+        }
         orderList
             .firstWhere((item) => item.pillModel!.pillId == event.pillId)
             .pillModel = changedPill;
@@ -98,7 +105,16 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
   FutureOr<void> changeSearchModel(
       ChangeSearchModelEvent event, Emitter<FinanicalState> emit) async {
-    searchModel = event.model;
+    if (event.isFarz) {
+      if (event.model.valueEnSearh != farzModel.valueEnSearh) {
+        farzModel = event.model;
+        add(FetchAllOrderWithThierBillEvent(
+            farzIndex: int.parse(event.model.valueEnSearh)));
+      }
+    } else {
+      searchModel = event.model;
+    }
+
     emit(ChangeSearchModelState());
   }
 
@@ -118,6 +134,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
         emit(FailureFetchOrderState(errMessage: error));
       });
     } else {
+      searchedList.clear();
       searchKeyWord = "";
       searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
       searchMood = false;
