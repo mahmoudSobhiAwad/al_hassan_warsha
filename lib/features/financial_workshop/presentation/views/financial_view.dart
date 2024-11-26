@@ -32,6 +32,10 @@ class FinancialView extends StatelessWidget {
           showCustomSnackBar(context, "${state.errMessage}",
               backgroundColor: AppColors.red);
         }
+        else if(state is SuccessAddTransactionState){
+          showCustomSnackBar(context, "تم اضافة التحويل بنجاح ");
+        }
+        
       }, builder: (context, state) {
         var bloc = context.read<FinanicalBloc>();
         return Expanded(
@@ -75,7 +79,9 @@ class FinancialView extends StatelessWidget {
                       FinancialBody(
                         bloc: bloc,
                       ),
-                      const TranscationView(),
+                      TranscationView(
+                        bloc: bloc,
+                      ),
                       const BillsPaymentView(),
                       const AnalysisView(),
                     ][bloc.currIndex],

@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 part 'finanical_event.dart';
 part 'finanical_state.dart';
@@ -21,7 +23,23 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<EnableOrDisableSearchEvent>(changeSearchMood);
     on<ChangeSearchModelEvent>(changeSearchModel);
     on<ChangeSearchKeyWordEvent>(changeSearchKeyWord);
+    on<ChangePaymentTypeEvent>(changePaymentType);
+    on<ChangeHistoryOfTransactionEvent>(changeHistoryOfTransaction);
+    on<ChangeTransactionMethodEvent>(changeTransactionMethod);
+    on<AddNewTransactionEvent>(addNewTransaction);
+    on<ChangeCurrentMonthEvent>(changeCurrentMonth);
+    on<ChangeCurrentYearEvent>(changeCurrentYear);
+    on<FilterTransactionEvent>(filterTransaction);
+    on<GetAllTransactionEvent>(getAllTransaction);
   }
+
+  // related to transaction//
+  TransactionModel transactionModel = TransactionModel();
+  int currTransYear = DateTime.now().year;
+  int currTransMonth = DateTime.now().month;
+  bool isLoadingTransaction = false;
+  List<TransactionModel> transactionList = [];
+  //-----------------//
 
   //Searched data
   List<OrderModel> searchedList = [];
@@ -40,6 +58,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   int totalLengthOfAllOrders = 0;
   List<OrderModel> orderList = [];
   int pageIndex = 1;
+  //all function related to financial orders//
   FutureOr<void> fetchAllOrder(
     FetchAllOrderWithThierBillEvent event,
     Emitter<FinanicalState> emit,
@@ -93,6 +112,13 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       ChangeCurrentIndexEvent event, Emitter<FinanicalState> emit) async {
     currIndex = event.index;
     emit(ChangeIndexState());
+    switch (event.index) {
+      case 1:
+        if (transactionList.isEmpty) {
+          add(GetAllTransactionEvent());
+        }
+        break;
+    }
   }
 
   FutureOr<void> changePageInFetchOrder(
@@ -147,4 +173,73 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       ChangeSearchKeyWordEvent event, Emitter<FinanicalState> emit) async {
     searchKeyWord = event.text;
   }
+
+//-----------------------------------//
+
+// function related to transaction //
+
+  FutureOr<void> getAllTransaction(
+      GetAllTransactionEvent event, Emitter<FinanicalState> emit) async {
+    isLoadingTransaction = true;
+    emit(LoadingGetAllTransactionState());
+    final result = await financialRepoImpl.getAllTransaction(
+        month: currTransMonth, year: currTransYear);
+    result.fold((list) {
+      transactionList.clear();
+      transactionList.addAll(list);
+      emit(SuccessGetAllTransactionState());
+    }, (error) {
+      emit(FailureGetAllTransactionState(errMessage: error));
+    });
+  }
+
+  FutureOr<void> changePaymentType(
+      ChangePaymentTypeEvent event, Emitter<FinanicalState> emit) async {
+    transactionModel.transactionType = event.type;
+    emit(ChangeTransactionWayState());
+  }
+
+  FutureOr<void> changeHistoryOfTransaction(
+      ChangeHistoryOfTransactionEvent event,
+      Emitter<FinanicalState> emit) async {
+    transactionModel.transactionTime = event.time;
+    emit(ChangeTransactionHistoryState());
+  }
+
+  FutureOr<void> changeTransactionMethod(
+      ChangeTransactionMethodEvent event, Emitter<FinanicalState> emit) async {
+    transactionModel.transactionMethod = event.method;
+    emit(ChangeTransactionMethodState());
+  }
+
+  FutureOr<void> addNewTransaction(
+      AddNewTransactionEvent event, Emitter<FinanicalState> emit) async {
+    emit(LoadingAddTransactionState());
+    transactionModel.transactionId = const Uuid().v4();
+    final result =
+        await financialRepoImpl.addTransaction(model: transactionModel);
+    result.fold((model) {
+      transactionList.add(model);
+      transactionModel.clear();
+      emit(SuccessAddTransactionState());
+    }, (error) {
+      emit(FailureAddTransactionState(errMessage: error));
+    });
+  }
+
+  FutureOr<void> changeCurrentMonth(
+      ChangeCurrentMonthEvent event, Emitter<FinanicalState> emit) async {
+    currTransMonth = event.currentMonth;
+    emit(ChangeCurYearState());
+  }
+
+  FutureOr<void> changeCurrentYear(
+      ChangeCurrentYearEvent event, Emitter<FinanicalState> emit) async {
+    currTransYear = event.year;
+    emit(ChangeCurYearState());
+  }
+
+  FutureOr<void> filterTransaction(
+      FilterTransactionEvent event, Emitter<FinanicalState> emit) async {}
+  //----------------------------//
 }

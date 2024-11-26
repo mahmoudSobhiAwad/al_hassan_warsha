@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
@@ -8,6 +9,18 @@ import 'package:dartz/dartz.dart';
 class FinancialRepoImpl implements FinancialRepo {
   final DataBaseHelper dataBaseHelper;
   FinancialRepoImpl({required this.dataBaseHelper});
+
+//       // create transaction table name
+//     await dataBaseHelper.database.execute('''
+// CREATE TABLE $transactionTableName (
+//     transactionId TEXT PRIMARY KEY,
+//     transactionName TEXT NOT NULL,
+//     transactionAmount TEXT NOT NULL,
+//     transactionType INTEGER NOT NULL,
+//     transactionMethod INTEGER NOT NULL,
+//     transactionTime TEXT NOT NULL
+// );
+// ''');
   @override
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset, int? optionPaymentWay}) async {
@@ -23,8 +36,9 @@ class FinancialRepoImpl implements FinancialRepo {
       );
       List<OrderModel> orderList = [];
       for (var item in result) {
-        final whereArgs =
-            optionPaymentWay != null ? [item['orderId'], optionPaymentWay] : [item['orderId']];
+        final whereArgs = optionPaymentWay != null
+            ? [item['orderId'], optionPaymentWay]
+            : [item['orderId']];
         final pillresult = await dataBaseHelper.database.query(
           pillTableName,
           where: whereClause,
@@ -127,6 +141,43 @@ class FinancialRepoImpl implements FinancialRepo {
             orderName: item['orderName']));
       }
       return left(searchedList);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<TransactionModel, String>> addTransaction(
+      {required TransactionModel model}) async {
+    try {
+      await dataBaseHelper.database
+          .insert(transactionTableName, model.toJson());
+
+      final result = await dataBaseHelper.database.query(transactionTableName,
+          where: 'transactionId = ?', whereArgs: [model.transactionId]);
+      return left(TransactionModel.fromJson(result.first));
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<List<TransactionModel>, String>> getAllTransaction(
+      {required int month, required int year}) async {
+    try {
+      String monthString =
+          month.toString().padLeft(2, '0'); // Ensure 2-digit format
+      String yearString = year.toString();
+      List<TransactionModel> transactionList = [];
+      final transactionResult = await dataBaseHelper.database.query(
+          transactionTableName,
+          where:
+              "strftime('%Y', transactionTime) = ? AND strftime('%m', transactionTime) = ?",
+          whereArgs: [yearString, monthString]);
+      for (var item in transactionResult) {
+        transactionList.add(TransactionModel.fromJson(item));
+      }
+      return left(transactionList);
     } catch (e) {
       return right(e.toString());
     }

@@ -32,7 +32,9 @@ class Alwarsha extends StatelessWidget {
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
+        locale: const Locale('ar'),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           iconTheme: const IconThemeData(color: Colors.black),

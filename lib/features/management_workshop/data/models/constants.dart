@@ -8,6 +8,7 @@ const String colorTableName = 'colorTable';
 const String mediaOrderTableName = 'mediaOrder';
 const String extraOrderTableName = 'extraOrder';
 const String pillTableName = 'pillTable';
+const String transactionTableName = 'transactionTable';
 
 class MonthModel {
   String monthName;
@@ -17,7 +18,7 @@ class MonthModel {
 
 class SearchModel {
   String valueArSearh;
-  String valueEnSearh;
+  dynamic valueEnSearh;
   SearchModel({required this.valueArSearh, required this.valueEnSearh});
 }
 

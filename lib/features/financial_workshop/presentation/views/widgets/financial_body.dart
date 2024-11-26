@@ -1,5 +1,7 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/constants.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/list_order_financial.dart';
@@ -34,7 +36,12 @@ class FinancialBody extends StatelessWidget {
               bloc.add(ChangeSearchModelEvent(model: model));
             },
             searchFunc: () {
-              bloc.add(EnableOrDisableSearchEvent(status: true));
+              if (bloc.searchModel.valueEnSearh.isNotEmpty &&
+                  bloc.searchKeyWord.trim().isNotEmpty) {
+                bloc.add(EnableOrDisableSearchEvent(status: true));
+              } else {
+                showCustomSnackBar(context, "حدد كلمة البحث او نوع البحث ",backgroundColor: AppColors.orange);
+              }
             },
             changeSearchText: (value) {
               bloc.add(ChangeSearchKeyWordEvent(text: value));
@@ -45,8 +52,8 @@ class FinancialBody extends StatelessWidget {
             height: 24,
           ),
           TableHeaderInFinancial(
-            onFarz: (value){
-              bloc.add(ChangeSearchModelEvent(model: value,isFarz:true ));
+            onFarz: (value) {
+              bloc.add(ChangeSearchModelEvent(model: value, isFarz: true));
             },
           ),
           const SizedBox(

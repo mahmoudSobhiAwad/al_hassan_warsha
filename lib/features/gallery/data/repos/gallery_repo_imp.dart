@@ -19,6 +19,7 @@ class GalleryRepoImp implements GalleryRepo {
 
   @override
   Future<void> createDataTablesForGallery() async {
+
     await dataBaseHelper.database.execute('''
   CREATE TABLE $kitchenTypesTableName (
     typeId TEXT PRIMARY KEY,       

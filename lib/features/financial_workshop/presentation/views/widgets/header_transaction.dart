@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 
 class HeaderForTransactionHistory extends StatelessWidget {
   const HeaderForTransactionHistory({super.key});
-
   @override
   Widget build(BuildContext context) {
     return  Column(
       children: [
         Row(
           children: [
-            const Expanded(child: SizedBox()),
+            const SizedBox(
+              width: 10,
+            ),
             Expanded(
-               flex: 12,
+               flex: 14,
               child:  Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -52,31 +53,32 @@ class HeaderForTransactionHistory extends StatelessWidget {
                         textStyle: AppFontStyles.extraBold18(context),
                         text: "دفع/ استلام",
                       )),
-                  const Expanded(child: SizedBox()),
+                  
                   
                 ],
               ),
             ),
-             const Expanded(
-              
-              child: SizedBox(
-                width: 12,
-              ),
-            ),
+            const Expanded(
+              flex: 3,
+              child: SizedBox()) 
+            
+          
           ],
         ),
         const Row(
           
           children: [
-            Expanded(child: SizedBox()),
+            SizedBox(width: 10,),
             Expanded(
-              flex: 12,
+              flex: 14,
               child: Divider(
                     
                     thickness: 2,
                   ),
             ),
-            Expanded(child: SizedBox())
+            Expanded(
+              flex: 3,
+              child: SizedBox())
           ],
         ),
       ],

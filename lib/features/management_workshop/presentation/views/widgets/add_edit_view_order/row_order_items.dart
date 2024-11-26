@@ -1,11 +1,11 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_widget.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/get_color_for_order.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class RowOrderItems extends StatelessWidget {
   const RowOrderItems({
@@ -97,43 +97,12 @@ class RowOrderItems extends StatelessWidget {
         const Expanded(child: SizedBox()),
         Expanded(
             flex: 2,
-            child: CustomColumnWithTextInAddNewType(
-              formKey: formKey,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return "تاريخ الاستلام لا يمكن ان يكون خاليا ";
-                }
-                return null;
-              },
-              controller: TextEditingController(
-                  text: orderModel.recieveTime != null
-                      ? DateFormat('d MMMM y', 'ar')
-                          .format(orderModel.recieveTime ?? DateTime.now())
-                      : ""),
-              text: " تاريخ الاستلام ",
-              enableBorder: true,
-              readOnly: true,
-              textStyle: AppFontStyles.extraBold18(context),
-              textLabel: "",
-              suffixIcon: IconButton(
-                onPressed: () {
-                  changeDate != null
-                      ? showDatePicker(
-                              locale: const Locale('ar'),
-                              context: context,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(DateTime.now().year + 1))
-                          .then((value) {
-                          if (value != null) {
-                            changeDate!(value);
-                          }
-                        })
-                      : null;
-                },
-                icon: const Icon(Icons.calendar_month_rounded),
-              ),
-            )),
+            child: CustomDatePicker(
+                formKey: formKey,
+                recieveTime: orderModel.recieveTime,
+                changeDate: changeDate)),
       ],
     );
   }
 }
+
