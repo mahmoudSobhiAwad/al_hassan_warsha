@@ -62,6 +62,10 @@ class TranscationView extends StatelessWidget {
                                 itemCount: bloc.transactionList.length,
                                 itemBuilder: (context, index) {
                                   return ContentInTransactionHistory(
+                                    deleteTrans: (id) {
+                                      bloc.add(DeleteTransactionEvent(
+                                          transactionId: id));
+                                    },
                                     model: bloc.transactionList[index],
                                   );
                                 },
@@ -88,17 +92,21 @@ class TranscationView extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              AddTransaction(
-                transactionModel: bloc.transactionModel,
-                onChangeDate: (DateTime time) {
-                  bloc.add(ChangeHistoryOfTransactionEvent(time: time));
-                },
-                onChangeTransactionMethod: (TransactionMethod method) {
-                  bloc.add(ChangeTransactionMethodEvent(method: method));
-                },
-                onChangeTransactionType: (TransactionType method) {
-                  bloc.add(ChangePaymentTypeEvent(type: method));
-                },
+              Form(
+                key: bloc.formKey,
+                child: AddTransaction(
+                  formKey: bloc.formKey,
+                  transactionModel: bloc.transactionModel,
+                  onChangeDate: (DateTime time) {
+                    bloc.add(ChangeHistoryOfTransactionEvent(time: time));
+                  },
+                  onChangeTransactionMethod: (TransactionMethod method) {
+                    bloc.add(ChangeTransactionMethodEvent(method: method));
+                  },
+                  onChangeTransactionType: (TransactionType method) {
+                    bloc.add(ChangePaymentTypeEvent(type: method));
+                  },
+                ),
               ),
               const SizedBox(
                 height: 16,
@@ -106,7 +114,9 @@ class TranscationView extends StatelessWidget {
               Center(
                   child: CustomPushContainerButton(
                 onTap: () {
-                  bloc.add(AddNewTransactionEvent());
+                  if (bloc.formKey.currentState!.validate()) {
+                    bloc.add(AddNewTransactionEvent());
+                  }
                 },
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 5),

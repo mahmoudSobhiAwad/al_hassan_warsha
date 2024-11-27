@@ -5,6 +5,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/consta
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:dartz/dartz.dart';
+import 'package:uuid/uuid.dart';
 
 class FinancialRepoImpl implements FinancialRepo {
   final DataBaseHelper dataBaseHelper;
@@ -62,7 +63,7 @@ class FinancialRepoImpl implements FinancialRepo {
 
   @override
   Future<Either<PillModel, String>> downStep(
-      String pillId, String remainAmount) async {
+      String pillId, String remainAmount, String orderName,String payedAmount) async {
     try {
       if (double.parse(remainAmount) > 1) {
         await dataBaseHelper.database.rawUpdate(
@@ -85,6 +86,15 @@ class FinancialRepoImpl implements FinancialRepo {
       }
       final result = await dataBaseHelper.database
           .query(pillTableName, where: 'pillId = ?', whereArgs: [pillId]);
+
+      await addTransaction(
+          model: TransactionModel(
+              transactionId: const Uuid().v4(),
+              transactionAmount:payedAmount,
+              transactionMethod: TransactionMethod.caching,
+              transactionTime: DateTime.now(),
+              transactionType: TransactionType.recieve,
+              transactionName: "استلام دفعة من  $orderName"));
       return left(PillModel.fromJson(result.first));
     } catch (e) {
       return right(e.toString());
@@ -178,6 +188,17 @@ class FinancialRepoImpl implements FinancialRepo {
         transactionList.add(TransactionModel.fromJson(item));
       }
       return left(transactionList);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> removeTransation({required String id}) async {
+    try {
+      await dataBaseHelper.database.delete(transactionTableName,
+          where: "transactionId = ?", whereArgs: [id]);
+      return left(true);
     } catch (e) {
       return right(e.toString());
     }

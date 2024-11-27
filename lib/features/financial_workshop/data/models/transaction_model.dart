@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionModel {
@@ -19,7 +20,7 @@ class TransactionModel {
     return {
       "transactionId": transactionId,
       "transactionName": transactionName,
-      "transactionAmount": transactionAmount,
+      "transactionAmount":convertToEnglishNumbers(transactionAmount),
       "transactionTime": transactionTime?.toIso8601String(),
       "transactionType": transactionType.index,
       "transactionMethod": transactionMethod.index,

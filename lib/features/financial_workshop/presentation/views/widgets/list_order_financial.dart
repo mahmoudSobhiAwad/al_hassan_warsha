@@ -12,8 +12,12 @@ class ListOfOrdersInFinancial extends StatelessWidget {
 
   final ScrollController controller;
   final List<OrderModel> orderList;
-  final void Function({required String amount, required String pillId})
-      downStep;
+  final void Function({
+    required String amount,
+    required String pillId,
+    required String orderName,
+    required String payedAmount,
+  }) downStep;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +37,13 @@ class ListOfOrdersInFinancial extends StatelessWidget {
               itemCount: orderList.length,
               itemBuilder: (context, index) {
                 return ContentOfFinancialTable(
-                  downStep: ({required String amount, required String pillId}) {
-                    downStep(amount: amount, pillId: pillId);
+                  downStep: (
+                      {required String amount,
+                      required String pillId,
+                      required String orderName,
+                      required String payedAmount}) {
+                    downStep(
+                        amount: amount, pillId: pillId, orderName: orderName,payedAmount: payedAmount);
                   },
                   orderName: orderList[index].orderName,
                   pillModel: orderList[index].pillModel!,

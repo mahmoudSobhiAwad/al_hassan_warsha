@@ -1,5 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
@@ -11,6 +13,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/order_
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/repos/management_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:uuid/uuid.dart';
 
 class ManagementRepoImpl implements ManagementRepo {
   final DataBaseHelper dataBaseHelper;
@@ -110,7 +113,7 @@ CREATE TABLE $kitchenTypesInOrder (
 
   Future<Either<bool, String>> addNewKitchenType(String value) async {
     try {
-       await dataBaseHelper.database
+      await dataBaseHelper.database
           .insert(kitchenTypesInOrder, {"KitchenTypeName": value});
 
       return left(true);
@@ -177,6 +180,14 @@ CREATE TABLE $kitchenTypesInOrder (
         await dataBaseHelper.database.insert(
             pillTableName, model.pillModel!.toJson(orderIdd: model.orderId));
       }
+      await FinancialRepoImpl(dataBaseHelper: dataBaseHelper).addTransaction(
+          model: TransactionModel(
+              transactionId: const Uuid().v4(),
+              transactionAmount: model.pillModel!.interior,
+              transactionMethod: TransactionMethod.caching,
+              transactionTime: DateTime.now(),
+              transactionType: TransactionType.recieve,
+              transactionName: "استلام مقدم من  ${model.customerModel!.customerName} "));
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {
       return right(e.toString());

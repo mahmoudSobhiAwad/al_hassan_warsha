@@ -11,8 +11,10 @@ final class FetchAllOrderWithThierBillEvent extends FinanicalEvent {
 
 final class DownStepCounterEvent extends FinanicalEvent {
   final String pillId;
+  final String orderName;
   final String remianAmount;
-  DownStepCounterEvent({required this.pillId, required this.remianAmount});
+  final String payed;
+  DownStepCounterEvent({required this.pillId, required this.remianAmount,required this.orderName,required this.payed});
 }
 
 final class ChangeCurrentIndexEvent extends FinanicalEvent {
@@ -76,4 +78,7 @@ final class ChangeCurrentYearEvent extends FinanicalEvent {
   ChangeCurrentYearEvent({required this.year});
 }
 
-final class FilterTransactionEvent extends FinanicalEvent {}
+final class DeleteTransactionEvent extends FinanicalEvent {
+  final String transactionId;
+  DeleteTransactionEvent({required this.transactionId});
+}

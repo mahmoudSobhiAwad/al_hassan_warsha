@@ -11,6 +11,7 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
   final String text;
   final TextStyle?textStyle;
   final double? letterSpacing;
+  
 
   @override
   Widget build(BuildContext context) {

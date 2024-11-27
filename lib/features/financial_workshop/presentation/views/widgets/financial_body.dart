@@ -78,8 +78,10 @@ class FinancialBody extends StatelessWidget {
                     controller: bloc.scrollController,
                     orderList: bloc.orderList,
                     downStep: (
-                        {required String amount, required String pillId}) {
+                        {required String amount, required String pillId,required String orderName,required String payedAmount}) {
                       bloc.add(DownStepCounterEvent(
+                        orderName: orderName,
+                        payed:payedAmount,
                           pillId: pillId, remianAmount: amount));
                     },
                   ),

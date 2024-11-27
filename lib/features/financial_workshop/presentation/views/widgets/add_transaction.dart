@@ -6,6 +6,7 @@ import 'package:al_hassan_warsha/features/financial_workshop/data/models/transac
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AddTransaction extends StatelessWidget {
   const AddTransaction(
@@ -13,11 +14,13 @@ class AddTransaction extends StatelessWidget {
       required this.transactionModel,
       required this.onChangeDate,
       required this.onChangeTransactionType,
+      required this.formKey,
       required this.onChangeTransactionMethod});
   final TransactionModel transactionModel;
   final void Function(DateTime time) onChangeDate;
   final void Function(TransactionMethod method) onChangeTransactionMethod;
   final void Function(TransactionType method) onChangeTransactionType;
+  final GlobalKey<FormState> formKey;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,6 +36,13 @@ class AddTransaction extends StatelessWidget {
             Expanded(
                 flex: 4,
                 child: CustomColumnWithTextInAddNewType(
+                  formKey: formKey,
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "الاسم لا يمكن ان يكون خاليا ";
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     transactionModel.transactionName = value ?? "";
                   },
@@ -49,17 +59,37 @@ class AddTransaction extends StatelessWidget {
             Expanded(
                 flex: 2,
                 child: CustomColumnWithTextInAddNewType(
+                  formKey: formKey,
+                  validator: (value) {
+                    if (value == null || value == '0') {
+                      return "المبلغ لا يمكن ان يكون خاليا ";
+                    }
+                    return null;
+                  },
                   onChanged: (value) {
                     transactionModel.transactionAmount = value ?? "0";
                   },
-                  inputFormatters: [],
+                  controller: TextEditingController(text: transactionModel.transactionAmount),
+                  textInputType: TextInputType.number,
+                  textInnerStyle:
+                      AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(
+                          r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
+                    ),
+                  ],
                   textStyle: AppFontStyles.extraBold18(context),
                   enableBorder: true,
                   text: "قيمة المبلغ",
                   textLabel: ".......................",
                   maxLine: 1,
                   borderWidth: 2,
-                  suffixText: "جنية",
+                  suffixIcon: Text(
+                    "جنية",
+                    style: AppFontStyles.extraBold18(context),
+                    textAlign: TextAlign.center,
+                  ),
                 )),
             const Expanded(child: SizedBox()),
             Expanded(
@@ -83,8 +113,11 @@ class AddTransaction extends StatelessWidget {
                 )),
             const Expanded(child: SizedBox()),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: CustomDatePicker(
+                  
+                  formKey: formKey,
+                  format: 'd MMMM y - HH:mm',
                   recieveTime: transactionModel.transactionTime,
                   changeDate: (value) {
                     onChangeDate(value);

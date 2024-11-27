@@ -10,12 +10,14 @@ class CustomDatePicker extends StatelessWidget {
     this.recieveTime,
     this.changeDate,
     this.labelText,
+    this.format
   });
 
   final GlobalKey<FormState>? formKey;
   final DateTime? recieveTime;
   final void Function(DateTime p1)? changeDate;
   final String? labelText;
+  final String?format;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,13 @@ class CustomDatePicker extends StatelessWidget {
       },
       controller: TextEditingController(
           text: recieveTime != null
-              ? DateFormat('d MMMM y', 'ar')
+              ? DateFormat(format??'d MMMM y', 'ar')
                   .format(recieveTime ?? DateTime.now())
               : ""),
       text: labelText ?? " تاريخ الاستلام ",
       enableBorder: true,
       readOnly: true,
+      textInnerStyle: AppFontStyles.extraBold18(context).copyWith(letterSpacing: 1),
       textStyle: AppFontStyles.extraBold18(context),
       textLabel: "",
       suffixIcon: IconButton(

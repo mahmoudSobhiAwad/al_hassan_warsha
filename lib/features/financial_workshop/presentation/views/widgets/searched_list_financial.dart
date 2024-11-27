@@ -50,9 +50,11 @@ class SearchedListInFinancial extends StatelessWidget {
                     orderList: bloc.searchedList,
                     downStep: (
                         {required String amount,
-                        required String pillId}) {
+                        required String pillId,required String orderName,required String payedAmount}) {
                       bloc.add(DownStepCounterEvent(
-                          pillId: pillId, remianAmount: amount));
+                        payed:payedAmount,
+                        orderName: orderName,
+                          pillId: pillId, remianAmount: amount,));
                     },
                   )
                 : Center(

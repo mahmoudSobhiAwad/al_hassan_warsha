@@ -6,7 +6,8 @@ import 'package:dartz/dartz.dart';
 abstract class FinancialRepo {
   Future<Either<(List<OrderModel>, int), String>>  getAllBills({int? offset,int optionPaymentWay=-1});
   Future<Either<List<OrderModel>, String>>  searchForOrder({ required String searchKeyWord,required String parameterSearch});
-  Future<Either<PillModel, String>>  downStep(String id,String amount);
+  Future<Either<PillModel, String>>  downStep(String id,String amount,String orderName,String  payedAmount);
   Future<Either<TransactionModel,String>>addTransaction({required TransactionModel model});
+  Future<Either<bool,String>>removeTransation({required String id});
   Future<Either<List<TransactionModel>,String>>getAllTransaction({required int month ,required int year});
 }

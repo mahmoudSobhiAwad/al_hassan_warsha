@@ -55,6 +55,14 @@ final class FailureGetAllTransactionState extends FinanicalState {
   final String? errMessage;
   FailureGetAllTransactionState({this.errMessage});
 }
+final class LoadingDeleteTransactionState extends FinanicalState {}
+
+final class SuccessDeleteTransactionState extends FinanicalState {}
+
+final class FailureDeleteTransactionState extends FinanicalState {
+  final String? errMessage;
+  FailureDeleteTransactionState({this.errMessage});
+}
 final class ChangeCurrMonthState extends FinanicalState {}
 
 final class ChangeCurYearState extends FinanicalState {}

@@ -16,8 +16,11 @@ class ContentOfFinancialTable extends StatelessWidget {
       required this.downStep});
   final PillModel pillModel;
   final String orderName;
-  final void Function({required String pillId, required String amount})
-      downStep;
+  final void Function(
+      {required String pillId,
+      required String amount,
+      required String orderName,
+      required String payedAmount}) downStep;
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +58,16 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 2),
+                      textStyle: AppFontStyles.bold24(context)
+                          .copyWith(letterSpacing: 2),
                       text: pillModel.interior,
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                      textStyle: AppFontStyles.bold24(context)
+                          .copyWith(letterSpacing: 3),
                       text: pillModel.remian,
                     )),
                 const Expanded(child: SizedBox()),
@@ -70,12 +75,14 @@ class ContentOfFinancialTable extends StatelessWidget {
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.bold24(context),
-                        text:convertToArabicNumbers(pillModel.stepsCounter.toString()))),
+                        text: convertToArabicNumbers(
+                            pillModel.stepsCounter.toString()))),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
                     child: CustomTextFormField(
-                      textStyle: AppFontStyles.extraBold20(context).copyWith(letterSpacing: 3),
+                      textStyle: AppFontStyles.extraBold20(context)
+                          .copyWith(letterSpacing: 3),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       fillColor: AppColors.white,
                       enableFill: true,
@@ -101,7 +108,10 @@ class ContentOfFinancialTable extends StatelessWidget {
                       },
                       borderWidth: 2,
                       borderColor: AppColors.lightGray1,
-                      suffixWidget:Text("جنية",style: AppFontStyles.extraBold18(context),),
+                      suffixWidget: Text(
+                        "جنية",
+                        style: AppFontStyles.extraBold18(context),
+                      ),
                       labelWidget: Text(
                         "...................",
                         style: AppFontStyles.extraBold12(context)
@@ -126,7 +136,12 @@ class ContentOfFinancialTable extends StatelessWidget {
               if (payedAmount != 0) {
                 if (payedAmount <= remainAmount) {
                   final difference = (remainAmount - payedAmount).toString();
-                  downStep(amount: difference, pillId: pillModel.pillId);
+                  downStep(
+                      amount: difference,
+                      pillId: pillModel.pillId,
+                      payedAmount:
+                          convertToArabicNumbers(pillModel.payedAmount),
+                      orderName: "طلب من ${pillModel.customerName} ");
                 } else {
                   showCustomSnackBar(context, "المبلغ غير صحيح",
                       backgroundColor: AppColors.red);

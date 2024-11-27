@@ -29,7 +29,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<AddNewTransactionEvent>(addNewTransaction);
     on<ChangeCurrentMonthEvent>(changeCurrentMonth);
     on<ChangeCurrentYearEvent>(changeCurrentYear);
-    on<FilterTransactionEvent>(filterTransaction);
+    on<DeleteTransactionEvent>(deleteTransaction);
     on<GetAllTransactionEvent>(getAllTransaction);
   }
 
@@ -39,6 +39,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   int currTransMonth = DateTime.now().month;
   bool isLoadingTransaction = false;
   List<TransactionModel> transactionList = [];
+  final formKey = GlobalKey<FormState>();
   //-----------------//
 
   //Searched data
@@ -88,7 +89,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       isLoadingUpdateCounter = true;
       emit(LoadingUpdateCounterOrderState());
       final result =
-          await financialRepoImpl.downStep(event.pillId, event.remianAmount);
+          await financialRepoImpl.downStep(event.pillId, event.remianAmount,event.orderName,event.payed);
       return result.fold((changedPill) {
         if (searchedList.isNotEmpty) {
           searchedList
@@ -219,8 +220,13 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     final result =
         await financialRepoImpl.addTransaction(model: transactionModel);
     result.fold((model) {
-      transactionList.add(model);
-      transactionModel.clear();
+      if (model.transactionTime!.month == currTransMonth) {
+        transactionList.add(model);
+      }
+
+      transactionModel.transactionAmount = '0';
+      transactionModel.transactionName = '';
+      transactionModel.transactionTime = null;
       emit(SuccessAddTransactionState());
     }, (error) {
       emit(FailureAddTransactionState(errMessage: error));
@@ -239,7 +245,18 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     emit(ChangeCurYearState());
   }
 
-  FutureOr<void> filterTransaction(
-      FilterTransactionEvent event, Emitter<FinanicalState> emit) async {}
+  FutureOr<void> deleteTransaction(
+      DeleteTransactionEvent event, Emitter<FinanicalState> emit) async {
+    emit(LoadingDeleteTransactionState());
+    var result =
+        await financialRepoImpl.removeTransation(id: event.transactionId);
+    result.fold((success) {
+      transactionList
+          .removeWhere((model) => model.transactionId == event.transactionId);
+      emit(SuccessDeleteTransactionState());
+    }, (error) {
+      emit(FailureDeleteTransactionState(errMessage: error));
+    });
+  }
   //----------------------------//
 }
