@@ -55,6 +55,7 @@ final class FailureGetAllTransactionState extends FinanicalState {
   final String? errMessage;
   FailureGetAllTransactionState({this.errMessage});
 }
+
 final class LoadingDeleteTransactionState extends FinanicalState {}
 
 final class SuccessDeleteTransactionState extends FinanicalState {}
@@ -63,6 +64,50 @@ final class FailureDeleteTransactionState extends FinanicalState {
   final String? errMessage;
   FailureDeleteTransactionState({this.errMessage});
 }
+
 final class ChangeCurrMonthState extends FinanicalState {}
 
 final class ChangeCurYearState extends FinanicalState {}
+
+final class ChangeSelectedWorkersState extends FinanicalState {}
+
+final class AddNewWorkerInUiState extends FinanicalState {}
+
+final class ChangeSalaryTypeState extends FinanicalState {}
+
+final class ChangeEnableEditState extends FinanicalState {}
+
+final class LoadingFetchAllWorkersDateState extends FinanicalState {}
+
+final class SuccessFetchAllWorkersDateState extends FinanicalState {}
+
+final class FailureFetchAllWorkersDateState extends FinanicalState {
+  final String? errMessage;
+  FailureFetchAllWorkersDateState({this.errMessage});
+}
+
+final class LoadingRemoveWorkersData extends FinanicalState {}
+
+final class SuccessRemoveWorkersData extends FinanicalState {}
+
+final class FailureRemoveWorkersData extends FinanicalState {
+  final String? errMessage;
+  FailureRemoveWorkersData({this.errMessage});
+}
+
+final class LoadingEditWorkersData extends FinanicalState {}
+
+final class SuccessEditWorkersData extends FinanicalState {}
+
+final class FailureEditWorkersData extends FinanicalState {
+  final String? errMessage;
+  FailureEditWorkersData({this.errMessage});
+}
+final class LoadingPayAllSalariesWorkersState extends FinanicalState {}
+
+final class SuccessPayAllSalariesWorkersState extends FinanicalState {}
+
+final class FailurePayAllSalariesWorkersState extends FinanicalState {
+  final String? errMessage;
+  FailurePayAllSalariesWorkersState({this.errMessage});
+}

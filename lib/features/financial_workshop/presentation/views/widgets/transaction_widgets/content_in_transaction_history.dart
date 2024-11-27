@@ -38,7 +38,14 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 4,
                     child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.extraBold18(context),
-                        text: model.transactionName)),
+                        text: switch (model.allTransactionTypes) {
+                          AllTransactionTypes.interior => "مقدم",
+                          AllTransactionTypes.stepDown => "تنزيل قسط",
+                          AllTransactionTypes.pills => "فواتير",
+                          AllTransactionTypes.salaries => "مرتبات",
+                          AllTransactionTypes.buys => "مشتريات",
+                          AllTransactionTypes.other => model.transactionName,
+                        })),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
@@ -87,7 +94,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                       child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.extraBold18(context),
                         text: model.transactionType == TransactionType.buy
-                            ? "شراء"
+                            ? "دفع"
                             : "استلام",
                       ),
                     )),

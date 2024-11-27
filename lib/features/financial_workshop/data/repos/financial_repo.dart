@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
@@ -10,4 +11,8 @@ abstract class FinancialRepo {
   Future<Either<TransactionModel,String>>addTransaction({required TransactionModel model});
   Future<Either<bool,String>>removeTransation({required String id});
   Future<Either<List<TransactionModel>,String>>getAllTransaction({required int month ,required int year});
+  Future<Either<List<WorkerModel>,String>>getAllWokersData();
+  Future<Either<bool,String>>editWorkersData(List<WorkerModel> addedList,List<WorkerModel>editedList);
+  Future<Either<bool,String>>removeWorker(String workerId);
+  Future<Either<bool,String>>payTheSalary(List<WorkerModel>workerList);
 }

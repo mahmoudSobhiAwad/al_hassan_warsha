@@ -1,5 +1,4 @@
 import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
-import 'package:uuid/uuid.dart';
 
 class TransactionModel {
   String? transactionId;
@@ -8,8 +7,10 @@ class TransactionModel {
   TransactionType transactionType;
   TransactionMethod transactionMethod;
   DateTime? transactionTime;
+  AllTransactionTypes allTransactionTypes;
   TransactionModel(
       {this.transactionId = '',
+      this.allTransactionTypes=AllTransactionTypes.interior,
       this.transactionAmount = '0',
       this.transactionMethod = TransactionMethod.caching,
       this.transactionName = '',
@@ -19,11 +20,12 @@ class TransactionModel {
   Map<String, dynamic> toJson() {
     return {
       "transactionId": transactionId,
-      "transactionName": transactionName,
+      "transactionName": allTransactionTypes==AllTransactionTypes.other?transactionName:"تحويل",
       "transactionAmount":convertToEnglishNumbers(transactionAmount),
       "transactionTime": transactionTime?.toIso8601String(),
       "transactionType": transactionType.index,
       "transactionMethod": transactionMethod.index,
+      "transactionAllTypes":allTransactionTypes.index,
     };
   }
 
@@ -35,6 +37,7 @@ class TransactionModel {
             TransactionMethod.values[json['transactionMethod'] as int],
         transactionName: json['transactionName'] as String,
         transactionType: TransactionType.values[json['transactionType'] as int],
+        allTransactionTypes: AllTransactionTypes.values[json['transactionAllTypes'] as int],
         transactionTime: DateTime.parse(json['transactionTime'] as String));
   }
   TransactionModel clear({
@@ -59,3 +62,5 @@ class TransactionModel {
 enum TransactionType { recieve, buy }
 
 enum TransactionMethod { caching, visa }
+
+enum AllTransactionTypes {interior,stepDown,pills,salaries,buys,other}

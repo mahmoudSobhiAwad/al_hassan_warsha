@@ -9,11 +9,15 @@ class CustomContainerWithDropDownList extends StatelessWidget {
       required this.primaryText,
       this.headerText,
       this.onSelected,
+      this.headerStyle,
+      this.enableDropDwon=true,
       this.dropDownList = const []});
   final String primaryText;
   final String? headerText;
+  final TextStyle?headerStyle;
   final void Function(SearchModel)? onSelected;
   final List<SearchModel> dropDownList;
+  final bool enableDropDwon;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,7 +25,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
       children: [
         Text(
           headerText ?? "",
-          style: AppFontStyles.extraBold18(context),
+          style:headerStyle?? AppFontStyles.extraBold18(context),
         ),
         const SizedBox(
           height: 12,
@@ -44,7 +48,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
                   style: AppFontStyles.extraBold18(context),
                 ),
               ),
-              PopupMenuButton(
+            enableDropDwon?  PopupMenuButton(
                   color: AppColors.veryLightGray,
                   onSelected: onSelected,
                   itemBuilder: (context) {
@@ -52,7 +56,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
                       ...List.generate(dropDownList.length, (index) {
                         return PopupMenuItem(
                           value: dropDownList[index],
-                          child: Text(dropDownList[index].valueArSearh),
+                          child: Text(dropDownList[index].valueArSearh,style: AppFontStyles.extraBold18(context),),
                         );
                       })
                     ];
@@ -60,7 +64,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
                   icon: const Icon(
                     Icons.expand_more_rounded,
                     size: 30,
-                  )),
+                  )):const IconButton(onPressed: null,icon: Icon(Icons.hourglass_empty_rounded,color: AppColors.white,),),
             ],
           ),
         ),

@@ -14,7 +14,11 @@ final class DownStepCounterEvent extends FinanicalEvent {
   final String orderName;
   final String remianAmount;
   final String payed;
-  DownStepCounterEvent({required this.pillId, required this.remianAmount,required this.orderName,required this.payed});
+  DownStepCounterEvent(
+      {required this.pillId,
+      required this.remianAmount,
+      required this.orderName,
+      required this.payed});
 }
 
 final class ChangeCurrentIndexEvent extends FinanicalEvent {
@@ -55,6 +59,10 @@ final class ChangePaymentTypeEvent extends FinanicalEvent {
   final TransactionType type;
   ChangePaymentTypeEvent({required this.type});
 }
+final class ChangeAllTransactionTypesEvent extends FinanicalEvent {
+  final AllTransactionTypes type;
+  ChangeAllTransactionTypesEvent({required this.type});
+}
 
 final class ChangeHistoryOfTransactionEvent extends FinanicalEvent {
   final DateTime time;
@@ -82,3 +90,31 @@ final class DeleteTransactionEvent extends FinanicalEvent {
   final String transactionId;
   DeleteTransactionEvent({required this.transactionId});
 }
+
+final class SelectWorkerEvent extends FinanicalEvent {
+  final int index;
+  final bool isSelectAll;
+  SelectWorkerEvent({required this.index, required this.isSelectAll});
+}
+
+final class GetAllWorkersDataEvent extends FinanicalEvent {}
+
+final class AddNewWorkerEvent extends FinanicalEvent {}
+
+final class DeleteWorkerEvent extends FinanicalEvent {
+  final int index;
+  DeleteWorkerEvent({required this.index});
+}
+
+final class EnableEditForWorkersEvent extends FinanicalEvent {
+  final bool isEdit;
+  EnableEditForWorkersEvent({required this.isEdit});
+}
+final class SaveChangesAddOrEditEvent extends FinanicalEvent {}
+
+final class ChangeSalaryTypeEvent extends FinanicalEvent {
+  final SalaryType type;
+  final int index;
+  ChangeSalaryTypeEvent({required this.type,required this.index});
+}
+final class PayAllSalariesEvent extends FinanicalEvent {}

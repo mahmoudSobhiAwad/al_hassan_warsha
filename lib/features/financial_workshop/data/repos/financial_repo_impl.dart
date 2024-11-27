@@ -1,4 +1,6 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -11,7 +13,7 @@ class FinancialRepoImpl implements FinancialRepo {
   final DataBaseHelper dataBaseHelper;
   FinancialRepoImpl({required this.dataBaseHelper});
 
-//       // create transaction table name
+// create transaction table name
 //     await dataBaseHelper.database.execute('''
 // CREATE TABLE $transactionTableName (
 //     transactionId TEXT PRIMARY KEY,
@@ -19,7 +21,8 @@ class FinancialRepoImpl implements FinancialRepo {
 //     transactionAmount TEXT NOT NULL,
 //     transactionType INTEGER NOT NULL,
 //     transactionMethod INTEGER NOT NULL,
-//     transactionTime TEXT NOT NULL
+//     transactionTime TEXT NOT NULL,
+//     transactionAllTypes INTEGER NOT NULL DEFAULT 5
 // );
 // ''');
   @override
@@ -62,8 +65,8 @@ class FinancialRepoImpl implements FinancialRepo {
   }
 
   @override
-  Future<Either<PillModel, String>> downStep(
-      String pillId, String remainAmount, String orderName,String payedAmount) async {
+  Future<Either<PillModel, String>> downStep(String pillId, String remainAmount,
+      String orderName, String payedAmount) async {
     try {
       if (double.parse(remainAmount) > 1) {
         await dataBaseHelper.database.rawUpdate(
@@ -90,11 +93,12 @@ class FinancialRepoImpl implements FinancialRepo {
       await addTransaction(
           model: TransactionModel(
               transactionId: const Uuid().v4(),
-              transactionAmount:payedAmount,
+              transactionAmount: payedAmount,
               transactionMethod: TransactionMethod.caching,
+              allTransactionTypes: AllTransactionTypes.stepDown,
               transactionTime: DateTime.now(),
               transactionType: TransactionType.recieve,
-              transactionName: "استلام دفعة من  $orderName"));
+              transactionName: " دفعة "));
       return left(PillModel.fromJson(result.first));
     } catch (e) {
       return right(e.toString());
@@ -198,6 +202,97 @@ class FinancialRepoImpl implements FinancialRepo {
     try {
       await dataBaseHelper.database.delete(transactionTableName,
           where: "transactionId = ?", whereArgs: [id]);
+      return left(true);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> removeWorker(String workerId) async {
+    try {
+      await dataBaseHelper.database.delete(workersTableName,
+          where: 'workerId = ?', whereArgs: [workerId]);
+      return left(true);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> editWorkersData(
+      List<WorkerModel> addedList, List<WorkerModel> editedList) async {
+    try {
+      if (addedList.isNotEmpty) {
+        for (var item in addedList) {
+          await dataBaseHelper.database
+              .insert(workersTableName, item.toAddJson());
+        }
+      }
+      if (editedList.isNotEmpty) {
+        for (var item in editedList) {
+          await dataBaseHelper.database.update(workersTableName, item.toJson(),
+              where: "workerId = ?", whereArgs: [item.workerId]);
+        }
+      }
+      return left(true);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<List<WorkerModel>, String>> getAllWokersData() async {
+    try {
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE Workers (
+//     workerId TEXT PRIMARY KEY,
+//     workerName TEXT NOT NULL,
+//     workerPhone TEXT,
+//     salaryType INTEGER NOT NULL DEFAULT 2,
+//     salaryAmount TEXT NOT NULL DEFAULT '0',
+//     lastAddedSalary TEXT
+// );
+// ''');
+      final result = await dataBaseHelper.database.query(workersTableName);
+      List<WorkerModel> workersList = [];
+      if (result.isNotEmpty) {
+        for (var item in result) {
+          workersList.add(WorkerModel.fromJson(item));
+        }
+      }
+      return left(workersList);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<bool, String>> payTheSalary(
+      List<WorkerModel> workerList) async {
+    try {
+      int totalAmount = 0;
+      for (var item in workerList) {
+        totalAmount += int.parse(convertToEnglishNumbers(item.salaryAmount));
+        await dataBaseHelper.database.rawUpdate(
+            '''UPDATE $workersTableName SET lastAddedSalary = ?  WHERE workerId = ?''',
+            [
+              DateTime.now().toIso8601String(),
+              item.workerId,
+            ]);
+      }
+      await dataBaseHelper.database.insert(
+          transactionTableName,
+          TransactionModel(
+                  transactionId: const Uuid().v4(),
+                  transactionAmount: totalAmount.toString(),
+                  transactionMethod: TransactionMethod.caching,
+                  allTransactionTypes: AllTransactionTypes.salaries,
+                  transactionTime: DateTime.now(),
+                  transactionType: TransactionType.buy,
+                  transactionName: " مرتبات ")
+              .toJson());
+
       return left(true);
     } catch (e) {
       return right(e.toString());

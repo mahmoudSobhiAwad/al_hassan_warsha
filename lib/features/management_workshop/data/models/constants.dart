@@ -9,6 +9,7 @@ const String mediaOrderTableName = 'mediaOrder';
 const String extraOrderTableName = 'extraOrder';
 const String pillTableName = 'pillTable';
 const String transactionTableName = 'transactionTable';
+const String workersTableName = 'Workers';
 
 class MonthModel {
   String monthName;

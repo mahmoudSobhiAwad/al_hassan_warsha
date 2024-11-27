@@ -7,7 +7,7 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/manage
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/analysis_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/custom_side_bar_item.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/financial_body.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/pill_payment_view.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/salary_widget/add_edit_salary.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,17 +25,25 @@ class FinancialView extends StatelessWidget {
           listener: (context, state) {
         if (state is SuccessUpdateCounterOrderState) {
           showCustomSnackBar(context, "تم تنزيل دفعة بنجاح ");
+        } else if (state is SuccessAddTransactionState) {
+          showCustomSnackBar(context, "تم ادراج التحويل بنجاح ");
+        } else if (state is SuccessPayAllSalariesWorkersState) {
+          showCustomSnackBar(context, "تم دفع المرتبات بنجاح ");
         } else if (state is FailureFetchOrderState) {
           showCustomSnackBar(context, "${state.errMessage}",
               backgroundColor: AppColors.red);
         } else if (state is FailureUpdateCounterOrderState) {
           showCustomSnackBar(context, "${state.errMessage}",
               backgroundColor: AppColors.red);
-        }
-        else if(state is SuccessAddTransactionState){
+        } else if (state is SuccessAddTransactionState) {
           showCustomSnackBar(context, "تم اضافة التحويل بنجاح ");
+        } else if (state is FailureEditWorkersData) {
+          showCustomSnackBar(context, state.errMessage ?? "",
+              backgroundColor: AppColors.orange);
+        } else if (state is FailurePayAllSalariesWorkersState) {
+          showCustomSnackBar(context, state.errMessage ?? "",
+              backgroundColor: AppColors.orange);
         }
-        
       }, builder: (context, state) {
         var bloc = context.read<FinanicalBloc>();
         return Expanded(
@@ -82,7 +90,9 @@ class FinancialView extends StatelessWidget {
                       TranscationView(
                         bloc: bloc,
                       ),
-                      const BillsPaymentView(),
+                      AddEditSalaryView(
+                        bloc: bloc,
+                      ),
                       const AnalysisView(),
                     ][bloc.currIndex],
                   )

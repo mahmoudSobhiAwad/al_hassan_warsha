@@ -184,10 +184,11 @@ CREATE TABLE $kitchenTypesInOrder (
           model: TransactionModel(
               transactionId: const Uuid().v4(),
               transactionAmount: model.pillModel!.interior,
+              allTransactionTypes: AllTransactionTypes.interior,
               transactionMethod: TransactionMethod.caching,
               transactionTime: DateTime.now(),
               transactionType: TransactionType.recieve,
-              transactionName: "استلام مقدم من  ${model.customerModel!.customerName} "));
+              transactionName: "استلام مقدم من "));
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {
       return right(e.toString());

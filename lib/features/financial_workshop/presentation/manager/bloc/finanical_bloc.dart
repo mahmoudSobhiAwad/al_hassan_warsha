@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -26,11 +27,20 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<ChangePaymentTypeEvent>(changePaymentType);
     on<ChangeHistoryOfTransactionEvent>(changeHistoryOfTransaction);
     on<ChangeTransactionMethodEvent>(changeTransactionMethod);
+    on<ChangeAllTransactionTypesEvent>(changeAllTransactionTypes);
     on<AddNewTransactionEvent>(addNewTransaction);
     on<ChangeCurrentMonthEvent>(changeCurrentMonth);
     on<ChangeCurrentYearEvent>(changeCurrentYear);
     on<DeleteTransactionEvent>(deleteTransaction);
     on<GetAllTransactionEvent>(getAllTransaction);
+    on<GetAllWorkersDataEvent>(getAllWorkersData);
+    on<SelectWorkerEvent>(selectWorker);
+    on<AddNewWorkerEvent>(addNewWorker);
+    on<DeleteWorkerEvent>(deleteWorker);
+    on<ChangeSalaryTypeEvent>(changeSalaryType);
+    on<SaveChangesAddOrEditEvent>(saveChanges);
+    on<EnableEditForWorkersEvent>(enableEditForWorkers);
+    on<PayAllSalariesEvent>(payAllSalaries);
   }
 
   // related to transaction//
@@ -59,6 +69,153 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   int totalLengthOfAllOrders = 0;
   List<OrderModel> orderList = [];
   int pageIndex = 1;
+
+  //realted to workers //
+  bool isLoadingGetAllWorkers = false;
+  bool isAllSelected = false;
+  List<WorkerModel> workersList = [];
+  bool isEditEnabled = false;
+  //                //
+// all function related to workers
+  FutureOr<void> getAllWorkersData(
+      GetAllWorkersDataEvent event, Emitter<FinanicalState> emit) async {
+    isLoadingGetAllWorkers = true;
+    workersList.clear();
+    emit(LoadingFetchAllWorkersDateState());
+    final result = await financialRepoImpl.getAllWokersData();
+    result.fold((workers) {
+      workersList.addAll(workers);
+      emit(SuccessFetchAllWorkersDateState());
+    }, (error) {
+      emit(FailureFetchAllWorkersDateState(errMessage: error));
+    });
+  }
+
+  FutureOr<void> payAllSalaries(
+      PayAllSalariesEvent event, Emitter<FinanicalState> emit) async {
+    bool nothingSelected = true;
+    for (var item in workersList) {
+      if (item.isSelected) {
+        nothingSelected = false;
+        break;
+      }
+    }
+    if (nothingSelected) {
+      emit(FailurePayAllSalariesWorkersState(
+          errMessage: "لا يوجد مرتبات محددة "));
+    } else {
+      emit(LoadingPayAllSalariesWorkersState());
+      final result = await financialRepoImpl.payTheSalary(workersList);
+      result.fold((success) {
+        
+        emit(SuccessPayAllSalariesWorkersState());
+        add(EnableEditForWorkersEvent(isEdit: false));
+      }, (error) {
+        emit(FailurePayAllSalariesWorkersState(errMessage: error));
+      });
+    }
+  }
+
+  FutureOr<void> changeSalaryType(
+      ChangeSalaryTypeEvent event, Emitter<FinanicalState> emit) async {
+    workersList[event.index].salaryType = event.type;
+    emit(ChangeSalaryTypeState());
+  }
+
+  FutureOr<void> enableEditForWorkers(
+      EnableEditForWorkersEvent event, Emitter<FinanicalState> emit) async {
+    if (event.isEdit) {
+      isEditEnabled = true;
+      for (var item in workersList) {
+        item.enableEdit = true;
+      }
+    } else {
+      isEditEnabled = false;
+      isAllSelected = false;
+      workersList.removeWhere((model) => model.workerId == null);
+      for (var item in workersList) {
+        item.isSelected = item.enableEdit = false;
+      }
+    }
+    emit(ChangeEnableEditState());
+  }
+
+  FutureOr<void> saveChanges(
+      SaveChangesAddOrEditEvent event, Emitter<FinanicalState> emit) async {
+    bool complete = true;
+    for (var item in workersList.where((model) => model.isSelected)) {
+      if (item.salaryAmount.isEmpty || item.workerName.isEmpty) {
+        complete = false;
+        emit(FailureEditWorkersData(
+            errMessage: "هناك بعض البيانات مثل الاسم او المرتب فارغة"));
+      }
+    }
+    if (complete) {
+      emit(LoadingEditWorkersData());
+      final addedList = workersList
+          .where((model) => model.isSelected && model.workerId == null)
+          .toList();
+
+      final editedList = workersList
+          .where((model) => model.isSelected && model.workerId != null)
+          .toList();
+
+      final result =
+          await financialRepoImpl.editWorkersData(addedList, editedList);
+      return result.fold((success) {
+        isEditEnabled = false;
+        emit(SuccessEditWorkersData());
+        add(GetAllWorkersDataEvent());
+      }, (error) {
+        emit(FailureEditWorkersData(errMessage: error));
+      });
+    }
+  }
+
+  FutureOr<void> selectWorker(
+      SelectWorkerEvent event, Emitter<FinanicalState> emit) async {
+    if (event.isSelectAll) {
+      for (var item in workersList) {
+        item.isSelected = !item.isSelected;
+      }
+      isAllSelected = !isAllSelected;
+    } else {
+      workersList[event.index].isSelected =
+          !workersList[event.index].isSelected;
+      checkAllSelected();
+    }
+    emit(ChangeSelectedWorkersState());
+  }
+
+  FutureOr<void> addNewWorker(
+      AddNewWorkerEvent event, Emitter<FinanicalState> emit) async {
+    workersList
+        .add(WorkerModel(workerId: null, isSelected: true, enableEdit: true));
+    add(EnableEditForWorkersEvent(isEdit: true));
+    checkAllSelected();
+    emit(AddNewWorkerInUiState());
+  }
+
+  FutureOr<void> deleteWorker(
+      DeleteWorkerEvent event, Emitter<FinanicalState> emit) async {
+    emit(LoadingRemoveWorkersData());
+    if (workersList[event.index].workerId != null) {
+      final result = await financialRepoImpl
+          .removeWorker(workersList[event.index].workerId!);
+      result.fold((success) {
+        workersList.removeAt(event.index);
+        emit(SuccessRemoveWorkersData());
+      }, (error) {
+        emit(FailureRemoveWorkersData(errMessage: error));
+      });
+    } else {
+      workersList.removeAt(event.index);
+      emit(SuccessRemoveWorkersData());
+    }
+  }
+
+//
+
   //all function related to financial orders//
   FutureOr<void> fetchAllOrder(
     FetchAllOrderWithThierBillEvent event,
@@ -88,8 +245,8 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     if (!isLoadingUpdateCounter) {
       isLoadingUpdateCounter = true;
       emit(LoadingUpdateCounterOrderState());
-      final result =
-          await financialRepoImpl.downStep(event.pillId, event.remianAmount,event.orderName,event.payed);
+      final result = await financialRepoImpl.downStep(
+          event.pillId, event.remianAmount, event.orderName, event.payed);
       return result.fold((changedPill) {
         if (searchedList.isNotEmpty) {
           searchedList
@@ -119,7 +276,17 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
           add(GetAllTransactionEvent());
         }
         break;
+      case 2:
+        if (workersList.isEmpty) {
+          add(GetAllWorkersDataEvent());
+        }
+        break;
     }
+  }
+
+  void checkAllSelected() {
+    isAllSelected = workersList.where((model) => model.isSelected).length ==
+        workersList.length;
   }
 
   FutureOr<void> changePageInFetchOrder(
@@ -197,6 +364,12 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   FutureOr<void> changePaymentType(
       ChangePaymentTypeEvent event, Emitter<FinanicalState> emit) async {
     transactionModel.transactionType = event.type;
+    emit(ChangeTransactionWayState());
+  }
+
+  FutureOr<void> changeAllTransactionTypes(ChangeAllTransactionTypesEvent event,
+      Emitter<FinanicalState> emit) async {
+    transactionModel.allTransactionTypes = event.type;
     emit(ChangeTransactionWayState());
   }
 

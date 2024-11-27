@@ -56,8 +56,8 @@ class BillDetails extends StatelessWidget {
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
                         RegExp(
-                            r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
-                      ),
+                            r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+                      )
                     ],
                     onChanged: (value) {
                       pillModel.totalMoney = value ?? "";
@@ -90,9 +90,8 @@ class BillDetails extends StatelessWidget {
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
-                        RegExp(
-                            r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
-                      ),
+                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+                      )
                     ],
                     onChanged: (value) {
                       pillModel.interior = value ?? "";
@@ -112,12 +111,10 @@ class BillDetails extends StatelessWidget {
                     textLabel: "",
                     readOnly: true,
                     controller: TextEditingController(
-                      text: pillModel.remian,
+                      text: convertToArabicNumbers(pillModel.remian),
                     ),
                     textInnerStyle: AppFontStyles.extraBold24(context)
                         .copyWith(letterSpacing: 3),
-                    textInputType:
-                        const TextInputType.numberWithOptions(decimal: true),
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
                     suffixIcon: Text(
