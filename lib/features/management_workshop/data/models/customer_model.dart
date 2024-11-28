@@ -8,7 +8,7 @@ class CustomerModel {
   String? homeAddress;
   List<OrderModel> orderModelList;
   CustomerModel(
-      {required this.customerId ,
+      {required this.customerId,
       this.customerName = '',
       this.orderModelList = const [],
       this.phone,
@@ -31,4 +31,22 @@ class CustomerModel {
       if (homeAddress != null) 'homeAddress': homeAddress,
     };
   }
+
+  CustomerModel copyWith({
+    String? customerId,
+    String? customerName,
+    String? phone,
+    String? secondPhone,
+    String? homeAddress,
+    List<OrderModel>? orderModelList,
+  }) {
+    return CustomerModel(
+      customerId: customerId ?? this.customerId,
+      customerName: customerName ?? this.customerName,
+      phone: phone ?? this.phone,
+      secondPhone: secondPhone ?? this.secondPhone,
+      homeAddress: homeAddress ?? this.homeAddress,
+    );
+  }
+  
 }

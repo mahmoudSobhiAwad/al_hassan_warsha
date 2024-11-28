@@ -141,7 +141,12 @@ class EditOrderView extends StatelessWidget {
                                 height: 16,
                               ),
                               BillDetails(
+                                enableController: false,
                                 pillModel: orderModel.pillModel!,
+                                onTapToChangeRemain: () {
+                                  bloc.add(ChangeRemainInAddOrderEvent(
+                                      isEdit: true));
+                                },
                                 onChangePayment: (paymentWay) {
                                   bloc.add(ChangeOptionPaymentEvent(
                                       paymentWay: paymentWay, isEdit: true));
@@ -151,24 +156,29 @@ class EditOrderView extends StatelessWidget {
                                   bloc.add(ChangeCounterOfStepsInPillEvent(
                                       increase: status, isEdit: true));
                                 },
-                              )
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Center(
+                                child: CustomPushContainerButton(
+                                  pushButtomText: "تعديل",
+                                  onTap: () {
+                                    bloc.add(EditOrderEvent());
+                                  },
+                                  iconBehind: Icons.edit,
+                                  iconSize: 30,
+                                  borderRadius: 14,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
                             ],
                           ),
                         )),
                       ],
                     )),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    CustomPushContainerButton(
-                      pushButtomText: "تعديل",
-                      onTap: () {
-                        bloc.add(EditOrderEvent());
-                      },
-                      iconBehind: Icons.edit,
-                      iconSize: 30,
-                      borderRadius: 14,
-                    ),
                   ],
                 ),
               )));

@@ -70,35 +70,27 @@ class FinancialRepoImpl implements FinancialRepo {
   }
 
   @override
-  Future<Either<PillModel, String>> downStep(String pillId, String remainAmount,
-      String orderName, String payedAmount) async {
+  Future<Either<PillModel, String>> downStep(
+      String pillId, String addedAmount, String totalPayedAmount) async {
     try {
-      if (double.parse(remainAmount) > 1) {
-        await dataBaseHelper.database.rawUpdate(
-          '''
+      await dataBaseHelper.database.rawUpdate(
+        '''
   UPDATE $pillTableName
-  SET stepsCounter = stepsCounter - 1, remainMoney = ?
+  SET stepsCounter = CASE
+                      WHEN stepsCounter > 0 THEN stepsCounter - 1
+                      ELSE 0
+                    END, payedAmount = ?
   WHERE pillId = ?
   ''',
-          [remainAmount, pillId],
-        );
-      } else {
-        await dataBaseHelper.database.rawUpdate(
-          '''
-  UPDATE $pillTableName
-  SET stepsCounter = ?, remainMoney = ?
-  WHERE pillId = ?
-  ''',
-          [0, remainAmount, pillId],
-        );
-      }
+        [totalPayedAmount, pillId],
+      );
       final result = await dataBaseHelper.database
           .query(pillTableName, where: 'pillId = ?', whereArgs: [pillId]);
 
       await addTransaction(
           model: TransactionModel(
               transactionId: const Uuid().v4(),
-              transactionAmount: payedAmount,
+              transactionAmount: addedAmount,
               transactionMethod: TransactionMethod.caching,
               allTransactionTypes: AllTransactionTypes.stepDown,
               transactionTime: DateTime.now(),

@@ -18,9 +18,8 @@ class ContentOfFinancialTable extends StatelessWidget {
   final String orderName;
   final void Function(
       {required String pillId,
-      required String amount,
-      required String orderName,
-      required String payedAmount}) downStep;
+      required String addedAmount,
+      required String totalPayedAmount}) downStep;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                     child: CustomTextWithTheSameStyle(
                       textStyle: AppFontStyles.bold24(context)
                           .copyWith(letterSpacing: 3),
-                      text: pillModel.remian,
+                      text: convertToArabicNumbers(pillModel.remian),
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
@@ -90,9 +89,8 @@ class ContentOfFinancialTable extends StatelessWidget {
                           const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                          RegExp(
-                              r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
-                        ),
+                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+                      )
                       ],
                       validator: (value) {
                         if (value == null || value == "0.0") {
@@ -102,9 +100,9 @@ class ContentOfFinancialTable extends StatelessWidget {
                       },
                       borderRadius: 8,
                       controller:
-                          TextEditingController(text: pillModel.payedAmount),
+                          TextEditingController(text: pillModel.steppedAmount),
                       onChanged: (value) {
-                        pillModel.payedAmount = value;
+                        pillModel.steppedAmount = value;
                       },
                       borderWidth: 2,
                       borderColor: AppColors.lightGray1,
@@ -127,21 +125,20 @@ class ContentOfFinancialTable extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            if (pillModel.stepsCounter > 0) {
-              final payedAmount =
-                  int.parse(convertToEnglishNumbers(pillModel.payedAmount));
+            if (pillModel.stepsCounter > 0 || int.parse(pillModel.remian) > 0) {
+              final steppedAmount =
+                  int.parse(convertToEnglishNumbers(pillModel.steppedAmount));
               final remainAmount =
                   int.parse(convertToEnglishNumbers(pillModel.remian));
 
-              if (payedAmount != 0) {
-                if (payedAmount <= remainAmount) {
-                  final difference = (remainAmount - payedAmount).toString();
+              if (steppedAmount != 0) {
+                if (steppedAmount <= remainAmount) {
                   downStep(
-                      amount: difference,
+                      addedAmount: steppedAmount.toString(),
                       pillId: pillModel.pillId,
-                      payedAmount:
-                          convertToArabicNumbers(pillModel.payedAmount),
-                      orderName: "طلب من ${pillModel.customerName} ");
+                      totalPayedAmount:
+                          (steppedAmount + int.parse(pillModel.payedAmount))
+                              .toString());
                 } else {
                   showCustomSnackBar(context, "المبلغ غير صحيح",
                       backgroundColor: AppColors.red);
@@ -155,7 +152,7 @@ class ContentOfFinancialTable extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
             decoration: BoxDecoration(
-              color: pillModel.stepsCounter == 0
+              color: int.parse(pillModel.remian) == 0
                   ? AppColors.green.withOpacity(0.5)
                   : AppColors.green,
               borderRadius: BorderRadius.circular(10),

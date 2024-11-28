@@ -48,37 +48,40 @@ class OrderModel {
     };
   }
 
-  OrderModel copyWith({
-    String? orderId,
-    String? customerId,
-    String? orderName,
-    CustomerModel? customerModel,
-    ColorOrderModel? colorModel,
-    OrderStatus? orderStatus,
-    String? kitchenType,
-    DateTime? recieveTime,
-    String? notice,
-    int? mediaCounter,
-    List<MediaOrderModel>? mediaOrderList,
-    List<ExtraInOrderModel>? extraOrdersList,
-    PillModel? pillModel,
-  }) {
-    return OrderModel(
-      orderId: orderId ?? this.orderId,
-      orderStatus: orderStatus ?? this.orderStatus,
-      orderName: orderName ?? this.orderName,
-      customerId: customerId ?? this.customerId,
-      customerModel: customerModel ?? this.customerModel,
-      colorModel: colorModel ?? this.colorModel,
-      kitchenType: kitchenType ?? this.kitchenType,
-      recieveTime: recieveTime ?? this.recieveTime,
-      notice: notice ?? this.notice,
-      mediaCounter: mediaCounter ?? this.mediaCounter,
-      mediaOrderList: mediaOrderList ?? List.from(this.mediaOrderList),
-      extraOrdersList: extraOrdersList ?? List.from(this.extraOrdersList),
-      pillModel: pillModel ?? this.pillModel,
-    );
-  }
+OrderModel copyWith({
+  String? orderId,
+  String? customerId,
+  String? orderName,
+  CustomerModel? customerModel,
+  ColorOrderModel? colorModel,
+  OrderStatus? orderStatus,
+  String? kitchenType,
+  DateTime? recieveTime,
+  String? notice,
+  int? mediaCounter,
+  List<MediaOrderModel>? mediaOrderList,
+  List<ExtraInOrderModel>? extraOrdersList,
+  PillModel? pillModel,
+}) {
+  return OrderModel(
+    orderId: orderId ?? this.orderId,
+    orderStatus: orderStatus ?? this.orderStatus,
+    orderName: orderName ?? this.orderName,
+    customerId: customerId ?? this.customerId,
+    customerModel: customerModel ?? this.customerModel?.copyWith(), // Clone customerModel
+    colorModel: colorModel ?? this.colorModel?.copyWith(),         // Clone colorModel
+    kitchenType: kitchenType ?? this.kitchenType,
+    recieveTime: recieveTime ?? this.recieveTime,
+    notice: notice ?? this.notice,
+    mediaCounter: mediaCounter ?? this.mediaCounter,
+    mediaOrderList: mediaOrderList ??
+        this.mediaOrderList.map((item) => item.copyWith()).toList(), // Clone each item
+    extraOrdersList: extraOrdersList ??
+        this.extraOrdersList.map((item) => item.copyWith()).toList(), // Clone each item
+    pillModel: pillModel ?? this.pillModel?.copyWith(),             // Clone pillModel
+  );
+}
+
 
   List<PickedMedia> getPickedMedia() {
     List<PickedMedia> list = [];

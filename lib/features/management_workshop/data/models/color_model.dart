@@ -4,20 +4,18 @@ class ColorOrderModel {
   int? colorDegree;
   String orderId;
   ColorOrderModel(
-      {this.colorId = '',
-      this.colorDegree,
-      this.colorName,
-      this.orderId=''});
+      {this.colorId = '', this.colorDegree, this.colorName, this.orderId = ''});
   Map<String, dynamic> toJson({String? orderIdd}) {
     return {
       "colorId": colorId,
-      "orderId": orderIdd??orderId,
+      "orderId": orderIdd ?? orderId,
       if (colorName != null) "colorName": colorName,
       if (colorDegree != null) "colorDegree": colorDegree,
     };
   }
 
-  factory ColorOrderModel.fromJson(Map<String, dynamic> json) => ColorOrderModel(
+  factory ColorOrderModel.fromJson(Map<String, dynamic> json) =>
+      ColorOrderModel(
         orderId: json['orderId'] as String,
         colorId: json['colorId'] as String,
         colorDegree:
@@ -25,4 +23,17 @@ class ColorOrderModel {
         colorName:
             json["colorName"] != null ? json["colorName"] as String : null,
       );
+  ColorOrderModel copyWith({
+    String? colorId,
+    String? colorName,
+    int? colorDegree,
+    String? orderId,
+  }) {
+    return ColorOrderModel(
+      colorId: colorId ?? this.colorId,
+      colorName: colorName ?? this.colorName,
+      colorDegree: colorDegree ?? this.colorDegree,
+      orderId: orderId ?? this.orderId,
+    );
+  }
 }

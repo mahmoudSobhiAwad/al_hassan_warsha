@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
@@ -63,7 +64,7 @@ class OneOrderItem extends StatelessWidget {
               child: CustomTextWithTheSameStyle(
                 
                 textStyle: AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
-                text: orderModel.pillModel!.remian,
+                text:convertToArabicNumbers(orderModel.pillModel!.remian),
               )),
         ],
       ),

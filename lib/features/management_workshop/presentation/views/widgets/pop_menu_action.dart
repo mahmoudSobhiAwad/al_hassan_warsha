@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -97,7 +98,7 @@ class PopMenuActionBehindEachOrder extends StatelessWidget {
                         ),
                         Text(moreVerList(orderList[currIndex]
                                 .orderStatus!)[indexOf]
-                            .text),
+                            .text,style: AppFontStyles.extraBold18(context),),
                       ],
                     ),
                   )))

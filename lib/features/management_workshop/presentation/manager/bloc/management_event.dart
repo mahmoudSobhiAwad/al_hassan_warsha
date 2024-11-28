@@ -20,6 +20,11 @@ final class ChangeCounterOfStepsInPillEvent extends ManagementEvent {
       {required this.increase, this.isEdit = false});
 }
 
+final class ChangeRemainInAddOrderEvent extends ManagementEvent {
+  final bool isEdit;
+  ChangeRemainInAddOrderEvent({this.isEdit = false});
+}
+
 final class ChangeColorOfOrderEvent extends ManagementEvent {
   final int colorValue;
   final bool isEdit;

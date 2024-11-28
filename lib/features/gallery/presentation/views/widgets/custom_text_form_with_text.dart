@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 class CustomColumnWithTextInAddNewType extends StatelessWidget {
   const CustomColumnWithTextInAddNewType(
-      {super.key, required this.text,this.textAlign,this.readOnly=false,this.textInnerStyle,this.initalText,this.validator,this.textInputType,this.inputFormatters,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
+      {super.key, required this.text,this.textAlign,this.onTap,this.readOnly=false,this.textInnerStyle,this.initalText,this.validator,this.textInputType,this.inputFormatters,this.onChanged,this.formKey,this.prefixIcon,this.controller,this.borderWidth,this.suffixText,required this.textLabel,this.textStyle,this.maxLine,this.enableBorder=false,this.suffixIcon});
   final String text;
   final int?maxLine;
   final TextStyle?textStyle;
@@ -26,6 +26,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
   final TextAlign? textAlign;
   final String? initalText;
   final TextStyle?textInnerStyle;
+  final void Function()?onTap;
   
   @override
   Widget build(BuildContext context) {
@@ -40,6 +41,8 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
           height: 12,
         ),
         CustomTextFormField(
+          initialValue: initalText,
+          onTap: onTap,
           readOnly: readOnly,
           textStyle: textInnerStyle,
           textAlign:textAlign ,

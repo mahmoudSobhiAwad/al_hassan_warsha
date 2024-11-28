@@ -27,4 +27,17 @@ class MediaOrderModel {
           mediaPath: json["mediaPath"] as String,
           mediaType: MediaType.values[json['mediaType'] as int],
           orderId: json['orderId'] as String);
+  MediaOrderModel copyWith({
+    String? mediaId,
+    String? orderId,
+    String? mediaPath,
+    MediaType? mediaType,
+  }) {
+    return MediaOrderModel(
+      mediaId: mediaId ?? this.mediaId,
+      orderId: orderId ?? this.orderId,
+      mediaPath: mediaPath ?? this.mediaPath,
+      mediaType: mediaType ?? this.mediaType,
+    );
+  }
 }

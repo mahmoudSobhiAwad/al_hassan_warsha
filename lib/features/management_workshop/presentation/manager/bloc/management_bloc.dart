@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
@@ -28,6 +29,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<ChangeKitchenTypeEvent>(changeType);
     on<AddExtraInOrder>(addMoreExtra);
     on<RemoveExtraItem>(deleteMoreExtra);
+    on<ChangeRemainInAddOrderEvent>(changeRemianInAddOrder);
     on<AddMediaInAddOrder>(addMediaInOrder);
     on<RemoveMediItemEvent>(delteMediaItem);
     on<AddNewOrderEvent>(addNewOrder);
@@ -105,6 +107,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       emit(SuccessGetAllOrdersState());
     }, (error) {
       isLoadingAllOrders = false;
+      print(error);
       emit(FailureGetAllOrdersState(errMessage: error));
     });
   }
@@ -169,6 +172,27 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
               : 1;
     }
     emit(ChangePaymentWayState());
+  }
+
+  FutureOr<void> changeRemianInAddOrder(
+      ChangeRemainInAddOrderEvent event, Emitter<ManagementState> emit) async {
+    if (event.isEdit) {
+      editableOrderModel.pillModel?.remian = convertToArabicNumbers((int.parse(
+                  convertToEnglishNumbers(
+                      editableOrderModel.pillModel!.totalMoney)) -
+              (int.parse(convertToEnglishNumbers(
+                      editableOrderModel.pillModel!.payedAmount)) +
+                  int.parse(convertToEnglishNumbers(
+                      editableOrderModel.pillModel!.interior))))
+          .toString());
+    } else {
+      pillModel.remian = convertToArabicNumbers(
+          (int.parse(convertToEnglishNumbers(pillModel.totalMoney)) -
+                  int.parse(convertToEnglishNumbers(pillModel.interior)))
+              .toString());
+    }
+
+    emit(ChangeColorDegreeState());
   }
 
   void prepareOrderModelBeforeSend() {

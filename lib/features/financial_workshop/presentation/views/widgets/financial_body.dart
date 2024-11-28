@@ -40,7 +40,8 @@ class FinancialBody extends StatelessWidget {
                   bloc.searchKeyWord.trim().isNotEmpty) {
                 bloc.add(EnableOrDisableSearchEvent(status: true));
               } else {
-                showCustomSnackBar(context, "حدد كلمة البحث او نوع البحث ",backgroundColor: AppColors.orange);
+                showCustomSnackBar(context, "حدد كلمة البحث او نوع البحث ",
+                    backgroundColor: AppColors.orange);
               }
             },
             changeSearchText: (value) {
@@ -78,11 +79,13 @@ class FinancialBody extends StatelessWidget {
                     controller: bloc.scrollController,
                     orderList: bloc.orderList,
                     downStep: (
-                        {required String amount, required String pillId,required String orderName,required String payedAmount}) {
+                        {required String addedAmount,
+                        required String pillId,
+                        required String totalPayedAmount}) {
                       bloc.add(DownStepCounterEvent(
-                        orderName: orderName,
-                        payed:payedAmount,
-                          pillId: pillId, remianAmount: amount));
+                          pillId: pillId,
+                          totalPayedAmount: totalPayedAmount,
+                          payedAmount: addedAmount));
                     },
                   ),
           },

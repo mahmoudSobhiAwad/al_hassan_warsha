@@ -21,5 +21,7 @@ class HomeAssets {
   static const String homeLogo = "assets/home_assets/logo_inside.svg";
   
   static const String emptySceen = "assets/home_assets/empty_screen.png";
+
+  static const String waterMark = "assets/home_assets/water_mark.png";
 }
 

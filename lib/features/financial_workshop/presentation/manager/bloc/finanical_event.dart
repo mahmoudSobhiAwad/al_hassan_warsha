@@ -11,14 +11,13 @@ final class FetchAllOrderWithThierBillEvent extends FinanicalEvent {
 
 final class DownStepCounterEvent extends FinanicalEvent {
   final String pillId;
-  final String orderName;
-  final String remianAmount;
-  final String payed;
-  DownStepCounterEvent(
-      {required this.pillId,
-      required this.remianAmount,
-      required this.orderName,
-      required this.payed});
+  final String totalPayedAmount;
+  final String payedAmount;
+  DownStepCounterEvent({
+    required this.pillId,
+    required this.totalPayedAmount,
+    required this.payedAmount,
+  });
 }
 
 final class ChangeCurrentIndexEvent extends FinanicalEvent {
@@ -59,6 +58,7 @@ final class ChangePaymentTypeEvent extends FinanicalEvent {
   final TransactionType type;
   ChangePaymentTypeEvent({required this.type});
 }
+
 final class ChangeAllTransactionTypesEvent extends FinanicalEvent {
   final AllTransactionTypes type;
   ChangeAllTransactionTypesEvent({required this.type});
@@ -110,19 +110,21 @@ final class EnableEditForWorkersEvent extends FinanicalEvent {
   final bool isEdit;
   EnableEditForWorkersEvent({required this.isEdit});
 }
+
 final class SaveChangesAddOrEditEvent extends FinanicalEvent {}
 
 final class ChangeSalaryTypeEvent extends FinanicalEvent {
   final SalaryType type;
   final int index;
-  ChangeSalaryTypeEvent({required this.type,required this.index});
+  ChangeSalaryTypeEvent({required this.type, required this.index});
 }
+
 final class PayAllSalariesEvent extends FinanicalEvent {}
 
 final class ChangeStartOrEndDateEvent extends FinanicalEvent {
- final DateTime?startDate;
- final DateTime?endDate;
-  ChangeStartOrEndDateEvent({this.endDate,this.startDate});
+  final DateTime? startDate;
+  final DateTime? endDate;
+  ChangeStartOrEndDateEvent({this.endDate, this.startDate});
 }
 
 final class MakeAnalysisEvent extends FinanicalEvent {}

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:al_hassan_warsha/core/utils/app_images/home_images.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/constant_style.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/content_for_customer.dart';
@@ -21,7 +22,7 @@ Future<void> getPdfContract(OrderModel orderModel) async {
   const contentForOrderDetails = ContentForOrderInfo();
   const contractSignature = ContractSignature();
   final Uint8List watermarkImageData = await rootBundle
-      .load('assets/home_assets/financial.png')
+      .load(HomeAssets.waterMark)
       .then((data) => data.buffer.asUint8List());
   const pillInfo = PillInfo();
   pdf.addPage(pw.Page(
@@ -103,7 +104,7 @@ Future<void> getPdfContract(OrderModel orderModel) async {
                 ]),
             pw.Positioned(
               left: 100,
-              top: 300,
+              top: 400,
               child: pw.Opacity(
                 opacity: 0.3, // Adjust opacity for the watermark effect
                 child: pw.Image(

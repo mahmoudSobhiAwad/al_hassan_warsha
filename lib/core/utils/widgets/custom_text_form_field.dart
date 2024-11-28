@@ -28,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
       this.suffixWidget,
       this.textStyle,
       this.enableFill = true,
+      this.onTap,
       this.fillColor});
   final Widget? labelWidget;
   final double? borderRadius;
@@ -52,12 +53,15 @@ class CustomTextFormField extends StatelessWidget {
   final String? initialValue;
   final TextStyle? textStyle;
   final bool readOnly;
+  final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       readOnly: readOnly,
       textAlign: textAlign ?? TextAlign.start,
       validator: validator,
+      
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
@@ -65,8 +69,10 @@ class CustomTextFormField extends StatelessWidget {
       inputFormatters: inputFormatters,
       keyboardType: textInputType,
       cursorColor: Colors.black,
+      onTap: onTap,
       style: textStyle ?? AppFontStyles.extraBold18(context),
       decoration: InputDecoration(
+        
         errorStyle: AppFontStyles.extraBold16(context),
         contentPadding: contentPadding,
         focusColor: Colors.black,

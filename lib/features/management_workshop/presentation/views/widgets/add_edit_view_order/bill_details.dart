@@ -13,11 +13,15 @@ class BillDetails extends StatelessWidget {
       required this.pillModel,
       this.onChangePayment,
       this.formKey,
+      this.onTapToChangeRemain,
+      required this.enableController,
       this.changeStepsCounter});
   final PillModel pillModel;
   final void Function(OptionPaymentWay)? onChangePayment;
   final void Function(bool)? changeStepsCounter;
   final GlobalKey<FormState>? formKey;
+  final void Function()? onTapToChangeRemain;
+  final bool enableController;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,8 +44,10 @@ class BillDetails extends StatelessWidget {
                     text: "المبلغ الكلي",
                     textLabel: "",
                     readOnly: changeStepsCounter == null ? true : false,
-                    controller:
-                        TextEditingController(text: pillModel.totalMoney),
+                    initalText: enableController ? null : pillModel.totalMoney,
+                    controller: enableController
+                        ? TextEditingController(text: pillModel.totalMoney)
+                        : null,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return "المبلغ الكلي لا يمكن ان يكون خاليا ";
@@ -55,12 +61,14 @@ class BillDetails extends StatelessWidget {
                         const TextInputType.numberWithOptions(decimal: true),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
-                        RegExp(
-                            r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
                       )
                     ],
                     onChanged: (value) {
                       pillModel.totalMoney = value ?? "";
+                      onTapToChangeRemain != null
+                          ? onTapToChangeRemain!()
+                          : () {};
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
@@ -82,7 +90,10 @@ class BillDetails extends StatelessWidget {
                     text: "المقدم ",
                     textLabel: "",
                     readOnly: changeStepsCounter == null ? true : false,
-                    controller: TextEditingController(text: pillModel.interior),
+                    initalText: enableController ? null : pillModel.interior,
+                    controller: enableController
+                        ? TextEditingController(text: pillModel.interior)
+                        : null,
                     formKey: formKey,
                     textInnerStyle: AppFontStyles.extraBold24(context)
                         .copyWith(letterSpacing: 3),
@@ -95,6 +106,9 @@ class BillDetails extends StatelessWidget {
                     ],
                     onChanged: (value) {
                       pillModel.interior = value ?? "";
+                      onTapToChangeRemain != null
+                          ? onTapToChangeRemain!()
+                          : () {};
                     },
                     textStyle: AppFontStyles.extraBold18(context),
                     enableBorder: true,
@@ -123,7 +137,7 @@ class BillDetails extends StatelessWidget {
                     ),
                   )),
               const Expanded(flex: 1, child: SizedBox()),
-              pillModel.stepsCounter == 0
+              int.parse(convertToEnglishNumbers(pillModel.remian)) == 0
                   ? Center(
                       child: Text(
                         "تم استلام كل المبالغ المتبقية",

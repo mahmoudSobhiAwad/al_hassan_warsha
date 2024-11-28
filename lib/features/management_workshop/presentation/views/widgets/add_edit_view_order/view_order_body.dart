@@ -74,8 +74,7 @@ class ShowOneOrderBody extends StatelessWidget {
                 CustomColumnWithTextInAddNewType(
                   text: "ملاحظات",
                   textLabel: "",
-                  controller:
-                      TextEditingController(text: orderModel.notice ?? ""),
+                  initalText: orderModel.notice,
                   enableBorder: true,
                   readOnly: true,
                   maxLine: 4,
@@ -116,6 +115,7 @@ class ShowOneOrderBody extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: BillDetails(
+              enableController: true,
               pillModel: orderModel.pillModel!,
             ),
           ),

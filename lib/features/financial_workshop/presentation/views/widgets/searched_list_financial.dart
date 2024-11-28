@@ -16,56 +16,55 @@ class SearchedListInFinancial extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  "عرض الفواتير الخاصة ب",
-                  style: AppFontStyles.bold24(context),
+        children: [
+          Row(
+            children: [
+              Text(
+                "عرض الفواتير الخاصة ب",
+                style: AppFontStyles.bold24(context),
+              ),
+              Text(
+                bloc.searchKeyWord,
+                style: AppFontStyles.bold24(context),
+              ),
+              const Spacer(),
+              TextButton(
+                onPressed: () {
+                  bloc.add(EnableOrDisableSearchEvent(status: false));
+                },
+                child: Text(
+                  "العودة للرئيسية ",
+                  style: AppFontStyles.bold24(context)
+                      .copyWith(color: AppColors.blue),
                 ),
-                Text(
-                  bloc.searchKeyWord,
-                  style: AppFontStyles.bold24(context),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () {
-                    bloc.add(
-                        EnableOrDisableSearchEvent(status: false));
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          bloc.searchedList.isNotEmpty
+              ? ListOfOrdersInFinancial(
+                  controller: bloc.scrollController,
+                  orderList: bloc.searchedList,
+                  downStep: (
+                      {required String addedAmount,
+                      required String pillId,
+                      required String totalPayedAmount}) {
+                    bloc.add(DownStepCounterEvent(
+                        pillId: pillId,
+                        totalPayedAmount: totalPayedAmount,
+                        payedAmount: addedAmount));
                   },
-                  child: Text(
-                    "العودة للرئيسية ",
-                    style: AppFontStyles.bold24(context)
-                        .copyWith(color: AppColors.blue),
-                  ),
                 )
-              ],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            bloc.searchedList.isNotEmpty
-                ? ListOfOrdersInFinancial(
-                    controller: bloc.scrollController,
-                    orderList: bloc.searchedList,
-                    downStep: (
-                        {required String amount,
-                        required String pillId,required String orderName,required String payedAmount}) {
-                      bloc.add(DownStepCounterEvent(
-                        payed:payedAmount,
-                        orderName: orderName,
-                          pillId: pillId, remianAmount: amount,));
-                    },
-                  )
-                : Center(
-                    child: Text(
-                      "لا يوجد اي فواتير مستحقة ",
-                      style: AppFontStyles.extraBold30(context),
-                    ),
+              : Center(
+                  child: Text(
+                    "لا يوجد اي فواتير مستحقة ",
+                    style: AppFontStyles.extraBold30(context),
                   ),
-          ],
-        ),
+                ),
+        ],
+      ),
     );
   }
 }
-

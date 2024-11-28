@@ -286,7 +286,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       isLoadingUpdateCounter = true;
       emit(LoadingUpdateCounterOrderState());
       final result = await financialRepoImpl.downStep(
-          event.pillId, event.remianAmount, event.orderName, event.payed);
+          event.pillId, event.payedAmount,event.totalPayedAmount);
       return result.fold((changedPill) {
         if (searchedList.isNotEmpty) {
           searchedList

@@ -21,73 +21,77 @@ class ManagementRepoImpl implements ManagementRepo {
   @override
   Future<Either<String, String>> createManagmentTables() async {
     try {
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $customerTableName (
- customerId TEXT PRIMARY KEY,
-  customerName TEXT NOT NULL,
-  phone TEXT,
-  secondPhone TEXT,
-  homeAddress TEXT,
-);
-''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $orderTableName (
-  orderId TEXT PRIMARY KEY,
-  customerId TEXT NOT NULL,
-  recieveTime TEXT NOT NULL,
-  orderName TEXT NOT NULL,
-  orderStatus INTEGER DEFAULT 0,
-  kitchenType TEXT,
-  notice TEXT,
-  mediaCounter INTEGER DEFAULT 0,
-  FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
-);
-''');
+//       await dataBaseHelper.database
+//           .execute('''DROP TABLE IF EXISTS $pillTableName''');
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $pillTableName (
+// pillId TEXT PRIMARY KEY,
+//   orderId TEXT NOT NULL,
+//   totalMoney TEXT NOT NULL,
+//   interior TEXT NOT NULL,
+//   payedAmount TEXT NOT NULL,
+//   optionPaymentWay INTEGER NOT NULL,
+//   stepsCounter INTEGER NOT NULL,
+//   customerName TEXT NOT NULL,
+//   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
+// );
+// ''');
 
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $colorTableName (
- colorId TEXT PRIMARY KEY,
-  orderId TEXT NOT NULL,
-  colorName TEXT,
-  colorDegree INTEGER,
-  FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
-);
-''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $extraOrderTableName (
- extraId TEXT PRIMARY KEY,
-  extraName TEXT NOT NULL,
-  orderId TEXT NOT NULL,
-  FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
-);
-''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $mediaOrderTableName (
- mediaId TEXT PRIMARY KEY,
-  orderId TEXT NOT NULL,
-  mediaPath TEXT NOT NULL,
-  mediaType INTEGER NOT NULL,
-  FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
-);
-''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $pillTableName (
-pillId TEXT PRIMARY KEY,
-  orderId TEXT NOT NULL,
-  totalMoney TEXT NOT NULL,
-  interior TEXT NOT NULL,
-  remainMoney TEXT NOT NULL,
-  optionPaymentWay INTEGER NOT NULL,
-  stepsCounter INTEGER NOT NULL,
-  customerName TEXT NOT NULL,
-  FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
-);
-''');
-      await dataBaseHelper.database.execute('''
-CREATE TABLE $kitchenTypesInOrder (
- kitchenTypeName TEXT 
-);
-''');
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $customerTableName (
+//  customerId TEXT PRIMARY KEY,
+//   customerName TEXT NOT NULL,
+//   phone TEXT,
+//   secondPhone TEXT,
+//   homeAddress TEXT,
+// );
+// ''');
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $orderTableName (
+//   orderId TEXT PRIMARY KEY,
+//   customerId TEXT NOT NULL,
+//   recieveTime TEXT NOT NULL,
+//   orderName TEXT NOT NULL,
+//   orderStatus INTEGER DEFAULT 0,
+//   kitchenType TEXT,
+//   notice TEXT,
+//   mediaCounter INTEGER DEFAULT 0,
+//   FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
+// );
+// ''');
+
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $colorTableName (
+//  colorId TEXT PRIMARY KEY,
+//   orderId TEXT NOT NULL,
+//   colorName TEXT,
+//   colorDegree INTEGER,
+//   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
+// );
+// ''');
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $extraOrderTableName (
+//  extraId TEXT PRIMARY KEY,
+//   extraName TEXT NOT NULL,
+//   orderId TEXT NOT NULL,
+//   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
+// );
+// ''');
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $mediaOrderTableName (
+//  mediaId TEXT PRIMARY KEY,
+//   orderId TEXT NOT NULL,
+//   mediaPath TEXT NOT NULL,
+//   mediaType INTEGER NOT NULL,
+//   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
+// );
+// ''');
+
+//       await dataBaseHelper.database.execute('''
+// CREATE TABLE $kitchenTypesInOrder (
+//  kitchenTypeName TEXT
+// );
+// ''');
       for (final kitchenType in kitchenTypesInOrderList) {
         await dataBaseHelper.database.insert(kitchenTypesInOrder, kitchenType);
       }
@@ -126,6 +130,7 @@ CREATE TABLE $kitchenTypesInOrder (
   Future<Either<List<OrderModel>, String>> getAllOrders(
       {required int month, required int year}) async {
     try {
+
       String monthString =
           month.toString().padLeft(2, '0'); // Ensure 2-digit format
       String yearString = year.toString();
@@ -325,7 +330,7 @@ CREATE TABLE $kitchenTypesInOrder (
         cl.colorId, cl.colorName, cl.colorDegree,
         m.mediaId, m.mediaPath, m.mediaType,
         e.extraId, e.extraName,
-        p.pillId, p.customerName, p.stepsCounter, p.optionPaymentWay, p.interior, p.totalMoney, p.remainMoney
+        p.pillId, p.customerName, p.stepsCounter, p.optionPaymentWay, p.interior, p.totalMoney, p.payedAmount
       FROM $orderTableName o
       LEFT JOIN $customerTableName c ON o.customerId = c.customerId
       LEFT JOIN $colorTableName cl ON o.orderId = cl.orderId

@@ -18,10 +18,9 @@ class AddOrderBody extends StatelessWidget {
       key: bloc.fromKey,
       child: Expanded(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           child: CustomScrollView(
             slivers: [
-            
               SliverToBoxAdapter(
                 child: CustomerInfoInOrder(
                   formKey: bloc.fromKey,
@@ -71,8 +70,13 @@ class AddOrderBody extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: BillDetails(
+                  enableController: false,
+                  onTapToChangeRemain: () {
+                    bloc.add(ChangeRemainInAddOrderEvent());
+                  },
                   changeStepsCounter: (increase) {
-                    bloc.add(ChangeCounterOfStepsInPillEvent(increase: increase));
+                    bloc.add(
+                        ChangeCounterOfStepsInPillEvent(increase: increase));
                   },
                   pillModel: bloc.pillModel,
                   onChangePayment: (paymentWay) {
