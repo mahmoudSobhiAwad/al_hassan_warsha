@@ -32,3 +32,5 @@ final class ChangePageIndexInShowMoreEvent extends GalleryEvent {
   final int index;
   ChangePageIndexInShowMoreEvent({required this.index});
 }
+final class DefineTimerFunctionEvent extends GalleryEvent {
+}

@@ -25,6 +25,7 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
       child: Column(
         children: [
           AppBarWithLinking(
+            enableColor: false,
               onBack: () {
                 bloc.add(ShowMoreKitcenTypeEvent(
                   currIndex: -1,

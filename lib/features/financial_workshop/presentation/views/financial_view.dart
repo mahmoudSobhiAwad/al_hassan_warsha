@@ -43,6 +43,9 @@ class FinancialView extends StatelessWidget {
         } else if (state is FailurePayAllSalariesWorkersState) {
           showCustomSnackBar(context, state.errMessage ?? "",
               backgroundColor: AppColors.orange);
+        } else if (state is FailureAnalysisState) {
+          showCustomSnackBar(context, state.errMessage ?? "",
+              backgroundColor: AppColors.orange);
         }
       }, builder: (context, state) {
         var bloc = context.read<FinanicalBloc>();
@@ -93,7 +96,21 @@ class FinancialView extends StatelessWidget {
                       AddEditSalaryView(
                         bloc: bloc,
                       ),
-                      const AnalysisView(),
+                      AnalysisView(
+                        analysisModelData: bloc.analysisModelData,
+                        startDate: bloc.startDate,
+                        endDate: bloc.endDate,
+                        changeStartDate: (start) {
+                          bloc.add(ChangeStartOrEndDateEvent(startDate: start));
+                        },
+                        changeEndDate: (end) {
+                          bloc.add(ChangeStartOrEndDateEvent(endDate: end));
+                        },
+                        makeAnalysis: () {
+                          bloc.add(MakeAnalysisEvent());
+                        },
+                        isLoading: bloc.isAnalysisLoading,
+                      ),
                     ][bloc.currIndex],
                   )
           ]),

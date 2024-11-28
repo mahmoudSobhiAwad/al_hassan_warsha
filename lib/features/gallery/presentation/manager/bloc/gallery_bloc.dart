@@ -5,7 +5,7 @@ import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/gallery_repo_imp.dart';
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 part 'gallery_event.dart';
 part 'gallery_state.dart';
@@ -20,6 +20,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 
     on<FetchMoreTypesEvent>(fetchMoreTypes);
     on<ChangePageIndexInShowMoreEvent>(changeCurrentPageOfPaginationInShowMore);
+    on<DefineTimerFunctionEvent>(changeCurrPage);
   }
   int showingIndex = -1;
   bool enableMoreWidget = false;
@@ -35,9 +36,42 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     typeId: "",
     typeName: "",
   );
+  @override
+  Future<void> close() async {
+    pageController.dispose();
+    controller.dispose();
+
+    timer?.cancel();
+    await super.close();
+  }
+
   bool showMoreIndicator = false;
   bool hasMore = true;
   bool isMoreWidgetLoading = true;
+
+  PageController pageController = PageController();
+  TextEditingController controller = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  Timer? timer;
+  int currentPage = 0;
+
+  FutureOr<void> changeCurrPage(
+      DefineTimerFunctionEvent event, Emitter<GalleryState> emit) async {
+    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (pageController.hasClients) {
+        currentPage++;
+
+        if (currentPage >= newestKitchenTypeList.length) {
+          currentPage = 0;
+        }
+        pageController.animateToPage(
+          currentPage,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
   FutureOr<void> showMoreKitchen(
       ShowMoreKitcenTypeEvent event, Emitter<GalleryState> emit) async {
@@ -174,7 +208,6 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       emit(FailureAddedNewKitchenType(errMessage: error));
     });
   }
-  
 
   FutureOr<void> changeCurrentPageOfPaginationInShowMore(
       ChangePageIndexInShowMoreEvent event, Emitter<GalleryState> emit) async {

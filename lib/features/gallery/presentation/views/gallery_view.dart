@@ -55,7 +55,7 @@ class GalleryView extends StatelessWidget {
                               galleryBloc
                                   .add(AddNewKitchenTypeEvent(typeName: value));
                             },
-                            typesList: galleryBloc.onlyTypeModelList, isTypingLoading: galleryBloc.isLoadingtypes,)),
+                            typesList: galleryBloc.onlyTypeModelList, isTypingLoading: galleryBloc.isLoadingtypes, controller: galleryBloc.controller, formKey: galleryBloc.formKey,)),
                     galleryBloc.enableMoreWidget
                         ? Expanded(
                             flex: 4,

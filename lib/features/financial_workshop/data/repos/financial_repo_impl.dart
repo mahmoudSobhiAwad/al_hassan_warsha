@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo.dart';
@@ -7,6 +8,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/consta
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 class FinancialRepoImpl implements FinancialRepo {
@@ -25,6 +27,9 @@ class FinancialRepoImpl implements FinancialRepo {
 //     transactionAllTypes INTEGER NOT NULL DEFAULT 5
 // );
 // ''');
+//     await dataBaseHelper.database.execute(
+  //     '''CREATE INDEX idx_transaction_time ON $transactionTableName(transactionTime)
+//''');
   @override
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset, int? optionPaymentWay}) async {
@@ -298,4 +303,68 @@ class FinancialRepoImpl implements FinancialRepo {
       return right(e.toString());
     }
   }
+
+  @override
+  Future<Either<AnalysisModelData, String>> getAnalysisUponTimeRange(
+      String firsDate, String lastDate) async {
+    String startDate = "${firsDate.split('T')[0]} 00:00:00";
+    String endDate = "${lastDate.split('T')[0]} 23:59:59";
+
+    try {
+      // Fetch the raw data from SQLite
+      final result = await dataBaseHelper.database.query(
+        transactionTableName,
+        where: 'transactionTime BETWEEN ? AND ?',
+        whereArgs: [startDate, endDate],
+      );
+
+      // Pass the result to the isolate for processing
+      final analysisModel = await compute(processAnalysisData, {
+        'results': result,
+      });
+      return Left(analysisModel);
+    } catch (error) {
+      return Right('Error while processing analysis data: $error');
+    }
+  }
+}
+
+// Function to process the analysis in an isolate
+AnalysisModelData processAnalysisData(Map<String, dynamic> args) {
+  final results = args['results'] as List<Map<String, dynamic>>;
+  AnalysisModelData analysisModel = AnalysisModelData();
+
+  for (var item in results) {
+    TransactionModel model = TransactionModel.fromJson(item);
+
+    if (model.transactionType == TransactionType.recieve) {
+      analysisModel.allRecievedAmount += int.parse(model.transactionAmount);
+    } else if (model.transactionType == TransactionType.buy) {
+      switch (model.allTransactionTypes) {
+        case AllTransactionTypes.pills:
+          analysisModel.allPillAmount += int.parse(model.transactionAmount);
+          break;
+        case AllTransactionTypes.salaries:
+          analysisModel.allSalaryAmount += int.parse(model.transactionAmount);
+          break;
+        case AllTransactionTypes.buys:
+          analysisModel.allBuysAmount += int.parse(model.transactionAmount);
+          break;
+        case AllTransactionTypes.other:
+          analysisModel.allPillAmount += int.parse(model.transactionAmount);
+          break;
+        case AllTransactionTypes.interior:
+          break;
+        case AllTransactionTypes.stepDown:
+          break;
+      }
+    }
+  }
+
+  analysisModel.profitAmount = analysisModel.allRecievedAmount -
+      (analysisModel.allBuysAmount +
+          analysisModel.allSalaryAmount +
+          analysisModel.allPillAmount);
+
+  return analysisModel;
 }

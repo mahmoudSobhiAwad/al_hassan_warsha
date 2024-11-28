@@ -10,14 +10,16 @@ class CustomDatePicker extends StatelessWidget {
     this.recieveTime,
     this.changeDate,
     this.labelText,
-    this.format
+    this.format,
+    this.enableShowDayTime = false,
   });
 
   final GlobalKey<FormState>? formKey;
   final DateTime? recieveTime;
   final void Function(DateTime p1)? changeDate;
   final String? labelText;
-  final String?format;
+  final String? format;
+  final bool enableShowDayTime;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +33,14 @@ class CustomDatePicker extends StatelessWidget {
       },
       controller: TextEditingController(
           text: recieveTime != null
-              ? DateFormat(format??'d MMMM y', 'ar')
+              ? DateFormat(format ?? 'd MMMM y', 'ar')
                   .format(recieveTime ?? DateTime.now())
               : ""),
       text: labelText ?? " تاريخ الاستلام ",
       enableBorder: true,
       readOnly: true,
-      textInnerStyle: AppFontStyles.extraBold18(context).copyWith(letterSpacing: 1),
+      textInnerStyle:
+          AppFontStyles.extraBold18(context).copyWith(letterSpacing: 1),
       textStyle: AppFontStyles.extraBold18(context),
       textLabel: "",
       suffixIcon: IconButton(
@@ -50,17 +53,20 @@ class CustomDatePicker extends StatelessWidget {
                       firstDate: DateTime(DateTime.now().year - 1),
                       lastDate: DateTime(DateTime.now().year + 1))
                   .then((value) {
-                  if (context.mounted) {
+                  if (context.mounted && enableShowDayTime) {
                     showTimePicker(
-                      
                             context: context, initialTime: TimeOfDay.now())
                         .then((timeValue) {
                       if (value != null && timeValue != null) {
                         value = DateTime(value!.year, value!.month, value!.day,
                             timeValue.hour, timeValue.minute);
                         changeDate!(value!);
+                      } else if (value != null && timeValue == null) {
+                        changeDate!(value!);
                       }
                     });
+                  } else {
+                    changeDate!(value!);
                   }
                 })
               : null;

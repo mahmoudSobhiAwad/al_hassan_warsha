@@ -118,3 +118,11 @@ final class ChangeSalaryTypeEvent extends FinanicalEvent {
   ChangeSalaryTypeEvent({required this.type,required this.index});
 }
 final class PayAllSalariesEvent extends FinanicalEvent {}
+
+final class ChangeStartOrEndDateEvent extends FinanicalEvent {
+ final DateTime?startDate;
+ final DateTime?endDate;
+  ChangeStartOrEndDateEvent({this.endDate,this.startDate});
+}
+
+final class MakeAnalysisEvent extends FinanicalEvent {}

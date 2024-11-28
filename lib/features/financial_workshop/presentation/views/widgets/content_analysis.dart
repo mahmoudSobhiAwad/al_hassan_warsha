@@ -7,34 +7,52 @@ import 'package:flutter/material.dart';
 class ContentOfAnalysis extends StatelessWidget {
   const ContentOfAnalysis({
     super.key,
+    required this.analysisModelData,
   });
+  final AnalysisModelData analysisModelData;
 
   @override
   Widget build(BuildContext context) {
+    List<AnalysisModel> analysisList = getAnalysisList(analysisModelData);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36.0),
       child: Wrap(
-        runSpacing:40 ,
+        runSpacing: 40,
         spacing: 46,
         children: [
-          ...List.generate(analysisList.length, (index){
-            return  FittedBox(
+          ...List.generate(analysisList.length, (index) {
+            return FittedBox(
               child: CustomPushContainerButton(
                 borderRadius: 12,
-                padding: const EdgeInsets.symmetric(horizontal: 65,vertical: 12),
-                color:analysisList[index].color,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 65, vertical: 12),
+                color: analysisList[index].color,
                 childInstead: Center(
                   child: Column(
                     children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(analysisList[index].title,style: AppFontStyles.extraBold32(context).copyWith(color: AppColors.white),),
-                          IconButton(onPressed: null, icon: Icon(analysisList[index].iconData,color: AppColors.white,),)
-                  
+                          Text(
+                            analysisList[index].title,
+                            style: AppFontStyles.extraBold32(context)
+                                .copyWith(color: AppColors.white),
+                          ),
+                          IconButton(
+                            onPressed: null,
+                            icon: Icon(
+                              analysisList[index].iconData,
+                              color: AppColors.white,
+                            ),
+                          )
                         ],
                       ),
-                      Text("100000 جنية",style: AppFontStyles.extraBold32(context).copyWith(color: AppColors.white),)
+                      Text(
+                        "${analysisList[index].moneyQuantity} جنية",
+                        style: AppFontStyles.extraBold32(context)
+                            .copyWith(color: AppColors.white,letterSpacing: 3),
+                            
+                      )
                     ],
                   ),
                 ),

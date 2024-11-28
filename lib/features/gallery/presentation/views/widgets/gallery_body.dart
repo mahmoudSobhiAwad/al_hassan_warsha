@@ -3,7 +3,6 @@ import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart'
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/complete_kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/latest_added_kitchen_list.dart';
-//import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/latest_added_kitchen_list.dart';
 import 'package:flutter/material.dart';
 
 class GalleryBody extends StatefulWidget {
@@ -54,9 +53,9 @@ class _GalleryBodyState extends State<GalleryBody> {
                   height: 8,
                 ),
                 widget.bloc.loadNewest
-                    ? const Center(child: CircularProgressIndicator())
+                    ? const Center(child: SizedBox(child: CircularProgressIndicator()))
                     : AutoScrollingPageView(
-                        kitchenModelList: widget.bloc.newestKitchenTypeList,
+                        kitchenModelList: widget.bloc.newestKitchenTypeList, pageController: widget.bloc.pageController,
                       ),
                 const SizedBox(
                   height: 24,
@@ -73,7 +72,10 @@ class _GalleryBodyState extends State<GalleryBody> {
           ),
         ),
         widget.bloc.isLoading
-            ? const SliverToBoxAdapter(child: CircularProgressIndicator())
+            ? const SliverToBoxAdapter(child: SizedBox(
+              height: 25,
+              width: 25,
+              child: CircularProgressIndicator()))
             : SliverList.separated(
                 itemBuilder: (context, index) {
                   return CompleteKitchenType(

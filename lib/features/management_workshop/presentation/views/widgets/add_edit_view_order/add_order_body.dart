@@ -21,16 +21,7 @@ class AddOrderBody extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
           child: CustomScrollView(
             slivers: [
-              const SliverToBoxAdapter(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomPushContainerButton(
-                    pushButtomText: "استيراد من المعرض",
-                    iconBehind: Icons.file_upload_outlined,
-                    borderRadius: 16,
-                  ),
-                ),
-              ),
+            
               SliverToBoxAdapter(
                 child: CustomerInfoInOrder(
                   formKey: bloc.fromKey,

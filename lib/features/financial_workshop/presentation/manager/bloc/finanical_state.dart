@@ -103,6 +103,7 @@ final class FailureEditWorkersData extends FinanicalState {
   final String? errMessage;
   FailureEditWorkersData({this.errMessage});
 }
+
 final class LoadingPayAllSalariesWorkersState extends FinanicalState {}
 
 final class SuccessPayAllSalariesWorkersState extends FinanicalState {}
@@ -110,4 +111,15 @@ final class SuccessPayAllSalariesWorkersState extends FinanicalState {}
 final class FailurePayAllSalariesWorkersState extends FinanicalState {
   final String? errMessage;
   FailurePayAllSalariesWorkersState({this.errMessage});
+}
+
+final class ChanegeStartOrEndDateState extends FinanicalState {}
+
+final class LoadingAnalysisState extends FinanicalState {}
+
+final class SuccessAnalysisState extends FinanicalState {}
+
+final class FailureAnalysisState extends FinanicalState {
+  final String? errMessage;
+  FailureAnalysisState({this.errMessage});
 }

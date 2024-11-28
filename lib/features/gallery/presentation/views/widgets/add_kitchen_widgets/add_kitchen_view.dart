@@ -40,100 +40,103 @@ class _AddKitchenViewState extends State<AddKitchenView> {
     final double width = MediaQuery.sizeOf(context).width;
     return Form(
       key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-              width: width * 0.5,
-              child: CustomColumnWithTextInAddNewType(
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "الاسم لا يمكن ان يكون خاليا ";
-                  }
-                  return null;
-                },
-                controller: controller,
-                textStyle: AppFontStyles.extraBold25(context),
-                text: "الاسم",
-                textLabel: "اضف اسم للمنتج................",
-                enableBorder: true,
-              )),
-          const SizedBox(
-            height: 12,
-          ),
-          CustomColumnWithTextInAddNewType(
-            controller: describController,
-            textStyle: AppFontStyles.extraBold25(context),
-            maxLine: 2,
-            text: "الوصف",
-            textLabel:
-                "اضف بعض الوصف للمنتج ليساعدك في شرح المنتج للعميل...................",
-            enableBorder: true,
-          ),
-          const SizedBox(
-            height: 22,
-          ),
-          Row(
-            children: [
-              Text(
-                "الوسائط",
-                style: AppFontStyles.extraBold25(context),
-              ),
-              const Spacer(),
-              TextButton(
-                  onPressed: null,
-                  child: Text(
-                    "عرض المزيد",
-                    style: AppFontStyles.extraBold30(context)
-                        .copyWith(color: AppColors.blue),
-                  ))
-            ],
-          ),
-          const SizedBox(
-            height: 22,
-          ),
-          widget.mediaList.isNotEmpty
-              ? MediaListExist(
-                  addMore: (media) {
-                    widget.bloc.add(RecieveMediaToAddEvent(
-                        medialList: media, isMore: true));
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+                width: width * 0.5,
+                child: CustomColumnWithTextInAddNewType(
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "الاسم لا يمكن ان يكون خاليا ";
+                    }
+                    return null;
                   },
-                  enableClear: true,
-                  pickedList: widget.mediaList,
-                  removeIndex: (index) {
-                    widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
-                  },
-                )
-              : EmptyUploadMedia(
-                  addMedia: (media) {
-                    widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
-                  },
+                  controller: controller,
+                  textStyle: AppFontStyles.extraBold25(context),
+                  text: "الاسم",
+                  textLabel: "اضف اسم للمنتج................",
+                  enableBorder: true,
+                )),
+            const SizedBox(
+              height: 12,
+            ),
+            CustomColumnWithTextInAddNewType(
+              controller: describController,
+              textStyle: AppFontStyles.extraBold25(context),
+              maxLine: 2,
+              text: "الوصف",
+              textLabel:
+                  "اضف بعض الوصف للمنتج ليساعدك في شرح المنتج للعميل...................",
+              enableBorder: true,
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            Row(
+              children: [
+                Text(
+                  "الوسائط",
+                  style: AppFontStyles.extraBold25(context),
                 ),
-          const SizedBox(
-            height: 32,
-          ),
-          Center(
-              child: CustomPushContainerButton(
-            onTap: () {
-              if (formKey.currentState!.validate()) {
-                widget.bloc.add(AddNewKitchenEvent(
-                    kitchenMediaList: widget.mediaList,
-                    typeId: widget.typeId ?? "",
-                    name: controller.text,
-                    desc: describController.text));
-                controller.clear();
-                describController.clear();
-              }
-            },
-            pushButtomText: "إضافة",
-            borderRadius: 15,
-            padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
-            enableIcon: false,
-          )),
-          const SizedBox(
-            height: 12,
-          ),
-        ],
+                const Spacer(),
+                TextButton(
+                    onPressed: null,
+                    child: Text(
+                      "عرض المزيد",
+                      style: AppFontStyles.extraBold30(context)
+                          .copyWith(color: AppColors.blue),
+                    ))
+              ],
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            widget.mediaList.isNotEmpty
+                ? MediaListExist(
+                    addMore: (media) {
+                      widget.bloc.add(RecieveMediaToAddEvent(
+                          medialList: media, isMore: true));
+                    },
+                    enableClear: true,
+                    pickedList: widget.mediaList,
+                    removeIndex: (index) {
+                      widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
+                    },
+                  )
+                : EmptyUploadMedia(
+                    addMedia: (media) {
+                      widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
+                    },
+                  ),
+            const SizedBox(
+              height: 32,
+            ),
+            Center(
+                child: CustomPushContainerButton(
+              onTap: () {
+                if (formKey.currentState!.validate()) {
+                  widget.bloc.add(AddNewKitchenEvent(
+                      kitchenMediaList: widget.mediaList,
+                      typeId: widget.typeId ?? "",
+                      name: controller.text,
+                      desc: describController.text));
+                  controller.clear();
+                  describController.clear();
+                }
+              },
+              pushButtomText: "إضافة",
+              borderRadius: 15,
+              padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
+              enableIcon: false,
+            )),
+            const SizedBox(
+              height: 12,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -58,29 +58,39 @@ class AddEditSalaryView extends StatelessWidget {
               ? Expanded(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 0.4,
-                    child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return OneEmployeeItem(
-                            workerModel: bloc.workersList[index],
-                            changeSalaryType: (type) {
-                              bloc.add(ChangeSalaryTypeEvent(
-                                  type: type, index: index));
+                    child: Scrollbar(
+                      controller: bloc.scrollController,
+                      scrollbarOrientation: ScrollbarOrientation.right,
+                      thickness: 12,
+                      thumbVisibility: true,
+                      child: ScrollConfiguration(
+                        behavior: const ScrollBehavior().copyWith(scrollbars: false),
+                        child: ListView.separated(
+                          controller: bloc.scrollController,
+                            itemBuilder: (context, index) {
+                              return OneEmployeeItem(
+                                workerModel: bloc.workersList[index],
+                                changeSalaryType: (type) {
+                                  bloc.add(ChangeSalaryTypeEvent(
+                                      type: type, index: index));
+                                },
+                                deleteItem: () {
+                                  bloc.add(DeleteWorkerEvent(index: index));
+                                },
+                                selectItem: (statue) {
+                                  bloc.add(SelectWorkerEvent(
+                                      index: index, isSelectAll: false));
+                                },
+                              );
                             },
-                            deleteItem: () {
-                              bloc.add(DeleteWorkerEvent(index: index));
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                height: 16,
+                              );
                             },
-                            selectItem: (statue) {
-                              bloc.add(SelectWorkerEvent(
-                                  index: index, isSelectAll: false));
-                            },
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(
-                            height: 16,
-                          );
-                        },
-                        itemCount: bloc.workersList.length),
+                            itemCount: bloc.workersList.length),
+                      ),
+                    ),
                   ),
                 )
               : Expanded(

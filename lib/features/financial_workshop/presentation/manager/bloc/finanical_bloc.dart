@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
@@ -41,6 +42,8 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<SaveChangesAddOrEditEvent>(saveChanges);
     on<EnableEditForWorkersEvent>(enableEditForWorkers);
     on<PayAllSalariesEvent>(payAllSalaries);
+    on<ChangeStartOrEndDateEvent>(changeStartOrEndDate);
+    on<MakeAnalysisEvent>(makeAnalysis);
   }
 
   // related to transaction//
@@ -52,6 +55,12 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   final formKey = GlobalKey<FormState>();
   //-----------------//
 
+//analysis //
+  AnalysisModelData? analysisModelData;
+  DateTime? startDate;
+  DateTime? endDate;
+  bool isAnalysisLoading = false;
+// ------//
   //Searched data
   List<OrderModel> searchedList = [];
   bool searchMood = false;
@@ -76,6 +85,38 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   List<WorkerModel> workersList = [];
   bool isEditEnabled = false;
   //                //
+
+  FutureOr<void> changeStartOrEndDate(
+      ChangeStartOrEndDateEvent event, Emitter<FinanicalState> emit) async {
+    if (event.startDate != null) {
+      startDate = event.startDate!;
+    } else if (event.endDate != null) {
+      endDate = event.endDate!;
+    }
+    emit(ChanegeStartOrEndDateState());
+  }
+
+  FutureOr<void> makeAnalysis(
+      MakeAnalysisEvent event, Emitter<FinanicalState> emit) async {
+    if (startDate != null && endDate != null) {
+      isAnalysisLoading = true;
+      emit(LoadingAnalysisState());
+      final result = await financialRepoImpl.getAnalysisUponTimeRange(
+          startDate!.toIso8601String(), endDate!.toIso8601String());
+      result.fold((model) {
+        isAnalysisLoading = false;
+        analysisModelData = model;
+        emit(SuccessAnalysisState());
+      }, (error) {
+        isAnalysisLoading = false;
+        emit(FailureAnalysisState(errMessage: error));
+      });
+    }
+    else{
+      emit(FailureAnalysisState(errMessage: "بداية الوقت او نهايته لا يمكن ان يكونو فارغين"));
+    }
+  }
+
 // all function related to workers
   FutureOr<void> getAllWorkersData(
       GetAllWorkersDataEvent event, Emitter<FinanicalState> emit) async {
@@ -107,7 +148,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       emit(LoadingPayAllSalariesWorkersState());
       final result = await financialRepoImpl.payTheSalary(workersList);
       result.fold((success) {
-        
         emit(SuccessPayAllSalariesWorkersState());
         add(EnableEditForWorkersEvent(isEdit: false));
       }, (error) {

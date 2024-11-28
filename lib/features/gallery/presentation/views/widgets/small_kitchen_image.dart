@@ -105,7 +105,10 @@ class CustomSmallImageWithCustomWidth extends StatelessWidget {
         
         switch (pickedMedia!.mediaType) {
           MediaType.image => Image.file(
-              File(pickedMedia!.mediaPath),
+              File(pickedMedia!.mediaPath,),
+              errorBuilder: (context,_,s){
+                return const Icon(Icons.error,color: AppColors.red,);
+              },
               width: MediaQuery.sizeOf(context).width * (widthOfImage ?? 0.2),
               height: MediaQuery.sizeOf(context).height * 0.2,
               fit: BoxFit.fill,

@@ -12,12 +12,16 @@ class SideBarGallery extends StatelessWidget {
     required this.changeIndex,
     required this.currIndex,
     required this.isTypingLoading,
+    required this.controller,
+    required this.formKey,
   });
   final List<OnlyTypeModel> typesList;
   final void Function(String) addType;
-  final void Function(int)changeIndex;
+  final void Function(int) changeIndex;
   final int currIndex;
   final bool isTypingLoading;
+  final TextEditingController controller;
+  final GlobalKey<FormState>formKey;
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +31,21 @@ class SideBarGallery extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           HeaderSetionInGallery(
-            addType: (value){
-            
+            formKey: formKey,
+            controller: controller,
+            addType: (value) {
               addType(value);
             },
           ),
-         isTypingLoading? const SliverToBoxAdapter(child: CircularProgressIndicator()): ListOfKitchenTypes(
-            currIndex: currIndex,
-            onTap: (index){
-              changeIndex(index);
-            },
-            kitchenTypesList: typesList,
-          )
+          isTypingLoading
+              ? const SliverToBoxAdapter(child: CircularProgressIndicator())
+              : ListOfKitchenTypes(
+                  currIndex: currIndex,
+                  onTap: (index) {
+                    changeIndex(index);
+                  },
+                  kitchenTypesList: typesList,
+                )
         ],
       ),
     );

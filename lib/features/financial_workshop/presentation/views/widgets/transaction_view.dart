@@ -52,24 +52,35 @@ class TranscationView extends StatelessWidget {
                 ? Expanded(
                     child: SizedBox(
                       height: MediaQuery.sizeOf(context).height * 0.35,
-                      child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          itemCount: bloc.transactionList.length,
-                          itemBuilder: (context, index) {
-                            return ContentInTransactionHistory(
-                              deleteTrans: (id) {
-                                bloc.add(
-                                    DeleteTransactionEvent(transactionId: id));
+                      child: Scrollbar(
+                        controller: bloc.scrollController,
+                        thickness: 12,
+                        thumbVisibility: true,
+                        scrollbarOrientation: ScrollbarOrientation.right,
+                        child: ScrollConfiguration(
+                          behavior:
+                              const ScrollBehavior().copyWith(scrollbars: false),
+                          child: ListView.separated(
+                              controller: bloc.scrollController,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              itemCount: bloc.transactionList.length,
+                              itemBuilder: (context, index) {
+                                return ContentInTransactionHistory(
+                                  deleteTrans: (id) {
+                                    bloc.add(DeleteTransactionEvent(
+                                        transactionId: id));
+                                  },
+                                  model: bloc.transactionList[index],
+                                );
                               },
-                              model: bloc.transactionList[index],
-                            );
-                          },
-                          separatorBuilder: (context, index) {
-                            return const SizedBox(
-                              height: 16,
-                            );
-                          }),
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  height: 16,
+                                );
+                              }),
+                        ),
+                      ),
                     ),
                   )
                 : Expanded(

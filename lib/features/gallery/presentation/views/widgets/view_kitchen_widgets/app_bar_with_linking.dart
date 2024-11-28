@@ -4,26 +4,29 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_ingradient.dart';
 import 'package:flutter/material.dart';
 
 class AppBarWithLinking extends StatelessWidget {
-  const AppBarWithLinking({super.key, this.onBack, required this.items});
+  const AppBarWithLinking(
+      {super.key, this.onBack, required this.items, this.enableColor = true});
   final void Function()? onBack;
   final List<String> items;
+  final bool enableColor;
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: customLinearGradient(),
-      ),
+      decoration: enableColor
+          ? BoxDecoration(
+              gradient: customLinearGradient(),
+            )
+          : null,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: Row(
         children: [
           IconButton(
             onPressed: onBack ?? () => Navigator.pop(context),
-            icon: const Icon(
-               color: AppColors.white,
+            icon: Icon(
+              color: enableColor ? AppColors.white : AppColors.black,
               Icons.arrow_back_ios_rounded,
               size: 38,
             ),
-           
             alignment: Alignment.center,
           ),
           const SizedBox(
@@ -35,6 +38,7 @@ class AppBarWithLinking extends StatelessWidget {
                 ...List.generate(
                     items.length,
                     (index) => CustomItemInCustomLinkingAppBar(
+                      enableColor: enableColor,
                           text: items[index],
                           isLast: index != items.length - 1,
                         )),
@@ -49,9 +53,10 @@ class AppBarWithLinking extends StatelessWidget {
 
 class CustomItemInCustomLinkingAppBar extends StatelessWidget {
   const CustomItemInCustomLinkingAppBar(
-      {super.key, required this.text, this.isLast = false});
+      {super.key, required this.text, this.isLast = false,this.enableColor=true});
   final String text;
   final bool isLast;
+  final bool enableColor;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -63,16 +68,16 @@ class CustomItemInCustomLinkingAppBar extends StatelessWidget {
           child: Text(
             text,
             style: AppFontStyles.extraBold40(context)
-                .copyWith(color: AppColors.white),
+                .copyWith(color: enableColor ? AppColors.white : AppColors.black,),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
         ),
         isLast
-            ? const IconButton(
+            ?  IconButton(
                 onPressed: null,
                 icon: Icon(
-                   color: AppColors.white,
+                  color: enableColor ? AppColors.white : AppColors.black,
                   Icons.arrow_forward_ios_rounded,
                   size: 40,
                 ))
