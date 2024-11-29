@@ -30,7 +30,10 @@ final class FailureEditOrderState extends ManagementState {
   FailureEditOrderState({this.errMessage});
 }
 
-final class SuccessAddNewOrderState extends ManagementState {}
+final class SuccessAddNewOrderState extends ManagementState {
+  final OrderModel lastAdded;
+  SuccessAddNewOrderState({required this.lastAdded});
+}
 
 final class ChangePaymentWayState extends ManagementState {}
 
@@ -53,7 +56,10 @@ final class ChangeCurrentEditableModelState extends ManagementState {
 
 final class LoadingEditOrderModelState extends ManagementState {}
 
-final class SuccessEditOrderModelState extends ManagementState {}
+final class SuccessEditOrderModelState extends ManagementState {
+  final OrderModel editedModel;
+  SuccessEditOrderModelState({required this.editedModel});
+}
 
 final class FailureEditOrderModelState extends ManagementState {
   final String? errMessage;
@@ -85,18 +91,46 @@ final class FailureGetSearchedOrderState extends ManagementState {
   final String? errMessage;
   FailureGetSearchedOrderState({this.errMessage});
 }
+
 final class ChangeCategorizedState extends ManagementState {
-  
   ChangeCategorizedState();
 }
+
 final class MakeOrderDeliverOrNotSuccessState extends ManagementState {
-  final String ?successMessage;
+  final String? successMessage;
   MakeOrderDeliverOrNotSuccessState({this.successMessage});
 }
 
-final class LoadingGetAllKitchenTypesState extends ManagementState{}
-final class SuccessGetAllKitchenTypesState extends ManagementState{}
-final class FailureGetAllKitchenTypesState extends ManagementState{
+final class LoadingGetAllKitchenTypesState extends ManagementState {}
+
+final class SuccessGetAllKitchenTypesState extends ManagementState {}
+
+final class FailureGetAllKitchenTypesState extends ManagementState {
   final String? errMessage;
   FailureGetAllKitchenTypesState({this.errMessage});
+}
+//profile view
+
+final class LoadingGetCustomerProfileState extends ManagementState {}
+
+final class SuccessGetCustomerProfileState extends ManagementState {
+  final CustomerModel customerModel;
+  SuccessGetCustomerProfileState({required this.customerModel});
+}
+
+final class FailureGetCustomerProfileState extends ManagementState {
+  final String? errMessage;
+  FailureGetCustomerProfileState({this.errMessage});
+}
+
+final class ChangeCurrPageState extends ManagementState {}
+
+final class SuccessStepDownMoneyState extends ManagementState {
+  final PillModel pillModel;
+  SuccessStepDownMoneyState({required this.pillModel});
+}
+
+final class FailureStepDownMoneyState extends ManagementState {
+  final String? errMessage;
+  FailureStepDownMoneyState({this.errMessage});
 }

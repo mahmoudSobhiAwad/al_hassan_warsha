@@ -1,4 +1,3 @@
-import 'package:uuid/uuid.dart';
 
 class ExtraInOrderModel {
   String extraName;
@@ -11,7 +10,7 @@ class ExtraInOrderModel {
     return {
       "extraName": extraName,
       "orderId": orderIdd ?? orderId,
-      "extraId": const Uuid().v4(),
+      "extraId": extraId
     };
   }
 

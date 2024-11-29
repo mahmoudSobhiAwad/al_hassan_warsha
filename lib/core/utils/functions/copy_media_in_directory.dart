@@ -27,7 +27,7 @@ Future<String> copyMediaFile(
 
     final fileName = sourceFile.uri.pathSegments.last;
     final fileExtension = fileName.split('.').last;
-    final uniqueNumber = DateTime.now().millisecondsSinceEpoch;
+    final uniqueNumber = DateTime.now().microsecondsSinceEpoch;
 
     // Construct the destination file path using the unique number
     final destinationFilePath =

@@ -15,64 +15,62 @@ class HomeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        body: BlocConsumer<HomeBasicBloc, HomeBasicState>(
-            builder: (context, state) {
-          var bloc = context.read<HomeBasicBloc>();
-          return CustomAdaptiveLayout(
-            desktopLayout: (context) => HomeScreenDesktopLayOut(
-              bloc: bloc,
-            ),
-            mobileLayout: (context) => const Text("Mobile Layout"),
-            tabletLayout: (context) => const Text("Tablet Layout"),
-          );
-        }, listener: (context, state) {
-          var bloc = context.read<HomeBasicBloc>();
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.white,
+          body: BlocConsumer<HomeBasicBloc, HomeBasicState>(
+              builder: (context, state) {
+            var bloc = context.read<HomeBasicBloc>();
+            return CustomAdaptiveLayout(
+              desktopLayout: (context) => HomeScreenDesktopLayOut(
+                bloc: bloc,
+              ),
+              mobileLayout: (context) => const Text("Mobile Layout"),
+              tabletLayout: (context) => const Text("Tablet Layout"),
+            );
+          }, listener: (context, state) {
+            var bloc = context.read<HomeBasicBloc>();
 
-          if (state is NavToPageState) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BasicHomeView(
-                          bloc: bloc,
-                        )));
-            
-          } else if (state is NotFoundDbState) {
-            showDialog(
-                useSafeArea: false,
-                context: context,
-                builder: (context) =>
-                    Dialog(child: CustomAlert(
-                      onPressed_2: (){
-                        bloc.add(CreateNewDBEvent());
-                        Navigator.pop(context);
-                      },
-                    )));
-            
-          } else if (state is  CreateDataBaseSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: AppColors.green,
-              content: Text(
-                "تم إنشاء قاعدة البيانات بنجاح ",
-                style: AppFontStyles.extraBold20(context)
-                    .copyWith(color: AppColors.white),
-              ),
-            ));
-            
-          } else if (state is CreateDataBaseFailedState) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: AppColors.red,
-              content: Text(
-                "${state.errMessage}",
-                style: AppFontStyles.extraBold20(context)
-                    .copyWith(color: AppColors.white),
-              ),
-            ));
-           
-          }
-        }),
+            if (state is NavToPageState) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BasicHomeView(
+                            bloc: bloc,
+                          )));
+            } else if (state is NotFoundDbState) {
+              showDialog(
+                  useSafeArea: false,
+                  context: context,
+                  builder: (context) => Dialog(child: CustomAlert(
+                        onPressed_2: () {
+                          bloc.add(CreateNewDBEvent());
+                          Navigator.pop(context);
+                        },
+                      )));
+            } else if (state is CreateDataBaseSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: AppColors.green,
+                content: Text(
+                  "تم إنشاء قاعدة البيانات بنجاح ",
+                  style: AppFontStyles.extraBold20(context)
+                      .copyWith(color: AppColors.white),
+                ),
+              ));
+            } else if (state is CreateDataBaseFailedState) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: AppColors.red,
+                content: Text(
+                  "${state.errMessage}",
+                  style: AppFontStyles.extraBold20(context)
+                      .copyWith(color: AppColors.white),
+                ),
+              ));
+            }
+          }),
+        ),
       ),
     );
   }

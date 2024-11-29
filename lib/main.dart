@@ -34,6 +34,8 @@ class Alwarsha extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+       
+       
         locale: const Locale('ar'),
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -42,9 +44,9 @@ class Alwarsha extends StatelessWidget {
               style: ButtonStyle(
                   iconColor: WidgetStatePropertyAll<Color>(Colors.black))),
           useMaterial3: true,
+          
         ),
-        home: const Directionality(
-            textDirection: TextDirection.rtl, child: HomeScreenView()),
+        home: const HomeScreenView(),
       ),
     );
   }

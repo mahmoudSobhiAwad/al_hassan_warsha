@@ -5,7 +5,10 @@ sealed class ManagementEvent {}
 
 final class GetAllOrdersEvent extends ManagementEvent {}
 
-final class AddNewOrderEvent extends ManagementEvent {}
+final class AddNewOrderEvent extends ManagementEvent {
+  final CustomerModel? customerModel;
+  AddNewOrderEvent({this.customerModel});
+}
 
 final class ChangeOptionPaymentEvent extends ManagementEvent {
   final OptionPaymentWay paymentWay;
@@ -112,3 +115,21 @@ final class MarkOrderAsDelievredEvent extends ManagementEvent {
 }
 
 final class GetAllKitchenTypesEvent extends ManagementEvent {}
+
+// profile view
+final class GetCustomerProfileEvent extends ManagementEvent {
+  final String customerId;
+  GetCustomerProfileEvent({required this.customerId});
+}
+
+final class ChangeCurrPageEvent extends ManagementEvent {
+  final bool isForward;
+  ChangeCurrPageEvent({required this.isForward});
+}
+
+final class NavToProfileEvent extends ManagementEvent {}
+
+final class StepDownMoneyEvent extends ManagementEvent {
+  final PillModel pillModel;
+  StepDownMoneyEvent({required this.pillModel});
+}

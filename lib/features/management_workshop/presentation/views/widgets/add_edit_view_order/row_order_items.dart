@@ -15,6 +15,7 @@ class RowOrderItems extends StatelessWidget {
     this.changeColorValue,
     this.changekitchenTypeValue,
     this.changeDate,
+    this.showKitchenName = true,
     this.formKey,
     this.allKitchenTypes = const [],
   });
@@ -26,31 +27,35 @@ class RowOrderItems extends StatelessWidget {
   final void Function(DateTime p1)? changeDate;
   final GlobalKey<FormState>? formKey;
   final List<String> allKitchenTypes;
+  final bool showKitchenName;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-            flex: 3,
-            child: CustomColumnWithTextInAddNewType(
-                formKey: formKey,
-                text: "اسم الطلب",
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "اسم الطلب لا يمكن ان يكون خاليا ";
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  orderModel.orderName = value ?? "";
-                },
-                enableBorder: true,
-                readOnly: formKey == null ? true : false,
-                controller: TextEditingController(text: orderModel.orderName),
-                textStyle: AppFontStyles.extraBold18(context),
-                textLabel: "")),
-        const Expanded(child: SizedBox()),
+        showKitchenName
+            ? Expanded(
+                flex: 3,
+                child: CustomColumnWithTextInAddNewType(
+                    formKey: formKey,
+                    text: "اسم الطلب",
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return "اسم الطلب لا يمكن ان يكون خاليا ";
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      orderModel.orderName = value ?? "";
+                    },
+                    enableBorder: true,
+                    readOnly: formKey == null ? true : false,
+                    controller:
+                        TextEditingController(text: orderModel.orderName),
+                    textStyle: AppFontStyles.extraBold18(context),
+                    textLabel: ""))
+            : const SizedBox(),
+       showKitchenName ?const Expanded(child: SizedBox()):const SizedBox(),
         GetColorForOrder(
             colorOrderModel: colorOrderModel,
             changeColorValue: changeColorValue),
@@ -105,4 +110,3 @@ class RowOrderItems extends StatelessWidget {
     );
   }
 }
-

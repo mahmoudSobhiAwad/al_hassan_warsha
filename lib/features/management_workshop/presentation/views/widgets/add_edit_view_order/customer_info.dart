@@ -42,8 +42,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       onChanged: (String? value) {
                         model.customerName = value ?? "";
                       },
-                      controller:
-                          TextEditingController(text: model.customerName ?? ""),
+                      initalText: model.customerName,
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
@@ -59,8 +58,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
-                      controller:
-                          TextEditingController(text: model.phone ?? ""),
+                      initalText: model.phone ?? "",
                       text: "رقم الهاتف",
                       textLabel: "")),
               const Expanded(child: SizedBox()),
@@ -73,8 +71,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
-                      controller:
-                          TextEditingController(text: model.secondPhone ?? ""),
+                      initalText: model.secondPhone ?? "",
                       text: "رقم هاتف احتياطي ",
                       textLabel: "")),
               const Expanded(child: SizedBox()),
@@ -87,8 +84,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       textStyle: AppFontStyles.extraBold18(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
-                      controller:
-                          TextEditingController(text: model.homeAddress ?? ""),
+                      initalText: model.homeAddress ?? "",
                       text: "عنوان المنزل",
                       textLabel: "")),
             ],

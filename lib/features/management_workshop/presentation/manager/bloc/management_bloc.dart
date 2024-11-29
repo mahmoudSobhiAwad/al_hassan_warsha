@@ -43,6 +43,9 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<ChangeCategrizedListEvent>(categorizeList);
     on<MarkOrderAsDelievredEvent>(markOrderAsDoneOrNotDone);
     on<GetAllKitchenTypesEvent>(getAllKitchenTypes);
+    on<GetCustomerProfileEvent>(getCustomerProfileDate);
+    on<ChangeCurrPageEvent>(changeCurrPage);
+    on<StepDownMoneyEvent>(stepDownMoney);
   }
   // get all order
   bool isLoadingAllOrders = true;
@@ -73,6 +76,71 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   List<ExtraInOrderModel> extraOrdersList = [];
   final fromKey = GlobalKey<FormState>();
   //
+
+//customer profile view
+  int currPage = 0;
+  bool isLoadingGetUserInfo = false;
+  bool isLoadingStepPill = false;
+  PageController pageController = PageController();
+
+  FutureOr<void> getCustomerProfileDate(
+      GetCustomerProfileEvent event, Emitter<ManagementState> emit) async {
+    isLoadingGetUserInfo = true;
+    emit(LoadingGetCustomerProfileState());
+    final result =
+        await managementRepoImpl.getAllCustomerInfo(event.customerId);
+    return result.fold((customerProfile) {
+      isLoadingGetUserInfo = false;
+      emit(SuccessGetCustomerProfileState(customerModel: customerProfile));
+    }, (error) {
+      isLoadingGetUserInfo = false;
+      emit(FailureGetCustomerProfileState(errMessage: error));
+    });
+  }
+
+  FutureOr<void> changeCurrPage(
+      ChangeCurrPageEvent event, Emitter<ManagementState> emit) async {
+    if (event.isForward) {
+      pageController.nextPage(
+          duration: const Duration(milliseconds: 500), curve: Curves.linear);
+      currPage++;
+    } else {
+      pageController.previousPage(
+          duration: const Duration(milliseconds: 500), curve: Curves.linear);
+      currPage--;
+    }
+    emit(ChangeCurrPageState());
+  }
+
+  FutureOr<void> stepDownMoney(
+      StepDownMoneyEvent event, Emitter<ManagementState> emit) async {
+    isLoadingStepPill = true;
+    PillModel steppedPill = event.pillModel;
+    BigInt steppedAmount =
+        BigInt.parse(convertToEnglishNumbers(steppedPill.steppedAmount));
+    steppedPill.payedAmount =
+        (steppedAmount + BigInt.parse(steppedPill.payedAmount)).toString();
+    BigInt remainAmount = BigInt.parse(steppedPill.remian);
+    if (steppedAmount> remainAmount) {
+      emit(
+          FailureStepDownMoneyState(errMessage: "هذا المبلغ اكبر من المتبقي "));
+    } else {
+      final result = await managementRepoImpl.stepDownFromOrder(steppedPill);
+      result.fold((newPillModel) {
+        isLoadingStepPill = false;
+        emit(SuccessStepDownMoneyState(pillModel: newPillModel));
+        int index = ordersList
+            .indexWhere((test) => test.orderId == newPillModel.orderId);
+        ordersList[index].pillModel = newPillModel;
+        int catIndex = categorizedList
+            .indexWhere((test) => test.orderId == newPillModel.orderId);
+        categorizedList[catIndex].pillModel = newPillModel;
+      }, (error) {
+        isLoadingStepPill = false;
+        emit(FailureStepDownMoneyState());
+      });
+    }
+  }
 
   //Edit order
   List<String> removedMedia = [];
@@ -107,7 +175,6 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       emit(SuccessGetAllOrdersState());
     }, (error) {
       isLoadingAllOrders = false;
-      print(error);
       emit(FailureGetAllOrdersState(errMessage: error));
     });
   }
@@ -116,7 +183,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       AddNewOrderEvent event, Emitter<ManagementState> emit) async {
     emit(LoadingAddNewOrderState());
     isLoadingAddOrder = true;
-    prepareOrderModelBeforeSend();
+
     if (orderModel.kitchenType != null &&
         !allKitchenTypes.contains(orderModel.kitchenType)) {
       final resultType =
@@ -127,9 +194,16 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
         emit(FailureGetAllKitchenTypesState(errMessage: error));
       });
     }
+    prepareOrderModelBeforeSend();
+    event.customerModel != null
+        ? orderModel.customerModel = event.customerModel!
+        : null;
     var result = await managementRepoImpl.createNewOrder(orderModel);
     return result.fold((success) {
       ordersList.add(orderModel);
+      orderModel.recieveTime!.month == currentMonth
+          ? categorizedList.add(orderModel)
+          : null;
       isLoadingAddOrder = false;
       orderId = const Uuid().v1();
       customerId = const Uuid().v4();
@@ -139,7 +213,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       colorModel = ColorOrderModel(colorId: const Uuid().v4());
       extraOrdersList = [];
       mediaOrderList = [];
-      emit(SuccessAddNewOrderState());
+      emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
     }, (error) {
       isLoadingAddOrder = false;
       emit(FailureAddNewOrderState());
@@ -319,7 +393,10 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       int index = ordersList
           .indexWhere((test) => test.orderId == editableOrderModel.orderId);
       ordersList[index] = editableOrderModel;
-      emit(SuccessEditOrderModelState());
+      int catIndex = categorizedList
+          .indexWhere((test) => test.orderId == editableOrderModel.orderId);
+      categorizedList[catIndex] = editableOrderModel;
+      emit(SuccessEditOrderModelState(editedModel: categorizedList[catIndex]));
     }, (error) {
       emit(FailureEditOrderModelState(errMessage: error));
     });

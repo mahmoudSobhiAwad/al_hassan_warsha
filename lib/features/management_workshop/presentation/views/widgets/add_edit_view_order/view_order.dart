@@ -3,6 +3,7 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/profile_view/view_profile_for_customer.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/view_order_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,6 +30,12 @@ class ShowOneOrderView extends StatelessWidget {
         } else if (state is MakeOrderDeliverOrNotSuccessState) {
           Navigator.pop(context);
           showCustomSnackBar(context, state.successMessage ?? "");
+        } else if (state is SuccessGetCustomerProfileState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CustomerProfileView(
+                      model: state.customerModel, bloc: bloc)));
         }
       },
       child: Directionality(
@@ -46,6 +53,9 @@ class ShowOneOrderView extends StatelessWidget {
                   ],
                 ),
                 ShowOneOrderBody(
+                  navToProfileView: (customerId) {
+                    bloc.add(GetCustomerProfileEvent(customerId: customerId));
+                  },
                   markAsDone: (orderId, check) {
                     bloc.add(MarkOrderAsDelievredEvent(
                         orderId: orderId, makeItDone: check));

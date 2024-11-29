@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/bill_details.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_info.dart';
@@ -9,8 +10,10 @@ class AddOrderBody extends StatelessWidget {
   const AddOrderBody({
     super.key,
     required this.bloc,
+    this.model,
   });
   final ManagementBloc bloc;
+  final CustomerModel? model;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,8 @@ class AddOrderBody extends StatelessWidget {
               SliverToBoxAdapter(
                 child: CustomerInfoInOrder(
                   formKey: bloc.fromKey,
-                  model: bloc.customerModel,
+                  isReadOnly: model!=null,
+                  model: model ?? bloc.customerModel,
                 ),
               ),
               const SliverToBoxAdapter(
@@ -34,6 +38,7 @@ class AddOrderBody extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: OrderDetails(
+                  
                   kitchenTypesList: bloc.allKitchenTypes,
                   pickedMeidaList: bloc.mediaOrderList,
                   formKey: bloc.fromKey,
@@ -94,7 +99,7 @@ class AddOrderBody extends StatelessWidget {
                     child: CustomPushContainerButton(
                   onTap: () {
                     if (bloc.fromKey.currentState!.validate()) {
-                      bloc.add(AddNewOrderEvent());
+                      bloc.add(AddNewOrderEvent(customerModel: model));
                     }
                   },
                   pushButtomText: "اضافة الطلب",

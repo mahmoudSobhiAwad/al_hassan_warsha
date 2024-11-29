@@ -21,12 +21,14 @@ class ShowOneOrderBody extends StatelessWidget {
       required this.orderModel,
       required this.navToEdit,
       required this.deleteOrder,
+      required this.navToProfileView,
       required this.markAsDone});
 
   final OrderModel orderModel;
   final void Function(OrderModel orderModel) navToEdit;
   final void Function(String, List<MediaOrderModel>) deleteOrder;
   final void Function(String, bool) markAsDone;
+  final void Function(String customerId) navToProfileView;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,13 @@ class ShowOneOrderBody extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: CustomScrollView(
         slivers: [
-          UpperButtonsInViewOrder(navToEdit: navToEdit, orderModel: orderModel),
+          UpperButtonsInViewOrder(
+            navToEdit: navToEdit,
+            orderModel: orderModel,
+            onTapForCustomerProfileView: () {
+              navToProfileView(orderModel.customerId);
+            },
+          ),
           const SliverToBoxAdapter(
             child: SizedBox(
               height: 12,

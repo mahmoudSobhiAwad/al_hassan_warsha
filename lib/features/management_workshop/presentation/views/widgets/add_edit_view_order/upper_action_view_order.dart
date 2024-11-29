@@ -8,11 +8,13 @@ class UpperButtonsInViewOrder extends StatelessWidget {
   const UpperButtonsInViewOrder({
     super.key,
     required this.navToEdit,
+    required this.onTapForCustomerProfileView,
     required this.orderModel,
   });
 
   final void Function(OrderModel orderModel) navToEdit;
   final OrderModel orderModel;
+  final void Function ()onTapForCustomerProfileView;
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +35,14 @@ class UpperButtonsInViewOrder extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          const CustomPushContainerButton(
+          CustomPushContainerButton(
             borderRadius: 12,
+            onTap: onTapForCustomerProfileView,
             pushButtomText: "عرض الملف الشخصي ",
             iconBehind: Icons.person,
             color: AppColors.orange,
             iconSize: 30,
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           ),
           const SizedBox(
             width: 12,

@@ -1,5 +1,4 @@
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
-import 'package:uuid/uuid.dart';
 
 class MediaOrderModel {
   String mediaId;
@@ -14,7 +13,7 @@ class MediaOrderModel {
 
   Map<String, dynamic> toAddJson({String? orderIdd}) {
     return {
-      "mediaId": const Uuid().v4(),
+      "mediaId": mediaId,
       "orderId": orderIdd ?? orderId,
       "mediaPath": mediaPath,
       "mediaType": mediaType.index,
@@ -27,6 +26,8 @@ class MediaOrderModel {
           mediaPath: json["mediaPath"] as String,
           mediaType: MediaType.values[json['mediaType'] as int],
           orderId: json['orderId'] as String);
+ 
+ 
   MediaOrderModel copyWith({
     String? mediaId,
     String? orderId,

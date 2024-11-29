@@ -13,6 +13,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/order_
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/repos/management_repo.dart';
 import 'package:dartz/dartz.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:uuid/uuid.dart';
 
 class ManagementRepoImpl implements ManagementRepo {
@@ -130,7 +131,6 @@ class ManagementRepoImpl implements ManagementRepo {
   Future<Either<List<OrderModel>, String>> getAllOrders(
       {required int month, required int year}) async {
     try {
-
       String monthString =
           month.toString().padLeft(2, '0'); // Ensure 2-digit format
       String yearString = year.toString();
@@ -139,6 +139,7 @@ class ManagementRepoImpl implements ManagementRepo {
               "strftime('%Y', recieveTime) = ? AND strftime('%m', recieveTime) = ?",
           whereArgs: [yearString, monthString]);
       List<OrderModel> orderModelList = [];
+
       for (var item in orderReuslt) {
         orderModelList.add(await getOtherDataInOrderModel(item));
       }
@@ -151,43 +152,65 @@ class ManagementRepoImpl implements ManagementRepo {
   @override
   Future<Either<String, String>> createNewOrder(OrderModel model) async {
     try {
-      // add order model to db
-      await dataBaseHelper.database.insert(orderTableName, model.toJson());
+      Uuid uuid = const Uuid();
 
-      // add customer model into db
-      if (model.customerModel != null) {
-        await dataBaseHelper.database
-            .insert(customerTableName, model.customerModel!.toJson());
-      }
-      //add color model into db
-      if (model.colorModel != null) {
-        await dataBaseHelper.database.insert(
-            colorTableName, model.colorModel!.toJson(orderIdd: model.orderId));
-      }
-      // add extra list into db
-      if (model.extraOrdersList.isNotEmpty) {
-        for (var item in model.extraOrdersList) {
-          await dataBaseHelper.database.insert(
-              extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
+      await dataBaseHelper.database.transaction((txn) async {
+        // Add order model to the database
+        await txn.insert(orderTableName, model.toJson());
+
+        // Add customer model to the database
+        if (model.customerModel != null) {
+          await txn.insert(customerTableName, model.customerModel!.toJson());
         }
-      }
-      // add media into db
-      if (model.mediaOrderList.isNotEmpty) {
-        for (var item in model.mediaOrderList) {
-          item.mediaPath = await copyMediaFile(item.mediaPath,
-              item.mediaType == MediaType.image ? imageFolder : videoFolder);
-          await dataBaseHelper.database.insert(
-              mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+
+        // Add color model to the database
+        if (model.colorModel != null) {
+          await txn.insert(
+            colorTableName,
+            model.colorModel!.toJson(orderIdd: model.orderId),
+          );
         }
-      }
-      // add pill payment
-      if (model.pillModel != null) {
-        await dataBaseHelper.database.insert(
-            pillTableName, model.pillModel!.toJson(orderIdd: model.orderId));
-      }
+
+        // Add extra orders to the database
+        if (model.extraOrdersList.isNotEmpty) {
+          for (var item in model.extraOrdersList) {
+            item.extraId = uuid.v4(); // Ensure unique ID
+            await txn.insert(
+              extraOrderTableName,
+              item.toAddJson(orderIdd: model.orderId),
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+
+        // Add media orders to the database
+        if (model.mediaOrderList.isNotEmpty) {
+          for (var item in model.mediaOrderList) {
+            item.mediaPath = await copyMediaFile(
+              item.mediaPath,
+              item.mediaType == MediaType.image ? imageFolder : videoFolder,
+            );
+            item.mediaId = uuid.v4(); // Ensure unique ID
+            await txn.insert(
+              mediaOrderTableName,
+              item.toAddJson(orderIdd: model.orderId),
+              conflictAlgorithm: ConflictAlgorithm.replace,
+            );
+          }
+        }
+
+        // Add pill payment to the database
+        if (model.pillModel != null) {
+          await txn.insert(
+            pillTableName,
+            model.pillModel!.toJson(orderIdd: model.orderId),
+          );
+        }
+      });
+
       await FinancialRepoImpl(dataBaseHelper: dataBaseHelper).addTransaction(
           model: TransactionModel(
-              transactionId: const Uuid().v4(),
+              transactionId: uuid.v4(),
               transactionAmount: model.pillModel!.interior,
               allTransactionTypes: AllTransactionTypes.interior,
               transactionMethod: TransactionMethod.caching,
@@ -218,6 +241,7 @@ class ManagementRepoImpl implements ManagementRepo {
   @override
   Future<Either<String, String>> editCurrentOrder(OrderModel model,
       List<String> removedMediPaths, List<String> removedExtra) async {
+    var uuid = const Uuid();
     try {
       final batch = dataBaseHelper.database.batch();
 
@@ -235,6 +259,7 @@ class ManagementRepoImpl implements ManagementRepo {
           where: 'orderId = ?', whereArgs: [model.orderId]);
 
 // Update customer
+
       batch.update(customerTableName, model.customerModel!.toJson(),
           where: 'customerId = ?', whereArgs: [model.customerId]);
 
@@ -245,6 +270,7 @@ class ManagementRepoImpl implements ManagementRepo {
 // Handle extras (new and updated)
       for (var item in model.extraOrdersList) {
         if (item.extraId.isEmpty) {
+          item.extraId = uuid.v4();
           batch.insert(
               extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
         } else {
@@ -256,6 +282,7 @@ class ManagementRepoImpl implements ManagementRepo {
 // Handle media (new only)
       for (var item in model.mediaOrderList) {
         if (item.mediaId.isEmpty) {
+          item.mediaId = uuid.v4();
           batch.insert(
               mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
         }
@@ -347,32 +374,55 @@ class ManagementRepoImpl implements ManagementRepo {
       // Extract the main order data from the first row
       final orderData = results.first;
 
+      // Extract customer data
       CustomerModel? customerModel = orderData['customerId'] != null
           ? CustomerModel.fromJson(orderData)
           : null;
+
+      // Extract color data
       ColorOrderModel? colorModel = orderData['colorId'] != null
           ? ColorOrderModel.fromJson(orderData)
           : null;
+
+      // Extract unique media data
+      final uniqueMediaIds = <String>{};
       List<MediaOrderModel> mediaOrderList = results
-          .where((row) => row['mediaId'] != null)
+          .where((row) {
+            if (row['mediaId'] == null || !uniqueMediaIds.add(row['mediaId'])) {
+              return false; // Skip duplicates
+            }
+            return true;
+          })
           .map((row) => MediaOrderModel.fromJson(row))
           .toList();
+
+      // Extract unique extra data
+      final uniqueExtraIds = <String>{};
       List<ExtraInOrderModel> extraOrdersList = results
-          .where((row) => row['extraId'] != null)
+          .where((row) {
+            if (row['extraId'] == null || !uniqueExtraIds.add(row['extraId'])) {
+              return false; // Skip duplicates
+            }
+            return true;
+          })
           .map((row) => ExtraInOrderModel.fromJson(row))
           .toList();
+
+      // Extract pill data
       PillModel? pillModel =
           orderData['pillId'] != null ? PillModel.fromJson(orderData) : null;
 
+      // Assemble the final OrderModel
       OrderModel orderModel = OrderModel.fromJson(item);
       orderModel.colorModel = colorModel;
       orderModel.customerModel = customerModel;
       orderModel.mediaOrderList = mediaOrderList;
       orderModel.extraOrdersList = extraOrdersList;
       orderModel.pillModel = pillModel;
+
       return orderModel;
     } catch (e) {
-      throw (e.toString());
+      throw Exception(e.toString());
     }
   }
 
@@ -384,6 +434,70 @@ class ManagementRepoImpl implements ManagementRepo {
           'Update $orderTableName SET orderStatus = ? WHERE orderId = ? ',
           [status, orderId]);
       return left("success");
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<CustomerModel, String>> getAllCustomerInfo(
+      String customerId) async {
+    try {
+      final allOrderReuslt = await dataBaseHelper.database.query(orderTableName,
+          where: 'customerId = ? ', whereArgs: [customerId]);
+      List<OrderModel> orderList = [];
+
+      for (var item in allOrderReuslt) {
+        orderList.add(await getOtherDataInOrderModel(item));
+      }
+      CustomerModel customerModel = CustomerModel(
+          customerId: customerId,
+          customerName: orderList.first.customerModel!.customerName,
+          phone: orderList.first.customerModel!.phone,
+          homeAddress: orderList.first.customerModel!.homeAddress,
+          secondPhone: orderList.first.customerModel!.secondPhone,
+          orderModelList: orderList);
+      return left(customerModel);
+    } catch (e) {
+      return right(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<PillModel, String>> stepDownFromOrder(
+      PillModel pillModel) async {
+    try {
+      await dataBaseHelper.database.rawUpdate(
+        '''
+  UPDATE $pillTableName
+  SET stepsCounter = CASE
+                      WHEN stepsCounter > 0 THEN stepsCounter - 1
+                      ELSE 0
+                    END, payedAmount = ?
+  WHERE pillId = ?
+  ''',
+        [pillModel.payedAmount, pillModel.pillId],
+      );
+      final result = await dataBaseHelper.database.query(pillTableName,
+          where: 'pillId = ?', whereArgs: [pillModel.pillId]);
+
+      try {
+        await dataBaseHelper.database.insert(
+            transactionTableName,
+            TransactionModel(
+                    transactionId: const Uuid().v4(),
+                    transactionAmount: pillModel.steppedAmount,
+                    transactionMethod: TransactionMethod.caching,
+                    allTransactionTypes: AllTransactionTypes.stepDown,
+                    transactionTime: DateTime.now(),
+                    transactionType: TransactionType.recieve,
+                    transactionName: " دفعة ")
+                .toJson());
+      } catch (e) {
+        return right(e.toString());
+      }
+
+      return left(PillModel.fromJson(result.first));
     } catch (e) {
       return right(e.toString());
     }
