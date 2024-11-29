@@ -9,9 +9,10 @@ import 'package:flutter/material.dart';
 
 class OneOrderInViewCustomerProfile extends StatelessWidget {
   const OneOrderInViewCustomerProfile(
-      {super.key, required this.orderModel, required this.stepDown});
+      {super.key, required this.orderModel, required this.stepDown,required this.editOrder});
   final OrderModel orderModel;
   final void Function() stepDown;
+  final void Function ()editOrder;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,12 +28,13 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: AppFontStyles.extraBold32(context),
                 )),
-            const CustomPushContainerButton(
+             CustomPushContainerButton(
               borderRadius: 14,
               iconBehind: Icons.edit,
               iconSize: 25,
+              onTap: editOrder,
               pushButtomText: 'تعديل الطلب',
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             ),
           ],
         ),

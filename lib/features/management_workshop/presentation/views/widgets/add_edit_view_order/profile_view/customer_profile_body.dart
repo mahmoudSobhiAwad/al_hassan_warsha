@@ -84,6 +84,9 @@ class CustomerProfileBody extends StatelessWidget {
         ),
         OrdersPagesForCustomerView(
           model: model,
+          editOrder: (model) {
+            bloc.add(NavToEditEvent(orderModel: model));
+          },
           currPage: bloc.currPage,
           stepDown: (pill) {
             bloc.add(StepDownMoneyEvent(pillModel: pill));

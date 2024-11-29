@@ -101,12 +101,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> changeCurrPage(
       ChangeCurrPageEvent event, Emitter<ManagementState> emit) async {
     if (event.isForward) {
-      pageController.nextPage(
-          duration: const Duration(milliseconds: 500), curve: Curves.linear);
       currPage++;
     } else {
-      pageController.previousPage(
-          duration: const Duration(milliseconds: 500), curve: Curves.linear);
       currPage--;
     }
     emit(ChangeCurrPageState());
@@ -121,7 +117,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     steppedPill.payedAmount =
         (steppedAmount + BigInt.parse(steppedPill.payedAmount)).toString();
     BigInt remainAmount = BigInt.parse(steppedPill.remian);
-    if (steppedAmount> remainAmount) {
+    if (steppedAmount > remainAmount) {
       emit(
           FailureStepDownMoneyState(errMessage: "هذا المبلغ اكبر من المتبقي "));
     } else {
@@ -183,7 +179,33 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       AddNewOrderEvent event, Emitter<ManagementState> emit) async {
     emit(LoadingAddNewOrderState());
     isLoadingAddOrder = true;
+    await addNewKitchenType(emit);
+    prepareOrderModelBeforeSend();
+    event.customerModel != null ? updateOrderModel(event.customerModel!) : null;
+    var result = await managementRepoImpl.createNewOrder(orderModel,forTheSameCustomer: event.customerModel!=null);
+    return result.fold((success) {
+      ordersList.add(orderModel);
+      orderModel.recieveTime!.month == currentMonth
+          ? categorizedList.add(orderModel)
+          : null;
+      isLoadingAddOrder = false;
+      _resetOrderModel();
+      emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
+    }, (error) {
+      print(error);
+      isLoadingAddOrder = false;
+      emit(FailureAddNewOrderState());
+    });
+  }
 
+  void updateOrderModel(CustomerModel newCustomerModel) {
+    print(newCustomerModel.toJson());
+    orderModel.customerModel = newCustomerModel;
+    orderModel.customerId = newCustomerModel.customerId;
+    pillModel.customerName = newCustomerModel.customerName!;
+  }
+
+  Future<void> addNewKitchenType(Emitter<ManagementState> emit) async {
     if (orderModel.kitchenType != null &&
         !allKitchenTypes.contains(orderModel.kitchenType)) {
       final resultType =
@@ -194,30 +216,17 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
         emit(FailureGetAllKitchenTypesState(errMessage: error));
       });
     }
-    prepareOrderModelBeforeSend();
-    event.customerModel != null
-        ? orderModel.customerModel = event.customerModel!
-        : null;
-    var result = await managementRepoImpl.createNewOrder(orderModel);
-    return result.fold((success) {
-      ordersList.add(orderModel);
-      orderModel.recieveTime!.month == currentMonth
-          ? categorizedList.add(orderModel)
-          : null;
-      isLoadingAddOrder = false;
-      orderId = const Uuid().v1();
-      customerId = const Uuid().v4();
-      orderModel = OrderModel();
-      customerModel = CustomerModel(customerId: "");
-      pillModel = PillModel(pillId: const Uuid().v4());
-      colorModel = ColorOrderModel(colorId: const Uuid().v4());
-      extraOrdersList = [];
-      mediaOrderList = [];
-      emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
-    }, (error) {
-      isLoadingAddOrder = false;
-      emit(FailureAddNewOrderState());
-    });
+  }
+
+  void _resetOrderModel() {
+    orderId = const Uuid().v1();
+    customerId = const Uuid().v4();
+    orderModel = OrderModel();
+    customerModel = CustomerModel(customerId: "");
+    pillModel = PillModel(pillId: const Uuid().v4());
+    colorModel = ColorOrderModel(colorId: const Uuid().v4());
+    extraOrdersList = [];
+    mediaOrderList = [];
   }
 
   FutureOr<void> changeOptionPayment(

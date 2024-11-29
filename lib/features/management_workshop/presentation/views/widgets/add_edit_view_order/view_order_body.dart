@@ -85,7 +85,7 @@ class ShowOneOrderBody extends StatelessWidget {
                   initalText: orderModel.notice,
                   enableBorder: true,
                   readOnly: true,
-                  maxLine: 4,
+                  maxLine: 6,
                   onChanged: (value) {
                     orderModel.notice = value;
                   },

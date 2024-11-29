@@ -150,7 +150,7 @@ class ManagementRepoImpl implements ManagementRepo {
   }
 
   @override
-  Future<Either<String, String>> createNewOrder(OrderModel model) async {
+  Future<Either<String, String>> createNewOrder(OrderModel model,{bool forTheSameCustomer=false}) async {
     try {
       Uuid uuid = const Uuid();
 
@@ -159,7 +159,7 @@ class ManagementRepoImpl implements ManagementRepo {
         await txn.insert(orderTableName, model.toJson());
 
         // Add customer model to the database
-        if (model.customerModel != null) {
+        if (model.customerModel != null&& !forTheSameCustomer) {
           await txn.insert(customerTableName, model.customerModel!.toJson());
         }
 

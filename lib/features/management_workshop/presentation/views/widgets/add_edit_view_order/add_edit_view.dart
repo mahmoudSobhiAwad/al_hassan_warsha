@@ -39,11 +39,13 @@ class AddEditViewOrder extends StatelessWidget {
       listener: (context, state) {
         if (state is SuccessAddNewOrderState) {
           showCustomSnackBar(context, "تمت اضافة الطلب بنجاح ");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShowOneOrderView(
-                      bloc: bloc, orderModel: state.lastAdded)));
+          model != null
+              ? Navigator.pop(context)
+              : Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ShowOneOrderView(
+                          bloc: bloc, orderModel: state.lastAdded)));
         } else if (state is FailureAddNewOrderState) {
           showCustomSnackBar(context, state.errMessage ?? "");
         }
