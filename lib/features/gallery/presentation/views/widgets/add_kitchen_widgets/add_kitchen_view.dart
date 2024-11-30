@@ -1,4 +1,3 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
@@ -66,7 +65,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             CustomColumnWithTextInAddNewType(
               controller: describController,
               textStyle: AppFontStyles.extraBold25(context),
-              maxLine: 2,
+              maxLine: 4,
               text: "الوصف",
               textLabel:
                   "اضف بعض الوصف للمنتج ليساعدك في شرح المنتج للعميل...................",

@@ -56,13 +56,14 @@ class KitchenGalleryCustomView extends StatelessWidget {
                 ),
                 switch (bloc.pagesGalleryEnum) {
                   PagesGalleryEnum.view => ViewKitchenDetailsBody(
-                    bloc: bloc,
+                      bloc: bloc,
                       kitchenModel: kitchenModel,
                       changeEditState: (edit) {
                         bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
                       },
                       deleteKitchen: () {
                         bloc.add(DeleteKitchenEvent(
+                            mediaPath: kitchenModel?.kitchenMediaList ?? [],
                             kitchenId: kitchenModel!.kitchenId,
                             typeId: kitchenModel!.typeId));
                       },

@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
@@ -111,7 +112,8 @@ class GalleryRepoImp implements GalleryRepo {
     try {
       await dataBaseHelper.database
           .insert(kitchenTypesTableName, model.toJson());
-          
+      await TempCrudOperation.addIntoTemp(
+          tableName: kitchenTypesTableName, data: model.toJson());
       return left("تمت الاضافة بنجاح");
     } catch (e) {
       return right(Exception(e.toString()));

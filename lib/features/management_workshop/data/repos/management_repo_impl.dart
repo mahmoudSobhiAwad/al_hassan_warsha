@@ -19,7 +19,6 @@ import 'package:uuid/uuid.dart';
 class ManagementRepoImpl implements ManagementRepo {
   final DataBaseHelper dataBaseHelper;
   ManagementRepoImpl({required this.dataBaseHelper});
- 
 
   Future<Either<List<String>, String>> getAllKitchenTypes() async {
     try {
@@ -68,7 +67,8 @@ class ManagementRepoImpl implements ManagementRepo {
   }
 
   @override
-  Future<Either<String, String>> createNewOrder(OrderModel model,{bool forTheSameCustomer=false}) async {
+  Future<Either<String, String>> createNewOrder(OrderModel model,
+      {bool forTheSameCustomer = false}) async {
     try {
       Uuid uuid = const Uuid();
 
@@ -77,7 +77,7 @@ class ManagementRepoImpl implements ManagementRepo {
         await txn.insert(orderTableName, model.toJson());
 
         // Add customer model to the database
-        if (model.customerModel != null&& !forTheSameCustomer) {
+        if (model.customerModel != null && !forTheSameCustomer) {
           await txn.insert(customerTableName, model.customerModel!.toJson());
         }
 
@@ -104,11 +104,13 @@ class ManagementRepoImpl implements ManagementRepo {
         // Add media orders to the database
         if (model.mediaOrderList.isNotEmpty) {
           for (var item in model.mediaOrderList) {
+            item.mediaId = uuid.v4();
             item.mediaPath = await copyMediaFile(
+              mediId: item.mediaId,
               item.mediaPath,
               item.mediaType == MediaType.image ? imageFolder : videoFolder,
             );
-            item.mediaId = uuid.v4(); // Ensure unique ID
+            // Ensure unique ID
             await txn.insert(
               mediaOrderTableName,
               item.toAddJson(orderIdd: model.orderId),

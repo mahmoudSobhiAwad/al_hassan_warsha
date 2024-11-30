@@ -76,6 +76,7 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
       DeleteKitchenEvent event, Emitter<ViewEditAddState> emit) async {
     emit(LoadingDeleteNewKitchenState());
     final result = await addEditKitchenRepoImpl.deleteKitchen(
+      mediaPath: event.mediaPath,
         kitchenId: event.kitchenId, typeId: event.typeId);
     return result.fold((success) {
       emit(SuccessDeleteNewKitchenState(typeId: success));

@@ -1,6 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo.dart';
@@ -17,6 +18,8 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       await dataBaseHelper.database
           .insert(kitchenItemTableName, model.toJson());
       await updateCounterForType(model.typeId, "+");
+      await TempCrudOperation.addIntoTemp(
+          tableName: kitchenItemTableName, data: model.toJson());
       return left(model);
     } catch (e) {
       return right(Exception(e.toString()));
@@ -33,6 +36,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         where: 'kitchenId = ?',
         whereArgs: [model.kitchenId],
       );
+
       return left(model.typeId);
     } catch (e) {
       return right(Exception(e.toString()));
@@ -42,14 +46,17 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
   Future<void> updateCounterForType(
       String typeId, String manuiplationChar) async {
     try {
-      await dataBaseHelper.database.rawUpdate(
-        '''
+      String sqlCommand = '''
     UPDATE $kitchenTypesTableName 
     SET itemsCount = itemsCount $manuiplationChar 1 
     WHERE typeId = ?
-    ''',
+    ''';
+      await dataBaseHelper.database.rawUpdate(
+        sqlCommand,
         [typeId],
       );
+      await TempCrudOperation.updateWithCommandIntoTemp(
+          sqlCommand: sqlCommand, args: [typeId]);
     } catch (e) {
       throw Exception(e.toString());
     }
@@ -57,11 +64,23 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
 
   @override
   Future<Either<String, Exception>> deleteKitchen(
-      {required String kitchenId, required String typeId}) async {
+      {required String kitchenId,
+      required String typeId,
+      required List<KitchenMedia> mediaPath}) async {
     try {
-      await dataBaseHelper.database.rawDelete('''
-      DELETE FROM $kitchenItemTableName WHERE kitchenId = ?;
-      ''', [kitchenId]);
+      for (var item in mediaPath) {
+        await deleteMediaFile(item.path);
+      }
+      await dataBaseHelper.database.delete(
+        kitchenItemTableName,
+        where: 'kitchenId = ?',
+        whereArgs: [kitchenId],
+      );
+      await TempCrudOperation.removeFromTemp(
+        kitchenMediaList: mediaPath,
+          tableName: kitchenItemTableName,
+          whereClause: 'kitchenId = ?',
+          args: [kitchenId]);
       await updateCounterForType(typeId, "-");
       return left(typeId);
     } catch (e) {
@@ -80,6 +99,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
             path: await copyMediaFile(
+              mediId: item.mediId,
                 item.mediaPath,
                 SharedPrefHelper.fetchPathFromShared(
                         item.mediaType == MediaType.image
@@ -94,6 +114,8 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
             kitchenMediaList.map((mediaModel) => mediaModel.toJson()).toList();
         await dataBaseHelper.insertGroupOfRows(
             rows: rows, tableName: galleryKitchenMediaTable);
+        await TempCrudOperation.addMediaIntoTemp(
+            kitchenMediaList: kitchenMediaList);
         return true;
       } catch (e) {
         return false;
@@ -105,10 +127,16 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
     try {
       for (var item in mediaIdList) {
         await deleteMediaFile(item.mediaPath);
-        dataBaseHelper.database.rawDelete('''
- DELETE FROM $galleryKitchenMediaTable WHERE kitchenMediaId = ?;
-''', [item.mediId]);
+        dataBaseHelper.database.delete(
+          galleryKitchenMediaTable,
+          where: 'kitchenMediaId = ?',
+          whereArgs: [item.mediId],
+        );
       }
+      await TempCrudOperation.removeMediaList(
+          tableName: galleryKitchenMediaTable,
+          whereClause: 'kitchenMediaId = ?',
+          mediaIdList: mediaIdList);
       return true;
     } catch (e) {
       throw Exception(e.toString());

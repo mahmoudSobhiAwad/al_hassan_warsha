@@ -24,135 +24,128 @@ class ViewKitchenDetailsBody extends StatelessWidget {
   final KitchenModel? kitchenModel;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Text(
-                kitchenModel?.kitchenName ?? "",
-                style: AppFontStyles.extraBold40(context),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  kitchenModel?.kitchenName ?? "",
+                  style: AppFontStyles.extraBold40(context),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
-            ),
-            const Expanded(flex: 2, child: SizedBox()),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomPushContainerButton(
-                  onTap: () {
-                    changeEditState(true);
-                  },
-                  iconBehind: Icons.create_rounded,
-                  borderRadius: 16,
-                  pushButtomText: "تعديل",
-                ),
-                const SizedBox(
-                  width: 24,
-                ),
-                CustomPushContainerButton(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        useSafeArea: true,
-                        builder: (context) {
-                          return Dialog(
-                            child: CustomAlert(
-                              title: "هل أنت متأكد من حذف هذا المطبخ ؟",
-                              enableIcon: false,
-                              actionButtonsInstead:
-                                  DialogAddNewTypeActionButton(
-                                onPressed_1: deleteKitchen,
-                                onPressed_2: () {
-                                  Navigator.pop(context);
-                                },
-                                text_1: "حذف",
-                                text_2: "إلغاء",
-                                color_1: AppColors.red,
-                                color_2: AppColors.green,
-                              ),
-                            ),
-                          );
-                        });
-                  },
-                  borderRadius: 16,
-                  iconBehind: Icons.delete,
-                  color: AppColors.red,
-                  pushButtomText: "حذف",
-                ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomContainerWithTextAbove(
-          textAbove: "الوصف",
-          describtionInCont: kitchenModel?.kitchenDesc ?? "",
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CustomPushContainerButton(
-              enableIcon: false,
-              pushButtomText: "الوسائط",
-              padding: EdgeInsets.all(20),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Text("( ${kitchenModel?.mediaCounter} )",
-                style: AppFontStyles.extraBold30(context)),
-            const Spacer(),
-            kitchenModel!.mediaCounter > 5
-                ? TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShowMoreMediaGridView(
-                                    kitchenId: kitchenModel!.kitchenId,
-                                  )));
+              const Expanded(flex: 2, child: SizedBox()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomPushContainerButton(
+                    onTap: () {
+                      changeEditState(true);
                     },
-                    child: Text(
-                      "عرض المزيد",
-                      style: AppFontStyles.extraBold30(context)
-                          .copyWith(color: AppColors.blue),
-                    ))
-                : const SizedBox()
-          ],
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        kitchenModel!.kitchenMediaList.isNotEmpty
-            ? MediaListExist(
-                enableClear: false,
-                pickedList: kitchenModel!.getPickedMedia(),
-              )
-            : const EmptyUploadMedia(),
-        const SizedBox(
-          height: 12,
-        ),
-        const Center(
-            child: CustomPushContainerButton(
-          borderRadius: 15,
-          pushButtomText: "اختيار المطبخ",
-          color: AppColors.vibrantGreen,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-        )),
-        const SizedBox(
-          height: 12,
-        ),
-      ],
+                    iconBehind: Icons.create_rounded,
+                    borderRadius: 16,
+                    pushButtomText: "تعديل",
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  CustomPushContainerButton(
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (context) {
+                            return Dialog(
+                              child: CustomAlert(
+                                title: "هل أنت متأكد من حذف هذا المطبخ ؟",
+                                enableIcon: false,
+                                actionButtonsInstead:
+                                    DialogAddNewTypeActionButton(
+                                  onPressed_1: deleteKitchen,
+                                  onPressed_2: () {
+                                    Navigator.pop(context);
+                                  },
+                                  text_1: "حذف",
+                                  text_2: "إلغاء",
+                                  color_1: AppColors.red,
+                                  color_2: AppColors.green,
+                                ),
+                              ),
+                            );
+                          });
+                    },
+                    borderRadius: 16,
+                    iconBehind: Icons.delete,
+                    color: AppColors.red,
+                    pushButtomText: "حذف",
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          CustomContainerWithTextAbove(
+            textAbove: "الوصف",
+            describtionInCont: kitchenModel?.kitchenDesc ?? "",
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const CustomPushContainerButton(
+                enableIcon: false,
+                pushButtomText: "الوسائط",
+                padding: EdgeInsets.all(20),
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Text("( ${kitchenModel?.mediaCounter} )",
+                  style: AppFontStyles.extraBold30(context)),
+              const Spacer(),
+              kitchenModel!.mediaCounter > 5
+                  ? TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowMoreMediaGridView(
+                                      kitchenId: kitchenModel!.kitchenId,
+                                    )));
+                      },
+                      child: Text(
+                        "عرض المزيد",
+                        style: AppFontStyles.extraBold30(context)
+                            .copyWith(color: AppColors.blue),
+                      ))
+                  : const SizedBox()
+            ],
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          kitchenModel!.kitchenMediaList.isNotEmpty
+              ? MediaListExist(
+                  enableClear: false,
+                  pickedList: kitchenModel!.getPickedMedia(),
+                )
+              : const EmptyUploadMedia(),
+          const SizedBox(
+            height: 12,
+          ),
+        ],
+      ),
     );
   }
 }

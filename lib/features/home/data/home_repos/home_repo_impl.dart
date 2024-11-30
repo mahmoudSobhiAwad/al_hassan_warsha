@@ -20,7 +20,6 @@ class HomeRepoImpl implements HomeRepo {
 
       return left(true);
     } catch (e) {
-      print(e.toString());
       return right(e.toString());
     }
   }

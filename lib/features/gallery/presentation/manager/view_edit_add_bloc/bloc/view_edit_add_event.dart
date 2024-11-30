@@ -42,7 +42,8 @@ final class EditKitchenEvent extends ViewEditAddEvent {
 final class DeleteKitchenEvent extends ViewEditAddEvent {
   final String kitchenId;
   final String typeId;
-  DeleteKitchenEvent({required this.kitchenId, required this.typeId});
+  final List<KitchenMedia>mediaPath;
+  DeleteKitchenEvent({required this.kitchenId, required this.typeId,required this.mediaPath});
 }
 
 final class RecieveMediaToAddEvent extends ViewEditAddEvent {

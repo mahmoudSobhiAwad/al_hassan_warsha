@@ -6,7 +6,7 @@ abstract class AddEditKitchenRepo {
   
   Future<Either<String,Exception>>updateKitchen({required KitchenModel model});
 
-  Future<Either<String,Exception>>deleteKitchen({required String kitchenId,required String typeId});
+  Future<Either<String,Exception>>deleteKitchen({required String kitchenId,required String typeId,required List<KitchenMedia>mediaPath});
 
   Future<Either<List<PickedMedia>,Exception>>loadMoreMedia({required String kitchenId,required int offset});
 }
