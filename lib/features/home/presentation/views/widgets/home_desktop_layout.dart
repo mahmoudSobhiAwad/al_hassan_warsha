@@ -31,16 +31,18 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
                     "اختيارك الأمثل لجميع أعمال الالوميتال",
                     style: AppFontStyles.extraBold60(context),
                   )),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding:
-                      const EdgeInsets.only(top: 24.0, bottom: 24, right: 24),
-                  child: HomeItemsList(
-                    bloc: bloc,
-                  ),
-                ),
-              ),
+              bloc.isLoading
+                  ? const CircularProgressIndicator()
+                  : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 24.0, bottom: 24, right: 24),
+                        child: HomeItemsList(
+                          bloc: bloc,
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

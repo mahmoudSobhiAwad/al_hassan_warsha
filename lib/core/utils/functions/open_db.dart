@@ -9,6 +9,5 @@ Future<Database> openDatabaseHelper() async {
   return databaseFactory.openDatabase(path,
       options: OpenDatabaseOptions(
         version: 5,
-      
       ));
 }

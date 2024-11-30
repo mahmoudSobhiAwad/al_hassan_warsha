@@ -1,10 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:al_hassan_warsha/features/home/data/constants.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-
 Future<String> copyMediaFile(
     String sourcePath, String destinationFolderPath) async {
   try {
@@ -15,12 +11,10 @@ Future<String> copyMediaFile(
     if (!await sourceFile.exists()) {
       throw Exception('Source file does not exist');
     }
-    final directory = await getApplicationDocumentsDirectory();
-    final String finalPath =
-        join(directory.path, dbFolder, destinationFolderPath);
+ 
 
     // Create the destination folder if it doesn't exist
-    final destinationFolder = Directory(finalPath);
+    final destinationFolder = Directory(destinationFolderPath);
     if (!await destinationFolder.exists()) {
       await destinationFolder.create(recursive: true);
     }

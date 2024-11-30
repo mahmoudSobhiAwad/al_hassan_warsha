@@ -3,7 +3,6 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/edit_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/profile_view/customer_profile_body.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

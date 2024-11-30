@@ -1,6 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/basic_home.dart';
@@ -32,8 +33,9 @@ class HomeScreenView extends StatelessWidget {
             );
           }, listener: (context, state) {
             var bloc = context.read<HomeBasicBloc>();
-
-            if (state is NavToPageState) {
+            if (state is CreateDataBaseSuccessState) {
+              showCustomSnackBar(context, "تم انشاء قاعدة البيانات بنجاح ");
+            } else if (state is NavToPageState) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -50,24 +52,42 @@ class HomeScreenView extends StatelessWidget {
                           Navigator.pop(context);
                         },
                       )));
-            } else if (state is CreateDataBaseSuccessState) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: AppColors.green,
-                content: Text(
-                  "تم إنشاء قاعدة البيانات بنجاح ",
-                  style: AppFontStyles.extraBold20(context)
-                      .copyWith(color: AppColors.white),
-                ),
-              ));
+            } else if (state is ShowConfirmationDialog) {
+              showDialog(
+                  useSafeArea: false,
+                  context: context,
+                  builder: (context) => BlocBuilder(
+                        bloc: bloc,
+                        builder: (context, state) {
+                          return Dialog(
+                              child: CustomAlert(
+                            title: "انشاء قاعدة بيانات جديدة",
+                            iconData: Icons.create,
+                            pickPathesWidget: PickPathForDb(
+                              pickTempPath: (check) {
+                                bloc.add(CreatePathForMeidaAndTempDataEvent(
+                                    isMediaPath: check));
+                              },
+                              tempPath: bloc.tempPath,
+                              mediaPath: bloc.mediaPath,
+                            ),
+                            actionButtonsInstead: DialogAddNewTypeActionButton(
+                              text_1: "تأكيد ",
+                              text_2: "الغاء ",
+                              onPressed_1: () {
+                                bloc.add(ConfirmToCreateTheNewDb());
+                                Navigator.pop(context);
+                              },
+                              onPressed_2: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ));
+                        },
+                      ));
             } else if (state is CreateDataBaseFailedState) {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: AppColors.red,
-                content: Text(
-                  "${state.errMessage}",
-                  style: AppFontStyles.extraBold20(context)
-                      .copyWith(color: AppColors.white),
-                ),
-              ));
+              showCustomSnackBar(context, state.errMessage ?? "",
+                  backgroundColor: AppColors.red);
             }
           }),
         ),

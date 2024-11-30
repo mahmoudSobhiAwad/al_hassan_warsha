@@ -45,18 +45,24 @@ class _GalleryBodyState extends State<GalleryBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "المضاف حديثا",
-                  style: AppFontStyles.extraBold50(context),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                widget.bloc.loadNewest
-                    ? const Center(child: SizedBox(child: CircularProgressIndicator()))
-                    : AutoScrollingPageView(
-                        kitchenModelList: widget.bloc.newestKitchenTypeList, pageController: widget.bloc.pageController,
-                      ),
+                widget.bloc.newestKitchenTypeList.isNotEmpty
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "المضاف حديثا",
+                            style: AppFontStyles.extraBold50(context),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                          AutoScrollingPageView(
+                            kitchenModelList: widget.bloc.newestKitchenTypeList,
+                            pageController: widget.bloc.pageController,
+                          ),
+                        ],
+                      )
+                    : const SizedBox(),
                 const SizedBox(
                   height: 24,
                 ),
@@ -72,10 +78,9 @@ class _GalleryBodyState extends State<GalleryBody> {
           ),
         ),
         widget.bloc.isLoading
-            ? const SliverToBoxAdapter(child: SizedBox(
-              height: 25,
-              width: 25,
-              child: CircularProgressIndicator()))
+            ? const SliverToBoxAdapter(
+                child: SizedBox(
+                    height: 25, width: 25, child: CircularProgressIndicator()))
             : SliverList.separated(
                 itemBuilder: (context, index) {
                   return CompleteKitchenType(

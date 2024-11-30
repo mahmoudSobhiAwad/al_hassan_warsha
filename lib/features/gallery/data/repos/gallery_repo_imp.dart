@@ -9,45 +9,44 @@ class GalleryRepoImp implements GalleryRepo {
   final DataBaseHelper dataBaseHelper;
   GalleryRepoImp({required this.dataBaseHelper});
   @override
-  Future<bool> checkDbExistOfGalleryTables({required String tableName}) async {
+  Future<
+      Either<
+          (
+            List<KitchenModel> lastAdded,
+            List<KitchenTypeModel> allKitchens,
+            List<OnlyTypeModel> allTypes
+          ),
+          String>> getAllGalleryData() async {
     try {
-      return await dataBaseHelper.checkExistOfColumn(tableName: tableName);
+      List<KitchenTypeModel> allKitchenTypes = [];
+      List<KitchenModel> lastAddedKitchens = [];
+      List<OnlyTypeModel> typesList = [];
+      await getAllKitchenTypes().then((value) {
+        value.fold((list) {
+          allKitchenTypes.addAll(list);
+        }, (error) {
+          return right(error);
+        });
+      });
+
+      await loadLastAdded().then((value) {
+        value.fold((list) {
+          lastAddedKitchens.addAll(list);
+        }, (error) {
+          return right(error);
+        });
+      });
+      await loadOnlyTypeList().then((value) {
+        value.fold((list) {
+          typesList.addAll(list);
+        }, (error) {
+          return right(error);
+        });
+      });
+      return left((lastAddedKitchens, allKitchenTypes, typesList));
     } catch (e) {
-      throw Exception(e.toString());
+      return right(e.toString());
     }
-  }
-
-  @override
-  Future<void> createDataTablesForGallery() async {
-
-    await dataBaseHelper.database.execute('''
-  CREATE TABLE $kitchenTypesTableName (
-    typeId TEXT PRIMARY KEY,       
-    typeName TEXT NOT NULL,         
-    itemsCount INTEGER DEFAULT 0 
-  )
-  ''');
-
-    await dataBaseHelper.database.execute('''
-  CREATE TABLE $kitchenItemTableName (
-    kitchenId TEXT PRIMARY KEY,
-    typeId TEXT NOT NULL,
-    mediaCounter INTEGER DEFAULT 0,
-    kitchenName TEXT,
-    kitchenDesc TEXT,
-    addedTime TEXT,
-    FOREIGN KEY (typeId) REFERENCES KitchenType (typeId) ON DELETE CASCADE
-)
-  ''');
-    await dataBaseHelper.database.execute('''
-    CREATE TABLE $galleryKitchenMediaTable (
-      kitchenMediaId TEXT PRIMARY KEY,
-      path TEXT NOT NULL,
-      mediaType INTEGER NOT NULL,
-      kitchenId TEXT NOT NULL,
-      FOREIGN KEY (kitchenId) REFERENCES kitchens(kitchenId) ON DELETE CASCADE
-    );
-  ''');
   }
 
   @override
@@ -112,6 +111,7 @@ class GalleryRepoImp implements GalleryRepo {
     try {
       await dataBaseHelper.database
           .insert(kitchenTypesTableName, model.toJson());
+          
       return left("تمت الاضافة بنجاح");
     } catch (e) {
       return right(Exception(e.toString()));

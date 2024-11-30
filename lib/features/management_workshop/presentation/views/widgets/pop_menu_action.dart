@@ -26,7 +26,7 @@ class PopMenuActionBehindEachOrder extends StatelessWidget {
       itemBuilder: (context) {
         return [
           ...List.generate(
-              4,
+              3,
               (indexOf) => PopupMenuItem(
                   onTap: () {
                     switch (moreVerList(
@@ -69,9 +69,7 @@ class PopMenuActionBehindEachOrder extends StatelessWidget {
                                 ),
                               );
                             });
-                      case MoreVertAction.viewProfile:
-                        
-                        break;
+                    
                       case MoreVertAction.deliver:
                         
                         bloc.add(MarkOrderAsDelievredEvent(

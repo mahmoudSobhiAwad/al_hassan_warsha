@@ -75,21 +75,9 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             const SizedBox(
               height: 22,
             ),
-            Row(
-              children: [
-                Text(
-                  "الوسائط",
-                  style: AppFontStyles.extraBold25(context),
-                ),
-                const Spacer(),
-                TextButton(
-                    onPressed: null,
-                    child: Text(
-                      "عرض المزيد",
-                      style: AppFontStyles.extraBold30(context)
-                          .copyWith(color: AppColors.blue),
-                    ))
-              ],
+            Text(
+              "الوسائط",
+              style: AppFontStyles.extraBold25(context),
             ),
             const SizedBox(
               height: 22,

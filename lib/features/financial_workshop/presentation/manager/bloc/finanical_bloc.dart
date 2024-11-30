@@ -111,9 +111,9 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
         isAnalysisLoading = false;
         emit(FailureAnalysisState(errMessage: error));
       });
-    }
-    else{
-      emit(FailureAnalysisState(errMessage: "بداية الوقت او نهايته لا يمكن ان يكونو فارغين"));
+    } else {
+      emit(FailureAnalysisState(
+          errMessage: "بداية الوقت او نهايته لا يمكن ان يكونو فارغين"));
     }
   }
 
@@ -262,7 +262,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     Emitter<FinanicalState> emit,
   ) async {
     isLoading = true;
-
     emit(LoadingFetchOrderState());
     final result = await financialRepoImpl.getAllBills(
         offset: event.offset * orderList.length,
@@ -286,7 +285,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       isLoadingUpdateCounter = true;
       emit(LoadingUpdateCounterOrderState());
       final result = await financialRepoImpl.downStep(
-          event.pillId, event.payedAmount,event.totalPayedAmount);
+          event.pillId, event.payedAmount, event.totalPayedAmount);
       return result.fold((changedPill) {
         if (searchedList.isNotEmpty) {
           searchedList
@@ -334,19 +333,23 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     if (event.index != pageIndex) {
       pageIndex = event.index;
       emit(ChangeCurrentPageState());
-      add(FetchAllOrderWithThierBillEvent(offset: pageIndex - 1));
+      add(FetchAllOrderWithThierBillEvent(
+          offset: pageIndex - 1, farzIndex: int.parse(farzModel.valueEnSearh)));
     }
   }
 
   FutureOr<void> changeSearchModel(
       ChangeSearchModelEvent event, Emitter<FinanicalState> emit) async {
+    pageIndex = 1;
     if (event.isFarz) {
       if (event.model.valueEnSearh != farzModel.valueEnSearh) {
         farzModel = event.model;
+
         add(FetchAllOrderWithThierBillEvent(
-            farzIndex: int.parse(event.model.valueEnSearh)));
+            offset: 0, farzIndex: int.parse(event.model.valueEnSearh)));
       }
     } else {
+      farzModel = SearchModel(valueArSearh: "الكل", valueEnSearh: "-1");
       searchModel = event.model;
     }
 

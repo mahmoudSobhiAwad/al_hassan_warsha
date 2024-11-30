@@ -26,16 +26,7 @@ class KitchenModel {
     };
   }
 
-  List<PickedMedia> getPickedMedia() {
-    List<PickedMedia> list = [];
-    for (var item in kitchenMediaList) {
-      list.add(PickedMedia(
-          mediaPath: item.path,
-          mediaType: item.mediaType,
-          mediId: item.kitchenMediaId));
-    }
-    return list;
-  }
+ 
 
   factory KitchenModel.fromJson(
     Map<String, dynamic> json,
@@ -49,6 +40,16 @@ class KitchenModel {
       typeId: json['typeId'] == null ? "" : json['typeId'] as String,
       mediaCounter: json['mediaCounter'] as int,
     );
+  }
+   List<PickedMedia> getPickedMedia() {
+    List<PickedMedia> list = [];
+    for (var item in kitchenMediaList) {
+      list.add(PickedMedia(
+          mediaPath: item.path,
+          mediaType: item.mediaType,
+          mediId: item.kitchenMediaId));
+    }
+    return list;
   }
 }
 

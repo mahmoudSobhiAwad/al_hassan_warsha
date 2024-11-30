@@ -8,12 +8,9 @@ final class ShowMoreKitcenTypeEvent extends GalleryEvent {
   final bool isOpen;
   ShowMoreKitcenTypeEvent({required this.currIndex,this.typeId="",required this.isOpen});
 }
-final class AddNewKitchenTypeEvent extends GalleryEvent {
-  final String typeName;
-  AddNewKitchenTypeEvent({required this.typeName});
-}
+final class AddNewKitchenTypeEvent extends GalleryEvent {}
 
-final class CheckExistOfGalleryDataEvent extends GalleryEvent {}
+final class GetAllGalleryDataEvent extends GalleryEvent {}
 
 final class FetchKitchenTypeAfterChangeEvent extends GalleryEvent {
   final String typeId;

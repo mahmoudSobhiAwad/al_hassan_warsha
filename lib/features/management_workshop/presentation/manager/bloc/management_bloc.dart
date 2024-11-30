@@ -86,6 +86,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> getCustomerProfileDate(
       GetCustomerProfileEvent event, Emitter<ManagementState> emit) async {
     isLoadingGetUserInfo = true;
+    currPage = 0;
     emit(LoadingGetCustomerProfileState());
     final result =
         await managementRepoImpl.getAllCustomerInfo(event.customerId);
@@ -182,8 +183,10 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     await addNewKitchenType(emit);
     prepareOrderModelBeforeSend();
     event.customerModel != null ? updateOrderModel(event.customerModel!) : null;
-    var result = await managementRepoImpl.createNewOrder(orderModel,forTheSameCustomer: event.customerModel!=null);
+    var result = await managementRepoImpl.createNewOrder(orderModel,
+        forTheSameCustomer: event.customerModel != null);
     return result.fold((success) {
+      orderModel.orderStatus = getOrderStatus(orderModel.recieveTime!);
       ordersList.add(orderModel);
       orderModel.recieveTime!.month == currentMonth
           ? categorizedList.add(orderModel)
@@ -192,14 +195,12 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       _resetOrderModel();
       emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
     }, (error) {
-      print(error);
       isLoadingAddOrder = false;
       emit(FailureAddNewOrderState());
     });
   }
 
   void updateOrderModel(CustomerModel newCustomerModel) {
-    print(newCustomerModel.toJson());
     orderModel.customerModel = newCustomerModel;
     orderModel.customerId = newCustomerModel.customerId;
     pillModel.customerName = newCustomerModel.customerName!;
@@ -260,18 +261,18 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> changeRemianInAddOrder(
       ChangeRemainInAddOrderEvent event, Emitter<ManagementState> emit) async {
     if (event.isEdit) {
-      editableOrderModel.pillModel?.remian = convertToArabicNumbers((int.parse(
-                  convertToEnglishNumbers(
+      editableOrderModel.pillModel?.remian = convertToArabicNumbers(
+          (BigInt.parse(convertToEnglishNumbers(
                       editableOrderModel.pillModel!.totalMoney)) -
-              (int.parse(convertToEnglishNumbers(
-                      editableOrderModel.pillModel!.payedAmount)) +
-                  int.parse(convertToEnglishNumbers(
-                      editableOrderModel.pillModel!.interior))))
-          .toString());
+                  (BigInt.parse(convertToEnglishNumbers(
+                          editableOrderModel.pillModel!.payedAmount)) +
+                      BigInt.parse(convertToEnglishNumbers(
+                          editableOrderModel.pillModel!.interior))))
+              .toString());
     } else {
       pillModel.remian = convertToArabicNumbers(
-          (int.parse(convertToEnglishNumbers(pillModel.totalMoney)) -
-                  int.parse(convertToEnglishNumbers(pillModel.interior)))
+          (BigInt.parse(convertToEnglishNumbers(pillModel.totalMoney)) -
+                  BigInt.parse(convertToEnglishNumbers(pillModel.interior)))
               .toString());
     }
 

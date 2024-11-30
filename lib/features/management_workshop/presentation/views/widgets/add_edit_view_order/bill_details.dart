@@ -137,7 +137,7 @@ class BillDetails extends StatelessWidget {
                     ),
                   )),
               const Expanded(flex: 1, child: SizedBox()),
-              int.parse(convertToEnglishNumbers(pillModel.remian)) == 0
+              BigInt.parse(convertToEnglishNumbers(pillModel.remian)) == BigInt.from(0)
                   ? Center(
                       child: Text(
                         "تم استلام كل المبالغ المتبقية",
@@ -164,8 +164,8 @@ class BillDetails extends StatelessWidget {
                                   onChanged: (value) {
                                     if (value == null || value.isEmpty) {
                                     } else {
-                                      pillModel.stepsCounter = int.parse(
-                                          convertToEnglishNumbers(value));
+                                      pillModel.stepsCounter = BigInt.parse(
+                                          convertToEnglishNumbers(value)).toInt();
                                     }
                                   },
                                   text: "عدد الدفعات",

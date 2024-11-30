@@ -1,4 +1,12 @@
-const String dbFolder="databases";
-const String dbName="alwarsha.db";
-const String imageFolder="الصور";
-const String videoFolder="الفيديوهات";
+const String dbFolder = "databases";
+const String tempFolder = "الاحتياطي";
+const String mediaBasicFolder = "mainMedia";
+const String dbName = "alwarsha.db";
+const String dbTempName = "alwarshaTemp.db";
+const String imageFolder = "الصور";
+const String videoFolder = "الفيديوهات";
+const String imageMainPath = 'imageMainPath';
+const String videoMainPath = 'videoMainPath';
+const String videoTempPath = 'videoTempPath';
+const String imageTempPath = 'imageTempPath';
+const String tempDataPath = 'tempDataPath';

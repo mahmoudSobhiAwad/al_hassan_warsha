@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/add_edit_repos/add_edit_repo.dart';
@@ -78,8 +79,13 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
       for (var item in mediaPickedList) {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
-            path: await copyMediaFile(item.mediaPath,
-                item.mediaType == MediaType.image ? imageFolder : videoFolder),
+            path: await copyMediaFile(
+                item.mediaPath,
+                SharedPrefHelper.fetchPathFromShared(
+                        item.mediaType == MediaType.image
+                            ? imageMainPath
+                            : videoMainPath) ??
+                    ""),
             kitchenId: kitchenID,
             kitchenMediaId: item.mediId));
       }

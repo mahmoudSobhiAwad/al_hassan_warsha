@@ -15,25 +15,11 @@ class FinancialRepoImpl implements FinancialRepo {
   final DataBaseHelper dataBaseHelper;
   FinancialRepoImpl({required this.dataBaseHelper});
 
-// create transaction table name
-//     await dataBaseHelper.database.execute('''
-// CREATE TABLE $transactionTableName (
-//     transactionId TEXT PRIMARY KEY,
-//     transactionName TEXT NOT NULL,
-//     transactionAmount TEXT NOT NULL,
-//     transactionType INTEGER NOT NULL,
-//     transactionMethod INTEGER NOT NULL,
-//     transactionTime TEXT NOT NULL,
-//     transactionAllTypes INTEGER NOT NULL DEFAULT 5
-// );
-// ''');
-//     await dataBaseHelper.database.execute(
-  //     '''CREATE INDEX idx_transaction_time ON $transactionTableName(transactionTime)
-//''');
   @override
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset, int? optionPaymentWay}) async {
     try {
+     
       String whereClause = optionPaymentWay != null
           ? "orderId = ? AND optionPaymentWay = ?"
           : "orderId = ?";
@@ -43,6 +29,7 @@ class FinancialRepoImpl implements FinancialRepo {
         limit: 8,
         offset: offset,
       );
+
       List<OrderModel> orderList = [];
       for (var item in result) {
         final whereArgs = optionPaymentWay != null
@@ -53,6 +40,7 @@ class FinancialRepoImpl implements FinancialRepo {
           where: whereClause,
           whereArgs: whereArgs,
         );
+
         if (pillresult.isNotEmpty) {
           PillModel pillModel = PillModel.fromJson(pillresult.first);
           OrderModel orderModel = OrderModel.fromJson(item);
@@ -61,7 +49,10 @@ class FinancialRepoImpl implements FinancialRepo {
         }
       }
 
-      int? totalLength = await getTableCount(orderTableName) ?? 0;
+      int? totalLength = await getTableCount(
+              optionPaymentWay == null ? orderTableName : pillTableName,
+              index: optionPaymentWay) ??
+          0;
 
       return left((orderList, totalLength));
     } catch (e) {
@@ -102,12 +93,20 @@ class FinancialRepoImpl implements FinancialRepo {
     }
   }
 
-  Future<int?> getTableCount(String tableName) async {
+  Future<int?> getTableCount(String tableName, {int? index}) async {
     try {
       // Query to count rows in the specific table
-      final result = await dataBaseHelper.database
-          .rawQuery("SELECT COUNT(*) as count FROM $tableName");
-      return result.first['count'] != null ? result.first['count'] as int : 0;
+      if (index == null) {
+        final result = await dataBaseHelper.database
+            .rawQuery("SELECT COUNT(*) as count FROM $tableName");
+
+        return result.first['count'] != null ? result.first['count'] as int : 0;
+      } else {
+        final result = await dataBaseHelper.database.rawQuery(
+            "SELECT COUNT(*) as count FROM $tableName WHERE optionPaymentWay = ?",
+            [index]);
+        return result.first['count'] != null ? result.first['count'] as int : 0;
+      }
       // Extract the count or return 0 if null
     } catch (e) {
       // Handle error, optionally log or throw
@@ -241,16 +240,6 @@ class FinancialRepoImpl implements FinancialRepo {
   @override
   Future<Either<List<WorkerModel>, String>> getAllWokersData() async {
     try {
-//       await dataBaseHelper.database.execute('''
-// CREATE TABLE Workers (
-//     workerId TEXT PRIMARY KEY,
-//     workerName TEXT NOT NULL,
-//     workerPhone TEXT,
-//     salaryType INTEGER NOT NULL DEFAULT 2,
-//     salaryAmount TEXT NOT NULL DEFAULT '0',
-//     lastAddedSalary TEXT
-// );
-// ''');
       final result = await dataBaseHelper.database.query(workersTableName);
       List<WorkerModel> workersList = [];
       if (result.isNotEmpty) {

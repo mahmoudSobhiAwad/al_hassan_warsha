@@ -46,7 +46,7 @@ List<SearchModel> searchListInOrders = [
   SearchModel(valueArSearh: "نوع المطبخ", valueEnSearh: "kitchenType"),
 ];
 
-enum MoreVertAction { edit, delete, viewProfile, deliver, notDeliever }
+enum MoreVertAction { edit, delete, deliver, notDeliever }
 
 class MoreVerModel {
   String text;
@@ -62,10 +62,6 @@ List<MoreVerModel> moreVerList(OrderStatus orderStatus) {
         icon: Icons.edit, moreVertEnum: MoreVertAction.edit, text: "تعديل "),
     MoreVerModel(
         icon: Icons.delete, moreVertEnum: MoreVertAction.delete, text: "حذف "),
-    MoreVerModel(
-        icon: Icons.person,
-        moreVertEnum: MoreVertAction.viewProfile,
-        text: "عرض الملف الشخصي"),
     orderStatus == OrderStatus.finished
         ? MoreVerModel(
             icon: Icons.restart_alt_outlined,
@@ -78,19 +74,17 @@ List<MoreVerModel> moreVerList(OrderStatus orderStatus) {
   ];
 }
 
- final kitchenTypesInOrderList = [
-    {'kitchenTypeName': 'مطابخ خشب'},
-    {'kitchenTypeName': 'مطابخ أكريليك'},
-    {'kitchenTypeName': 'مطابخ PVC'},
-    {'kitchenTypeName': 'مطابخ ألمنيوم'},
-    {'kitchenTypeName': 'مطابخ ستانلس ستيل'},
-    {'kitchenTypeName': 'مطابخ زجاجية'},
-    {'kitchenTypeName': 'مطابخ MDF'},
-    {'kitchenTypeName': 'مطابخ بولي لاك'},
-    {'kitchenTypeName': 'مطابخ فورميكا'},
-    {'kitchenTypeName': 'مطابخ لاكيه'},
-    {'kitchenTypeName': 'مطابخ مودرن'},
-    {'kitchenTypeName': 'مطابخ كلاسيك'},
-  ];
-
-  
+final kitchenTypesInOrderList = [
+  {'kitchenTypeName': 'مطابخ خشب'},
+  {'kitchenTypeName': 'مطابخ أكريليك'},
+  {'kitchenTypeName': 'مطابخ PVC'},
+  {'kitchenTypeName': 'مطابخ ألمنيوم'},
+  {'kitchenTypeName': 'مطابخ ستانلس ستيل'},
+  {'kitchenTypeName': 'مطابخ زجاجية'},
+  {'kitchenTypeName': 'مطابخ MDF'},
+  {'kitchenTypeName': 'مطابخ بولي لاك'},
+  {'kitchenTypeName': 'مطابخ فورميكا'},
+  {'kitchenTypeName': 'مطابخ لاكيه'},
+  {'kitchenTypeName': 'مطابخ مودرن'},
+  {'kitchenTypeName': 'مطابخ كلاسيك'},
+];

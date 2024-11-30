@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/gallery_repo_imp.dart';
@@ -14,10 +12,9 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   final GalleryRepoImp galleryRepoImp;
   GalleryBloc({required this.galleryRepoImp}) : super(GalleryInitial()) {
     on<ShowMoreKitcenTypeEvent>(showMoreKitchen);
-    on<CheckExistOfGalleryDataEvent>(checkExistOfGalleryData);
     on<AddNewKitchenTypeEvent>(addNewKitchenType);
     on<FetchKitchenTypeAfterChangeEvent>(fetchKitchenTypeAfterChange);
-
+    on<GetAllGalleryDataEvent>(getAllGalleryData);
     on<FetchMoreTypesEvent>(fetchMoreTypes);
     on<ChangePageIndexInShowMoreEvent>(changeCurrentPageOfPaginationInShowMore);
     on<DefineTimerFunctionEvent>(changeCurrPage);
@@ -26,9 +23,8 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   bool enableMoreWidget = false;
   int currPageInShowMore = 1;
   bool isLoading = true;
-  bool isLoadingtypes = true;
   bool isMoredLoading = true;
-  bool loadNewest = true;
+
   List<KitchenTypeModel> basickitchenTypesList = [];
   List<KitchenModel> newestKitchenTypeList = [];
   List<OnlyTypeModel> onlyTypeModelList = [];
@@ -97,62 +93,21 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     }
   }
 
-  Future<void> loadAllTypes(Emitter<GalleryState> emit) async {
+  FutureOr<void> getAllGalleryData(
+      GetAllGalleryDataEvent event, Emitter<GalleryState> emit) async {
+    isLoading = true;
     emit(LoadingCreateOrGetData());
-    final typesList = await galleryRepoImp.loadOnlyTypeList();
-    typesList.fold((list) {
-      isLoadingtypes = false;
-      onlyTypeModelList.addAll(list);
+    final result = await galleryRepoImp.getAllGalleryData();
+    return result.fold((allData) {
+      newestKitchenTypeList = allData.$1;
+      basickitchenTypesList = allData.$2;
+      onlyTypeModelList = allData.$3;
+      isLoading = false;
       emit(SuccessCreateOrGetData());
     }, (error) {
-      isLoadingtypes = false;
-    });
-  }
-
-  Future<void> loadLastAdded(Emitter<GalleryState> emit) async {
-    emit(LoadingCreateOrGetData());
-    final lastAdded = await galleryRepoImp.loadLastAdded();
-    lastAdded.fold((list) {
-      loadNewest = false;
-      newestKitchenTypeList.addAll(list);
-      emit(SuccessCreateOrGetData());
-    }, (error) {
-      loadNewest = false;
+      isLoading = false;
       emit(FailureCreateOrGetData());
     });
-  }
-
-  Future<void> getAllKitchenTypes(Emitter<GalleryState> emit) async {
-    var data = await galleryRepoImp.getAllKitchenTypes();
-    return data.fold((list) {
-      isLoading = false;
-      basickitchenTypesList.addAll(list);
-      emit(SuccessCreateOrGetData());
-    }, (error) {
-      isLoading = false;
-      emit(FailureCreateOrGetData(
-        errMessage: error,
-      ));
-    });
-  }
-
-  FutureOr<void> checkExistOfGalleryData(
-      CheckExistOfGalleryDataEvent event, Emitter<GalleryState> emit) async {
-    bool result = await galleryRepoImp.checkDbExistOfGalleryTables(
-        tableName: kitchenTypesTableName);
-    if (result) {
-      await loadAllTypes(emit);
-      await loadLastAdded(emit);
-      await getAllKitchenTypes(emit);
-    } else {
-      emit(LoadingCreateOrGetData());
-      try {
-        await galleryRepoImp.createDataTablesForGallery();
-        emit(SuccessCreateOrGetData());
-      } catch (e) {
-        emit(FailureCreateOrGetData(errMessage: e.toString()));
-      }
-    }
   }
 
   FutureOr<void> addNewKitchenType(
@@ -160,10 +115,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     emit(LoadingAddedNewKitchenType());
     var v1 = const Uuid().v1();
     var result = await galleryRepoImp.addNewKitchenType(
-        model: KitchenTypeModel(typeId: v1, typeName: event.typeName));
+        model: KitchenTypeModel(typeId: v1, typeName: controller.text));
     return result.fold((success) {
       basickitchenTypesList
-          .add(KitchenTypeModel(typeId: v1, typeName: event.typeName));
+          .add(KitchenTypeModel(typeId: v1, typeName: controller.text));
+      onlyTypeModelList.add(
+          OnlyTypeModel(itemsCount: 0, typeId: v1, typeName: controller.text));
       emit(SuccessAddedNewKitchenType());
     }, (error) {
       emit(FailureAddedNewKitchenType(errMessage: error.toString()));

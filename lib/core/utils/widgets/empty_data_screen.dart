@@ -9,14 +9,17 @@ class EmptyDataScreen extends StatelessWidget {
       this.emptyPushButtonText,
       this.emptyText,
       this.onTap,
+      this.flex,
       this.enablePush = true});
   final String? emptyText;
   final String? emptyPushButtonText;
   final void Function()? onTap;
   final bool enablePush;
+  final int? flex;
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: flex??1,
       child: ScrollConfiguration(
         behavior: const ScrollBehavior().copyWith(scrollbars: false),
         child: SingleChildScrollView(

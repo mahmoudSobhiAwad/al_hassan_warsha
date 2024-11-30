@@ -10,7 +10,7 @@ class HeaderSetionInGallery extends StatelessWidget {
     required this.formKey,
     required this.controller,
   });
-  final void Function(String) addType;
+  final void Function() addType;
   final GlobalKey<FormState> formKey;
   final TextEditingController controller;
   @override
@@ -28,7 +28,7 @@ class HeaderSetionInGallery extends StatelessWidget {
                           add: () {
                             if (formKey.currentState!.validate() &&
                                 controller.text.trim().isNotEmpty) {
-                              addType(controller.text);
+                              addType();
                             }
                           },
                           controller: controller,

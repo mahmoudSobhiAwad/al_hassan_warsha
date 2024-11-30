@@ -10,6 +10,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 final getIt=GetIt.instance;
 Future<void>setUp()async{
+  
   getIt.registerSingleton<Database>(await openDatabaseHelper());
   getIt.registerLazySingleton<DataBaseHelper>(()=>DataBaseHelper(database: getIt.get<Database>()));
   getIt.registerLazySingleton<GalleryRepoImp>(()=>GalleryRepoImp(dataBaseHelper: getIt.get<DataBaseHelper>()));
