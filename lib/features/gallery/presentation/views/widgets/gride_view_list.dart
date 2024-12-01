@@ -18,7 +18,7 @@ class CustomGridKitchenTypes extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
-          mainAxisSpacing: 30,
+          mainAxisSpacing: 5,
           crossAxisSpacing: 30,
           childAspectRatio: 2),
       itemBuilder: (context, index) {
@@ -40,7 +40,7 @@ class CustomGridKitchenTypes extends StatelessWidget {
                         )));
           },
           child: SmallKitchenTypeImage(
-            imageWidth: 0.3,
+            imageWidth: 0.25,
             model: kitchenList[index],
           ),
         );

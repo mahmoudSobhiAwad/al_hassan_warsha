@@ -46,7 +46,12 @@ class HomeScreenView extends StatelessWidget {
               showDialog(
                   useSafeArea: false,
                   context: context,
-                  builder: (context) => Dialog(child: CustomAlert(
+                  builder: (context) => Dialog(
+                          child: CustomAlert(
+                        onPressed_1: () {
+                          bloc.add(NaveToExportFromTempEvent());
+                          Navigator.pop(context);
+                        },
                         onPressed_2: () {
                           bloc.add(CreateNewDBEvent());
                           Navigator.pop(context);
@@ -86,6 +91,45 @@ class HomeScreenView extends StatelessWidget {
             } else if (state is CreateDataBaseFailedState) {
               showCustomSnackBar(context, state.errMessage ?? "",
                   backgroundColor: AppColors.red);
+            } else if (state is ExportDataBaseFailedState) {
+              showCustomSnackBar(context, state.errMessage ?? "",
+                  backgroundColor: AppColors.red);
+            } else if (state is ExportDataBaseSuccessState) {
+              showCustomSnackBar(
+                context,
+                "تم استعادة البيانات بنجاح ",
+              );
+            } else if (state is ShowExportDialog) {
+              showDialog(
+                  useSafeArea: false,
+                  context: context,
+                  builder: (context) => BlocBuilder(
+                        bloc: bloc,
+                        builder: (context, state) {
+                          return Dialog(
+                              child: CustomAlert(
+                            title: "استرجاع البيانات من الاحتياطي",
+                            iconData: Icons.restart_alt_rounded,
+                            pickPathesWidget: PickPathForDb(
+                              pickTempPath: () {
+                                bloc.add(CreatePathForMeidaAndTempDataEvent(isRestoring: true));
+                              },
+                              tempPath: bloc.backUpPath,
+                            ),
+                            actionButtonsInstead: DialogAddNewTypeActionButton(
+                              text_1: "تأكيد ",
+                              text_2: "الغاء ",
+                              onPressed_1: () {
+                                bloc.add(ExportFromTempDataEvent());
+                                Navigator.pop(context);
+                              },
+                              onPressed_2: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ));
+                        },
+                      ));
             }
           }),
         ),

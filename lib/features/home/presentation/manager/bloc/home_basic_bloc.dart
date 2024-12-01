@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/create_custom_folder.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
 import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
@@ -23,10 +24,13 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     on<CreateNewDBEvent>(createNewDataBase);
     on<CreatePathForMeidaAndTempDataEvent>(createTempDataBase);
     on<ConfirmToCreateTheNewDb>(confirmToCreate);
+    on<NaveToExportFromTempEvent>(navToExportDialog);
+    on<ExportFromTempDataEvent>(backUpTheDate);
   }
   bool isExist = false;
   bool isLoading = false;
   String? tempPath;
+  String? backUpPath;
   String mediaPath = Directory(
           '${Platform.environment['LOCALAPPDATA']}/$appName/$mediaBasicFolder')
       .path;
@@ -66,7 +70,7 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
       Emitter<HomeBasicState> emit) async {
     await FilePicker.platform.getDirectoryPath().then((value) {
       if (value != null) {
-        tempPath = value;
+        event.isRestoring ? backUpPath = value : tempPath = value;
       }
     });
     emit(SuccessPickTempPathState());
@@ -117,5 +121,47 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   FutureOr<void> createNewDataBase(
       CreateNewDBEvent event, Emitter<HomeBasicState> emit) async {
     emit(ShowConfirmationDialog());
+  }
+
+  FutureOr<void> navToExportDialog(
+      NaveToExportFromTempEvent event, Emitter<HomeBasicState> emit) async {
+    emit(ShowExportDialog());
+  }
+
+  FutureOr<void> backUpTheDate(
+      ExportFromTempDataEvent event, Emitter<HomeBasicState> emit) async {
+    isLoading = true;
+    if (backUpPath != null) {
+      final Directory appDocumentsDir =
+          await getApplicationDocumentsDirectory();
+      String dbPath = join(appDocumentsDir.path, dbFolder);
+      try {
+        String packUpDbPath = join(backUpPath!, dbFolder, dbTempName);
+        await copyDbFileFromTemp(packUpDbPath, dbPath, newFileName: dbName);
+        String imagePaths = join(mediaPath, imageFolder);
+        String videoPaths = join(mediaPath, videoFolder);
+        String tempImagePath = join(backUpPath!, dbFolder, imageFolder);
+        String tempVideoPath = join(backUpPath!, dbFolder, videoFolder);
+        createFolder(imagePaths);
+        createFolder(videoPaths);
+        await SharedPrefHelper.saveFolderPath({
+          imageMainPath: imagePaths,
+          videoMainPath: videoPaths,
+          imageTempPath: tempImagePath,
+          videoTempPath: tempVideoPath,
+          tempDataPath: packUpDbPath,
+        });
+        isLoading = false;
+        isExist = true;
+        await setUp();
+        emit(ExportDataBaseSuccessState());
+      } catch (e) {
+        emit(ExportDataBaseFailedState(errMessage: e.toString()));
+      }
+    } else {
+      isLoading = false;
+      emit(ExportDataBaseFailedState(
+          errMessage: "هذا الملف فارغ او غير متوافق "));
+    }
   }
 }

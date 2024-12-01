@@ -16,6 +16,8 @@ final class SuccessPickTempPathState extends HomeBasicState {}
 
 final class ShowConfirmationDialog extends HomeBasicState {}
 
+final class ShowExportDialog extends HomeBasicState {}
+
 final class NotFoundDbState extends HomeBasicState {}
 
 final class NavToPageState extends HomeBasicState {
@@ -30,4 +32,13 @@ final class CreateDataBaseLoadingState extends HomeBasicState {}
 final class CreateDataBaseFailedState extends HomeBasicState {
   final String? errMessage;
   CreateDataBaseFailedState({this.errMessage});
+}
+
+final class ExportDataBaseSuccessState extends HomeBasicState {}
+
+final class ExportDataBaseLoadingState extends HomeBasicState {}
+
+final class ExportDataBaseFailedState extends HomeBasicState {
+  final String? errMessage;
+  ExportDataBaseFailedState({this.errMessage});
 }

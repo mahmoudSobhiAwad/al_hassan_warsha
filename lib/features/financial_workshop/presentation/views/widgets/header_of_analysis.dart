@@ -34,9 +34,10 @@ class HeaderOfAnalysis extends StatelessWidget {
         Expanded(
           flex: 2,
           child: CustomDatePicker(
+            startDate: startDate,
             labelText: "النهاية",
             recieveTime: endDate,
-            changeDate: changeEndDate,
+            changeDate:startDate!=null? changeEndDate:(d){},
           ),
         ),
         const Expanded(flex: 1, child: SizedBox()),

@@ -12,6 +12,7 @@ class CustomDatePicker extends StatelessWidget {
     this.labelText,
     this.format,
     this.enableShowDayTime = false,
+    this.startDate,
   });
 
   final GlobalKey<FormState>? formKey;
@@ -19,6 +20,7 @@ class CustomDatePicker extends StatelessWidget {
   final void Function(DateTime p1)? changeDate;
   final String? labelText;
   final String? format;
+  final DateTime?startDate;
   final bool enableShowDayTime;
 
   @override
@@ -49,9 +51,9 @@ class CustomDatePicker extends StatelessWidget {
               ? showDatePicker(
                       locale: const Locale('ar'),
                       context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(DateTime.now().year - 1),
-                      lastDate: DateTime(DateTime.now().year + 1))
+                      initialDate:startDate?? DateTime.now(),
+                      firstDate:startDate?? DateTime(DateTime.now().year - 1),
+                      lastDate: DateTime(DateTime.now().year + 2))
                   .then((value) {
                   if (context.mounted && enableShowDayTime && value != null) {
                     showTimePicker(

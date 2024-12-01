@@ -58,9 +58,6 @@ class ManagementRepoImpl implements ManagementRepo {
   Future<Either<List<OrderModel>, String>> getAllOrders(
       {required int month, required int year}) async {
     try {
-      await dataBaseHelper.database.delete(orderTableName,
-          where: 'orderId = ?',
-          whereArgs: ['3b95a060-af79-11ef-923a-098e9d55c900']);
       String monthString =
           month.toString().padLeft(2, '0'); // Ensure 2-digit format
       String yearString = year.toString();
@@ -89,16 +86,9 @@ class ManagementRepoImpl implements ManagementRepo {
         // Add order model to the database
         await txn.insert(orderTableName, model.toJson());
 
-        await TempCrudOperation.addIntoTemp(
-            tableName: orderTableName, data: model.toJson());
-
         // Add customer model to the database
         if (model.customerModel != null && !forTheSameCustomer) {
           await txn.insert(customerTableName, model.customerModel!.toJson());
-
-          await TempCrudOperation.addIntoTemp(
-              tableName: customerTableName,
-              data: model.customerModel!.toJson());
         }
 
         // Add color model to the database
@@ -106,10 +96,6 @@ class ManagementRepoImpl implements ManagementRepo {
           await txn.insert(
             colorTableName,
             model.colorModel!.toJson(orderIdd: model.orderId),
-          );
-          await TempCrudOperation.addIntoTemp(
-            tableName: colorTableName,
-            data: model.colorModel!.toJson(orderIdd: model.orderId),
           );
         }
 
@@ -123,8 +109,6 @@ class ManagementRepoImpl implements ManagementRepo {
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
-          await TempCrudOperation.insertExtraList(
-              model.extraOrdersList, model.orderId);
         }
 
         // Add media orders to the database
@@ -146,18 +130,12 @@ class ManagementRepoImpl implements ManagementRepo {
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
-          await TempCrudOperation.addMediaInOrder(
-              kitchenMediaList: model.mediaOrderList, orderId: model.orderId);
         }
 
         if (model.pillModel != null) {
           await txn.insert(
             pillTableName,
             model.pillModel!.toJson(orderIdd: model.orderId),
-          );
-          await TempCrudOperation.addIntoTemp(
-            tableName: pillTableName,
-            data: model.pillModel!.toJson(orderIdd: model.orderId),
           );
         }
       });
@@ -171,6 +149,8 @@ class ManagementRepoImpl implements ManagementRepo {
               transactionTime: DateTime.now(),
               transactionType: TransactionType.recieve,
               transactionName: "استلام مقدم من "));
+              
+      await TempCrudOperation.createNewOrderInTemp(model, forTheSameCustomer);
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {
       log(e.toString());
@@ -204,7 +184,6 @@ class ManagementRepoImpl implements ManagementRepo {
       for (var item in removedMediPaths) {
         deleteMediaFile(item);
       }
-      
 
       for (var item in removedExtra) {
         batch.delete(extraOrderTableName,

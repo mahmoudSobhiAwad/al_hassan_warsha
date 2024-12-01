@@ -10,15 +10,18 @@ import 'package:al_hassan_warsha/features/home/data/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/extra_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/media_model.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class TempCrudOperation {
   static final databaseFactory = databaseFactoryFfi;
   static final String dbTempPath =
       SharedPrefHelper.fetchPathFromShared(tempDataPath) ?? "";
+
   static Future<void> addIntoTemp(
       {required String tableName, required Map<String, dynamic> data}) async {
     try {
+
       await databaseFactory.openDatabase(dbTempPath,
           options: OpenDatabaseOptions(onOpen: (db) async {
         await db.insert(tableName, data);
@@ -73,36 +76,6 @@ class TempCrudOperation {
       }
       for (var item in kitchenMediaList) {
         await db.insert(galleryKitchenMediaTable, item.toJson());
-      }
-      await db.close();
-      log("media list is added");
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
-
-  static Future<void> addMediaInOrder(
-      {required List<MediaOrderModel> kitchenMediaList,
-      required String orderId}) async {
-    try {
-      Database db = await databaseFactory.openDatabase(dbTempPath);
-      for (var item in kitchenMediaList) {
-        try {
-          final tempPath = SharedPrefHelper.fetchPathFromShared(
-                  item.mediaType == MediaType.image
-                      ? imageTempPath
-                      : videoTempPath) ??
-              "";
-
-          final fileExtension = item.mediaPath.split('.').last;
-          item.mediaPath =
-              '$tempPath${Platform.pathSeparator}${item.mediaId}.$fileExtension';
-        } catch (e) {
-          throw Exception(e);
-        }
-      }
-      for (var item in kitchenMediaList) {
-        await db.insert(mediaOrderTableName, item.toAddJson(orderIdd: orderId));
       }
       await db.close();
       log("media list is added");
@@ -243,5 +216,57 @@ class TempCrudOperation {
     } catch (e) {
       throw Exception(e);
     }
+  }
+
+  static Future<void> createNewOrderInTemp(
+      OrderModel model, bool forTheSameCustomer) async {
+    Database db = await databaseFactory.openDatabase(dbTempPath);
+    db.transaction((txn) async {
+      await txn.insert(orderTableName, model.toJson());
+      if (model.customerModel != null && !forTheSameCustomer) {
+        await txn.insert(customerTableName, model.customerModel!.toJson());
+      }
+      if (model.colorModel != null) {
+        await txn.insert(
+          colorTableName,
+          model.colorModel!.toJson(orderIdd: model.orderId),
+        );
+      }
+      if (model.extraOrdersList.isNotEmpty) {
+        for (var item in model.extraOrdersList) {
+          await txn.insert(
+            extraOrderTableName,
+            item.toAddJson(orderIdd: model.orderId),
+          );
+        }
+      }
+      if (model.mediaOrderList.isNotEmpty) {
+        for (var item in model.mediaOrderList) {
+          try {
+            final tempPath = SharedPrefHelper.fetchPathFromShared(
+                    item.mediaType == MediaType.image
+                        ? imageTempPath
+                        : videoTempPath) ??
+                "";
+
+            final fileExtension = item.mediaPath.split('.').last;
+            item.mediaPath =
+                '$tempPath${Platform.pathSeparator}${item.mediaId}.$fileExtension';
+          } catch (e) {
+            throw Exception(e);
+          }
+        }
+        for (var item in model.mediaOrderList) {
+          await txn.insert(
+              mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+        }
+        if (model.pillModel != null) {
+          await txn.insert(
+            pillTableName,
+            model.pillModel!.toJson(orderIdd: model.orderId),
+          );
+        }
+      }
+    });
   }
 }

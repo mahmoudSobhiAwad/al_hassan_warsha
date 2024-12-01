@@ -243,6 +243,7 @@ class FinancialRepoImpl implements FinancialRepo {
       }
       if (editedList.isNotEmpty) {
         for (var item in editedList) {
+          item.lastAddedSalary=null;
           await dataBaseHelper.database.update(workersTableName, item.toJson(),
               where: "workerId = ?", whereArgs: [item.workerId]);
         }

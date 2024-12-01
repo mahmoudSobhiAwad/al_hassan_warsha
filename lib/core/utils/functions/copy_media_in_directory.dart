@@ -89,3 +89,34 @@ Future<void> deleteTempMediaFile(
     log(e.toString());
   }
 }
+
+Future<String> copyDbFileFromTemp(
+  String sourcePath,
+  String destinationFolderPath,
+  {required String newFileName}
+) async {
+  try {
+    // Get the source file
+    final sourceFile = File(sourcePath);
+
+    // Check if the source file exists
+    if (!await sourceFile.exists()) {
+      throw Exception('Source file does not exist');
+    }
+
+    // Create the destination folder if it doesn't exist
+    final destinationFolder = Directory(destinationFolderPath);
+    if (!await destinationFolder.exists()) {
+      await destinationFolder.create(recursive: true);
+    }
+
+    // Construct the destination file path using the unique number
+    final destinationFilePath =
+        '${destinationFolder.path}${Platform.pathSeparator}$newFileName';
+    // Copy the file
+    final destinationFile = await sourceFile.copy(destinationFilePath);
+    return destinationFile.path;
+  } catch (e) {
+    throw Exception(e.toString());
+  }
+}

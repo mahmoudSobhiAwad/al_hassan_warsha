@@ -51,6 +51,7 @@ class OneEmployeeItem extends StatelessWidget {
               enableBorder: true,
               borderWidth: 2,
               textLabel: '',
+              textInnerStyle: AppFontStyles.bold24(context),
               readOnly: !workerModel.enableEdit,
               controller: TextEditingController(text: workerModel.workerName),
               onChanged: (value) {
@@ -73,6 +74,8 @@ class OneEmployeeItem extends StatelessWidget {
               borderWidth: 2,
               textStyle: AppFontStyles.extraBold24(context),
               textLabel: '',
+              textInnerStyle:
+                  AppFontStyles.extraBold24(context).copyWith(letterSpacing: 3),
               textInputType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -87,6 +90,8 @@ class OneEmployeeItem extends StatelessWidget {
             flex: 3,
             child: CustomColumnWithTextInAddNewType(
               text: "رقم الهاتف ",
+              textInnerStyle:
+                  AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
               readOnly: !workerModel.enableEdit,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(

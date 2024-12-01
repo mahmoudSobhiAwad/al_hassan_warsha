@@ -34,7 +34,7 @@ class AddsForOrder extends StatelessWidget {
           children: [
             ...List.generate(list.length, (index) {
               return SizedBox(
-                width: 200,
+                width: 300,
                 child: CustomTextFormField(
                   readOnly: removeItem == null ? true : false,
                   controller:

@@ -9,11 +9,13 @@ class CustomAlert extends StatelessWidget {
       {super.key,
       this.onPressed_2,
       this.actionButtonsInstead,
+      this.onPressed_1,
       this.enableIcon = true,
       this.pickPathesWidget,
       this.iconData,
       this.title});
   final void Function()? onPressed_2;
+  final void Function()? onPressed_1;
   final String? title;
   final bool enableIcon;
   final Widget? actionButtonsInstead;
@@ -64,15 +66,16 @@ class CustomAlert extends StatelessWidget {
                   ),
             actionButtonsInstead ??
                 DialogAddNewTypeActionButton(
-                  color_1: AppColors.green,
-                  color_2: AppColors.blue,
-                  text_1: "استرجاع",
-                  text_2: "إنشاء جديد",
-                  onPressed_2: onPressed_2,
-                  onPressed_1: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                    color_1: AppColors.green,
+                    color_2: AppColors.blue,
+                    text_1: "استرجاع",
+                    text_2: "إنشاء جديد",
+                    onPressed_2: onPressed_2,
+                    onPressed_1: () {
+                      onPressed_1 != null
+                          ? onPressed_1!()
+                          : Navigator.pop(context);
+                    }),
           ],
         ),
       ),
@@ -85,43 +88,47 @@ class PickPathForDb extends StatelessWidget {
     super.key,
     required this.pickTempPath,
     this.tempPath,
+    this.isRestoring = false,
   });
   final String? tempPath;
   final void Function() pickTempPath;
+  final bool isRestoring;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            const IconButton(
-                onPressed: null,
-                icon: Icon(
-                  Icons.folder,
-                  color: AppColors.lightGray1,
-                )),
-            const SizedBox(
-              width: 12,
-            ),
-            Text(
-              "البيانات الاساسية - تم تحديد المكان ",
-              style: AppFontStyles.extraBold20(context),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            const IconButton(
-                onPressed: null,
-                icon: Icon(
-                  Icons.check_rounded,
-                  color: AppColors.green,
-                )),
-            const SizedBox(
-              width: 12,
-            ),
-          ],
-        ),
+        isRestoring
+            ? const SizedBox()
+            : Row(
+                children: [
+                  const IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.folder,
+                        color: AppColors.lightGray1,
+                      )),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  Text(
+                    "البيانات الاساسية - تم تحديد المكان ",
+                    style: AppFontStyles.extraBold20(context),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  const IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.check_rounded,
+                        color: AppColors.green,
+                      )),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                ],
+              ),
         const SizedBox(
           height: 12,
         ),
@@ -148,7 +155,10 @@ class PickPathForDb extends StatelessWidget {
               width: 6,
             ),
             Text(
-              tempPath ?? "----- حدد المكان المراد التخزين به !",
+              tempPath ??
+                  (isRestoring
+                      ? "----- حدد المكان المراد النقل منه "
+                      : "----- حدد المكان المراد التخزين به !"),
               style: AppFontStyles.extraBold20(context)
                   .copyWith(decoration: TextDecoration.underline),
             ),

@@ -20,6 +20,10 @@ final class CreateNewDBEvent extends HomeBasicEvent {}
 final class ConfirmToCreateTheNewDb extends HomeBasicEvent {}
 
 final class CreatePathForMeidaAndTempDataEvent extends HomeBasicEvent {
+  final bool isRestoring;
+  CreatePathForMeidaAndTempDataEvent({this.isRestoring=false});
 }
+
+final class NaveToExportFromTempEvent extends HomeBasicEvent {}
 
 final class ExportFromTempDataEvent extends HomeBasicEvent {}

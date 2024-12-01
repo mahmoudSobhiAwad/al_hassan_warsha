@@ -74,8 +74,8 @@ class ContentOfFinancialTable extends StatelessWidget {
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.bold24(context),
-                        text: convertToArabicNumbers(
-                            pillModel.stepsCounter.toString()))),
+                        text:int.parse(convertToEnglishNumbers(pillModel.remian))!=0? convertToArabicNumbers(
+                            pillModel.stepsCounter.toString()):convertToArabicNumbers('0'))),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,

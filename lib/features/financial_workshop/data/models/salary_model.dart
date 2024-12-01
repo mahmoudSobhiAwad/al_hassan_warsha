@@ -26,7 +26,7 @@ class WorkerModel {
       "salaryType": salaryType.index,
       "salaryAmount": salaryAmount,
       if (workerPhone != null) "workerPhone": workerPhone,
-      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary,
+      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary!.toIso8601String(),
     };
   }
 
@@ -37,7 +37,7 @@ class WorkerModel {
       "salaryType": salaryType.index,
       "salaryAmount": convertToEnglishNumbers(salaryAmount),
       if (workerPhone != null) "workerPhone": workerPhone,
-      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary,
+      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary!.toIso8601String(),
     };
   }
 
