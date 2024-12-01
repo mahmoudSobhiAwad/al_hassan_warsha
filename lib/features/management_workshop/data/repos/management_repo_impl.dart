@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
@@ -22,7 +26,11 @@ class ManagementRepoImpl implements ManagementRepo {
 
   Future<Either<List<String>, String>> getAllKitchenTypes() async {
     try {
+      for (final kitchenType in kitchenTypesInOrderList) {
+        await dataBaseHelper.database.insert(kitchenTypesInOrder, kitchenType);
+      }
       final result = await dataBaseHelper.database.query(kitchenTypesInOrder);
+
       List<String> kitchenTypesList = [];
       for (var item in result) {
         kitchenTypesList.add(item['kitchenTypeName'] as String);
@@ -37,6 +45,8 @@ class ManagementRepoImpl implements ManagementRepo {
     try {
       await dataBaseHelper.database
           .insert(kitchenTypesInOrder, {"KitchenTypeName": value});
+      TempCrudOperation.addIntoTemp(
+          tableName: kitchenTypesInOrder, data: {"KitchenTypeName": value});
 
       return left(true);
     } catch (e) {
@@ -48,6 +58,9 @@ class ManagementRepoImpl implements ManagementRepo {
   Future<Either<List<OrderModel>, String>> getAllOrders(
       {required int month, required int year}) async {
     try {
+      await dataBaseHelper.database.delete(orderTableName,
+          where: 'orderId = ?',
+          whereArgs: ['3b95a060-af79-11ef-923a-098e9d55c900']);
       String monthString =
           month.toString().padLeft(2, '0'); // Ensure 2-digit format
       String yearString = year.toString();
@@ -76,9 +89,16 @@ class ManagementRepoImpl implements ManagementRepo {
         // Add order model to the database
         await txn.insert(orderTableName, model.toJson());
 
+        await TempCrudOperation.addIntoTemp(
+            tableName: orderTableName, data: model.toJson());
+
         // Add customer model to the database
         if (model.customerModel != null && !forTheSameCustomer) {
           await txn.insert(customerTableName, model.customerModel!.toJson());
+
+          await TempCrudOperation.addIntoTemp(
+              tableName: customerTableName,
+              data: model.customerModel!.toJson());
         }
 
         // Add color model to the database
@@ -87,18 +107,24 @@ class ManagementRepoImpl implements ManagementRepo {
             colorTableName,
             model.colorModel!.toJson(orderIdd: model.orderId),
           );
+          await TempCrudOperation.addIntoTemp(
+            tableName: colorTableName,
+            data: model.colorModel!.toJson(orderIdd: model.orderId),
+          );
         }
 
         // Add extra orders to the database
         if (model.extraOrdersList.isNotEmpty) {
           for (var item in model.extraOrdersList) {
-            item.extraId = uuid.v4(); // Ensure unique ID
+            item.extraId = uuid.v4();
             await txn.insert(
               extraOrderTableName,
               item.toAddJson(orderIdd: model.orderId),
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
+          await TempCrudOperation.insertExtraList(
+              model.extraOrdersList, model.orderId);
         }
 
         // Add media orders to the database
@@ -106,10 +132,13 @@ class ManagementRepoImpl implements ManagementRepo {
           for (var item in model.mediaOrderList) {
             item.mediaId = uuid.v4();
             item.mediaPath = await copyMediaFile(
-              mediId: item.mediaId,
-              item.mediaPath,
-              item.mediaType == MediaType.image ? imageFolder : videoFolder,
-            );
+                mediId: item.mediaId,
+                item.mediaPath,
+                SharedPrefHelper.fetchPathFromShared(
+                        item.mediaType == MediaType.image
+                            ? imageMainPath
+                            : videoMainPath) ??
+                    "");
             // Ensure unique ID
             await txn.insert(
               mediaOrderTableName,
@@ -117,13 +146,18 @@ class ManagementRepoImpl implements ManagementRepo {
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
           }
+          await TempCrudOperation.addMediaInOrder(
+              kitchenMediaList: model.mediaOrderList, orderId: model.orderId);
         }
 
-        // Add pill payment to the database
         if (model.pillModel != null) {
           await txn.insert(
             pillTableName,
             model.pillModel!.toJson(orderIdd: model.orderId),
+          );
+          await TempCrudOperation.addIntoTemp(
+            tableName: pillTableName,
+            data: model.pillModel!.toJson(orderIdd: model.orderId),
           );
         }
       });
@@ -139,6 +173,7 @@ class ManagementRepoImpl implements ManagementRepo {
               transactionName: "استلام مقدم من "));
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {
+      log(e.toString());
       return right(e.toString());
     }
   }
@@ -152,6 +187,7 @@ class ManagementRepoImpl implements ManagementRepo {
       }
       await dataBaseHelper.database
           .delete(orderTableName, where: 'orderId = ?', whereArgs: [orderId]);
+      await TempCrudOperation.deleteOrderWithMedia(orderId, mediaList);
       return left("deltedSuccess");
     } catch (e) {
       return right("error:${e.toString()}");
@@ -166,26 +202,42 @@ class ManagementRepoImpl implements ManagementRepo {
       final batch = dataBaseHelper.database.batch();
 
       for (var item in removedMediPaths) {
-        deleteMediaFile(item); // This is fine as it's a file operation.
+        deleteMediaFile(item);
       }
 
       for (var item in removedExtra) {
         batch.delete(extraOrderTableName,
             where: 'extraId = ?', whereArgs: [item]);
       }
+      await TempCrudOperation.deleteListCustom(removedExtra);
 
 // Update order
       batch.update(orderTableName, model.toJson(),
           where: 'orderId = ?', whereArgs: [model.orderId]);
+      await TempCrudOperation.updateWithoutCommandIntoTemp(
+          tableName: orderTableName,
+          data: model.toJson(),
+          whereArgs: [model.orderId],
+          whereClause: 'orderId = ?');
 
 // Update customer
-
       batch.update(customerTableName, model.customerModel!.toJson(),
           where: 'customerId = ?', whereArgs: [model.customerId]);
+      await TempCrudOperation.updateWithoutCommandIntoTemp(
+          tableName: customerTableName,
+          data: model.customerModel!.toJson(),
+          whereClause: 'customerId = ?',
+          whereArgs: [model.customerId]);
 
 // Update color
-      batch.update(colorTableName, model.colorModel!.toJson(),
+      batch.update(
+          colorTableName, model.colorModel!.toJson(orderIdd: model.orderId),
           where: 'colorId = ?', whereArgs: [model.colorModel!.colorId]);
+      await TempCrudOperation.updateWithoutCommandIntoTemp(
+          tableName: colorTableName,
+          data: model.colorModel!.toJson(orderIdd: model.orderId),
+          whereClause: 'colorId = ?',
+          whereArgs: [model.colorModel!.colorId]);
 
 // Handle extras (new and updated)
       for (var item in model.extraOrdersList) {
@@ -193,6 +245,9 @@ class ManagementRepoImpl implements ManagementRepo {
           item.extraId = uuid.v4();
           batch.insert(
               extraOrderTableName, item.toAddJson(orderIdd: model.orderId));
+          await TempCrudOperation.addIntoTemp(
+              tableName: extraOrderTableName,
+              data: item.toAddJson(orderIdd: model.orderId));
         } else {
           batch.update(extraOrderTableName, item.toAddJson(),
               where: 'extraId = ?', whereArgs: [item.extraId]);
@@ -203,6 +258,14 @@ class ManagementRepoImpl implements ManagementRepo {
       for (var item in model.mediaOrderList) {
         if (item.mediaId.isEmpty) {
           item.mediaId = uuid.v4();
+          item.mediaPath = await copyMediaFile(
+              mediId: item.mediaId,
+              item.mediaPath,
+              SharedPrefHelper.fetchPathFromShared(
+                      item.mediaType == MediaType.image
+                          ? imageMainPath
+                          : videoMainPath) ??
+                  "");
           batch.insert(
               mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
         }
@@ -211,6 +274,11 @@ class ManagementRepoImpl implements ManagementRepo {
 // Update pill
       batch.update(pillTableName, model.pillModel!.toJson(),
           where: 'pillId = ?', whereArgs: [model.pillModel!.pillId]);
+      TempCrudOperation.updateWithoutCommandIntoTemp(
+          tableName: pillTableName,
+          data: model.pillModel!.toJson(),
+          whereClause: 'pillId = ?',
+          whereArgs: [model.pillModel!.pillId]);
 
 // Commit the batch
       await batch.commit();
@@ -293,7 +361,6 @@ class ManagementRepoImpl implements ManagementRepo {
 
       // Extract the main order data from the first row
       final orderData = results.first;
-
       // Extract customer data
       CustomerModel? customerModel = orderData['customerId'] != null
           ? CustomerModel.fromJson(orderData)
@@ -315,7 +382,6 @@ class ManagementRepoImpl implements ManagementRepo {
           })
           .map((row) => MediaOrderModel.fromJson(row))
           .toList();
-
       // Extract unique extra data
       final uniqueExtraIds = <String>{};
       List<ExtraInOrderModel> extraOrdersList = results
@@ -353,6 +419,10 @@ class ManagementRepoImpl implements ManagementRepo {
       await dataBaseHelper.database.rawUpdate(
           'Update $orderTableName SET orderStatus = ? WHERE orderId = ? ',
           [status, orderId]);
+      await TempCrudOperation.updateWithCommandIntoTemp(
+          sqlCommand:
+              'Update $orderTableName SET orderStatus = ? WHERE orderId = ?',
+          args: [status, orderId]);
       return left("success");
     } catch (e) {
       return right(e.toString());
@@ -387,32 +457,36 @@ class ManagementRepoImpl implements ManagementRepo {
   Future<Either<PillModel, String>> stepDownFromOrder(
       PillModel pillModel) async {
     try {
-      await dataBaseHelper.database.rawUpdate(
-        '''
-  UPDATE $pillTableName
+      String sqlCommand = ''' UPDATE $pillTableName
   SET stepsCounter = CASE
                       WHEN stepsCounter > 0 THEN stepsCounter - 1
                       ELSE 0
                     END, payedAmount = ?
   WHERE pillId = ?
-  ''',
+ 
+  ''';
+      await dataBaseHelper.database.rawUpdate(
+        sqlCommand,
         [pillModel.payedAmount, pillModel.pillId],
       );
+      TempCrudOperation.updateWithCommandIntoTemp(
+        sqlCommand: sqlCommand,
+        args: [pillModel.payedAmount, pillModel.pillId],
+      );
+
       final result = await dataBaseHelper.database.query(pillTableName,
           where: 'pillId = ?', whereArgs: [pillModel.pillId]);
 
       try {
-        await dataBaseHelper.database.insert(
-            transactionTableName,
-            TransactionModel(
-                    transactionId: const Uuid().v4(),
-                    transactionAmount: pillModel.steppedAmount,
-                    transactionMethod: TransactionMethod.caching,
-                    allTransactionTypes: AllTransactionTypes.stepDown,
-                    transactionTime: DateTime.now(),
-                    transactionType: TransactionType.recieve,
-                    transactionName: " دفعة ")
-                .toJson());
+        await FinancialRepoImpl(dataBaseHelper: dataBaseHelper).addTransaction(
+            model: TransactionModel(
+                transactionId: const Uuid().v4(),
+                transactionAmount: pillModel.steppedAmount,
+                transactionMethod: TransactionMethod.caching,
+                allTransactionTypes: AllTransactionTypes.stepDown,
+                transactionTime: DateTime.now(),
+                transactionType: TransactionType.recieve,
+                transactionName: " دفعة "));
       } catch (e) {
         return right(e.toString());
       }

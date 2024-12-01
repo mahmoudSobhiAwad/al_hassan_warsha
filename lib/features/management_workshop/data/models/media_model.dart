@@ -23,7 +23,7 @@ class MediaOrderModel {
   factory MediaOrderModel.fromJson(Map<String, dynamic> json) =>
       MediaOrderModel(
           mediaId: json['mediaId'] as String,
-          mediaPath: json["mediaPath"] as String,
+          mediaPath: json["mediaPath"]!=null?json["mediaPath"]! as String: "",
           mediaType: MediaType.values[json['mediaType'] as int],
           orderId: json['orderId'] as String);
  

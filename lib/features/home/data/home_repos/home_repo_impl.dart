@@ -12,11 +12,10 @@ class HomeRepoImpl implements HomeRepo {
       {required String tempDataBase}) async {
     // create gallery db :
     try {
-      await Future.wait([
+      Future.wait([
         createDatabaseAndOpen(dataBasePath),
-        createDatabaseAndOpen(tempDataBase),
+        createDatabaseAndOpen(tempDataBase)
       ]);
-      //  create temp db
 
       return left(true);
     } catch (e) {
@@ -32,18 +31,17 @@ class HomeRepoImpl implements HomeRepo {
     }
     var databaseFactory = databaseFactoryFfi;
     // Open the database
-    await databaseFactory.openDatabase(
+    Database db = await databaseFactory.openDatabase(
       databasePath,
       options: OpenDatabaseOptions(
         version: 1,
-        onCreate: (db, version) async {
-          // Table creation logic for both databases
-          await createDataTablesForGallery(db);
-          await createManagmentTables(db);
-          await createFinancialTables(db);
-        },
       ),
     );
+    await Future.wait([
+      createDataTablesForGallery(db),
+      createManagmentTables(db),
+      createFinancialTables(db),
+    ]);
   }
 
   Future<void> createDataTablesForGallery(Database db) async {
@@ -79,18 +77,19 @@ class HomeRepoImpl implements HomeRepo {
 
   Future<Either<String, String>> createManagmentTables(Database db) async {
     try {
-      await db.execute('''
+      await db.transaction((txn) async {
+        await txn.execute('''
 CREATE TABLE $customerTableName (
  customerId TEXT PRIMARY KEY,
   customerName TEXT NOT NULL,
   phone TEXT,
   secondPhone TEXT,
-  homeAddress TEXT,
+  homeAddress TEXT
 );
 ''');
-      await db.execute(
-          'CREATE INDEX idx_customer_name ON $customerTableName(customerName);');
-      await db.execute('''
+        await txn.execute(
+            'CREATE INDEX idx_customer_name ON $customerTableName(customerName);');
+        await txn.execute('''
 CREATE TABLE $orderTableName (
   orderId TEXT PRIMARY KEY,
   customerId TEXT NOT NULL,
@@ -103,9 +102,9 @@ CREATE TABLE $orderTableName (
   FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
 );
 ''');
-      await db.execute(
-          'CREATE INDEX idx_order_name ON $orderTableName(orderName);');
-      await db.execute('''
+        await txn.execute(
+            'CREATE INDEX idx_order_name ON $orderTableName(orderName);');
+        await txn.execute('''
 CREATE TABLE $pillTableName (
 pillId TEXT PRIMARY KEY,
   orderId TEXT NOT NULL,
@@ -118,8 +117,7 @@ pillId TEXT PRIMARY KEY,
   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 );
 ''');
-
-      await db.execute('''
+        await txn.execute('''
 CREATE TABLE $colorTableName (
  colorId TEXT PRIMARY KEY,
   orderId TEXT NOT NULL,
@@ -128,7 +126,7 @@ CREATE TABLE $colorTableName (
   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 );
 ''');
-      await db.execute('''
+        await txn.execute('''
 CREATE TABLE $extraOrderTableName (
  extraId TEXT PRIMARY KEY,
   extraName TEXT NOT NULL,
@@ -136,7 +134,7 @@ CREATE TABLE $extraOrderTableName (
   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 );
 ''');
-      await db.execute('''
+        await txn.execute('''
 CREATE TABLE $mediaOrderTableName (
  mediaId TEXT PRIMARY KEY,
   orderId TEXT NOT NULL,
@@ -145,15 +143,15 @@ CREATE TABLE $mediaOrderTableName (
   FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 );
 ''');
-
-      await db.execute('''
+        await txn.execute('''
 CREATE TABLE $kitchenTypesInOrder (
  kitchenTypeName TEXT
 );
 ''');
-      for (final kitchenType in kitchenTypesInOrderList) {
-        await db.insert(kitchenTypesInOrder, kitchenType);
-      }
+        for (final kitchenType in kitchenTypesInOrderList) {
+          await txn.insert(kitchenTypesInOrder, kitchenType);
+        }
+      });
 
       return left("Success Created");
     } catch (e) {

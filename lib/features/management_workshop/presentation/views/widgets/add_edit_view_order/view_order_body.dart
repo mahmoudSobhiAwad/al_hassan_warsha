@@ -6,6 +6,7 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/media_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_more_extra.dart';
@@ -75,7 +76,7 @@ class ShowOneOrderBody extends StatelessWidget {
                 ),
                 RowOrderItems(
                     orderModel: orderModel,
-                    colorOrderModel: orderModel.colorModel!),
+                    colorOrderModel: orderModel.colorModel??ColorOrderModel()),
                 const SizedBox(
                   height: 10,
                 ),

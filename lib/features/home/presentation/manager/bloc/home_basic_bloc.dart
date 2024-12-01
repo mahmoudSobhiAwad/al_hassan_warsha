@@ -38,9 +38,7 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   FutureOr<void> checkExistDB(
       CheckDbExistEvent event, Emitter<HomeBasicState> emit) async {
     final directory = await getApplicationDocumentsDirectory();
-
     String dbPath = join(directory.path, dbFolder, dbName);
-
     final exists = await File(dbPath).exists();
     if (exists) {
       await setUp();
@@ -102,13 +100,15 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
       });
       final result = await homeRepoImpl.createTheSchemaForTheWholeDb(dbPath,
           tempDataBase: dbTempPath);
-      result.fold((check) {
+      result.fold((check) async {
         isLoading = false;
+        isExist = true;
         emit(CreateDataBaseSuccessState());
-        add(CheckDbExistEvent());
       }, (error) {
         isLoading = false;
         emit(CreateDataBaseFailedState(errMessage: error));
+      })?.then((value) async {
+        await setUp();
       });
     } else {
       isLoading = false;
@@ -119,26 +119,5 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   FutureOr<void> createNewDataBase(
       CreateNewDBEvent event, Emitter<HomeBasicState> emit) async {
     emit(ShowConfirmationDialog());
-  }
-
-  Future<void> createMainDatabase(String dbFolder, String dbName) async {
-    // Get the application documents directory
-    final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
-
-    // Construct the full path for the database file
-    final String dbFolderPath = join(appDocumentsDir.path, dbFolder);
-    final String dbPath = join(dbFolderPath, dbName);
-
-    // Ensure the folder exists
-    final Directory folder = Directory(dbFolderPath);
-    if (!await folder.exists()) {
-      await folder.create(recursive: true);
-    }
-
-    // Check if the database file exists, if not, create it
-    final File dbFile = File(dbPath);
-    if (!await dbFile.exists()) {
-      await dbFile.create();
-    } else {}
   }
 }

@@ -290,6 +290,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     orderModel.mediaCounter = mediaOrderList.length;
     pillModel.customerName = customerModel.customerName ?? "";
     orderModel.pillModel = pillModel;
+    pillModel.orderId = orderId;
     for (var item in mediaOrderList) {
       mediaList.add(MediaOrderModel(
           mediaId: "",
@@ -303,6 +304,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> navToEdit(
       NavToEditEvent event, Emitter<ManagementState> emit) async {
     editableOrderModel = event.orderModel.copyWith();
+    editableOrderModel.pillModel = event.orderModel.pillModel;
+
     emit(ChangeCurrentEditableModelState(model: editableOrderModel));
   }
 
@@ -397,6 +400,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> editCurrentOrder(
       EditOrderEvent event, Emitter<ManagementState> emit) async {
     emit(LoadingEditOrderState());
+    // print(editableOrderModel.pillModel?.toJson());
     final result = await managementRepoImpl.editCurrentOrder(
         editableOrderModel, removedMedia, removedExtra);
     result.fold((success) {
