@@ -15,7 +15,7 @@ void main() async {
   await windowManager.ensureInitialized();
   sqfliteFfiInit();
   await SharedPrefHelper.initShared();
-  windowManager.setMinimumSize(const Size(300, 500));
+  windowManager.setMinimumSize(const Size(1100, 500));
   Bloc.observer = SimpleBlocObserver();
   runApp(const Alwarsha());
 }

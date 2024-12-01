@@ -204,6 +204,7 @@ class ManagementRepoImpl implements ManagementRepo {
       for (var item in removedMediPaths) {
         deleteMediaFile(item);
       }
+      
 
       for (var item in removedExtra) {
         batch.delete(extraOrderTableName,

@@ -77,10 +77,16 @@ class PayPillInCustomerProfile extends StatelessWidget {
           borderRadius: 12,
           pushButtomText: "تنزيل دفعة ",
           enableIcon: false,
-          onTap: int.parse(convertToEnglishNumbers(orderModel.pillModel!.remian)) > 0 ? stepDown : null,
-          color: int.parse(orderModel.pillModel!.remian) > 0
-              ? AppColors.green
-              : AppColors.green.withOpacity(0.5),
+          onTap:
+              int.parse(convertToEnglishNumbers(orderModel.pillModel!.remian)) >
+                      0
+                  ? stepDown
+                  : null,
+          color:
+              int.parse(convertToEnglishNumbers(orderModel.pillModel!.remian)) >
+                      0
+                  ? AppColors.green
+                  : AppColors.green.withOpacity(0.5),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         ),
         const Expanded(

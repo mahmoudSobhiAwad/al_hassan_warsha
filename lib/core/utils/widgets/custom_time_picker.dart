@@ -53,7 +53,7 @@ class CustomDatePicker extends StatelessWidget {
                       firstDate: DateTime(DateTime.now().year - 1),
                       lastDate: DateTime(DateTime.now().year + 1))
                   .then((value) {
-                  if (context.mounted && enableShowDayTime) {
+                  if (context.mounted && enableShowDayTime && value != null) {
                     showTimePicker(
                             context: context, initialTime: TimeOfDay.now())
                         .then((timeValue) {
@@ -66,7 +66,9 @@ class CustomDatePicker extends StatelessWidget {
                       }
                     });
                   } else {
-                    changeDate!(value!);
+                    if (value != null) {
+                      changeDate!(value);
+                    }
                   }
                 })
               : null;

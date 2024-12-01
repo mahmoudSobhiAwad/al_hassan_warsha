@@ -1,7 +1,9 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';
@@ -56,14 +58,15 @@ class TempCrudOperation {
       Database db = await databaseFactory.openDatabase(dbTempPath);
       for (var item in kitchenMediaList) {
         try {
-          item.path = await copyMediaFile(
-              mediId: item.kitchenMediaId,
-              item.path,
-              SharedPrefHelper.fetchPathFromShared(
-                      item.mediaType == MediaType.image
-                          ? imageTempPath
-                          : videoTempPath) ??
-                  "");
+          final tempPath = SharedPrefHelper.fetchPathFromShared(
+                  item.mediaType == MediaType.image
+                      ? imageTempPath
+                      : videoTempPath) ??
+              "";
+
+          final fileExtension = item.path.split('.').last;
+          item.path =
+              '$tempPath${Platform.pathSeparator}${item.kitchenMediaId}.$fileExtension';
         } catch (e) {
           throw Exception(e);
         }
@@ -85,14 +88,15 @@ class TempCrudOperation {
       Database db = await databaseFactory.openDatabase(dbTempPath);
       for (var item in kitchenMediaList) {
         try {
-          item.mediaPath = await copyMediaFile(
-              mediId: item.mediaId,
-              item.mediaPath,
-              SharedPrefHelper.fetchPathFromShared(
-                      item.mediaType == MediaType.image
-                          ? imageTempPath
-                          : videoTempPath) ??
-                  "");
+          final tempPath = SharedPrefHelper.fetchPathFromShared(
+                  item.mediaType == MediaType.image
+                      ? imageTempPath
+                      : videoTempPath) ??
+              "";
+
+          final fileExtension = item.mediaPath.split('.').last;
+          item.mediaPath =
+              '$tempPath${Platform.pathSeparator}${item.mediaId}.$fileExtension';
         } catch (e) {
           throw Exception(e);
         }
@@ -154,6 +158,17 @@ class TempCrudOperation {
     });
   }
 
+  static Future<void> updateWithoutCommandListOfWorkersIntoTemp({
+    required List<WorkerModel> list,
+  }) async {
+    final db = await databaseFactory.openDatabase(dbTempPath);
+    for (var item in list) {
+      db.update(workersTableName, item.toJson(),
+          where: "workerId = ?", whereArgs: [item.workerId]);
+    }
+    await db.close();
+  }
+
   static Future<void> insertExtraList(
       List<ExtraInOrderModel> list, String orderId) async {
     Database db = await databaseFactory.openDatabase(
@@ -166,18 +181,33 @@ class TempCrudOperation {
     await db.close();
   }
 
-  static Future<void> deleteListCustom(
-    List<String> list,
+  static Future<void> insertWorkersList(
+    List<WorkerModel> list,
   ) async {
     Database db = await databaseFactory.openDatabase(
       dbTempPath,
     );
     for (var item in list) {
-      await db
-          .delete(extraOrderTableName, where: 'extraId = ?', whereArgs: [item]);
+      await db.insert(workersTableName, item.toAddJson());
     }
-    log("add extra list");
+    log("add worlers list");
     await db.close();
+  }
+
+  static Future<void> deleteListCustom(
+    List<String> list,
+  ) async {
+    if (list.isNotEmpty) {
+      Database db = await databaseFactory.openDatabase(
+        dbTempPath,
+      );
+      for (var item in list) {
+        await db.delete(extraOrderTableName,
+            where: 'extraId = ?', whereArgs: [item]);
+      }
+      log("remove extra list");
+      await db.close();
+    }
   }
 
   static Future<void> deleteOrderWithMedia(
@@ -195,6 +225,23 @@ class TempCrudOperation {
       log("delted Success");
     } catch (e) {
       log("error:${e.toString()}");
+    }
+  }
+
+  static Future<void> deleteSpecifcItem(
+      {required String tableName,
+      required String whereClause,
+      required List args}) async {
+    try {
+      await databaseFactory.openDatabase(dbTempPath,
+          options: OpenDatabaseOptions(onOpen: (db) async {
+        await db.delete(tableName, where: whereClause, whereArgs: args);
+        log("success removed from temp");
+      })).then((value) async {
+        await value.close();
+      });
+    } catch (e) {
+      throw Exception(e);
     }
   }
 }

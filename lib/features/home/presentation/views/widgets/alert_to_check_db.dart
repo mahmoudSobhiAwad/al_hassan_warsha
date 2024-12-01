@@ -81,11 +81,13 @@ class CustomAlert extends StatelessWidget {
 }
 
 class PickPathForDb extends StatelessWidget {
-  const PickPathForDb(
-      {super.key, required this.pickTempPath, this.tempPath, this.mediaPath});
+  const PickPathForDb({
+    super.key,
+    required this.pickTempPath,
+    this.tempPath,
+  });
   final String? tempPath;
-  final String? mediaPath;
-  final void Function(bool isMediaPath) pickTempPath;
+  final void Function() pickTempPath;
 
   @override
   Widget build(BuildContext context) {
@@ -93,16 +95,12 @@ class PickPathForDb extends StatelessWidget {
       children: [
         Row(
           children: [
-            mediaPath != null
-                ? const IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.check_rounded,
-                      color: AppColors.green,
-                    ))
-                : const CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
+            const IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.folder,
+                  color: AppColors.lightGray1,
+                )),
             const SizedBox(
               width: 12,
             ),
@@ -113,22 +111,11 @@ class PickPathForDb extends StatelessWidget {
             const SizedBox(
               width: 12,
             ),
-            Text(
-              mediaPath ?? "----- حدد المكان الخاص بالوسائط !",
-              style: AppFontStyles.extraBold20(
-                context,
-              ).copyWith(decoration: TextDecoration.underline),
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            IconButton(
-                onPressed: () {
-                  pickTempPath(true);
-                },
-                icon: const Icon(
-                  Icons.folder,
-                  color: AppColors.lightGray1,
+            const IconButton(
+                onPressed: null,
+                icon: Icon(
+                  Icons.check_rounded,
+                  color: AppColors.green,
                 )),
             const SizedBox(
               width: 12,
@@ -169,9 +156,7 @@ class PickPathForDb extends StatelessWidget {
               width: 12,
             ),
             IconButton(
-                onPressed: () {
-                  pickTempPath(false);
-                },
+                onPressed: pickTempPath,
                 icon: const Icon(
                   Icons.folder,
                   color: AppColors.lightGray1,

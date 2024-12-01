@@ -10,3 +10,4 @@ const String videoMainPath = 'videoMainPath';
 const String videoTempPath = 'videoTempPath';
 const String imageTempPath = 'imageTempPath';
 const String tempDataPath = 'tempDataPath';
+const String appName='الورشة';

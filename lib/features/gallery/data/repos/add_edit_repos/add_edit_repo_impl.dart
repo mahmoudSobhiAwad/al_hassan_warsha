@@ -36,6 +36,12 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         where: 'kitchenId = ?',
         whereArgs: [model.kitchenId],
       );
+      TempCrudOperation.updateWithoutCommandIntoTemp(
+        tableName: kitchenItemTableName,
+        data: model.toJson(),
+        whereClause: 'kitchenId = ?',
+        whereArgs: [model.kitchenId],
+      );
 
       return left(model.typeId);
     } catch (e) {
@@ -77,7 +83,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         whereArgs: [kitchenId],
       );
       await TempCrudOperation.removeFromTemp(
-        kitchenMediaList: mediaPath,
+          kitchenMediaList: mediaPath,
           tableName: kitchenItemTableName,
           whereClause: 'kitchenId = ?',
           args: [kitchenId]);
@@ -99,7 +105,7 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
         kitchenMediaList.add(KitchenMedia(
             mediaType: item.mediaType,
             path: await copyMediaFile(
-              mediId: item.mediId,
+                mediId: item.mediId,
                 item.mediaPath,
                 SharedPrefHelper.fetchPathFromShared(
                         item.mediaType == MediaType.image
@@ -110,8 +116,9 @@ class AddEditKitchenRepoImpl implements AddEditKitchenRepo {
             kitchenMediaId: item.mediId));
       }
       try {
-        List<Map<String, dynamic>> rows =
-            kitchenMediaList.map((mediaModel) => mediaModel.toJson()).toList();
+        List<Map<String, dynamic>> rows = kitchenMediaList.map((mediaModel) {
+          return mediaModel.toJson();
+        }).toList();
         await dataBaseHelper.insertGroupOfRows(
             rows: rows, tableName: galleryKitchenMediaTable);
         await TempCrudOperation.addMediaIntoTemp(

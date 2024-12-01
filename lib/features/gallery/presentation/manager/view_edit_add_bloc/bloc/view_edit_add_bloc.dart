@@ -114,10 +114,11 @@ class ViewEditAddBloc extends Bloc<ViewEditAddEvent, ViewEditAddState> {
       EditKitchenEvent event, bool addedSuccess) async {
     List<PickedMedia> list = [];
     for (var item in event.addedItems) {
+      var mediaId=const Uuid().v4();
       list.add(PickedMedia(
           mediaPath: item,
           mediaType: getMediaType(item),
-          mediId: const Uuid().v4()));
+          mediId: mediaId ));
       addedSuccess = await addEditKitchenRepoImpl.addMediaInDataBase(
           mediaPickedList: list, kitchenID: event.model.kitchenId);
     }

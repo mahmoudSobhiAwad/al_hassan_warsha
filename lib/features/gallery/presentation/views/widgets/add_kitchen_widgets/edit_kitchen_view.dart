@@ -46,118 +46,121 @@ class _EditKitchenViewState extends State<EditKitchenView> {
     final double width = MediaQuery.sizeOf(context).width;
     return Form(
       key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-              width: width * 0.5,
-              child: CustomColumnWithTextInAddNewType(
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return "الاسم لا يمكن ان يكون خاليا ";
-                  }
-                  return null;
-                },
-                controller: editNameController,
-                textStyle: AppFontStyles.extraBold25(context),
-                text: "الاسم",
-                textLabel: "اضف اسم للمنتج................",
-                enableBorder: true,
-              )),
-          const SizedBox(
-            height: 12,
-          ),
-          CustomColumnWithTextInAddNewType(
-            controller: editDescribeController,
-            textStyle: AppFontStyles.extraBold25(context),
-            maxLine: 2,
-            text: "الوصف",
-            textLabel:
-                "اضف بعض الوصف للمنتج ليساعدك في شرح المنتج للعميل...................",
-            enableBorder: true,
-          ),
-          const SizedBox(
-            height: 22,
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                "الوسائط",
-                style: AppFontStyles.extraBold25(context),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Text(
-                "( ${widget.model.mediaCounter} )",
-                style: AppFontStyles.extraBold24(context),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 22,
-          ),
-          widget.pickedList.isNotEmpty
-              ? MediaListInEditView(
-                  addMore: (media) {
-                    addedList.addAll(media);
-
-                    widget.bloc.add(
-                        RecieveMediaToAddMoreInEditEvent(medialList: media));
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 14.0,vertical: 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+                width: width * 0.5,
+                child: CustomColumnWithTextInAddNewType(
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return "الاسم لا يمكن ان يكون خاليا ";
+                    }
+                    return null;
                   },
-                  pickedList: widget.pickedList,
-                  removeIndex: (index) {
-                    removedList.add(widget.pickedList[index]);
-                    widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
-                    addedList.remove(widget.pickedList[index].mediaPath);
-                  },
-                  fetchMoreKitchen: () {
-                    widget.model.mediaCounter >= 5
-                        ? widget.bloc.add(ShowMoreHorizontalMedia(
-                            kitchenId: widget.model.kitchenId,
-                            offset: (widget.pickedList.length -
-                                addedList.length +
-                                removedList.length)))
-                        : () {
-                          
-                        };
-                  },
-                  enableShowMore: widget.bloc.isLoadingEnabled,
-                )
-              : EmptyUploadMedia(
-                  addMedia: (media) {
-                    addedList.addAll(media);
-                    widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
-                  },
+                  controller: editNameController,
+                  textStyle: AppFontStyles.extraBold25(context),
+                  text: "الاسم",
+                  textLabel: "اضف اسم للمنتج................",
+                  enableBorder: true,
+                )),
+            const SizedBox(
+              height: 12,
+            ),
+            CustomColumnWithTextInAddNewType(
+              controller: editDescribeController,
+              textStyle: AppFontStyles.extraBold25(context),
+              maxLine: 2,
+              text: "الوصف",
+              textLabel:
+                  "اضف بعض الوصف للمنتج ليساعدك في شرح المنتج للعميل...................",
+              enableBorder: true,
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "الوسائط",
+                  style: AppFontStyles.extraBold25(context),
                 ),
-          const SizedBox(
-            height: 32,
-          ),
-          Center(
-              child: CustomPushContainerButton(
-            onTap: () {
-              if (formKey.currentState!.validate()) {
-                widget.model.kitchenName = editNameController.text;
-                widget.model.kitchenDesc = editDescribeController.text;
-                widget.model.mediaCounter +=
-                    (addedList.length - removedList.length);
-                widget.bloc.add(EditKitchenEvent(
-                    addedItems: addedList,
-                    model: widget.model,
-                    deletedItems: removedList,
-                    pickedMediaList: widget.pickedList));
-              }
-            },
-            pushButtomText: "تعديل",
-            borderRadius: 15,
-            padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
-            enableIcon: false,
-          )),
-          const SizedBox(
-            height: 12,
-          ),
-        ],
+                const SizedBox(
+                  width: 12,
+                ),
+                Text(
+                  "( ${widget.model.mediaCounter} )",
+                  style: AppFontStyles.extraBold24(context),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            widget.pickedList.isNotEmpty
+                ? MediaListInEditView(
+                    addMore: (media) {
+                      addedList.addAll(media);
+        
+                      widget.bloc.add(
+                          RecieveMediaToAddMoreInEditEvent(medialList: media));
+                    },
+                    pickedList: widget.pickedList,
+                    removeIndex: (index) {
+                      removedList.add(widget.pickedList[index]);
+                      widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
+                      addedList.remove(widget.pickedList[index].mediaPath);
+                    },
+                    fetchMoreKitchen: () {
+                      widget.model.mediaCounter >= 5
+                          ? widget.bloc.add(ShowMoreHorizontalMedia(
+                              kitchenId: widget.model.kitchenId,
+                              offset: (widget.pickedList.length -
+                                  addedList.length +
+                                  removedList.length)))
+                          : () {
+                            
+                          };
+                    },
+                    enableShowMore: widget.bloc.isLoadingEnabled,
+                  )
+                : EmptyUploadMedia(
+                    addMedia: (media) {
+                      addedList.addAll(media);
+                      widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
+                    },
+                  ),
+            const SizedBox(
+              height: 32,
+            ),
+            Center(
+                child: CustomPushContainerButton(
+              onTap: () {
+                if (formKey.currentState!.validate()) {
+                  widget.model.kitchenName = editNameController.text;
+                  widget.model.kitchenDesc = editDescribeController.text;
+                  widget.model.mediaCounter +=
+                      (addedList.length - removedList.length);
+                  widget.bloc.add(EditKitchenEvent(
+                      addedItems: addedList,
+                      model: widget.model,
+                      deletedItems: removedList,
+                      pickedMediaList: widget.pickedList));
+                }
+              },
+              pushButtomText: "تعديل",
+              borderRadius: 15,
+              padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
+              enableIcon: false,
+            )),
+            const SizedBox(
+              height: 12,
+            ),
+          ],
+        ),
       ),
     );
   }

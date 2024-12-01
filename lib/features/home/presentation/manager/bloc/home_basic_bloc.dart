@@ -27,7 +27,9 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
   bool isExist = false;
   bool isLoading = false;
   String? tempPath;
-  String? mediaPath;
+  String mediaPath = Directory(
+          '${Platform.environment['LOCALAPPDATA']}/$appName/$mediaBasicFolder')
+      .path;
   FutureOr<void> changePage(
       ChangeCurrentPageEvent event, Emitter<HomeBasicState> emit) async {
     currIndex = event.currIndex;
@@ -64,11 +66,7 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
       Emitter<HomeBasicState> emit) async {
     await FilePicker.platform.getDirectoryPath().then((value) {
       if (value != null) {
-        if (event.isMediaPath) {
-          mediaPath = value;
-        } else {
-          tempPath = value;
-        }
+        tempPath = value;
       }
     });
     emit(SuccessPickTempPathState());
@@ -80,11 +78,11 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     emit(CreateDataBaseLoadingState());
     final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
     final homeRepoImpl = HomeRepoImpl();
-    if (tempPath != null && mediaPath != null) {
+    if (tempPath != null) {
       String dbPath = join(appDocumentsDir.path, dbFolder, dbName);
       String dbTempPath = join(tempPath!, tempFolder, dbFolder, dbTempName);
-      String imagePaths = join(mediaPath!, mediaBasicFolder, imageFolder);
-      String videoPaths = join(mediaPath!, mediaBasicFolder, videoFolder);
+      String imagePaths = join(mediaPath, imageFolder);
+      String videoPaths = join(mediaPath, videoFolder);
       String tempImagePath = join(tempPath!, tempFolder, dbFolder, imageFolder);
       String tempVideoPath = join(tempPath!, tempFolder, dbFolder, videoFolder);
       createFolder(imagePaths);

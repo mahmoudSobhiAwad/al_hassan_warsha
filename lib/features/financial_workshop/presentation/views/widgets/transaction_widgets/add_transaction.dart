@@ -142,6 +142,7 @@ class AddTransaction extends StatelessWidget {
                 child: CustomDatePicker(
                   formKey: formKey,
                   format: 'd MMMM y - HH:mm',
+                  enableShowDayTime: true,
                   recieveTime: transactionModel.transactionTime,
                   changeDate: (value) {
                     onChangeDate(value);

@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
@@ -19,7 +20,6 @@ class FinancialRepoImpl implements FinancialRepo {
   Future<Either<(List<OrderModel>, int), String>> getAllBills(
       {int? offset, int? optionPaymentWay}) async {
     try {
-     
       String whereClause = optionPaymentWay != null
           ? "orderId = ? AND optionPaymentWay = ?"
           : "orderId = ?";
@@ -64,19 +64,22 @@ class FinancialRepoImpl implements FinancialRepo {
   Future<Either<PillModel, String>> downStep(
       String pillId, String addedAmount, String totalPayedAmount) async {
     try {
-      await dataBaseHelper.database.rawUpdate(
-        '''
-  UPDATE $pillTableName
+      String sqlCommand = ''' UPDATE $pillTableName
   SET stepsCounter = CASE
                       WHEN stepsCounter > 0 THEN stepsCounter - 1
                       ELSE 0
                     END, payedAmount = ?
-  WHERE pillId = ?
-  ''',
+  WHERE pillId = ? ''';
+      await dataBaseHelper.database.rawUpdate(
+        sqlCommand,
         [totalPayedAmount, pillId],
       );
       final result = await dataBaseHelper.database
           .query(pillTableName, where: 'pillId = ?', whereArgs: [pillId]);
+      await TempCrudOperation.updateWithCommandIntoTemp(
+        sqlCommand: sqlCommand,
+        args: [totalPayedAmount, pillId],
+      );
 
       await addTransaction(
           model: TransactionModel(
@@ -162,6 +165,8 @@ class FinancialRepoImpl implements FinancialRepo {
     try {
       await dataBaseHelper.database
           .insert(transactionTableName, model.toJson());
+      await TempCrudOperation.addIntoTemp(
+          tableName: transactionTableName, data: model.toJson());
 
       final result = await dataBaseHelper.database.query(transactionTableName,
           where: 'transactionId = ?', whereArgs: [model.transactionId]);
@@ -198,6 +203,12 @@ class FinancialRepoImpl implements FinancialRepo {
     try {
       await dataBaseHelper.database.delete(transactionTableName,
           where: "transactionId = ?", whereArgs: [id]);
+
+      await TempCrudOperation.deleteSpecifcItem(
+          tableName: transactionTableName,
+          whereClause: "transactionId = ?",
+          args: [id]);
+
       return left(true);
     } catch (e) {
       return right(e.toString());
@@ -209,6 +220,10 @@ class FinancialRepoImpl implements FinancialRepo {
     try {
       await dataBaseHelper.database.delete(workersTableName,
           where: 'workerId = ?', whereArgs: [workerId]);
+      await TempCrudOperation.deleteSpecifcItem(
+          tableName: workersTableName,
+          whereClause: 'workerId = ?',
+          args: [workerId]);
       return left(true);
     } catch (e) {
       return right(e.toString());
@@ -224,12 +239,15 @@ class FinancialRepoImpl implements FinancialRepo {
           await dataBaseHelper.database
               .insert(workersTableName, item.toAddJson());
         }
+        await TempCrudOperation.insertWorkersList(addedList);
       }
       if (editedList.isNotEmpty) {
         for (var item in editedList) {
           await dataBaseHelper.database.update(workersTableName, item.toJson(),
               where: "workerId = ?", whereArgs: [item.workerId]);
         }
+        await TempCrudOperation.updateWithoutCommandListOfWorkersIntoTemp(
+            list: editedList);
       }
       return left(true);
     } catch (e) {
@@ -267,17 +285,15 @@ class FinancialRepoImpl implements FinancialRepo {
               item.workerId,
             ]);
       }
-      await dataBaseHelper.database.insert(
-          transactionTableName,
-          TransactionModel(
-                  transactionId: const Uuid().v4(),
-                  transactionAmount: totalAmount.toString(),
-                  transactionMethod: TransactionMethod.caching,
-                  allTransactionTypes: AllTransactionTypes.salaries,
-                  transactionTime: DateTime.now(),
-                  transactionType: TransactionType.buy,
-                  transactionName: " مرتبات ")
-              .toJson());
+      await addTransaction(
+          model: TransactionModel(
+              transactionId: const Uuid().v4(),
+              transactionAmount: totalAmount.toString(),
+              transactionMethod: TransactionMethod.caching,
+              allTransactionTypes: AllTransactionTypes.salaries,
+              transactionTime: DateTime.now(),
+              transactionType: TransactionType.buy,
+              transactionName: " مرتبات "));
 
       return left(true);
     } catch (e) {

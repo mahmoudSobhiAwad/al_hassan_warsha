@@ -64,12 +64,10 @@ class HomeScreenView extends StatelessWidget {
                             title: "انشاء قاعدة بيانات جديدة",
                             iconData: Icons.create,
                             pickPathesWidget: PickPathForDb(
-                              pickTempPath: (check) {
-                                bloc.add(CreatePathForMeidaAndTempDataEvent(
-                                    isMediaPath: check));
+                              pickTempPath: () {
+                                bloc.add(CreatePathForMeidaAndTempDataEvent());
                               },
                               tempPath: bloc.tempPath,
-                              mediaPath: bloc.mediaPath,
                             ),
                             actionButtonsInstead: DialogAddNewTypeActionButton(
                               text_1: "تأكيد ",

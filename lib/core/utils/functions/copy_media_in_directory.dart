@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';
@@ -28,8 +29,21 @@ Future<String> copyMediaFile(String sourcePath, String destinationFolderPath,
     final destinationFilePath =
         '${destinationFolder.path}${Platform.pathSeparator}$mediId.$fileExtension';
 
+    final destinationTempFolder = Directory(
+        SharedPrefHelper.fetchPathFromShared(
+                getMediaType(sourcePath) == MediaType.image
+                    ? imageTempPath
+                    : videoTempPath) ??
+            "");
+    if (!await destinationFolder.exists()) {
+      await destinationFolder.create(recursive: true);
+    }
+    final destinationTempFilePath =
+        '${destinationTempFolder.path}${Platform.pathSeparator}$mediId.$fileExtension';
+
     // Copy the file
     final destinationFile = await sourceFile.copy(destinationFilePath);
+    await sourceFile.copy(destinationTempFilePath);
 
     return destinationFile.path;
   } catch (e) {
