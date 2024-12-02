@@ -163,10 +163,12 @@ class FinancialRepoImpl implements FinancialRepo {
   Future<Either<TransactionModel, String>> addTransaction(
       {required TransactionModel model}) async {
     try {
-      await dataBaseHelper.database
-          .insert(transactionTableName, model.toJson());
-      await TempCrudOperation.addIntoTemp(
-          tableName: transactionTableName, data: model.toJson());
+      if (int.parse(convertToEnglishNumbers(model.transactionAmount)) != 0) {
+        await dataBaseHelper.database
+            .insert(transactionTableName, model.toJson());
+        await TempCrudOperation.addIntoTemp(
+            tableName: transactionTableName, data: model.toJson());
+      }
 
       final result = await dataBaseHelper.database.query(transactionTableName,
           where: 'transactionId = ?', whereArgs: [model.transactionId]);
@@ -243,7 +245,7 @@ class FinancialRepoImpl implements FinancialRepo {
       }
       if (editedList.isNotEmpty) {
         for (var item in editedList) {
-          item.lastAddedSalary=null;
+          item.lastAddedSalary = null;
           await dataBaseHelper.database.update(workersTableName, item.toJson(),
               where: "workerId = ?", whereArgs: [item.workerId]);
         }

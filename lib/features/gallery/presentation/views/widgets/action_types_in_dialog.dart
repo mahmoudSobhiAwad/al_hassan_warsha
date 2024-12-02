@@ -3,13 +3,14 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:flutter/material.dart';
 
 class DialogAddNewTypeActionButton extends StatelessWidget {
-  const DialogAddNewTypeActionButton({super.key,this.color_1,this.color_2,this.text_1,this.text_2,this.onPressed_1,this.onPressed_2});
+  const DialogAddNewTypeActionButton({super.key,this.color_1,this.instead_1,this.color_2,this.text_1,this.text_2,this.onPressed_1,this.onPressed_2});
   final String? text_1;
   final String? text_2;
   final Color? color_1;
   final Color? color_2;
   final void Function()?onPressed_1;
   final void Function()?onPressed_2;
+  final Widget?instead_1;
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
@@ -23,6 +24,7 @@ class DialogAddNewTypeActionButton extends StatelessWidget {
             borderRadius: 16,
             padding: EdgeInsets.symmetric(horizontal: width * 0.05, vertical: 12),
             pushButtomText:text_1?? "إضافة",
+            childInstead: instead_1,
             color: color_1?? AppColors.green,
             enableIcon: false,
           ),

@@ -23,6 +23,7 @@ class ShowOneOrderBody extends StatelessWidget {
       required this.navToEdit,
       required this.deleteOrder,
       required this.navToProfileView,
+      required this.isLoading,
       required this.markAsDone});
 
   final OrderModel orderModel;
@@ -30,6 +31,7 @@ class ShowOneOrderBody extends StatelessWidget {
   final void Function(String, List<MediaOrderModel>) deleteOrder;
   final void Function(String, bool) markAsDone;
   final void Function(String customerId) navToProfileView;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +162,7 @@ class ShowOneOrderBody extends StatelessWidget {
                                   onPressed_2: () {
                                     Navigator.pop(context);
                                   },
-                                  text_1: "حذف",
+                                  instead_1: isLoading?const CircularProgressIndicator(color: AppColors.white,):Text("حذف",style: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white,)),
                                   text_2: "إلغاء",
                                   color_1: AppColors.red,
                                   color_2: AppColors.green,

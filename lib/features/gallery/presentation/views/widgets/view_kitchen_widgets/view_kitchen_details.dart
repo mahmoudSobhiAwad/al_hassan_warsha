@@ -82,9 +82,28 @@ class ViewKitchenDetailsBody extends StatelessWidget {
                           });
                     },
                     borderRadius: 16,
-                    iconBehind: Icons.delete,
                     color: AppColors.red,
-                    pushButtomText: "حذف",
+                    childInstead: bloc.isLoding
+                        ? const CircularProgressIndicator(
+                            color: AppColors.white,
+                          )
+                        : Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "حذف",
+                                style: AppFontStyles.extraBold30(context)
+                                    .copyWith(color: AppColors.white),
+                              ),
+                              const IconButton(
+                                  onPressed: null,
+                                  icon: Icon(
+                                    size: 32,
+                                    Icons.delete,
+                                    color: AppColors.white,
+                                  )),
+                            ],
+                          ),
                   ),
                 ],
               ),

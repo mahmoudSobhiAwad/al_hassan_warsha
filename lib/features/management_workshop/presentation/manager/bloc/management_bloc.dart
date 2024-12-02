@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -66,7 +67,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   // add order
   String orderId = const Uuid().v1();
   String customerId = const Uuid().v4();
-  bool isLoadingAddOrder = true;
+  bool isLoadingActionsOrder = false;
   OrderModel orderModel = OrderModel();
   List<PickedMedia> mediaOrderList = [];
   CustomerModel customerModel = CustomerModel(customerId: "");
@@ -82,6 +83,11 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   bool isLoadingGetUserInfo = false;
   bool isLoadingStepPill = false;
   PageController pageController = PageController();
+  @override
+  Future<void> close() async {
+    await TempCrudOperation.closeDb();
+    return super.close(); // Ensure the parent close method is called
+  }
 
   FutureOr<void> getCustomerProfileDate(
       GetCustomerProfileEvent event, Emitter<ManagementState> emit) async {
@@ -178,26 +184,30 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
 
   FutureOr<void> addNewOrder(
       AddNewOrderEvent event, Emitter<ManagementState> emit) async {
-    emit(LoadingAddNewOrderState());
-    isLoadingAddOrder = true;
-    await addNewKitchenType(emit);
-    prepareOrderModelBeforeSend();
-    event.customerModel != null ? updateOrderModel(event.customerModel!) : null;
-    var result = await managementRepoImpl.createNewOrder(orderModel,
-        forTheSameCustomer: event.customerModel != null);
-    return result.fold((success) {
-      orderModel.orderStatus = getOrderStatus(orderModel.recieveTime!);
-      ordersList.add(orderModel);
-      orderModel.recieveTime!.month == currentMonth
-          ? categorizedList.add(orderModel)
+    if (!isLoadingActionsOrder) {
+      emit(LoadingAddNewOrderState());
+      isLoadingActionsOrder = true;
+      await addNewKitchenType(emit);
+      prepareOrderModelBeforeSend();
+      event.customerModel != null
+          ? updateOrderModel(event.customerModel!)
           : null;
-      isLoadingAddOrder = false;
-      _resetOrderModel();
-      emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
-    }, (error) {
-      isLoadingAddOrder = false;
-      emit(FailureAddNewOrderState());
-    });
+      var result = await managementRepoImpl.createNewOrder(orderModel,
+          forTheSameCustomer: event.customerModel != null);
+      return result.fold((success) {
+        orderModel.orderStatus = getOrderStatus(orderModel.recieveTime!);
+        ordersList.add(orderModel);
+        orderModel.recieveTime!.month == currentMonth
+            ? categorizedList.add(orderModel)
+            : null;
+        isLoadingActionsOrder = false;
+        _resetOrderModel();
+        emit(SuccessAddNewOrderState(lastAdded: ordersList.last));
+      }, (error) {
+        isLoadingActionsOrder = false;
+        emit(FailureAddNewOrderState());
+      });
+    }
   }
 
   void updateOrderModel(CustomerModel newCustomerModel) {
@@ -399,35 +409,45 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
 
   FutureOr<void> editCurrentOrder(
       EditOrderEvent event, Emitter<ManagementState> emit) async {
-    emit(LoadingEditOrderState());
-    // print(editableOrderModel.pillModel?.toJson());
-    final result = await managementRepoImpl.editCurrentOrder(
-        editableOrderModel, removedMedia, removedExtra);
-    result.fold((success) {
-      int index = ordersList
-          .indexWhere((test) => test.orderId == editableOrderModel.orderId);
-      ordersList[index] = editableOrderModel;
-      int catIndex = categorizedList
-          .indexWhere((test) => test.orderId == editableOrderModel.orderId);
-      categorizedList[catIndex] = editableOrderModel;
-      emit(SuccessEditOrderModelState(editedModel: categorizedList[catIndex]));
-    }, (error) {
-      emit(FailureEditOrderModelState(errMessage: error));
-    });
+    if (!isLoadingActionsOrder) {
+      isLoadingActionsOrder = true;
+      emit(LoadingEditOrderState());
+      final result = await managementRepoImpl.editCurrentOrder(
+          editableOrderModel, removedMedia, removedExtra);
+      result.fold((success) {
+        int index = ordersList
+            .indexWhere((test) => test.orderId == editableOrderModel.orderId);
+        ordersList[index] = editableOrderModel;
+        int catIndex = categorizedList
+            .indexWhere((test) => test.orderId == editableOrderModel.orderId);
+        categorizedList[catIndex] = editableOrderModel;
+        isLoadingActionsOrder = false;
+        emit(
+            SuccessEditOrderModelState(editedModel: categorizedList[catIndex]));
+      }, (error) {
+        isLoadingActionsOrder = false;
+        emit(FailureEditOrderModelState(errMessage: error));
+      });
+    }
   }
 
   FutureOr<void> deleteCurrentOrder(
       DeleteOrderEvent event, Emitter<ManagementState> emit) async {
-    emit(LoadingDeleteOrderModelState());
-    final result = await managementRepoImpl.deleteCurrentOrder(
-        event.orderId, event.mediaList);
-    result.fold((success) {
-      ordersList.removeWhere((test) => test.orderId == event.orderId);
-      categorizedList.removeWhere((item) => item.orderId == event.orderId);
-      emit(DeletedOrderSuccessState());
-    }, (error) {
-      emit(DeletedOrderFailureState(errMessage: error));
-    });
+    if (!isLoadingActionsOrder) {
+      isLoadingActionsOrder = true;
+      emit(LoadingDeleteOrderModelState());
+      final result = await managementRepoImpl.deleteCurrentOrder(
+          event.orderId, event.mediaList);
+      result.fold((success) {
+        ordersList.removeWhere((test) => test.orderId == event.orderId);
+        categorizedList.removeWhere((item) => item.orderId == event.orderId);
+        isLoadingActionsOrder = false;
+        emit(DeletedOrderSuccessState());
+      }, (error) {
+        isLoadingActionsOrder = false;
+        emit(DeletedOrderFailureState(errMessage: error));
+      });
+    }
   }
 
   FutureOr<void> changeCurrentMonth(

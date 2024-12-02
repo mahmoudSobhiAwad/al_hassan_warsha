@@ -54,51 +54,54 @@ class AddEditSalaryView extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          bloc.workersList.isNotEmpty
-              ? Expanded(
-                  child: SizedBox(
-                    height: MediaQuery.sizeOf(context).height * 0.4,
-                    child: Scrollbar(
-                      controller: bloc.scrollController,
-                      scrollbarOrientation: ScrollbarOrientation.right,
-                      thickness: 12,
-                      thumbVisibility: true,
-                      child: ScrollConfiguration(
-                        behavior: const ScrollBehavior().copyWith(scrollbars: false),
-                        child: ListView.separated(
-                          controller: bloc.scrollController,
-                            itemBuilder: (context, index) {
-                              return OneEmployeeItem(
-                                workerModel: bloc.workersList[index],
-                                changeSalaryType: (type) {
-                                  bloc.add(ChangeSalaryTypeEvent(
-                                      type: type, index: index));
-                                },
-                                deleteItem: () {
-                                  bloc.add(DeleteWorkerEvent(index: index));
-                                },
-                                selectItem: (statue) {
-                                  bloc.add(SelectWorkerEvent(
-                                      index: index, isSelectAll: false));
-                                },
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                height: 16,
-                              );
-                            },
-                            itemCount: bloc.workersList.length),
-                      ),
-                    ),
-                  ),
-                )
+          bloc.isLoadingGetAllWorkers
+              ? const Center(child: CircularProgressIndicator())
               : Expanded(
-                  child: Center(
-                      child: Text(
-                  "لا يوجد لديك موظفين حاليا ",
-                  style: AppFontStyles.extraBold50(context),
-                ))),
+                  child: bloc.workersList.isEmpty
+                      ? Center(
+                          child: Text(
+                          "لا يوجد لديك موظفين حاليا ",
+                          style: AppFontStyles.extraBold50(context),
+                        ))
+                      : SizedBox(
+                          height: MediaQuery.sizeOf(context).height * 0.4,
+                          child: Scrollbar(
+                            controller: bloc.scrollController,
+                            scrollbarOrientation: ScrollbarOrientation.right,
+                            thickness: 12,
+                            thumbVisibility: true,
+                            child: ScrollConfiguration(
+                              behavior: const ScrollBehavior()
+                                  .copyWith(scrollbars: false),
+                              child: ListView.separated(
+                                  controller: bloc.scrollController,
+                                  itemBuilder: (context, index) {
+                                    return OneEmployeeItem(
+                                      workerModel: bloc.workersList[index],
+                                      changeSalaryType: (type) {
+                                        bloc.add(ChangeSalaryTypeEvent(
+                                            type: type, index: index));
+                                      },
+                                      deleteItem: () {
+                                        bloc.add(
+                                            DeleteWorkerEvent(index: index));
+                                      },
+                                      selectItem: (statue) {
+                                        bloc.add(SelectWorkerEvent(
+                                            index: index, isSelectAll: false));
+                                      },
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) {
+                                    return const SizedBox(
+                                      height: 16,
+                                    );
+                                  },
+                                  itemCount: bloc.workersList.length),
+                            ),
+                          ),
+                        ),
+                ),
           const SizedBox(
             height: 14,
           ),
@@ -144,7 +147,15 @@ class AddEditSalaryView extends StatelessWidget {
               ? const SizedBox()
               : switch (bloc.isEditEnabled) {
                   true => DialogAddNewTypeActionButton(
-                      text_1: "حفظ",
+                      instead_1: bloc.isLoadingActionWorker
+                          ? const CircularProgressIndicator(
+                              color: AppColors.white,
+                            )
+                          : Text(
+                              "حفظ",
+                              style: AppFontStyles.extraBold30(context)
+                                  .copyWith(color: AppColors.white),
+                            ),
                       text_2: "الغاء",
                       onPressed_1: () {
                         bloc.add(SaveChangesAddOrEditEvent());
@@ -161,7 +172,15 @@ class AddEditSalaryView extends StatelessWidget {
                       onPressed_2: () {
                         bloc.add(EnableEditForWorkersEvent(isEdit: true));
                       },
-                      text_1: "دفع المرتبات المحددة",
+                      instead_1: bloc.isLoadingActionWorker
+                          ? const CircularProgressIndicator(
+                              color: AppColors.white,
+                            )
+                          : Text(
+                              "دفع المرتبات المحددة",
+                              style: AppFontStyles.extraBold30(context)
+                                  .copyWith(color: AppColors.white),
+                            ),
                       text_2: "تعديل",
                       color_2: AppColors.blue,
                     ),
@@ -171,4 +190,3 @@ class AddEditSalaryView extends StatelessWidget {
     );
   }
 }
-

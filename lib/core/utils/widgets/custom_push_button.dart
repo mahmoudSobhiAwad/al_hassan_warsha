@@ -34,7 +34,7 @@ class CustomPushContainerButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-                //fit: BoxFit.scaleDown,
+                
                 child: Text(
               pushButtomText ?? "إضافة نوع جديد",
               style: AppFontStyles.extraBold30(context).copyWith(

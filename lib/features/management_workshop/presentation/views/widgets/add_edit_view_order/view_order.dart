@@ -53,6 +53,7 @@ class ShowOneOrderView extends StatelessWidget {
                   ],
                 ),
                 ShowOneOrderBody(
+                  isLoading: bloc.isLoadingActionsOrder,
                   navToProfileView: (customerId) {
                     bloc.add(GetCustomerProfileEvent(customerId: customerId));
                   },

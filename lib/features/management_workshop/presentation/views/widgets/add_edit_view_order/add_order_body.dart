@@ -1,3 +1,5 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
@@ -27,7 +29,7 @@ class AddOrderBody extends StatelessWidget {
               SliverToBoxAdapter(
                 child: CustomerInfoInOrder(
                   formKey: bloc.fromKey,
-                  isReadOnly: model!=null,
+                  isReadOnly: model != null,
                   model: model ?? bloc.customerModel,
                 ),
               ),
@@ -38,7 +40,6 @@ class AddOrderBody extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: OrderDetails(
-                  
                   kitchenTypesList: bloc.allKitchenTypes,
                   pickedMeidaList: bloc.mediaOrderList,
                   formKey: bloc.fromKey,
@@ -102,7 +103,23 @@ class AddOrderBody extends StatelessWidget {
                       bloc.add(AddNewOrderEvent(customerModel: model));
                     }
                   },
-                  pushButtomText: "اضافة الطلب",
+                  childInstead: bloc.isLoadingActionsOrder
+                      ? const CircularProgressIndicator(
+                          color: AppColors.white,
+                        )
+                      : Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                              "اضافة ",
+                              style: AppFontStyles.extraBold30(context).copyWith(
+                                color: AppColors.white,
+                              ),
+                            ),
+                            const IconButton(onPressed: null, icon: Icon(Icons.add,color: AppColors.white,size: 30,))
+                        ],
+                      ),
+                        enableIcon: false,
                   borderRadius: 16,
                 )),
               ),

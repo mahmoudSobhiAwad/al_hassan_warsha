@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
@@ -45,6 +46,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<ChangeStartOrEndDateEvent>(changeStartOrEndDate);
     on<MakeAnalysisEvent>(makeAnalysis);
   }
+  @override
+  Future<void> close() async {
+    await TempCrudOperation.closeDb();
+    return super.close(); // Ensure the parent close method is called
+  }
 
   // related to transaction//
   TransactionModel transactionModel = TransactionModel();
@@ -80,6 +86,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   int pageIndex = 1;
 
   //realted to workers //
+  bool isLoadingActionWorker = false;
   bool isLoadingGetAllWorkers = false;
   bool isAllSelected = false;
   List<WorkerModel> workersList = [];
@@ -126,8 +133,10 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     final result = await financialRepoImpl.getAllWokersData();
     result.fold((workers) {
       workersList.addAll(workers);
+      isLoadingGetAllWorkers = false;
       emit(SuccessFetchAllWorkersDateState());
     }, (error) {
+      isLoadingGetAllWorkers = false;
       emit(FailureFetchAllWorkersDateState(errMessage: error));
     });
   }
@@ -145,14 +154,22 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       emit(FailurePayAllSalariesWorkersState(
           errMessage: "لا يوجد مرتبات محددة "));
     } else {
-      emit(LoadingPayAllSalariesWorkersState());
-      final result = await financialRepoImpl.payTheSalary(workersList);
-      result.fold((success) {
-        emit(SuccessPayAllSalariesWorkersState());
-        add(EnableEditForWorkersEvent(isEdit: false));
-      }, (error) {
-        emit(FailurePayAllSalariesWorkersState(errMessage: error));
-      });
+      if (!isLoadingActionWorker) {
+        isLoadingActionWorker = true;
+        emit(LoadingPayAllSalariesWorkersState());
+        final result = await financialRepoImpl.payTheSalary(workersList);
+        result.fold((success) {
+          isLoadingActionWorker = false;
+          for (var item in workersList) {
+            item.isSelected ? item.lastAddedSalary = DateTime.now() : null;
+          }
+          emit(SuccessPayAllSalariesWorkersState());
+          add(EnableEditForWorkersEvent(isEdit: false));
+        }, (error) {
+          isLoadingActionWorker = false;
+          emit(FailurePayAllSalariesWorkersState(errMessage: error));
+        });
+      }
     }
   }
 
@@ -190,7 +207,8 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
             errMessage: "هناك بعض البيانات مثل الاسم او المرتب فارغة"));
       }
     }
-    if (complete) {
+    if (complete && !isLoadingActionWorker) {
+      isLoadingActionWorker = true;
       emit(LoadingEditWorkersData());
       final addedList = workersList
           .where((model) => model.isSelected && model.workerId == null)
@@ -204,9 +222,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
           await financialRepoImpl.editWorkersData(addedList, editedList);
       return result.fold((success) {
         isEditEnabled = false;
+        isLoadingActionWorker = false;
         emit(SuccessEditWorkersData());
         add(GetAllWorkersDataEvent());
       }, (error) {
+        isLoadingActionWorker = false;
         emit(FailureEditWorkersData(errMessage: error));
       });
     }
@@ -216,7 +236,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       SelectWorkerEvent event, Emitter<FinanicalState> emit) async {
     if (event.isSelectAll) {
       for (var item in workersList) {
-        item.isSelected = !item.isSelected;
+        isAllSelected ? item.isSelected = false : item.isSelected = true;
       }
       isAllSelected = !isAllSelected;
     } else {
@@ -233,6 +253,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
         .add(WorkerModel(workerId: null, isSelected: true, enableEdit: true));
     add(EnableEditForWorkersEvent(isEdit: true));
     checkAllSelected();
+    isAllSelected = false;
     emit(AddNewWorkerInUiState());
   }
 
@@ -474,5 +495,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       emit(FailureDeleteTransactionState(errMessage: error));
     });
   }
+
   //----------------------------//
 }

@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
@@ -151,7 +152,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                       pickedMediaList: widget.pickedList));
                 }
               },
-              pushButtomText: "تعديل",
+              childInstead: widget.bloc.isLoding?const CircularProgressIndicator(color: AppColors.white,):Text("تعديل",style: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white,)),
               borderRadius: 15,
               padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
               enableIcon: false,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
 import 'package:al_hassan_warsha/features/gallery/data/repos/gallery_repo_imp.dart';
@@ -36,8 +37,8 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   Future<void> close() async {
     pageController.dispose();
     controller.dispose();
-
     timer?.cancel();
+    await TempCrudOperation.closeDb();
     await super.close();
   }
 

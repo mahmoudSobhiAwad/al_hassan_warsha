@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
@@ -40,7 +41,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
     return Form(
       key: formKey,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -90,12 +91,14 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                     enableClear: true,
                     pickedList: widget.mediaList,
                     removeIndex: (index) {
-                      widget.bloc.add(RemovePickedMediaIndexEvent(index: index));
+                      widget.bloc
+                          .add(RemovePickedMediaIndexEvent(index: index));
                     },
                   )
                 : EmptyUploadMedia(
                     addMedia: (media) {
-                      widget.bloc.add(RecieveMediaToAddEvent(medialList: media));
+                      widget.bloc
+                          .add(RecieveMediaToAddEvent(medialList: media));
                     },
                   ),
             const SizedBox(
@@ -114,7 +117,15 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                   describController.clear();
                 }
               },
-              pushButtomText: "إضافة",
+              childInstead: widget.bloc.isLoding
+                  ? const CircularProgressIndicator(
+                      color: AppColors.white,
+                    )
+                  : Text(
+                      "إضافة",
+                      style: AppFontStyles.extraBold30(context)
+                          .copyWith(color: AppColors.white),
+                    ),
               borderRadius: 15,
               padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
               enableIcon: false,

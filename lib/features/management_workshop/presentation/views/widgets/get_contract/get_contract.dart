@@ -117,9 +117,12 @@ Future<void> getPdfContract(OrderModel orderModel) async {
           ]),
         );
       }));
-  String? directoryPath = await FilePicker.platform.getDirectoryPath();
+  
+  String? directoryPath = await FilePicker.platform.getDirectoryPath(dialogTitle:"استخراج نسخة عقد" );
   if (directoryPath != null) {
-    final file = File("$directoryPath/${orderModel.orderId}.pdf");
+    final file = File("$directoryPath/${orderModel.customerModel?.customerName}.pdf");
     await file.writeAsBytes(await pdf.save());
   }
 }
+
+

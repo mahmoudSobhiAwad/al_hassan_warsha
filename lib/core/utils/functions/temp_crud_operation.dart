@@ -18,17 +18,21 @@ class TempCrudOperation {
   static final String dbTempPath =
       SharedPrefHelper.fetchPathFromShared(tempDataPath) ?? "";
 
+  static Future<void> closeDb() async {
+    final db = await databaseFactory.openDatabase(
+      dbTempPath,
+    );
+    await db.close();
+  }
+
   static Future<void> addIntoTemp(
       {required String tableName, required Map<String, dynamic> data}) async {
     try {
-
       await databaseFactory.openDatabase(dbTempPath,
           options: OpenDatabaseOptions(onOpen: (db) async {
         await db.insert(tableName, data);
         log("success Added In temp");
-      })).then((value) async {
-        await value.close();
-      });
+      }));
     } catch (e) {
       throw Exception(e);
     }
@@ -47,9 +51,7 @@ class TempCrudOperation {
           options: OpenDatabaseOptions(onOpen: (db) async {
         await db.delete(tableName, where: whereClause, whereArgs: args);
         log("success deleted from temp");
-      })).then((value) async {
-        await value.close();
-      });
+      }));
     } catch (e) {
       throw Exception(e);
     }
@@ -77,7 +79,7 @@ class TempCrudOperation {
       for (var item in kitchenMediaList) {
         await db.insert(galleryKitchenMediaTable, item.toJson());
       }
-      await db.close();
+
       log("media list is added");
     } catch (e) {
       throw Exception(e);
@@ -98,9 +100,7 @@ class TempCrudOperation {
           whereArgs: [item.mediId],
         );
       }
-    })).then((db) async {
-      await db.close();
-    });
+    }));
   }
 
   static Future<void> updateWithCommandIntoTemp(
@@ -108,9 +108,7 @@ class TempCrudOperation {
     await databaseFactory.openDatabase(dbTempPath,
         options: OpenDatabaseOptions(onOpen: (db) {
       db.rawUpdate(sqlCommand, args);
-    })).then((value) async {
-      await value.close();
-    });
+    }));
   }
 
   static Future<void> updateWithoutCommandIntoTemp(
@@ -126,9 +124,7 @@ class TempCrudOperation {
         where: whereClause,
         whereArgs: whereArgs,
       );
-    })).then((db) async {
-      await db.close();
-    });
+    }));
   }
 
   static Future<void> updateWithoutCommandListOfWorkersIntoTemp({
@@ -139,7 +135,6 @@ class TempCrudOperation {
       db.update(workersTableName, item.toJson(),
           where: "workerId = ?", whereArgs: [item.workerId]);
     }
-    await db.close();
   }
 
   static Future<void> insertExtraList(
@@ -150,8 +145,6 @@ class TempCrudOperation {
     for (var item in list) {
       await db.insert(extraOrderTableName, item.toAddJson(orderIdd: orderId));
     }
-    log("add extra list");
-    await db.close();
   }
 
   static Future<void> insertWorkersList(
@@ -163,8 +156,6 @@ class TempCrudOperation {
     for (var item in list) {
       await db.insert(workersTableName, item.toAddJson());
     }
-    log("add worlers list");
-    await db.close();
   }
 
   static Future<void> deleteListCustom(
@@ -178,8 +169,6 @@ class TempCrudOperation {
         await db.delete(extraOrderTableName,
             where: 'extraId = ?', whereArgs: [item]);
       }
-      log("remove extra list");
-      await db.close();
     }
   }
 
@@ -210,9 +199,7 @@ class TempCrudOperation {
           options: OpenDatabaseOptions(onOpen: (db) async {
         await db.delete(tableName, where: whereClause, whereArgs: args);
         log("success removed from temp");
-      })).then((value) async {
-        await value.close();
-      });
+      }));
     } catch (e) {
       throw Exception(e);
     }
