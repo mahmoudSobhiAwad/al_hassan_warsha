@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/side_bar_model.dart';
@@ -57,27 +58,27 @@ class SideBarManagement extends StatelessWidget {
                               SideBarManagementItem(
                                 model: SideBarManagementModel(
                                     backgroundColor: AppColors.blueGray,
-                                    numberOfItem: totalLength.toString(),
+                                    numberOfItem:convertToArabicNumbers( totalLength.toString()),
                                     title: 'العدد الكلي'),
                               ),
                               SideBarManagementItem(
                                 model: SideBarManagementModel(
                                     backgroundColor: AppColors.green,
-                                    numberOfItem: finishedLength.toString(),
+                                    numberOfItem:convertToArabicNumbers(finishedLength.toString()),
                                     title: 'تم التسليم',
                                     icon: Icons.check),
                               ),
                               SideBarManagementItem(
                                 model: SideBarManagementModel(
                                     backgroundColor: AppColors.orange,
-                                    numberOfItem: nearLenght.toString(),
+                                    numberOfItem: convertToArabicNumbers(nearLenght.toString()),
                                     title: 'اقترب تسليمه',
                                     icon: Icons.hourglass_empty_rounded),
                               ),
                               SideBarManagementItem(
                                   model: SideBarManagementModel(
                                       backgroundColor: AppColors.red,
-                                      numberOfItem: neverLength.toString(),
+                                      numberOfItem:convertToArabicNumbers( neverLength.toString()),
                                       title: 'لم يتم تسليمه',
                                       icon: Icons.close_rounded)),
                             ][index],

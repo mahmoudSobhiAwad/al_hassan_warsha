@@ -9,7 +9,7 @@ class HomeItem extends StatelessWidget {
   final void Function()onTap;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: InkWell(
         onTap: onTap,
         hoverColor: Colors.white,

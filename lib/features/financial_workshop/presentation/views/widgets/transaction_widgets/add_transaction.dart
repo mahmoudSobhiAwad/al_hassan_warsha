@@ -81,7 +81,7 @@ class AddTransaction extends StatelessWidget {
                 ? const Expanded(child: SizedBox())
                 : const SizedBox(),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: CustomColumnWithTextInAddNewType(
                   formKey: formKey,
                   validator: (value) {

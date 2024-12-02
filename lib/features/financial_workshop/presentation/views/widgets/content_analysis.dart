@@ -11,7 +11,7 @@ class ContentOfAnalysis extends StatelessWidget {
     required this.onTap,
   });
   final AnalysisModelData analysisModelData;
-  final void Function(int index,{required String type}) onTap;
+  final void Function(int index, {required String type}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +25,6 @@ class ContentOfAnalysis extends StatelessWidget {
           ...List.generate(analysisList.length, (index) {
             return FittedBox(
               child: CustomPushContainerButton(
-                onTap: () {
-                  onTap(analysisList[index].index,type: analysisList[index].title);
-                },
                 borderRadius: 12,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 65, vertical: 12),
@@ -52,10 +49,29 @@ class ContentOfAnalysis extends StatelessWidget {
                           )
                         ],
                       ),
-                      Text(
-                        "${analysisList[index].moneyQuantity} جنية",
-                        style: AppFontStyles.extraBold32(context)
-                            .copyWith(color: AppColors.white, letterSpacing: 3),
+                      Row(
+                        children: [
+                          Text(
+                            "${analysisList[index].moneyQuantity} جنية",
+                            style: AppFontStyles.extraBold32(context).copyWith(
+                                color: AppColors.white, letterSpacing: 3),
+                          ),
+                          const SizedBox(width: 15,),
+                          IconButton(
+                            alignment: Alignment.centerLeft,
+                            onPressed: () {
+                              onTap(analysisList[index].index,
+                                  type: analysisList[index].title);
+                            },
+                            tooltip: "عرض كل التفاصيل",
+                            
+                            icon: const Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: AppColors.white,
+                              size: 33,
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),

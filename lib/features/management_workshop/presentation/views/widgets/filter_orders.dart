@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/rotate_extension.dart';
@@ -70,7 +71,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
           child: Row(
             children: [
               Text(
-                year.toString(),
+              convertToArabicNumbers( year.toString()),
                 style: AppFontStyles.extraBold20(context),
               ),
               const SizedBox(

@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/header_transaction.dart';
@@ -9,7 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionsAfterAnalysisView extends StatelessWidget {
   const TransactionsAfterAnalysisView(
-      {super.key, required this.transactionType, required this.bloc,required this.index});
+      {super.key,
+      required this.transactionType,
+      required this.bloc,
+      required this.index});
   final String transactionType;
   final int index;
   final FinanicalBloc bloc;
@@ -44,24 +48,38 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                   const HeaderForTransactionHistory(
                                     enableLastWidget: false,
                                   ),
-                                  Expanded(
-                                    child: ListView.separated(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12),
-                                        itemBuilder: (context, index) {
-                                          return ContentInTransactionHistory(
-                                            model: bloc
-                                                .analysisTransactionList[index],
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return const SizedBox(
-                                            height: 20,
-                                          );
-                                        },
-                                        itemCount: bloc
-                                            .analysisTransactionList.length),
-                                  ),
+                                  bloc.analysisTransactionList.isEmpty
+                                      ? Expanded(
+                                        child: Center(
+                                            child: Text(
+                                              "لا يوجد اي معاملات من هذا النوع لهذه الفترة ",
+                                              style: AppFontStyles.extraBold35(
+                                                  context),
+                                            ),
+                                          ),
+                                      )
+                                      : Expanded(
+                                          child: ListView.separated(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 12),
+                                              itemBuilder: (context, index) {
+                                                return ContentInTransactionHistory(
+                                                  model:
+                                                      bloc.analysisTransactionList[
+                                                          index],
+                                                );
+                                              },
+                                              separatorBuilder:
+                                                  (context, index) {
+                                                return const SizedBox(
+                                                  height: 20,
+                                                );
+                                              },
+                                              itemCount: bloc
+                                                  .analysisTransactionList
+                                                  .length),
+                                        ),
                                 ],
                               ),
                             ),
@@ -74,8 +92,8 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                             length: (bloc.totalLength / 12).ceil(),
                             currentPage: bloc.currPage,
                             onPageChanged: (pageIndex) {
-                              bloc.add(
-                                  ChangeCurrPageEvent(pageIndex: pageIndex,indexType: index));
+                              bloc.add(ChangeCurrPageEvent(
+                                  pageIndex: pageIndex, indexType: index));
                             })
                         : const SizedBox(),
                   ],

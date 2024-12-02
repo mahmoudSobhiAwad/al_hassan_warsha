@@ -15,7 +15,7 @@ class ListOfOrder extends StatelessWidget {
       itemCount: orderList.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 18),
+          padding: const EdgeInsets.only(bottom: 18,right: 10),
           child: Row(
             children: [
               Expanded(

@@ -3,6 +3,7 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart'
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/action_types_in_dialog.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/home_tablet_layout.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/basic_home.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_desktop_layout.dart';
@@ -29,7 +30,7 @@ class HomeScreenView extends StatelessWidget {
                 bloc: bloc,
               ),
               mobileLayout: (context) => const Text("Mobile Layout"),
-              tabletLayout: (context) => const Text("Tablet Layout"),
+              tabletLayout: (context) => HomeScreenTabletLayout(bloc: bloc),
             );
           }, listener: (context, state) {
             var bloc = context.read<HomeBasicBloc>();
@@ -137,3 +138,4 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 }
+

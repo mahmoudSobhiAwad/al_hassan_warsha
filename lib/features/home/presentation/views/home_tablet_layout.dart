@@ -1,13 +1,16 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/home/data/home_data.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/clipped_container.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_item.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_list.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreenDesktopLayOut extends StatelessWidget {
-  const HomeScreenDesktopLayOut({super.key, required this.bloc});
+class HomeScreenTabletLayout extends StatelessWidget {
+  const HomeScreenTabletLayout({super.key, required this.bloc});
   final HomeBasicBloc bloc;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -36,16 +39,7 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
               ),
               bloc.isLoading
                   ? const CircularProgressIndicator()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 24.0, bottom: 24, right: 24),
-                        child: HomeItemsList(
-                          bloc: bloc,
-                        ),
-                      ),
-                    ),
+                  : HomeItemsList(bloc: bloc)
             ],
           ),
         ),

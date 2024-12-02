@@ -12,7 +12,7 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
-  await windowManager.ensureInitialized();
+   await windowManager.ensureInitialized();
   sqfliteFfiInit();
   await SharedPrefHelper.initShared();
   windowManager.setMinimumSize(const Size(1100, 500));
