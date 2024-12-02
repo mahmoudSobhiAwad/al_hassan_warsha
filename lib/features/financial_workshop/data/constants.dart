@@ -14,7 +14,7 @@ List<SearchModel> allTransactionTypesList = [
   SearchModel(
       valueArSearh: " فواتير", valueEnSearh: AllTransactionTypes.pills),
   SearchModel(
-      valueArSearh: " مرتبات", valueEnSearh: AllTransactionTypes.salaries),
+      valueArSearh: " مشتريات", valueEnSearh: AllTransactionTypes.buys),
   SearchModel(
       valueArSearh: " اخري", valueEnSearh: AllTransactionTypes.other),
 ];

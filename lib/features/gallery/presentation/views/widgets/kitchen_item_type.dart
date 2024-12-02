@@ -8,19 +8,23 @@ class KitchenTypeItem extends StatelessWidget {
       {super.key,
       required this.model,
       this.mainAxisAlignment,
-      this.picked=false,
+      this.picked = false,
+      this.index = 0,
       this.onTap,
       this.enableUnderline = true});
   final MainAxisAlignment? mainAxisAlignment;
   final OnlyTypeModel model;
   final bool enableUnderline;
   final bool picked;
-  final void Function(int)?onTap;
+  final int index;
+  final void Function(int)? onTap;
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      
-      contentPadding: const EdgeInsets.all(0),
+        onTap: () {
+          onTap != null ? onTap!(index) : null;
+        },
+        contentPadding: const EdgeInsets.all(0),
         leading: Text(
           model.typeName,
           style: AppFontStyles.extraBold28(context).copyWith(
@@ -35,10 +39,13 @@ class KitchenTypeItem extends StatelessWidget {
           style: AppFontStyles.extraBold20(context)
               .copyWith(color: AppColors.lightGray1),
         ),
-        trailing:(enableUnderline&&picked)? Container(
-          width: 6,
-          decoration: BoxDecoration(
-              color: AppColors.brown, borderRadius: BorderRadius.circular(12)),
-        ):const SizedBox());
+        trailing: (enableUnderline && picked)
+            ? Container(
+                width: 6,
+                decoration: BoxDecoration(
+                    color: AppColors.brown,
+                    borderRadius: BorderRadius.circular(12)),
+              )
+            : const SizedBox());
   }
 }

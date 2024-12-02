@@ -3,7 +3,11 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/kit
 import 'package:flutter/material.dart';
 
 class ListOfKitchenTypes extends StatelessWidget {
-  const ListOfKitchenTypes({super.key, required this.kitchenTypesList,required this.onTap,required this.currIndex});
+  const ListOfKitchenTypes(
+      {super.key,
+      required this.kitchenTypesList,
+      required this.onTap,
+      required this.currIndex});
   final List<OnlyTypeModel> kitchenTypesList;
   final void Function(int index) onTap;
   final int currIndex;
@@ -13,19 +17,14 @@ class ListOfKitchenTypes extends StatelessWidget {
       itemCount: kitchenTypesList.length,
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
-        return InkWell(
-            hoverColor: Colors.white,
-            highlightColor: Colors.white,
-            focusColor: Colors.white,
-            splashColor: Colors.white,
-            onTap: (){
-              onTap(index);
-            },
-            child: KitchenTypeItem(
-              
-              picked: currIndex==index,
-              model: kitchenTypesList[index],
-            ));
+        return KitchenTypeItem(
+          index: index,
+          onTap: (index) {
+            onTap(index);
+          },
+          picked: currIndex == index,
+          model: kitchenTypesList[index],
+        );
       },
     );
   }

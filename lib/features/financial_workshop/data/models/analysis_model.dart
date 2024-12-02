@@ -8,8 +8,10 @@ class AnalysisModel {
   String moneyQuantity;
   IconData iconData;
   Color color;
+  int index;
   AnalysisModel(
       {required this.color,
+      this.index = -1,
       required this.iconData,
       required this.moneyQuantity,
       required this.title});
@@ -19,29 +21,38 @@ List<AnalysisModel> getAnalysisList(AnalysisModelData analysisModelData) {
   return [
     AnalysisModel(
         color: AppColors.blue,
+        index: 0,
         iconData: FontAwesomeIcons.database,
-        moneyQuantity:
-            convertToArabicNumbers(analysisModelData.allRecievedAmount.toString()),
+        moneyQuantity: convertToArabicNumbers(
+            analysisModelData.allRecievedAmount.toString()),
         title: "العائد الكلي"),
     AnalysisModel(
         color: AppColors.green,
+        index: 1,
         iconData: Icons.arrow_upward_rounded,
-        moneyQuantity: convertToArabicNumbers(analysisModelData.profitAmount.toString()),
+        moneyQuantity:
+            convertToArabicNumbers(analysisModelData.profitAmount.toString()),
         title: "الربح"),
     AnalysisModel(
         color: AppColors.orange,
         iconData: Icons.sell_rounded,
-        moneyQuantity: convertToArabicNumbers(analysisModelData.allBuysAmount.toString()),
+        index: 2,
+        moneyQuantity:
+            convertToArabicNumbers(analysisModelData.allBuysAmount.toString()),
         title: "المشتريات"),
     AnalysisModel(
         color: AppColors.red,
+        index: 3,
         iconData: Icons.money_rounded,
-        moneyQuantity: convertToArabicNumbers(analysisModelData.allSalaryAmount.toString()),
+        moneyQuantity: convertToArabicNumbers(
+            analysisModelData.allSalaryAmount.toString()),
         title: "مرتبات"),
     AnalysisModel(
+        index: 4,
         color: AppColors.blueGray,
         iconData: Icons.production_quantity_limits_rounded,
-        moneyQuantity: convertToArabicNumbers(analysisModelData.allPillAmount.toString()),
+        moneyQuantity:
+            convertToArabicNumbers(analysisModelData.allPillAmount.toString()),
         title: "فواتير اخري"),
   ];
 }

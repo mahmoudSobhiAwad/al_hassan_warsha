@@ -45,6 +45,9 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<PayAllSalariesEvent>(payAllSalaries);
     on<ChangeStartOrEndDateEvent>(changeStartOrEndDate);
     on<MakeAnalysisEvent>(makeAnalysis);
+    on<NavToAnlysisListEvent>(navToAnalysisList);
+    on<ChangeCurrPageEvent>(changeCurrPage);
+    on<GetAllAnalysisTransactionListEvent>(getAllAnalysisList);
   }
   @override
   Future<void> close() async {
@@ -65,7 +68,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   AnalysisModelData? analysisModelData;
   DateTime? startDate;
   DateTime? endDate;
+  bool isLoadingFetchAnalysisList = false;
   bool isAnalysisLoading = false;
+  int currPage = 1;
+  int totalLength = 1;
+  List<TransactionModel> analysisTransactionList = [];
 // ------//
   //Searched data
   List<OrderModel> searchedList = [];
@@ -92,6 +99,40 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   List<WorkerModel> workersList = [];
   bool isEditEnabled = false;
   //                //
+  //analysis function :
+  FutureOr<void> navToAnalysisList(
+      NavToAnlysisListEvent event, Emitter<FinanicalState> emit) async {
+    emit(NavToAnlysisListState(type: event.type,typedIndex: event.index));
+    add(GetAllAnalysisTransactionListEvent(index: event.index));
+  }
+
+  FutureOr<void> getAllAnalysisList(GetAllAnalysisTransactionListEvent event,
+      Emitter<FinanicalState> emit) async {
+    isLoadingFetchAnalysisList = true;
+    emit(LoadingGetAllTransactionState());
+    final result = await financialRepoImpl.getAllTransactionForType(
+        startDate!.toIso8601String(), endDate!.toIso8601String(),
+        offset: (currPage - 1) * analysisTransactionList.length,
+        index: event.index);
+    result.fold((data) {
+      analysisTransactionList.clear();
+      analysisTransactionList.addAll(data.$1);
+      totalLength = data.$2;
+      isLoadingFetchAnalysisList = false;
+      emit(SuccessGetAllTransactionState());
+    }, (error) {
+      
+      isLoadingFetchAnalysisList = false;
+      emit(FailureGetAllTransactionState());
+    });
+  }
+
+  FutureOr<void> changeCurrPage(
+      ChangeCurrPageEvent event, Emitter<FinanicalState> emit) async {
+    currPage = event.pageIndex;
+    emit(ChangeCurrPageState());
+    add(GetAllAnalysisTransactionListEvent(index: event.indexType));
+  }
 
   FutureOr<void> changeStartOrEndDate(
       ChangeStartOrEndDateEvent event, Emitter<FinanicalState> emit) async {

@@ -8,8 +8,10 @@ class ContentOfAnalysis extends StatelessWidget {
   const ContentOfAnalysis({
     super.key,
     required this.analysisModelData,
+    required this.onTap,
   });
   final AnalysisModelData analysisModelData;
+  final void Function(int index,{required String type}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,9 @@ class ContentOfAnalysis extends StatelessWidget {
           ...List.generate(analysisList.length, (index) {
             return FittedBox(
               child: CustomPushContainerButton(
+                onTap: () {
+                  onTap(analysisList[index].index,type: analysisList[index].title);
+                },
                 borderRadius: 12,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 65, vertical: 12),
@@ -50,8 +55,7 @@ class ContentOfAnalysis extends StatelessWidget {
                       Text(
                         "${analysisList[index].moneyQuantity} جنية",
                         style: AppFontStyles.extraBold32(context)
-                            .copyWith(color: AppColors.white,letterSpacing: 3),
-                            
+                            .copyWith(color: AppColors.white, letterSpacing: 3),
                       )
                     ],
                   ),

@@ -8,6 +8,7 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/custom_side_bar_item.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/financial_body.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/salary_widget/add_edit_salary.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_after_analysis/transactions_after_analysis_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,7 @@ class FinancialView extends StatelessWidget {
             ..add(FetchAllOrderWithThierBillEvent()),
       child: BlocConsumer<FinanicalBloc, FinanicalState>(
           listener: (context, state) {
+        var bloc = context.read<FinanicalBloc>();
         if (state is SuccessUpdateCounterOrderState) {
           showCustomSnackBar(context, "تم تنزيل دفعة بنجاح ");
         } else if (state is SuccessAddTransactionState) {
@@ -46,6 +48,15 @@ class FinancialView extends StatelessWidget {
         } else if (state is FailureAnalysisState) {
           showCustomSnackBar(context, state.errMessage ?? "",
               backgroundColor: AppColors.orange);
+        } else if (state is NavToAnlysisListState) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TransactionsAfterAnalysisView(
+                        bloc: bloc,
+                        transactionType: state.type,
+                        index: state.typedIndex,
+                      )));
         }
       }, builder: (context, state) {
         var bloc = context.read<FinanicalBloc>();
@@ -97,6 +108,10 @@ class FinancialView extends StatelessWidget {
                         bloc: bloc,
                       ),
                       AnalysisView(
+                        onTap: (index, {required String type}) {
+                          bloc.add(
+                              NavToAnlysisListEvent(index: index, type: type));
+                        },
                         analysisModelData: bloc.analysisModelData,
                         startDate: bloc.startDate,
                         endDate: bloc.endDate,

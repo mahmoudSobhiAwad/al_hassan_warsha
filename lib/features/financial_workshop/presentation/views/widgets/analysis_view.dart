@@ -11,12 +11,14 @@ class AnalysisView extends StatelessWidget {
       required this.changeStartDate,
       required this.changeEndDate,
       required this.isLoading,
+      required this.onTap,
       this.startDate,
       this.endDate,
       required this.makeAnalysis});
   final AnalysisModelData? analysisModelData;
   final void Function(DateTime) changeStartDate;
   final void Function(DateTime) changeEndDate;
+  final void Function(int,{required String type}) onTap;
   final DateTime? startDate;
   final DateTime? endDate;
   final void Function() makeAnalysis;
@@ -55,14 +57,17 @@ class AnalysisView extends StatelessWidget {
                 ? const Center(child: CircularProgressIndicator())
                 : analysisModelData != null
                     ? ContentOfAnalysis(
+                        onTap: (index,{required String type}) {
+                          onTap(index,type: type);
+                        },
                         analysisModelData: analysisModelData!,
                       )
                     : Center(
-                      child: Text(
+                        child: Text(
                           "اختار المدي الزمني لتحليل النتائج ",
                           style: AppFontStyles.extraBold50(context),
                         ),
-                    ),
+                      ),
           ],
         ),
       ),

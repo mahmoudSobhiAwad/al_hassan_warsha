@@ -177,6 +177,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       isLoadingAllOrders = false;
       emit(SuccessGetAllOrdersState());
     }, (error) {
+      log(error);
       isLoadingAllOrders = false;
       emit(FailureGetAllOrdersState(errMessage: error));
     });

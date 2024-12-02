@@ -10,9 +10,9 @@ import 'package:intl/intl.dart';
 
 class ContentInTransactionHistory extends StatelessWidget {
   const ContentInTransactionHistory(
-      {super.key, required this.model, required this.deleteTrans});
+      {super.key, required this.model, this.deleteTrans});
   final TransactionModel model;
-  final void Function(String id) deleteTrans;
+  final void Function(String id)? deleteTrans;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -103,53 +103,56 @@ class ContentInTransactionHistory extends StatelessWidget {
           ),
         ),
         const Expanded(child: SizedBox()),
-        Expanded(
-            flex: 2,
-            child: InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: CustomAlert(
-                          enableIcon: false,
-                          actionButtonsInstead: DialogAddNewTypeActionButton(
-                            onPressed_2: () {
-                              Navigator.pop(context);
-                            },
-                            text_1: "تأكيد ",
-                            text_2: "الغاء",
-                            onPressed_1: () {
-                              deleteTrans(model.transactionId!);
-                              Navigator.pop(context);
-                            },
-                          ),
-                          title:
-                              "هل تريد حذف التحويل نهائي سيتم حذفة من الحسابات ايضا !!",
+        deleteTrans != null
+            ? Expanded(
+                flex: 2,
+                child: InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: CustomAlert(
+                              enableIcon: false,
+                              actionButtonsInstead:
+                                  DialogAddNewTypeActionButton(
+                                onPressed_2: () {
+                                  Navigator.pop(context);
+                                },
+                                text_1: "تأكيد ",
+                                text_2: "الغاء",
+                                onPressed_1: () {
+                                  deleteTrans!(model.transactionId!);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              title:
+                                  "هل تريد حذف التحويل نهائي سيتم حذفة من الحسابات ايضا !!",
+                            ),
+                          );
+                        });
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        "حذف التحويل",
+                        style: AppFontStyles.extraBold18(context).copyWith(
+                          color: AppColors.red,
                         ),
-                      );
-                    });
-              },
-              child: Row(
-                children: [
-                  Text(
-                    "حذف التحويل",
-                    style: AppFontStyles.extraBold18(context).copyWith(
-                      color: AppColors.red,
-                    ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const IconButton(
+                          onPressed: null,
+                          icon: Icon(
+                            Icons.delete,
+                            color: AppColors.red,
+                          )),
+                    ],
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  const IconButton(
-                      onPressed: null,
-                      icon: Icon(
-                        Icons.delete,
-                        color: AppColors.red,
-                      )),
-                ],
-              ),
-            )),
+                ))
+            : const SizedBox(),
       ],
     );
   }

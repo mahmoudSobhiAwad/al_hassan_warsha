@@ -3,10 +3,11 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class HeaderForTransactionHistory extends StatelessWidget {
-  const HeaderForTransactionHistory({super.key});
+  const HeaderForTransactionHistory({super.key, this.enableLastWidget = true});
+  final bool enableLastWidget;
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       children: [
         Row(
           children: [
@@ -14,19 +15,19 @@ class HeaderForTransactionHistory extends StatelessWidget {
               width: 10,
             ),
             Expanded(
-               flex: 14,
-              child:  Row(
+              flex: 14,
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    flex: 4,
+                      flex: 4,
                       child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.extraBold18(context),
-                    text: "المعاملة",
-                  )),
+                        text: "المعاملة",
+                      )),
                   const Expanded(child: SizedBox()),
                   Expanded(
-                      flex:2,
+                      flex: 2,
                       child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.extraBold18(context),
                         text: "قيمة المعاملة",
@@ -43,7 +44,6 @@ class HeaderForTransactionHistory extends StatelessWidget {
                       flex: 2,
                       child: CustomTextWithTheSameStyle(
                         textStyle: AppFontStyles.extraBold18(context),
-                        
                         text: "طريقة المعاملة",
                       )),
                   const Expanded(child: SizedBox()),
@@ -53,34 +53,30 @@ class HeaderForTransactionHistory extends StatelessWidget {
                         textStyle: AppFontStyles.extraBold18(context),
                         text: "دفع/ استلام",
                       )),
-                  
-                  
                 ],
               ),
             ),
-            const Expanded(
-              flex: 3,
-              child: SizedBox()) 
-            
-          
+            enableLastWidget
+                ? const Expanded(flex: 3, child: SizedBox())
+                : const SizedBox(),
           ],
         ),
-        const Row(
-          
+         Row(
           children: [
-            SizedBox(width: 10,),
-            Expanded(
+            const SizedBox(
+              width: 10,
+            ),
+            const Expanded(
               flex: 14,
               child: Divider(
-                    
-                    thickness: 2,
-                  ),
+                thickness: 2,
+              ),
             ),
-            Expanded(
-              flex: 3,
-              child: SizedBox())
+            enableLastWidget
+                ? const Expanded(flex: 3, child: SizedBox())
+                : const Expanded(child: SizedBox()),
           ],
-        ),
+        )
       ],
     );
   }

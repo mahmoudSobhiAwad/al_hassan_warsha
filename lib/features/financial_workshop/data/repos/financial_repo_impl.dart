@@ -327,6 +327,97 @@ class FinancialRepoImpl implements FinancialRepo {
       return Right('Error while processing analysis data: $error');
     }
   }
+
+  Future<Either<(List<TransactionModel> list, int totalLength), String>>
+      getAllTransactionForType(
+    String firsDate,
+    String lastDate, {
+    required int index,
+    int offset = 0,
+  }) async {
+    String startDate = "${firsDate.split('T')[0]} 00:00:00";
+    String endDate = "${lastDate.split('T')[0]} 23:59:59";
+
+    try {
+      String whereClause = '';
+      List whereArgs = [];
+      String whereClauseForTotalLength = '';
+      List whereArgsForTotalLength = [];
+
+      switch (index) {
+        case 0:
+          whereClause = 'transactionTime BETWEEN ? AND ?';
+          whereArgs = [startDate, endDate];
+          whereClauseForTotalLength =
+              'SELECT COUNT(*) as count FROM $transactionTableName WHERE transactionTime BETWEEN ? AND ?';
+          whereArgsForTotalLength = [startDate, endDate];
+          break;
+
+        case 1:
+          whereClause =
+              'transactionTime BETWEEN ? AND ? AND transactionType = ?';
+          whereArgs = [startDate, endDate, 0];
+          whereClauseForTotalLength =
+              'SELECT COUNT(*) as count FROM $transactionTableName WHERE transactionTime BETWEEN ? AND ? AND transactionType = ?';
+          whereArgsForTotalLength = [startDate, endDate, 0];
+          break;
+
+        case 2:
+          whereClause =
+              'transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgs = [startDate, endDate, 4];
+          whereClauseForTotalLength =
+              'SELECT COUNT(*) as count FROM $transactionTableName WHERE transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgsForTotalLength = [startDate, endDate, 4];
+          break;
+
+        case 3:
+          whereClause =
+              'transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgs = [startDate, endDate, 3];
+          whereClauseForTotalLength =
+              'SELECT COUNT(*) as count FROM $transactionTableName WHERE transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgsForTotalLength = [startDate, endDate, 3];
+          break;
+
+        case 4:
+          whereClause =
+              'transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgs = [startDate, endDate, 5];
+          whereClauseForTotalLength =
+              'SELECT COUNT(*) as count FROM $transactionTableName WHERE transactionTime BETWEEN ? AND ? AND transactionAllTypes = ?';
+          whereArgsForTotalLength = [startDate, endDate, 5];
+          break;
+
+        default:
+          throw ArgumentError('Invalid index provided.');
+      }
+
+      List<TransactionModel> transactionList = [];
+      final result = await dataBaseHelper.database.query(
+        transactionTableName,
+        where: whereClause,
+        whereArgs: whereArgs,
+        offset: offset,
+        limit: 12,
+      );
+      for (var item in result) {
+        transactionList.add(TransactionModel.fromJson(item));
+      }
+
+      final totalLengthResult = await dataBaseHelper.database.rawQuery(
+        whereClauseForTotalLength,
+        whereArgsForTotalLength,
+      );
+      int totalLength = totalLengthResult.isNotEmpty &&
+              totalLengthResult.first['count'] != null
+          ? totalLengthResult.first['count'] as int
+          : 0;
+      return Left((transactionList, totalLength));
+    } catch (error) {
+      return Right('Error while processing analysis data: $error');
+    }
+  }
 }
 
 // Function to process the analysis in an isolate

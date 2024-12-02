@@ -27,26 +27,25 @@ class Alwarsha extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBasicBloc()..add(CheckDbExistEvent()),
       child: MaterialApp(
-        supportedLocales: const [
-          Locale('ar'), // Arabic
-          Locale('en'), // English (if needed)
-        ],
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: const Locale('ar'),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          iconTheme: const IconThemeData(color: Colors.black),
-          iconButtonTheme: const IconButtonThemeData(
-              style: ButtonStyle(
-                  iconColor: WidgetStatePropertyAll<Color>(Colors.black))),
-          useMaterial3: true,
-        ),
-        home: const HomeScreenView(),
-      ),
+          supportedLocales: const [
+            Locale('ar'), // Arabic
+            Locale('en'), // English (if needed)
+          ],
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: const Locale('ar'),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            iconTheme: const IconThemeData(color: Colors.black),
+            iconButtonTheme: const IconButtonThemeData(
+                style: ButtonStyle(
+                    iconColor: WidgetStatePropertyAll<Color>(Colors.black))),
+            useMaterial3: true,
+          ),
+          home: const HomeScreenView()),
     );
   }
 }

@@ -123,3 +123,20 @@ final class FailureAnalysisState extends FinanicalState {
   final String? errMessage;
   FailureAnalysisState({this.errMessage});
 }
+
+final class NavToAnlysisListState extends FinanicalState {
+  final String type;
+  final int typedIndex;
+  NavToAnlysisListState({required this.type,required this.typedIndex});
+}
+
+final class ChangeCurrPageState extends FinanicalState {}
+
+final class LoadingGetAnalysisListState extends FinanicalState {}
+
+final class SuccessGetAnalysisListState extends FinanicalState {}
+
+final class FailureGetAnalysisListState extends FinanicalState {
+  final String? errMessage;
+  FailureGetAnalysisListState({this.errMessage});
+}

@@ -341,6 +341,7 @@ class ManagementRepoImpl implements ManagementRepo {
 
       // Extract the main order data from the first row
       final orderData = results.first;
+      log(orderData.toString());
       // Extract customer data
       CustomerModel? customerModel = orderData['customerId'] != null
           ? CustomerModel.fromJson(orderData)

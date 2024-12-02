@@ -4,6 +4,7 @@ import 'package:al_hassan_warsha/core/utils/functions/get_media_type.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';
+import 'package:flutter/foundation.dart';
 
 Future<String> copyMediaFile(String sourcePath, String destinationFolderPath,
     {required String mediId}) async {
@@ -92,31 +93,48 @@ Future<void> deleteTempMediaFile(
 
 Future<String> copyDbFileFromTemp(
   String sourcePath,
-  String destinationFolderPath,
-  {required String newFileName}
-) async {
+  String destinationFolderPath, {
+  required String newFileName,
+}) async {
   try {
-    // Get the source file
-    final sourceFile = File(sourcePath);
-
-    // Check if the source file exists
-    if (!await sourceFile.exists()) {
-      throw Exception('Source file does not exist');
-    }
-
-    // Create the destination folder if it doesn't exist
-    final destinationFolder = Directory(destinationFolderPath);
-    if (!await destinationFolder.exists()) {
-      await destinationFolder.create(recursive: true);
-    }
-
-    // Construct the destination file path using the unique number
-    final destinationFilePath =
-        '${destinationFolder.path}${Platform.pathSeparator}$newFileName';
-    // Copy the file
-    final destinationFile = await sourceFile.copy(destinationFilePath);
-    return destinationFile.path;
+    // Use compute to run the operation in an isolate
+    final result = await compute(_copyFileIsolate, {
+      'sourcePath': sourcePath,
+      'destinationFolderPath': destinationFolderPath,
+      'newFileName': newFileName,
+    });
+    return result;
   } catch (e) {
-    throw Exception(e.toString());
+    throw Exception('Failed to copy file: ${e.toString()}');
   }
+}
+
+// Top-level function to run in an isolate
+Future<String> _copyFileIsolate(Map<String, String> args) async {
+  final sourcePath = args['sourcePath']!;
+  final destinationFolderPath = args['destinationFolderPath']!;
+  final newFileName = args['newFileName']!;
+
+  // Perform the file copy operation
+  final sourceFile = File(sourcePath);
+
+  // Check if the source file exists
+  if (!await sourceFile.exists()) {
+    throw Exception('Source file does not exist');
+  }
+
+  // Create the destination folder if it doesn't exist
+  final destinationFolder = Directory(destinationFolderPath);
+  if (!await destinationFolder.exists()) {
+    await destinationFolder.create(recursive: true);
+  }
+
+  // Construct the destination file path
+  final destinationFilePath =
+      '${destinationFolder.path}${Platform.pathSeparator}$newFileName';
+
+  // Copy the file
+  final destinationFile = await sourceFile.copy(destinationFilePath);
+
+  return destinationFile.path;
 }

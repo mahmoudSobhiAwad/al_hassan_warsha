@@ -23,17 +23,19 @@ class TempCrudOperation {
       dbTempPath,
     );
     await db.close();
+    log("db is closed ");
   }
 
   static Future<void> addIntoTemp(
       {required String tableName, required Map<String, dynamic> data}) async {
     try {
-      await databaseFactory.openDatabase(dbTempPath,
-          options: OpenDatabaseOptions(onOpen: (db) async {
-        await db.insert(tableName, data);
-        log("success Added In temp");
-      }));
+      final Database db = await databaseFactory.openDatabase(
+        dbTempPath,
+      );
+      await db.insert(tableName, data);
+      log("success Added In temp");
     } catch (e) {
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -47,12 +49,11 @@ class TempCrudOperation {
       for (var item in kitchenMediaList) {
         deleteTempMediaFile(item.kitchenMediaId, item.path, item.mediaType);
       }
-      await databaseFactory.openDatabase(dbTempPath,
-          options: OpenDatabaseOptions(onOpen: (db) async {
-        await db.delete(tableName, where: whereClause, whereArgs: args);
-        log("success deleted from temp");
-      }));
+      final Database db = await databaseFactory.openDatabase(dbTempPath);
+      await db.delete(tableName, where: whereClause, whereArgs: args);
+      log("success deleted from temp");
     } catch (e) {
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -60,7 +61,7 @@ class TempCrudOperation {
   static Future<void> addMediaIntoTemp(
       {required List<KitchenMedia> kitchenMediaList}) async {
     try {
-      Database db = await databaseFactory.openDatabase(dbTempPath);
+      final Database db = await databaseFactory.openDatabase(dbTempPath);
       for (var item in kitchenMediaList) {
         try {
           final tempPath = SharedPrefHelper.fetchPathFromShared(
@@ -73,15 +74,18 @@ class TempCrudOperation {
           item.path =
               '$tempPath${Platform.pathSeparator}${item.kitchenMediaId}.$fileExtension';
         } catch (e) {
+          log(e.toString());
           throw Exception(e);
         }
       }
       for (var item in kitchenMediaList) {
-        await db.insert(galleryKitchenMediaTable, item.toJson());
+        await db.insert(galleryKitchenMediaTable, item.toJson(),conflictAlgorithm:
+            ConflictAlgorithm.replace,);
       }
 
       log("media list is added");
     } catch (e) {
+      log(e.toString());
       throw Exception(e);
     }
   }
@@ -90,8 +94,10 @@ class TempCrudOperation {
       {required String tableName,
       required String whereClause,
       required List<PickedMedia> mediaIdList}) async {
-    await databaseFactory.openDatabase(dbTempPath,
-        options: OpenDatabaseOptions(onOpen: (db) async {
+    final Database db = await databaseFactory.openDatabase(
+      dbTempPath,
+    );
+    try {
       for (var item in mediaIdList) {
         deleteTempMediaFile(item.mediId, item.mediaPath, item.mediaType);
         await db.delete(
@@ -100,15 +106,23 @@ class TempCrudOperation {
           whereArgs: [item.mediId],
         );
       }
-    }));
+      log("media list is removed");
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   static Future<void> updateWithCommandIntoTemp(
       {required String sqlCommand, List<dynamic> args = const []}) async {
-    await databaseFactory.openDatabase(dbTempPath,
-        options: OpenDatabaseOptions(onOpen: (db) {
-      db.rawUpdate(sqlCommand, args);
-    }));
+    final Database db = await databaseFactory.openDatabase(
+      dbTempPath,
+    );
+    try {
+      await db.rawUpdate(sqlCommand, args);
+      log("Updated is done");
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   static Future<void> updateWithoutCommandIntoTemp(
@@ -116,45 +130,65 @@ class TempCrudOperation {
       required Map<String, dynamic> data,
       String? whereClause,
       List<dynamic> whereArgs = const []}) async {
-    await databaseFactory.openDatabase(dbTempPath,
-        options: OpenDatabaseOptions(onOpen: (db) {
-      db.update(
+    final Database db = await databaseFactory.openDatabase(
+      dbTempPath,
+    );
+    try {
+      await db.update(
         tableName,
         data,
         where: whereClause,
         whereArgs: whereArgs,
       );
-    }));
+      log("Updated is done");
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   static Future<void> updateWithoutCommandListOfWorkersIntoTemp({
     required List<WorkerModel> list,
   }) async {
     final db = await databaseFactory.openDatabase(dbTempPath);
-    for (var item in list) {
-      db.update(workersTableName, item.toJson(),
-          where: "workerId = ?", whereArgs: [item.workerId]);
+    try {
+      for (var item in list) {
+        await db.update(workersTableName, item.toJson(),
+            where: "workerId = ?", whereArgs: [item.workerId]);
+      }
+       log("updated succesfuly");
+    } catch (e) {
+      log(e.toString());
     }
   }
 
   static Future<void> insertExtraList(
       List<ExtraInOrderModel> list, String orderId) async {
-    Database db = await databaseFactory.openDatabase(
+    final Database db = await databaseFactory.openDatabase(
       dbTempPath,
     );
-    for (var item in list) {
-      await db.insert(extraOrderTableName, item.toAddJson(orderIdd: orderId));
+    try {
+      for (var item in list) {
+        await db.insert(extraOrderTableName, item.toAddJson(orderIdd: orderId));
+      }
+      log("insert extra list");
+    } catch (e) {
+      log(e.toString());
     }
   }
 
   static Future<void> insertWorkersList(
     List<WorkerModel> list,
   ) async {
-    Database db = await databaseFactory.openDatabase(
+    final Database db = await databaseFactory.openDatabase(
       dbTempPath,
     );
-    for (var item in list) {
-      await db.insert(workersTableName, item.toAddJson());
+    try {
+      for (var item in list) {
+        await db.insert(workersTableName, item.toAddJson());
+      }
+      log("insert workers list");
+    } catch (e) {
+      log(e.toString());
     }
   }
 
@@ -162,12 +196,16 @@ class TempCrudOperation {
     List<String> list,
   ) async {
     if (list.isNotEmpty) {
-      Database db = await databaseFactory.openDatabase(
+      final Database db = await databaseFactory.openDatabase(
         dbTempPath,
       );
-      for (var item in list) {
-        await db.delete(extraOrderTableName,
-            where: 'extraId = ?', whereArgs: [item]);
+      try {
+        for (var item in list) {
+          await db.delete(extraOrderTableName,
+              where: 'extraId = ?', whereArgs: [item]);
+        }
+      } catch (e) {
+        log(e.toString());
       }
     }
   }
@@ -175,16 +213,16 @@ class TempCrudOperation {
   static Future<void> deleteOrderWithMedia(
       String orderId, List<MediaOrderModel> mediaList) async {
     try {
-      Database db = await databaseFactory.openDatabase(
+      final Database db = await databaseFactory.openDatabase(
         dbTempPath,
       );
       for (var item in mediaList) {
-        deleteTempMediaFile(item.mediaId, item.mediaPath, item.mediaType);
+        await deleteTempMediaFile(item.mediaId, item.mediaPath, item.mediaType);
       }
       await db
           .delete(orderTableName, where: 'orderId = ?', whereArgs: [orderId]);
 
-      log("delted Success");
+      log("delted order with media success");
     } catch (e) {
       log("error:${e.toString()}");
     }
@@ -195,65 +233,72 @@ class TempCrudOperation {
       required String whereClause,
       required List args}) async {
     try {
-      await databaseFactory.openDatabase(dbTempPath,
-          options: OpenDatabaseOptions(onOpen: (db) async {
-        await db.delete(tableName, where: whereClause, whereArgs: args);
-        log("success removed from temp");
-      }));
+      final db = await databaseFactory.openDatabase(
+        dbTempPath,
+      );
+      await db.delete(tableName, where: whereClause, whereArgs: args);
+      log("success removed from temp");
     } catch (e) {
+      log(e.toString());
       throw Exception(e);
     }
   }
 
   static Future<void> createNewOrderInTemp(
       OrderModel model, bool forTheSameCustomer) async {
-    Database db = await databaseFactory.openDatabase(dbTempPath);
-    db.transaction((txn) async {
-      await txn.insert(orderTableName, model.toJson());
-      if (model.customerModel != null && !forTheSameCustomer) {
-        await txn.insert(customerTableName, model.customerModel!.toJson());
-      }
-      if (model.colorModel != null) {
-        await txn.insert(
-          colorTableName,
-          model.colorModel!.toJson(orderIdd: model.orderId),
-        );
-      }
-      if (model.extraOrdersList.isNotEmpty) {
-        for (var item in model.extraOrdersList) {
+    final Database db = await databaseFactory.openDatabase(dbTempPath);
+    try {
+      db.transaction((txn) async {
+        await txn.insert(orderTableName, model.toJson());
+        if (model.customerModel != null && !forTheSameCustomer) {
+          await txn.insert(customerTableName, model.customerModel!.toJson());
+        }
+        if (model.colorModel != null) {
           await txn.insert(
-            extraOrderTableName,
-            item.toAddJson(orderIdd: model.orderId),
+            colorTableName,
+            model.colorModel!.toJson(orderIdd: model.orderId),
           );
         }
-      }
-      if (model.mediaOrderList.isNotEmpty) {
-        for (var item in model.mediaOrderList) {
-          try {
-            final tempPath = SharedPrefHelper.fetchPathFromShared(
-                    item.mediaType == MediaType.image
-                        ? imageTempPath
-                        : videoTempPath) ??
-                "";
-
-            final fileExtension = item.mediaPath.split('.').last;
-            item.mediaPath =
-                '$tempPath${Platform.pathSeparator}${item.mediaId}.$fileExtension';
-          } catch (e) {
-            throw Exception(e);
+        if (model.extraOrdersList.isNotEmpty) {
+          for (var item in model.extraOrdersList) {
+            await txn.insert(
+              extraOrderTableName,
+              item.toAddJson(orderIdd: model.orderId),
+            );
           }
         }
-        for (var item in model.mediaOrderList) {
-          await txn.insert(
-              mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+        if (model.mediaOrderList.isNotEmpty) {
+          for (var item in model.mediaOrderList) {
+            try {
+              final tempPath = SharedPrefHelper.fetchPathFromShared(
+                      item.mediaType == MediaType.image
+                          ? imageTempPath
+                          : videoTempPath) ??
+                  "";
+
+              final fileExtension = item.mediaPath.split('.').last;
+              item.mediaPath =
+                  '$tempPath${Platform.pathSeparator}${item.mediaId}.$fileExtension';
+            } catch (e) {
+              log(e.toString());
+              throw Exception(e);
+            }
+          }
+          for (var item in model.mediaOrderList) {
+            await txn.insert(
+                mediaOrderTableName, item.toAddJson(orderIdd: model.orderId));
+          }
+          if (model.pillModel != null) {
+            await txn.insert(
+              pillTableName,
+              model.pillModel!.toJson(orderIdd: model.orderId),
+            );
+          }
         }
-        if (model.pillModel != null) {
-          await txn.insert(
-            pillTableName,
-            model.pillModel!.toJson(orderIdd: model.orderId),
-          );
-        }
-      }
-    });
+        log("add order with transaction way done");
+      });
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

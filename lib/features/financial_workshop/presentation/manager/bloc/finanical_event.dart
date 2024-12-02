@@ -128,3 +128,20 @@ final class ChangeStartOrEndDateEvent extends FinanicalEvent {
 }
 
 final class MakeAnalysisEvent extends FinanicalEvent {}
+
+final class NavToAnlysisListEvent extends FinanicalEvent {
+  final int index;
+  final String type;
+  NavToAnlysisListEvent({required this.index,required this.type});
+}
+
+final class GetAllAnalysisTransactionListEvent extends FinanicalEvent {
+  final int index;
+  GetAllAnalysisTransactionListEvent({required this.index});
+}
+
+final class ChangeCurrPageEvent extends FinanicalEvent {
+  final int pageIndex;
+  final int indexType;
+  ChangeCurrPageEvent({required this.pageIndex,required this.indexType});
+}
