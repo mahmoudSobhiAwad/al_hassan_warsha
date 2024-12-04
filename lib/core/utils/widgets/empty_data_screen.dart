@@ -20,32 +20,40 @@ class EmptyDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       flex: flex??1,
-      child: ScrollConfiguration(
-        behavior: const ScrollBehavior().copyWith(scrollbars: false),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.asset(
-                HomeAssets.emptySceen,
-                width: 500,
-                fit: BoxFit.scaleDown,
-              ),
-              Text(
-                emptyText ?? "",
-                style: AppFontStyles.extraBold50(context),
-              ),
-              SizedBox(
-                height: enablePush ? 24 : 0,
-              ),
-               enablePush?CustomPushContainerButton(
-                pushButtomText: emptyPushButtonText,
-                borderRadius: 16,
-                onTap: onTap,
-              ):const SizedBox(),
-              SizedBox(
-                height: enablePush ? 24 : 0,
-              ),
-            ],
+      child: Scrollbar(
+         radius:const Radius.circular(5),
+        thickness: 15,
+        thumbVisibility: true,
+        trackVisibility: true,
+        scrollbarOrientation: ScrollbarOrientation.right,
+        child: ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
+          child: SingleChildScrollView(
+            primary: true,
+            child: Column(
+              children: [
+                Image.asset(
+                  HomeAssets.emptySceen,
+                  width: 500,
+                  fit: BoxFit.scaleDown,
+                ),
+                Text(
+                  emptyText ?? "",
+                  style: AppFontStyles.extraBold50(context),
+                ),
+                SizedBox(
+                  height: enablePush ? 24 : 0,
+                ),
+                 enablePush?CustomPushContainerButton(
+                  pushButtomText: emptyPushButtonText,
+                  borderRadius: 16,
+                  onTap: onTap,
+                ):const SizedBox(),
+                SizedBox(
+                  height: enablePush ? 24 : 0,
+                ),
+              ],
+            ),
           ),
         ),
       ),

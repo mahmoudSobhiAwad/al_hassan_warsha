@@ -1,8 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/features/home/data/home_data.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/clipped_container.dart';
-import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_item.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_list.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';

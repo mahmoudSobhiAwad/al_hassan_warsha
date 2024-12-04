@@ -21,81 +21,95 @@ class CustomerProfileBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: CustomScrollView(slivers: [
-        SliverToBoxAdapter(
+      child: Scrollbar(
+        radius: const Radius.circular(5),
+        thickness: 12,
+        thumbVisibility: true,
+        trackVisibility: true,
+        scrollbarOrientation: ScrollbarOrientation.right,
+        child: ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: CustomPushContainerButton(
-                pushButtomText: 'اضافة طلب جديد',
-                iconBehind: Icons.add,
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddEditViewOrder(
-                      bloc: bloc,
-                      model: model,
+            padding: const EdgeInsets.only(right: 25.0),
+            child: CustomScrollView(primary: true, slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: CustomPushContainerButton(
+                      pushButtomText: 'اضافة طلب جديد',
+                      iconBehind: Icons.add,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddEditViewOrder(
+                            bloc: bloc,
+                            model: model,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 10),
+                      borderRadius: 14,
                     ),
                   ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                borderRadius: 14,
               ),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: CustomerInfoInOrder(model: model, isReadOnly: true),
-          ),
-        ),
-        const SliverToBoxAdapter(
-          child: SizedBox(
-            height: 12,
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "كل الطلبات ",
-                  style: AppFontStyles.extraBold28(context),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: CustomerInfoInOrder(model: model, isReadOnly: true),
                 ),
-                const SizedBox(width: 7),
-                Text(
-                  "( ${model.orderModelList.length} )",
-                  style: AppFontStyles.extraBold20(context)
-                      .copyWith(color: AppColors.lightGray1),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 12,
                 ),
-              ],
-            ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "كل الطلبات ",
+                        style: AppFontStyles.extraBold28(context),
+                      ),
+                      const SizedBox(width: 7),
+                      Text(
+                        "( ${model.orderModelList.length} )",
+                        style: AppFontStyles.extraBold20(context)
+                            .copyWith(color: AppColors.lightGray1),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 12,
+                ),
+              ),
+              OrdersPagesForCustomerView(
+                model: model,
+                editOrder: (model) {
+                  bloc.add(NavToEditEvent(orderModel: model));
+                },
+                currPage: bloc.currPage,
+                stepDown: (pill) {
+                  bloc.add(StepDownMoneyEvent(pillModel: pill));
+                },
+                onChangeCurrPage: (status) {
+                  bloc.add(ChangeCurrPageEvent(isForward: status));
+                },
+              ),
+            ]),
           ),
         ),
-        const SliverToBoxAdapter(
-          child: SizedBox(
-            height: 12,
-          ),
-        ),
-        OrdersPagesForCustomerView(
-          model: model,
-          editOrder: (model) {
-            bloc.add(NavToEditEvent(orderModel: model));
-          },
-          currPage: bloc.currPage,
-          stepDown: (pill) {
-            bloc.add(StepDownMoneyEvent(pillModel: pill));
-          },
-          onChangeCurrPage: (status) {
-            bloc.add(ChangeCurrPageEvent(isForward: status));
-          },
-        ),
-      ]),
+      ),
     );
   }
 }

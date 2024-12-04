@@ -26,67 +26,74 @@ class SideBarManagement extends StatelessWidget {
     return Container(
       color: AppColors.veryLightGray,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      child: CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(
-              child: CustomPushContainerButton(
-            pushButtomText: "طلبات الشهر",
-            iconBehind: CupertinoIcons.square_list,
-            borderRadius: 20,
-          )),
-          const SliverToBoxAdapter(
-              child: SizedBox(
-            height: 24,
-          )),
-          SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (context, index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: InkWell(
-                          onTap: () {
-                            changeIndex(index);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: index == currIndex
-                                ? BoxDecoration(
-                                    border: Border.all(
-                                        width: 2, color: AppColors.brown),
-                                    borderRadius: BorderRadius.circular(12))
-                                : null,
-                            child: [
-                              SideBarManagementItem(
-                                model: SideBarManagementModel(
-                                    backgroundColor: AppColors.blueGray,
-                                    numberOfItem:convertToArabicNumbers( totalLength.toString()),
-                                    title: 'العدد الكلي'),
-                              ),
-                              SideBarManagementItem(
-                                model: SideBarManagementModel(
-                                    backgroundColor: AppColors.green,
-                                    numberOfItem:convertToArabicNumbers(finishedLength.toString()),
-                                    title: 'تم التسليم',
-                                    icon: Icons.check),
-                              ),
-                              SideBarManagementItem(
-                                model: SideBarManagementModel(
-                                    backgroundColor: AppColors.orange,
-                                    numberOfItem: convertToArabicNumbers(nearLenght.toString()),
-                                    title: 'اقترب تسليمه',
-                                    icon: Icons.hourglass_empty_rounded),
-                              ),
-                              SideBarManagementItem(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+                child: CustomPushContainerButton(
+              pushButtomText: "طلبات الشهر",
+              iconBehind: CupertinoIcons.square_list,
+              borderRadius: 20,
+            )),
+            const SliverToBoxAdapter(
+                child: SizedBox(
+              height: 24,
+            )),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                          padding: const EdgeInsets.only(bottom: 18),
+                          child: InkWell(
+                            onTap: () {
+                              changeIndex(index);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              decoration: index == currIndex
+                                  ? BoxDecoration(
+                                      border: Border.all(
+                                          width: 2, color: AppColors.brown),
+                                      borderRadius: BorderRadius.circular(12))
+                                  : null,
+                              child: [
+                                SideBarManagementItem(
                                   model: SideBarManagementModel(
-                                      backgroundColor: AppColors.red,
-                                      numberOfItem:convertToArabicNumbers( neverLength.toString()),
-                                      title: 'لم يتم تسليمه',
-                                      icon: Icons.close_rounded)),
-                            ][index],
+                                      backgroundColor: AppColors.blueGray,
+                                      numberOfItem: convertToArabicNumbers(
+                                          totalLength.toString()),
+                                      title: 'العدد الكلي'),
+                                ),
+                                SideBarManagementItem(
+                                  model: SideBarManagementModel(
+                                      backgroundColor: AppColors.green,
+                                      numberOfItem: convertToArabicNumbers(
+                                          finishedLength.toString()),
+                                      title: 'تم التسليم',
+                                      icon: Icons.check),
+                                ),
+                                SideBarManagementItem(
+                                  model: SideBarManagementModel(
+                                      backgroundColor: AppColors.orange,
+                                      numberOfItem: convertToArabicNumbers(
+                                          nearLenght.toString()),
+                                      title: 'اقترب تسليمه',
+                                      icon: Icons.hourglass_empty_rounded),
+                                ),
+                                SideBarManagementItem(
+                                    model: SideBarManagementModel(
+                                        backgroundColor: AppColors.red,
+                                        numberOfItem: convertToArabicNumbers(
+                                            neverLength.toString()),
+                                        title: 'لم يتم تسليمه',
+                                        icon: Icons.close_rounded)),
+                              ][index],
+                            ),
                           ),
                         ),
-                      ),
-                  childCount: sideBarManagementItemList.length))
-        ],
+                    childCount: sideBarManagementItemList.length))
+          ],
+        ),
       ),
     );
   }

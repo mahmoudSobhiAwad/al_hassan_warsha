@@ -16,7 +16,7 @@ class GalleryView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GalleryBloc(galleryRepoImp: getIt.get())
-        ..add(GetAllGalleryDataEvent()),
+        ..add(GetAllGalleryDataEvent())..add(DefineTimerFunctionEvent()),
       child:
           BlocConsumer<GalleryBloc, GalleryState>(listener: (context, state) {
         if (state is SuccessAddedNewKitchenType) {

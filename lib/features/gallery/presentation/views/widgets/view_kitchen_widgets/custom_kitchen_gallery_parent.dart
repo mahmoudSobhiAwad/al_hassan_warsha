@@ -26,60 +26,68 @@ class KitchenGalleryCustomView extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppBarWithLinking(
-                  items: [
-                    "الرئيسية",
-                    titleOfAppBar ?? "مطبخ كلاسيك",
-                    bloc.pagesGalleryEnum == PagesGalleryEnum.add
-                        ? "إضافة مطبخ"
-                        : kitchenModel?.kitchenName ?? "",
-                  ],
-                  onBack: () {
-                    switch (bloc.pagesGalleryEnum) {
-                      case PagesGalleryEnum.view:
-                        Navigator.pop(context);
-                        break;
-                      case PagesGalleryEnum.edit:
-                        bloc.add(OpenKitchenForEditEvent(enableEdit: false));
-                        break;
-                      case PagesGalleryEnum.add:
-                        Navigator.pop(context);
-                    }
+          child: Scrollbar(
+            radius: const Radius.circular(5),
+            thickness: 12,
+            thumbVisibility: true,
+            trackVisibility: true,
+            scrollbarOrientation: ScrollbarOrientation.right,
+            child: SingleChildScrollView(
+              primary: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBarWithLinking(
+                    items: [
+                      "الرئيسية",
+                      titleOfAppBar ?? "مطبخ كلاسيك",
+                      bloc.pagesGalleryEnum == PagesGalleryEnum.add
+                          ? "إضافة مطبخ"
+                          : kitchenModel?.kitchenName ?? "",
+                    ],
+                    onBack: () {
+                      switch (bloc.pagesGalleryEnum) {
+                        case PagesGalleryEnum.view:
+                          Navigator.pop(context);
+                          break;
+                        case PagesGalleryEnum.edit:
+                          bloc.add(OpenKitchenForEditEvent(enableEdit: false));
+                          break;
+                        case PagesGalleryEnum.add:
+                          Navigator.pop(context);
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  switch (bloc.pagesGalleryEnum) {
+                    PagesGalleryEnum.view => ViewKitchenDetailsBody(
+                        bloc: bloc,
+                        kitchenModel: kitchenModel,
+                        changeEditState: (edit) {
+                          bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
+                        },
+                        deleteKitchen: () {
+                          bloc.add(DeleteKitchenEvent(
+                              mediaPath: kitchenModel?.kitchenMediaList ?? [],
+                              kitchenId: kitchenModel!.kitchenId,
+                              typeId: kitchenModel!.typeId));
+                        },
+                      ),
+                    PagesGalleryEnum.edit => EditKitchenView(
+                        bloc: bloc,
+                        model: kitchenModel!,
+                        pickedList: kitchenMediaList,
+                      ),
+                    PagesGalleryEnum.add => AddKitchenView(
+                        mediaList: kitchenMediaList,
+                        typeId: typeId,
+                        bloc: bloc,
+                      ),
                   },
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                switch (bloc.pagesGalleryEnum) {
-                  PagesGalleryEnum.view => ViewKitchenDetailsBody(
-                      bloc: bloc,
-                      kitchenModel: kitchenModel,
-                      changeEditState: (edit) {
-                        bloc.add(OpenKitchenForEditEvent(enableEdit: edit));
-                      },
-                      deleteKitchen: () {
-                        bloc.add(DeleteKitchenEvent(
-                            mediaPath: kitchenModel?.kitchenMediaList ?? [],
-                            kitchenId: kitchenModel!.kitchenId,
-                            typeId: kitchenModel!.typeId));
-                      },
-                    ),
-                  PagesGalleryEnum.edit => EditKitchenView(
-                      bloc: bloc,
-                      model: kitchenModel!,
-                      pickedList: kitchenMediaList,
-                    ),
-                  PagesGalleryEnum.add => AddKitchenView(
-                      mediaList: kitchenMediaList,
-                      typeId: typeId,
-                      bloc: bloc,
-                    ),
-                },
-              ],
+                ],
+              ),
             ),
           ),
         ),

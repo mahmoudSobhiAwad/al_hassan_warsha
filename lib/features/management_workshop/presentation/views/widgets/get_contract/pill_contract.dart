@@ -25,8 +25,8 @@ class PillInfo {
                   child: pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
-                        pw.Text(pillModel.totalMoney,
-                            style: constantPwTextStyle(font, size: 14)),
+                        pw.Text(convertToArabicNumbers(pillModel.totalMoney),
+                            style: constantPwTextStyle(font, size: 14,letterSpacing: 3)),
                         pw.Text("جنية", style: constantPwTextStyle(font)),
                       ])),
             ]),
@@ -37,7 +37,8 @@ class PillInfo {
         child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
-              pw.Text(" المقدم ", style: constantPwTextStyle(font, size: 12)),
+              pw.Text(" المبلغ المدفوع+المقدم ",
+                  style: constantPwTextStyle(font, size: 12)),
               pw.SizedBox(height: 5),
               pw.Container(
                   padding: const pw.EdgeInsets.all(4),
@@ -48,8 +49,12 @@ class PillInfo {
                   child: pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
-                        pw.Text(pillModel.interior,
-                            style: constantPwTextStyle(font, size: 14)),
+                        pw.Text(
+                            convertToArabicNumbers(
+                                (int.parse(convertToEnglishNumbers(pillModel.interior)) +
+                                        int.parse(convertToEnglishNumbers(pillModel.payedAmount)))
+                                    .toString()),
+                            style: constantPwTextStyle(font, size: 14,letterSpacing: 3)),
                         pw.Text("جنية", style: constantPwTextStyle(font)),
                       ])),
             ]),
@@ -73,7 +78,7 @@ class PillInfo {
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
                         pw.Text(convertToArabicNumbers(pillModel.remian),
-                            style: constantPwTextStyle(font, size: 14)),
+                            style: constantPwTextStyle(font, size: 14,letterSpacing: 3)),
                         pw.Text("جنية", style: constantPwTextStyle(font)),
                       ])),
             ]),
@@ -104,7 +109,9 @@ class PillInfo {
                             border:
                                 pw.Border.all(color: PdfColors.grey, width: 1),
                             borderRadius: pw.BorderRadius.circular(4)),
-                        child: pw.Text(pillModel.stepsCounter.toString(),
+                        child: pw.Text(
+                            convertToArabicNumbers(
+                                pillModel.stepsCounter.toString()),
                             style: constantPwTextStyle(font))),
                   ]),
             )

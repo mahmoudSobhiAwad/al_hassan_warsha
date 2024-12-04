@@ -12,7 +12,6 @@ class AutoScrollingPageView extends StatelessWidget {
       return  AspectRatio(
             aspectRatio: 1225/250,
             child: PageView.builder(
-              
               controller: pageController,
               itemCount: kitchenModelList.length,
               itemBuilder: (context,index){

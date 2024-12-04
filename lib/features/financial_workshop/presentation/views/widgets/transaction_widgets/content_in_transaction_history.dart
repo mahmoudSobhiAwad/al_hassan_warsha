@@ -133,11 +133,14 @@ class ContentInTransactionHistory extends StatelessWidget {
                         });
                   },
                   child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        "حذف التحويل",
-                        style: AppFontStyles.extraBold18(context).copyWith(
-                          color: AppColors.red,
+                      Flexible(
+                        child: Text(
+                          "حذف التحويل",
+                          style: AppFontStyles.extraBold18(context).copyWith(
+                            color: AppColors.red,
+                          ),
                         ),
                       ),
                       const SizedBox(

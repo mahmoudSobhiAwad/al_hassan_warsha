@@ -38,153 +38,177 @@ class ShowOneOrderBody extends StatelessWidget {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-      child: CustomScrollView(
-        slivers: [
-          UpperButtonsInViewOrder(
-            navToEdit: navToEdit,
-            orderModel: orderModel,
-            onTapForCustomerProfileView: () {
-              navToProfileView(orderModel.customerId);
-            },
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 12,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: CustomerInfoInOrder(
-              isReadOnly: true,
-              model: orderModel.customerModel!,
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 12,
-            ),
-          ),
-          SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "تفاصيل الطلب",
-                  style: AppFontStyles.extraBold24(context),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                RowOrderItems(
-                    orderModel: orderModel,
-                    colorOrderModel: orderModel.colorModel??ColorOrderModel()),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomColumnWithTextInAddNewType(
-                  text: "ملاحظات",
-                  textLabel: "",
-                  initalText: orderModel.notice,
-                  enableBorder: true,
-                  readOnly: true,
-                  maxLine: 6,
-                  onChanged: (value) {
-                    orderModel.notice = value;
+      child: Scrollbar(
+        radius: const Radius.circular(5),
+        thickness: 15,
+        thumbVisibility: true,
+        trackVisibility: true,
+        scrollbarOrientation: ScrollbarOrientation.right,
+        child: ScrollConfiguration(
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25.0),
+            child: CustomScrollView(
+              primary: true,
+              slivers: [
+                UpperButtonsInViewOrder(
+                  navToEdit: navToEdit,
+                  orderModel: orderModel,
+                  onTapForCustomerProfileView: () {
+                    navToProfileView(orderModel.customerId);
                   },
-                  textStyle: AppFontStyles.extraBold18(context),
                 ),
-                const SizedBox(
-                  height: 10,
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 12,
+                  ),
                 ),
-                Text(
-                  "الوسائط",
-                  style: AppFontStyles.extraBold18(context),
+                SliverToBoxAdapter(
+                  child: CustomerInfoInOrder(
+                    isReadOnly: true,
+                    model: orderModel.customerModel!,
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 12,
+                  ),
                 ),
-                orderModel.mediaOrderList.isNotEmpty
-                    ? MediaListExist(
-                        enableClear: false,
-                        pickedList: orderModel.getPickedMedia(),
-                      )
-                    : const EmptyUploadMedia(),
-                const SizedBox(
-                  height: 16,
+                SliverToBoxAdapter(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "تفاصيل الطلب",
+                        style: AppFontStyles.extraBold24(context),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      RowOrderItems(
+                          orderModel: orderModel,
+                          colorOrderModel:
+                              orderModel.colorModel ?? ColorOrderModel()),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      CustomColumnWithTextInAddNewType(
+                        text: "ملاحظات",
+                        textLabel: "",
+                        initalText: orderModel.notice,
+                        enableBorder: true,
+                        readOnly: true,
+                        maxLine: 6,
+                        onChanged: (value) {
+                          orderModel.notice = value;
+                        },
+                        textStyle: AppFontStyles.extraBold18(context),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "الوسائط",
+                        style: AppFontStyles.extraBold18(context),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      orderModel.mediaOrderList.isNotEmpty
+                          ? MediaListExist(
+                              enableClear: false,
+                              pickedList: orderModel.getPickedMedia(),
+                            )
+                          : const EmptyUploadMedia(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      AddsForOrder(
+                        list: orderModel.extraOrdersList,
+                      ),
+                    ],
+                  ),
+                )),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 16,
+                  ),
                 ),
-                AddsForOrder(
-                  list: orderModel.extraOrdersList,
+                SliverToBoxAdapter(
+                  child: BillDetails(
+                    enableController: true,
+                    pillModel: orderModel.pillModel!,
+                  ),
                 ),
+                const SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 16,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: orderModel.orderStatus != OrderStatus.finished
+                      ? DialogAddNewTypeActionButton(
+                          text_1: " تسليم الطلب",
+                          onPressed_1: () {
+                            markAsDone(orderModel.orderId, true);
+                          },
+                          text_2: "حذف الطلب",
+                          onPressed_2: () {
+                            showDialog(
+                                context: context,
+                                useSafeArea: true,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: CustomAlert(
+                                      title: "هل أنت متأكد من حذف هذا الطلب ؟",
+                                      enableIcon: false,
+                                      actionButtonsInstead:
+                                          DialogAddNewTypeActionButton(
+                                        onPressed_1: () {
+                                          Navigator.pop(context);
+                                          deleteOrder(orderModel.orderId,
+                                              orderModel.mediaOrderList);
+                                        },
+                                        onPressed_2: () {
+                                          Navigator.pop(context);
+                                        },
+                                        instead_1: isLoading
+                                            ? const CircularProgressIndicator(
+                                                color: AppColors.white,
+                                              )
+                                            : Text("حذف",
+                                                style: AppFontStyles.extraBold30(
+                                                        context)
+                                                    .copyWith(
+                                                  color: AppColors.white,
+                                                )),
+                                        text_2: "إلغاء",
+                                        color_1: AppColors.red,
+                                        color_2: AppColors.green,
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                        )
+                      : Center(
+                          child: CustomPushContainerButton(
+                            onTap: () {
+                              markAsDone(orderModel.orderId, false);
+                            },
+                            color: AppColors.red,
+                            borderRadius: 14,
+                            iconBehind: Icons.restart_alt_rounded,
+                            pushButtomText: " تمييز كغير مستلم",
+                          ),
+                        ),
+                )
               ],
             ),
-          )),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 16,
-            ),
           ),
-          SliverToBoxAdapter(
-            child: BillDetails(
-              enableController: true,
-              pillModel: orderModel.pillModel!,
-            ),
-          ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 16,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: orderModel.orderStatus != OrderStatus.finished
-                ? DialogAddNewTypeActionButton(
-                    text_1: " تسليم الطلب",
-                    onPressed_1: () {
-                      markAsDone(orderModel.orderId, true);
-                    },
-                    text_2: "حذف الطلب",
-                    onPressed_2: () {
-                      showDialog(
-                          context: context,
-                          useSafeArea: true,
-                          builder: (context) {
-                            return Dialog(
-                              child: CustomAlert(
-                                title: "هل أنت متأكد من حذف هذا الطلب ؟",
-                                enableIcon: false,
-                                actionButtonsInstead:
-                                    DialogAddNewTypeActionButton(
-                                  onPressed_1: () {
-                                    Navigator.pop(context);
-                                    deleteOrder(orderModel.orderId,
-                                        orderModel.mediaOrderList);
-                                  },
-                                  onPressed_2: () {
-                                    Navigator.pop(context);
-                                  },
-                                  instead_1: isLoading?const CircularProgressIndicator(color: AppColors.white,):Text("حذف",style: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white,)),
-                                  text_2: "إلغاء",
-                                  color_1: AppColors.red,
-                                  color_2: AppColors.green,
-                                ),
-                              ),
-                            );
-                          });
-                    },
-                  )
-                : Center(
-                    child: CustomPushContainerButton(
-                      onTap: () {
-                        markAsDone(orderModel.orderId, false);
-                      },
-                      color: AppColors.red,
-                      borderRadius: 14,
-                      iconBehind: Icons.restart_alt_rounded,
-                      pushButtomText: " تمييز كغير مستلم",
-                    ),
-                  ),
-          )
-        ],
+        ),
       ),
     ));
   }

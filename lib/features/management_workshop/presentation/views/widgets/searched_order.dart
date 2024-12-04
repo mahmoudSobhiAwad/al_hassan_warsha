@@ -51,21 +51,36 @@ class SearchedOrderResutl extends StatelessWidget {
               )
             : searchedList.isNotEmpty
                 ? Expanded(
-                    child: CustomScrollView(
-                      slivers: [
-                        const SliverToBoxAdapter(
-                          child: FullTableHeader(),
-                        ),
-                        const SliverToBoxAdapter(
-                          child: SizedBox(
-                            height: 12,
+                    child: Scrollbar(
+                      radius: const Radius.circular(5),
+                      thickness: 12,
+                      thumbVisibility: true,
+                      trackVisibility: true,
+                      scrollbarOrientation: ScrollbarOrientation.right,
+                      child: ScrollConfiguration(
+                        behavior:
+                            const ScrollBehavior().copyWith(scrollbars: false),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right:10),
+                          child: CustomScrollView(
+                            primary: true,
+                            slivers: [
+                              const SliverToBoxAdapter(
+                                child: FullTableHeader(),
+                              ),
+                              const SliverToBoxAdapter(
+                                child: SizedBox(
+                                  height: 12,
+                                ),
+                              ),
+                              ListOfOrder(
+                                bloc: bloc,
+                                orderList: searchedList,
+                              ),
+                            ],
                           ),
                         ),
-                        ListOfOrder(
-                          bloc: bloc,
-                          orderList: searchedList,
-                        ),
-                      ],
+                      ),
                     ),
                   )
                 : Expanded(

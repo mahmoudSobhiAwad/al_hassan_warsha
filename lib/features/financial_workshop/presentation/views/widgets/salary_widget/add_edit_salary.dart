@@ -66,38 +66,42 @@ class AddEditSalaryView extends StatelessWidget {
                       : SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.4,
                           child: Scrollbar(
-                            controller: bloc.scrollController,
                             scrollbarOrientation: ScrollbarOrientation.right,
                             thickness: 12,
                             thumbVisibility: true,
+                            trackVisibility: true,
                             child: ScrollConfiguration(
                               behavior: const ScrollBehavior()
                                   .copyWith(scrollbars: false),
-                              child: ListView.separated(
-                                  controller: bloc.scrollController,
-                                  itemBuilder: (context, index) {
-                                    return OneEmployeeItem(
-                                      workerModel: bloc.workersList[index],
-                                      changeSalaryType: (type) {
-                                        bloc.add(ChangeSalaryTypeEvent(
-                                            type: type, index: index));
-                                      },
-                                      deleteItem: () {
-                                        bloc.add(
-                                            DeleteWorkerEvent(index: index));
-                                      },
-                                      selectItem: (statue) {
-                                        bloc.add(SelectWorkerEvent(
-                                            index: index, isSelectAll: false));
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) {
-                                    return const SizedBox(
-                                      height: 16,
-                                    );
-                                  },
-                                  itemCount: bloc.workersList.length),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 10.0),
+                                child: ListView.separated(
+                                    primary: true,
+                                    itemBuilder: (context, index) {
+                                      return OneEmployeeItem(
+                                        workerModel: bloc.workersList[index],
+                                        changeSalaryType: (type) {
+                                          bloc.add(ChangeSalaryTypeEvent(
+                                              type: type, index: index));
+                                        },
+                                        deleteItem: () {
+                                          bloc.add(
+                                              DeleteWorkerEvent(index: index));
+                                        },
+                                        selectItem: (statue) {
+                                          bloc.add(SelectWorkerEvent(
+                                              index: index,
+                                              isSelectAll: false));
+                                        },
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) {
+                                      return const SizedBox(
+                                        height: 16,
+                                      );
+                                    },
+                                    itemCount: bloc.workersList.length),
+                              ),
                             ),
                           ),
                         ),

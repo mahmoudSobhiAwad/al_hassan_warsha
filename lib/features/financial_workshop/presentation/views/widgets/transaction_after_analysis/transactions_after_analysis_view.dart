@@ -50,35 +50,49 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                   ),
                                   bloc.analysisTransactionList.isEmpty
                                       ? Expanded(
-                                        child: Center(
+                                          child: Center(
                                             child: Text(
                                               "لا يوجد اي معاملات من هذا النوع لهذه الفترة ",
                                               style: AppFontStyles.extraBold35(
                                                   context),
                                             ),
                                           ),
-                                      )
+                                        )
                                       : Expanded(
-                                          child: ListView.separated(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 12),
-                                              itemBuilder: (context, index) {
-                                                return ContentInTransactionHistory(
-                                                  model:
-                                                      bloc.analysisTransactionList[
-                                                          index],
-                                                );
-                                              },
-                                              separatorBuilder:
-                                                  (context, index) {
-                                                return const SizedBox(
-                                                  height: 20,
-                                                );
-                                              },
-                                              itemCount: bloc
-                                                  .analysisTransactionList
-                                                  .length),
+                                          child: Scrollbar(
+                                            radius: const Radius.circular(5),
+                                            thickness: 12,
+                                            thumbVisibility: true,
+                                            trackVisibility: true,
+                                            scrollbarOrientation:
+                                                ScrollbarOrientation.right,
+                                            child: ScrollConfiguration(
+                                              behavior:const ScrollBehavior().copyWith(
+                                                scrollbars: false,
+                                              ),
+                                              child: ListView.separated(
+                                                primary: true,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          vertical: 12),
+                                                  itemBuilder: (context, index) {
+                                                    return ContentInTransactionHistory(
+                                                      model:
+                                                          bloc.analysisTransactionList[
+                                                              index],
+                                                    );
+                                                  },
+                                                  separatorBuilder:
+                                                      (context, index) {
+                                                    return const SizedBox(
+                                                      height: 20,
+                                                    );
+                                                  },
+                                                  itemCount: bloc
+                                                      .analysisTransactionList
+                                                      .length),
+                                            ),
+                                          ),
                                         ),
                                 ],
                               ),

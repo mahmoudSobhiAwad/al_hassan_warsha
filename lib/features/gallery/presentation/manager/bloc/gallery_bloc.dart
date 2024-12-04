@@ -54,10 +54,9 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
 
   FutureOr<void> changeCurrPage(
       DefineTimerFunctionEvent event, Emitter<GalleryState> emit) async {
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (pageController.hasClients) {
         currentPage++;
-
         if (currentPage >= newestKitchenTypeList.length) {
           currentPage = 0;
         }
@@ -123,6 +122,7 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
       onlyTypeModelList.add(
           OnlyTypeModel(itemsCount: 0, typeId: v1, typeName: controller.text));
       emit(SuccessAddedNewKitchenType());
+      controller.clear();
     }, (error) {
       emit(FailureAddedNewKitchenType(errMessage: error.toString()));
     });
