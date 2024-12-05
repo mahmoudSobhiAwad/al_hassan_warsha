@@ -14,12 +14,16 @@ class LogoWidget extends StatelessWidget {
                child: Align(
                 alignment: Alignment.topRight,
                 child: Container(
-                   padding: const EdgeInsets.all(15),
+                  constraints:const BoxConstraints(
+                    maxHeight: 80,
+                    maxWidth: 100
+                  ),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     gradient: customLinearGradient()
                   ),
-                  child: SvgPicture.asset(HomeAssets.logo)
+                  child: SvgPicture.asset(HomeAssets.logo,fit: BoxFit.contain,)
                 ),
                            ),
              );

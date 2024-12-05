@@ -7,6 +7,7 @@ import 'package:al_hassan_warsha/features/home/presentation/views/home_tablet_la
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/basic_home.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_desktop_layout.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_phone_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +19,7 @@ class HomeScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.white,
@@ -29,7 +30,7 @@ class HomeScreenView extends StatelessWidget {
               desktopLayout: (context) => HomeScreenDesktopLayOut(
                 bloc: bloc,
               ),
-              mobileLayout: (context) => const Text("Mobile Layout"),
+              mobileLayout: (context) => HomePhoneLayOut(onChangePage: (){}, onTap: (){}),
               tabletLayout: (context) => HomeScreenTabletLayout(bloc: bloc),
             );
           }, listener: (context, state) {

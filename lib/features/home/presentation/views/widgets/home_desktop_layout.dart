@@ -13,41 +13,43 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
     return Stack(
       children: [
         const ClippedContainer(),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "الحسن ",
-                    style: AppFontStyles.extraBold90(context),
-                  )),
-              const SizedBox(
-                height: 24,
-              ),
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "اختيارك الأمثل لجميع أعمال الالوميتال",
-                    style: AppFontStyles.extraBold60(context),
-                  )),
-              const SizedBox(
-                height: 36,
-              ),
-              bloc.isLoading
-                  ? const CircularProgressIndicator()
-                  : Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 24.0, bottom: 24, right: 24),
-                        child: HomeItemsList(
-                          bloc: bloc,
+        Column(
+          children: [
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "الحسن ",
+                  style: AppFontStyles.extraBold90(context),
+                )),
+            const SizedBox(
+              height: 24,
+            ),
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "اختيارك الأمثل لجميع أعمال الالوميتال",
+                  style: AppFontStyles.extraBold60(context),
+                )),
+            bloc.isLoading
+                ? const CircularProgressIndicator()
+                : Expanded(
+                  child: Column(
+                      children: [
+                        const Expanded(child: SizedBox()),
+                        Expanded(
+                          flex: 5,
+                          child: HomeItemsList(
+                            bloc: bloc,
+                          ),
                         ),
-                      ),
+                        const Expanded(
+                            child: SizedBox(
+                          height: 25,
+                        )),
+                      ],
                     ),
-            ],
-          ),
+                ),
+          ],
         ),
         const LogoWidget(),
       ],

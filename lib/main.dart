@@ -2,6 +2,8 @@ import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/simple_bloc_observer.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/home.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -12,12 +14,16 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
-   await windowManager.ensureInitialized();
+  await windowManager.ensureInitialized();
   sqfliteFfiInit();
   await SharedPrefHelper.initShared();
-  windowManager.setMinimumSize(const Size(1100, 500));
+  windowManager.setMinimumSize(const Size(400, 650));
   Bloc.observer = SimpleBlocObserver();
-  runApp(const Alwarsha());
+  runApp(DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) {
+        return const Alwarsha();
+      }));
 }
 
 class Alwarsha extends StatelessWidget {

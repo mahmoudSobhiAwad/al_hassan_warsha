@@ -14,34 +14,44 @@ class HomeScreenTabletLayout extends StatelessWidget {
     return Stack(
       children: [
         const ClippedContainer(),
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "الحسن ",
-                    style: AppFontStyles.extraBold90(context),
-                  )),
-              const SizedBox(
-                height: 24,
-              ),
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "اختيارك الأمثل لجميع أعمال الالوميتال",
-                    style: AppFontStyles.extraBold60(context),
-                  )),
-              const SizedBox(
-                height: 36,
-              ),
-              bloc.isLoading
-                  ? const CircularProgressIndicator()
-                  : HomeItemsList(bloc: bloc)
-            ],
-          ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "الحسن ",
+                  style: AppFontStyles.extraBold55(context),
+                )),
+            const SizedBox(
+              height: 24,
+            ),
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  "اختيارك الأمثل لجميع أعمال الالوميتال",
+                  style: AppFontStyles.extraBold40(context),
+                )),
+          
+            bloc.isLoading
+                ? const CircularProgressIndicator()
+                : Expanded(
+                    child: Column(
+                      children: [
+                        const Expanded(flex: 3,child: SizedBox()),
+                        Expanded(
+                            flex: 3,
+                            child: HomeItemsList(
+                              bloc: bloc,
+                              
+                              textStyle: AppFontStyles.extraBold35(context),
+                            )),
+                        const Expanded(child: SizedBox()),
+                      ],
+                    ),
+                  ),
+          ],
         ),
-        const LogoWidget(),
       ],
     );
   }

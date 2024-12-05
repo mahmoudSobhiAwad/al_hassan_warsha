@@ -4,42 +4,53 @@ import 'package:al_hassan_warsha/features/home/data/home_model.dart';
 import 'package:flutter/material.dart';
 
 class HomeItem extends StatelessWidget {
-  const HomeItem({super.key,required this.onTap, required this.homeModel});
+  const HomeItem(
+      {super.key,
+      required this.onTap,
+      required this.homeModel,
+      this.contstaints,
+      this.textStyle,
+      this.isPhone = false});
   final HomeModel homeModel;
-  final void Function()onTap;
+  final void Function() onTap;
+  final TextStyle? textStyle;
+  final bool isPhone;
+  final BoxConstraints? contstaints;
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: InkWell(
-        onTap: onTap,
-        hoverColor: Colors.white,
-        highlightColor: Colors.white,
-        focusColor: Colors.white,
-        splashColor: Colors.white,
-        child: Container(
-          margin:const EdgeInsets.only(left: 35),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
+    return InkWell(
+      onTap: onTap,
+      hoverColor: Colors.white,
+      highlightColor: Colors.white,
+      focusColor: Colors.white,
+      splashColor: Colors.white,
+      child: Container(
+        width: MediaQuery.sizeOf(context).width*0.3,
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(35),
             color: AppColors.white,
-            boxShadow: const [BoxShadow(
+            boxShadow: const [
+              BoxShadow(
                   blurRadius: 4,
                   spreadRadius: 3,
                   color: AppColors.blackOpacity25,
-                  offset: Offset(4, 25)),]
-          ),
+                  offset: Offset(4, 25)),
+            ]),
+        child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Image.asset(
-                homeModel.imagePath,
-              ),
-              const SizedBox(
-                height: 12,
+              Flexible(
+                fit: FlexFit.tight,
+                child: Image.asset(
+                  homeModel.imagePath, 
+                ),
               ),
               FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(homeModel.title,
-                      style: AppFontStyles.extraBold50(context))),
+                      style: textStyle ?? AppFontStyles.extraBold50(context))),
             ],
           ),
         ),

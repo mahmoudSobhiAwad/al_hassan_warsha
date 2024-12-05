@@ -4,17 +4,21 @@ import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_b
 import 'package:flutter/material.dart';
 
 class HomeItemsList extends StatelessWidget {
-  const HomeItemsList({super.key, required this.bloc});
+  const HomeItemsList({super.key, required this.bloc,this.textStyle});
   final HomeBasicBloc bloc;
+  final TextStyle?textStyle;
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         ...List.generate(
           homeModelList.length,
-          (index) => HomeItem(onTap:(){
+          (index) => HomeItem(
+           
+            textStyle: textStyle,
+            onTap:(){
             bloc.add(NavToPageEvent(currIndex: index));
           } ,homeModel: homeModelList[index],),
         ),
