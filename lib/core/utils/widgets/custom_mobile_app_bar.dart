@@ -23,11 +23,11 @@ class CustomMobileAppBar extends StatelessWidget {
         children: [
           enableDrawer
               ? const IconButton(
-                  onPressed: null, icon: Icon(FontAwesomeIcons.bars))
+                  onPressed: null, icon: Icon(FontAwesomeIcons.bars,color: AppColors.white,))
               : const SizedBox(),
           Text(
             title,
-            style: AppFontStyles.extraBold32(context),
+            style: AppFontStyles.extraBold32(context).copyWith(color: AppColors.white),
           ),
           const Spacer(),
           Container(

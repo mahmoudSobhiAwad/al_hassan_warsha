@@ -4,8 +4,9 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_ingradient.dart';
 import 'package:flutter/material.dart';
 
 class CustomPushContainerButton extends StatelessWidget {
-  const CustomPushContainerButton({super.key,this.iconSize,this.childInstead ,this.borderRadius,this.padding,this.pushButtomText,this.onTap,this.enableIcon=true,this.color,this.iconBehind});
+  const CustomPushContainerButton({super.key,this.iconSize,this.pushButtomTextFontSize,this.childInstead ,this.borderRadius,this.padding,this.pushButtomText,this.onTap,this.enableIcon=true,this.color,this.iconBehind});
   final String? pushButtomText;
+  final double? pushButtomTextFontSize;
   final void Function()?onTap;
   final bool enableIcon;
   final Color?color;
@@ -38,6 +39,7 @@ class CustomPushContainerButton extends StatelessWidget {
                 child: Text(
               pushButtomText ?? "إضافة نوع جديد",
               style: AppFontStyles.extraBold30(context).copyWith(
+                fontSize: pushButtomTextFontSize,
                 color: AppColors.white,
               ),
             )),

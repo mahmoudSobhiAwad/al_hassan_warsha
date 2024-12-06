@@ -2,12 +2,10 @@ import 'package:al_hassan_warsha/core/utils/functions/service_locator.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/empty_data_screen.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/all_kitchen_items_body.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_dialog_add_new_type.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gallery_body.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/side_bar_gallery.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/gallery_view_desktop.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/mobile_layout/gallery_view_mobile.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/tablet_layout/gallery_tablet_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,91 +39,17 @@ class GalleryView extends StatelessWidget {
       }, builder: (context, state) {
         var galleryBloc = context.read<GalleryBloc>();
 
-        return CustomAdaptiveLayout(
-          desktopLayout: (context) =>
-              GalleryViewForDesktopLayOut(galleryBloc: galleryBloc),
-          mobileLayout: (context) => const Text("المعرض"),
-          tabletLayout: (context) => const Text("المعرض"),
+        return Expanded(
+          child: CustomAdaptiveLayout(
+            desktopLayout: (context,[constraint]) =>
+                GalleryViewForDesktopLayOut(galleryBloc: galleryBloc,),
+            mobileLayout: (context) => const MobileGalleryView(),
+            tabletLayout: (context,[constraint]) =>  const GalleryTabletView()
+          ),
         );
       }),
     );
   }
 }
 
-class GalleryViewForDesktopLayOut extends StatelessWidget {
-  const GalleryViewForDesktopLayOut({
-    super.key,
-    required this.galleryBloc,
-  });
 
-  final GalleryBloc galleryBloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Expanded(
-              child: SideBarGallery(
-            currIndex: galleryBloc.showingIndex,
-            changeIndex: (index) {
-              if (index != galleryBloc.showingIndex) {
-                galleryBloc.add(ShowMoreKitcenTypeEvent(
-                    currIndex: index,
-                    isOpen: true,
-                    typeId: galleryBloc.onlyTypeModelList[index].typeId));
-              }
-            },
-            addType: () {
-              galleryBloc.add(AddNewKitchenTypeEvent());
-            },
-            typesList: galleryBloc.onlyTypeModelList,
-            controller: galleryBloc.controller,
-            formKey: galleryBloc.formKey,
-          )),
-          galleryBloc.enableMoreWidget
-              ? Expanded(
-                  flex: 4,
-                  child: ShowingAllKitchenItemsGrid(
-                    currentTypeModel: galleryBloc.currentShowMoreModel,
-                    bloc: galleryBloc,
-                  ),
-                )
-              : galleryBloc.basickitchenTypesList.isNotEmpty
-                  ? Expanded(
-                      flex: 4,
-                      child: GalleryBody(
-                        kitchenList: galleryBloc.basickitchenTypesList,
-                        bloc: galleryBloc,
-                      ))
-                  : EmptyDataScreen(
-                      flex: 4,
-                      emptyText: "ليس لديك اي انواع من المطابخ اضف واحدا ",
-                      onTap: () {
-                        showDialogToAddNewKitchenType(context, galleryBloc);
-                      },
-                    ),
-        ],
-      ),
-    );
-  }
-}
-
-Future<dynamic> showDialogToAddNewKitchenType(
-    BuildContext context, GalleryBloc galleryBloc) {
-  return showDialog(
-      context: context,
-      builder: (context) => Form(
-            key: galleryBloc.formKey,
-            child: AddNewTypeDialog(
-              add: () {
-                if (galleryBloc.formKey.currentState!.validate() &&
-                    galleryBloc.controller.text.trim().isNotEmpty) {
-                  galleryBloc.add(AddNewKitchenTypeEvent());
-                }
-              },
-              controller: galleryBloc.controller,
-              formKey: galleryBloc.formKey,
-            ),
-          ));
-}

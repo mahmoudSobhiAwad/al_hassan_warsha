@@ -51,7 +51,7 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
             child: Scaffold(
               backgroundColor: AppColors.white,
               body: CustomAdaptiveLayout(
-                desktopLayout: (context) => KitchenGalleryCustomView(
+                desktopLayout: (context,[constraint]) => KitchenGalleryCustomView(
                   bloc: bloc,
                   typeId: widget.typeId,
                   kitchenModel: widget.kitchenModel,
@@ -59,7 +59,7 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
                   kitchenMediaList: pickedMediaList,
                 ),
                 mobileLayout: (context) => const Text("Mobile Layout"),
-                tabletLayout: (context) => const Text("Tablet Layout"),
+                tabletLayout: (context,[constraint]) => const Text("Tablet Layout"),
               ),
             ),
           );

@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_app_bar.dart';
@@ -20,15 +21,15 @@ class BasicHomeWithDiffrentLayOut extends StatelessWidget {
     return Column(
       children: [
         CustomAdaptiveLayout(
-          desktopLayout: (context) => CustomAppBar(
+          desktopLayout: (context,[constraint]) => CustomAppBar(
             currIndex: currIndex,
             changeIndex: (pageIndex) {
               changeIndex(pageIndex);
             },
           ),
           mobileLayout: (context) => const SizedBox(),
-          tabletLayout: (context) => CustomAppBar(
-            textStyle: AppFontStyles.extraBold30(context),
+          tabletLayout: (context,[constraint]) => CustomAppBar(
+            textStyle: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white),
             currIndex: currIndex,
             enableLogo: false,
             changeIndex: (pageIndex) {

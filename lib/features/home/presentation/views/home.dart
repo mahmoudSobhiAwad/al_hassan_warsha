@@ -27,7 +27,7 @@ class HomeScreenView extends StatelessWidget {
               builder: (context, state) {
             var bloc = context.read<HomeBasicBloc>();
             return CustomAdaptiveLayout(
-              desktopLayout: (context) => HomeScreenDesktopLayOut(
+              desktopLayout: (context,[constraint]) => HomeScreenDesktopLayOut(
                 isLoading: bloc.isLoading,
                 onTap: (index) {
                   bloc.add(NavToPageEvent(currIndex: index));
@@ -43,7 +43,7 @@ class HomeScreenView extends StatelessWidget {
                 isLoading: bloc.isLoading,
                 pageIndex: bloc.currPageIndex,
               ),
-              tabletLayout: (context) => HomeScreenTabletLayout(
+              tabletLayout: (context,[constrain]) => HomeScreenTabletLayout(
                 isLoading: bloc.isLoading,
                 onTap: (index) {
                   bloc.add(NavToPageEvent(currIndex: index));

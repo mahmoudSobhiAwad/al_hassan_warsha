@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -19,85 +20,81 @@ class ManagmentBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Row(
-        children: [
-          Expanded(
-              child: SideBarManagement(
-            neverLength: bloc.ordersList
-                .where((item) => item.orderStatus != OrderStatus.finished)
-                .length,
-            finishedLength: bloc.ordersList
-                .where((item) => item.orderStatus == OrderStatus.finished)
-                .length,
-            totalLength: bloc.ordersList.length,
-            nearLenght: bloc.ordersList
-                .where((item) => item.orderStatus == OrderStatus.veryNear)
-                .length,
-            changeIndex: (index) {
-              bloc.add(ChangeCategrizedListEvent(index: index));
-            },
-            currIndex: bloc.currIndex,
-          )),
-          Expanded(
-            flex: 4,
-            child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    SearchBarInManagment(
-                      searchList: searchListInOrders,
-                      changeSearchType: (text) {
-                        bloc.add(ChangeSearchKeyEvent(searchKey: text));
-                      },
-                      searchFunc: () {
-                        if (bloc.searchKeyWord.trim().isNotEmpty &&
-                            bloc.searchKey.valueArSearh.isNotEmpty) {
-                          bloc.add(SearchForOrderEvent(enable: true));
-                        } else {
-                          showCustomSnackBar(
-                              context, "حدد كلمة البحث او نوع البحث ",
-                              backgroundColor: AppColors.orange);
-                        }
-                      },
-                      searchKeyWord: bloc.searchKeyWord,
-                      searchKey: bloc.searchKey,
-                      changeSearchText: (text) {
-                        bloc.searchKeyWord = text;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 24,
-                    ),
-                    switch (bloc.enableSearchMode) {
-                      true => Builder(builder: (context) {
-                          return Expanded(
-                            child: SearchedOrderResutl(
-                              searchKey: bloc.searchKeyWord,
-                              bloc: bloc,
-                              backToMain: () {
-                                bloc.add(SearchForOrderEvent(enable: false));
-                              },
-                              searchedList: bloc.searchList,
-                              isSearchLoading: bloc.isSearchLoading,
-                            ),
-                          );
-                        }),
-                      false => Expanded(
-                            child: OrderListWithFilter(
-                          bloc: bloc,
-                        )),
-                    }
-                  ],
-                )),
-          )
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+            child: SideBarManagement(
+          neverLength: bloc.ordersList
+              .where((item) => item.orderStatus != OrderStatus.finished)
+              .length,
+          finishedLength: bloc.ordersList
+              .where((item) => item.orderStatus == OrderStatus.finished)
+              .length,
+          totalLength: bloc.ordersList.length,
+          nearLenght: bloc.ordersList
+              .where((item) => item.orderStatus == OrderStatus.veryNear)
+              .length,
+          changeIndex: (index) {
+            bloc.add(ChangeCategrizedListEvent(index: index));
+          },
+          currIndex: bloc.currIndex,
+        )),
+        Expanded(
+          flex: 4,
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  SearchBarInManagment(
+                    searchList: searchListInOrders,
+                    changeSearchType: (text) {
+                      bloc.add(ChangeSearchKeyEvent(searchKey: text));
+                    },
+                    searchFunc: () {
+                      if (bloc.searchKeyWord.trim().isNotEmpty &&
+                          bloc.searchKey.valueArSearh.isNotEmpty) {
+                        bloc.add(SearchForOrderEvent(enable: true));
+                      } else {
+                        showCustomSnackBar(
+                            context, "حدد كلمة البحث او نوع البحث ",
+                            backgroundColor: AppColors.orange);
+                      }
+                    },
+                    searchKeyWord: bloc.searchKeyWord,
+                    searchKey: bloc.searchKey,
+                    changeSearchText: (text) {
+                      bloc.searchKeyWord = text;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  switch (bloc.enableSearchMode) {
+                    true => Builder(builder: (context) {
+                        return Expanded(
+                          child: SearchedOrderResutl(
+                            searchKey: bloc.searchKeyWord,
+                            bloc: bloc,
+                            backToMain: () {
+                              bloc.add(SearchForOrderEvent(enable: false));
+                            },
+                            searchedList: bloc.searchList,
+                            isSearchLoading: bloc.isSearchLoading,
+                          ),
+                        );
+                      }),
+                    false => Expanded(
+                          child: OrderListWithFilter(
+                        bloc: bloc,
+                      )),
+                  }
+                ],
+              )),
+        )
+      ],
     );
   }
 }
-
