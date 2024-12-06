@@ -28,10 +28,27 @@ class HomeScreenView extends StatelessWidget {
             var bloc = context.read<HomeBasicBloc>();
             return CustomAdaptiveLayout(
               desktopLayout: (context) => HomeScreenDesktopLayOut(
-                bloc: bloc,
+                isLoading: bloc.isLoading,
+                onTap: (index) {
+                  bloc.add(NavToPageEvent(currIndex: index));
+                },
               ),
-              mobileLayout: (context) => HomePhoneLayOut(onChangePage: (){}, onTap: (){}),
-              tabletLayout: (context) => HomeScreenTabletLayout(bloc: bloc),
+              mobileLayout: (context) => HomePhoneLayOut(
+                onChangePage: (index) {
+                  bloc.add(ChangePageInPhoneLayoutEvent(pageIndex: index));
+                },
+                onTap: (index) {
+                  bloc.add(NavToPageEvent(currIndex: bloc.currPageIndex));
+                },
+                isLoading: bloc.isLoading,
+                pageIndex: bloc.currPageIndex,
+              ),
+              tabletLayout: (context) => HomeScreenTabletLayout(
+                isLoading: bloc.isLoading,
+                onTap: (index) {
+                  bloc.add(NavToPageEvent(currIndex: index));
+                },
+              ),
             );
           }, listener: (context, state) {
             var bloc = context.read<HomeBasicBloc>();
@@ -114,7 +131,8 @@ class HomeScreenView extends StatelessWidget {
                             iconData: Icons.restart_alt_rounded,
                             pickPathesWidget: PickPathForDb(
                               pickTempPath: () {
-                                bloc.add(CreatePathForMeidaAndTempDataEvent(isRestoring: true));
+                                bloc.add(CreatePathForMeidaAndTempDataEvent(
+                                    isRestoring: true));
                               },
                               tempPath: bloc.backUpPath,
                             ),
@@ -139,4 +157,3 @@ class HomeScreenView extends StatelessWidget {
     );
   }
 }
-

@@ -26,9 +26,11 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     on<ConfirmToCreateTheNewDb>(confirmToCreate);
     on<NaveToExportFromTempEvent>(navToExportDialog);
     on<ExportFromTempDataEvent>(backUpTheDate);
+    on<ChangePageInPhoneLayoutEvent>(changePageInPhone);
   }
   bool isExist = false;
   bool isLoading = false;
+  int currPageIndex = 0;
   String? tempPath;
   String? backUpPath;
   String mediaPath = Directory(
@@ -39,6 +41,13 @@ class HomeBasicBloc extends Bloc<HomeBasicEvent, HomeBasicState> {
     currIndex = event.currIndex;
 
     emit(ToggleBetweenPagesState(currIndex: currIndex));
+  }
+
+  FutureOr<void> changePageInPhone(
+      ChangePageInPhoneLayoutEvent event, Emitter<HomeBasicState> emit) async {
+    currPageIndex = event.pageIndex;
+
+    emit(ChangePageInPhoneLayOutState());
   }
 
   FutureOr<void> checkExistDB(

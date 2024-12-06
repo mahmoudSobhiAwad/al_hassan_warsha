@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/home/data/home_data.dart';
@@ -7,9 +8,15 @@ import 'package:flutter/material.dart';
 
 class HomePhoneLayOut extends StatelessWidget {
   const HomePhoneLayOut(
-      {super.key, required this.onChangePage, required this.onTap});
-  final void Function() onTap;
-  final void Function() onChangePage;
+      {super.key,
+      required this.onChangePage,
+      required this.onTap,
+      required this.isLoading,
+      required this.pageIndex});
+  final void Function(int) onTap;
+  final void Function(int) onChangePage;
+  final bool isLoading;
+  final int pageIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +43,33 @@ class HomePhoneLayOut extends StatelessWidget {
             const Expanded(child: SizedBox()),
             Expanded(
               flex: 5,
-              child: PageView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: context.screenWidth*0.05),
-                      child: HomeItem(
-                        onTap: () {},
-                        homeModel: homeModelList[index],
-                         isPhone: true,
+              child: isLoading
+                  ? Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.lightGray1,
+                          borderRadius: BorderRadius.circular(12),
+                          backgroundBlendMode: BlendMode.dstIn),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
                       ),
-                    );
-                  }),
+                    )
+                  : PageView.builder(
+                      onPageChanged: (index) {
+                        onChangePage(index);
+                      },
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: context.screenWidth * 0.05),
+                          child: HomeItem(
+                            onTap: () {
+                              onTap(index);
+                            },
+                            homeModel: homeModelList[index],
+                          ),
+                        );
+                      }),
             ),
             const SizedBox(
               height: 25,
@@ -56,12 +78,12 @@ class HomePhoneLayOut extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ...List.generate(3, (index) {
-                  return index == 0
+                  return index == pageIndex
                       ? Container(
                           padding: const EdgeInsets.all(4),
                           width: 50,
                           decoration: BoxDecoration(
-                            color: AppColors.black,
+                            color: AppColors.white,
                             borderRadius: BorderRadius.circular(4),
                           ),
                         )
@@ -69,7 +91,8 @@ class HomePhoneLayOut extends StatelessWidget {
                           width: 25,
                           padding: const EdgeInsets.all(4),
                           decoration: const BoxDecoration(
-                              color: AppColors.green, shape: BoxShape.circle),
+                              color: AppColors.lightGray1,
+                              shape: BoxShape.circle),
                         );
                 })
               ],
@@ -82,8 +105,3 @@ class HomePhoneLayOut extends StatelessWidget {
   }
 }
 
-
-extension MediaQueryValues on BuildContext {
-  double get screenHeight => MediaQuery.sizeOf(this).height;
-  double get screenWidth => MediaQuery.sizeOf(this).width;
-}

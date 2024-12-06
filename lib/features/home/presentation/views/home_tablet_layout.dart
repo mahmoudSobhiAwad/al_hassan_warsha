@@ -1,13 +1,14 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
+import 'package:al_hassan_warsha/features/home/data/home_data.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/clipped_container.dart';
-import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_list.dart';
-import 'package:al_hassan_warsha/features/home/presentation/views/widgets/logo_widget.dart';
+import 'package:al_hassan_warsha/features/home/presentation/views/widgets/home_box_item.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreenTabletLayout extends StatelessWidget {
-  const HomeScreenTabletLayout({super.key, required this.bloc});
-  final HomeBasicBloc bloc;
+  const HomeScreenTabletLayout(
+      {super.key, required this.onTap, required this.isLoading});
+  final void Function(int) onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +33,34 @@ class HomeScreenTabletLayout extends StatelessWidget {
                   "اختيارك الأمثل لجميع أعمال الالوميتال",
                   style: AppFontStyles.extraBold40(context),
                 )),
-          
-            bloc.isLoading
+            isLoading
                 ? const CircularProgressIndicator()
                 : Expanded(
                     child: Column(
                       children: [
-                        const Expanded(flex: 3,child: SizedBox()),
+                        const Expanded(child: SizedBox()),
                         Expanded(
-                            flex: 3,
-                            child: HomeItemsList(
-                              bloc: bloc,
-                              
-                              textStyle: AppFontStyles.extraBold35(context),
-                            )),
+                          flex: 5,
+                          child: GridView.builder(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              itemCount: 3,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 20,
+                                      childAspectRatio: 1.25,
+                                      mainAxisSpacing: 15),
+                              itemBuilder: (context, index) {
+                                return HomeItem(
+                                  textStyle: AppFontStyles.extraBold40(context),
+                                  onTap: () {
+                                    onTap(index);
+                                  },
+                                  homeModel: homeModelList[index],
+                                );
+                              }),
+                        ),
                         const Expanded(child: SizedBox()),
                       ],
                     ),

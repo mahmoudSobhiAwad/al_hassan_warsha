@@ -9,6 +9,7 @@ final class ToggleBetweenPagesState extends HomeBasicState {
   final int currIndex;
   ToggleBetweenPagesState({required this.currIndex});
 }
+final class ChangePageInPhoneLayOutState extends HomeBasicState {}
 
 final class FoundDbState extends HomeBasicState {}
 

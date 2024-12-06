@@ -8,14 +8,12 @@ class HomeItem extends StatelessWidget {
       {super.key,
       required this.onTap,
       required this.homeModel,
-      this.contstaints,
       this.textStyle,
-      this.isPhone = false});
+      });
   final HomeModel homeModel;
   final void Function() onTap;
   final TextStyle? textStyle;
-  final bool isPhone;
-  final BoxConstraints? contstaints;
+ 
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -25,7 +23,7 @@ class HomeItem extends StatelessWidget {
       focusColor: Colors.white,
       splashColor: Colors.white,
       child: Container(
-        width: MediaQuery.sizeOf(context).width*0.3,
+         width: MediaQuery.sizeOf(context).width*0.3,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(35),
@@ -37,22 +35,20 @@ class HomeItem extends StatelessWidget {
                   color: AppColors.blackOpacity25,
                   offset: Offset(4, 25)),
             ]),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                fit: FlexFit.tight,
-                child: Image.asset(
-                  homeModel.imagePath, 
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              fit: FlexFit.tight,
+              child: Image.asset(
+                homeModel.imagePath, 
               ),
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(homeModel.title,
-                      style: textStyle ?? AppFontStyles.extraBold50(context))),
-            ],
-          ),
+            ),
+            FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(homeModel.title,
+                    style: textStyle ?? AppFontStyles.extraBold50(context))),
+          ],
         ),
       ),
     );

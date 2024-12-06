@@ -7,6 +7,10 @@ class ChangeCurrentPageEvent extends HomeBasicEvent {
   final int currIndex;
   ChangeCurrentPageEvent({required this.currIndex});
 }
+class ChangePageInPhoneLayoutEvent extends HomeBasicEvent {
+  final int pageIndex;
+  ChangePageInPhoneLayoutEvent({required this.pageIndex});
+}
 
 final class NavToPageEvent extends HomeBasicEvent {
   final int currIndex;

@@ -3,9 +3,10 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
 class AppBarItem extends StatelessWidget {
-  const AppBarItem({super.key,required this.text,required this.enable});
+  const AppBarItem({super.key,required this.text,required this.enable,this.textStyle});
   final String text;
   final bool enable;
+  final TextStyle?textStyle;
   @override
   Widget build(BuildContext context) {
     return IntrinsicWidth(
@@ -15,7 +16,7 @@ class AppBarItem extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Text(
               text,
-              style: AppFontStyles.extraBold50(context).copyWith(
+              style:textStyle?? AppFontStyles.extraBold50(context).copyWith(
                 color: AppColors.white,
               ),
             ),

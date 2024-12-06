@@ -1,43 +1,47 @@
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_app_bar.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/financial_view.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/gallery_view.dart';
-import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/management_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class BasicHomeDesktopLayOut extends StatelessWidget {
-  const BasicHomeDesktopLayOut({
+class BasicHomeWithDiffrentLayOut extends StatelessWidget {
+  const BasicHomeWithDiffrentLayOut({
     super.key,
-    required this.bloc,
+    required this.currIndex,
+    required this.changeIndex,
   });
 
-  final HomeBasicBloc bloc;
+  final int currIndex;
+  final void Function(int) changeIndex;
   @override
   Widget build(BuildContext context) {
-    int index = bloc.currIndex;
-    return BlocBuilder(
-      builder: (context, state) {
-        if (state is ToggleBetweenPagesState) {
-          index = state.currIndex;
-        }
-        return Column(
-          children: [
-            CustomAppBar(
-              currIndex: index,
-              changeIndex: (pageIndex) {
-                bloc.add(ChangeCurrentPageEvent(currIndex: pageIndex));
-              },
-            ),
-            [
-              const GalleryView(),
-              const ManagementView(),
-              const FinancialView(),
-            ][index],
-          ],
-        );
-      },
-      bloc: bloc,
+    return Column(
+      children: [
+        CustomAdaptiveLayout(
+          desktopLayout: (context) => CustomAppBar(
+            currIndex: currIndex,
+            changeIndex: (pageIndex) {
+              changeIndex(pageIndex);
+            },
+          ),
+          mobileLayout: (context) => const SizedBox(),
+          tabletLayout: (context) => CustomAppBar(
+            textStyle: AppFontStyles.extraBold30(context),
+            currIndex: currIndex,
+            enableLogo: false,
+            changeIndex: (pageIndex) {
+              changeIndex(pageIndex);
+            },
+          ),
+        ),
+        [
+          const GalleryView(),
+          const ManagementView(),
+          const FinancialView(),
+        ][currIndex],
+      ],
     );
   }
 }
