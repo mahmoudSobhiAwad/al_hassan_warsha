@@ -55,3 +55,5 @@ final class FailureFetchMoreKitchenState extends GalleryState {
   FailureFetchMoreKitchenState({this.errMessage});
 }
 final class ChangeCurrentPageState extends GalleryState {}
+
+final class ChangeSideBarActivationState extends GalleryState {}

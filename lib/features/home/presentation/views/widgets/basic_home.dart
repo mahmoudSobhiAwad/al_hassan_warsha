@@ -4,7 +4,6 @@ import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_ba
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/basic_home_desktop.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/bottom_nav_bar_phone.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BasicHomeView extends StatelessWidget {

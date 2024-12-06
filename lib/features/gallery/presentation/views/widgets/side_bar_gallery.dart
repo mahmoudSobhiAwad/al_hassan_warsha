@@ -13,6 +13,8 @@ class SideBarGallery extends StatelessWidget {
     required this.currIndex,
     required this.controller,
     required this.formKey,
+    this.constraints,
+    this.openCloseSideBar
   });
   final List<OnlyTypeModel> typesList;
   final void Function() addType;
@@ -20,20 +22,22 @@ class SideBarGallery extends StatelessWidget {
   final int currIndex;
   final TextEditingController controller;
   final GlobalKey<FormState> formKey;
+  final Widget?openCloseSideBar;
+  final BoxConstraints?constraints;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      constraints: constraints,
       padding: const EdgeInsets.all(16),
       color: AppColors.veryLightGray,
       child: CustomScrollView(
         slivers: [
           HeaderSetionInGallery(
+            openCloseSideBar: openCloseSideBar,
             formKey: formKey,
             controller: controller,
-            addType: () {
-              addType();
-            },
+            addType: addType,
           ),
           ListOfKitchenTypes(
             currIndex: currIndex,

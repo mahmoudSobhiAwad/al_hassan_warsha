@@ -25,127 +25,120 @@ class AddOrderBody extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           child: Scrollbar(
-            radius: const Radius.circular(5),
-            thickness: 12,
-            thumbVisibility: true,
-            trackVisibility: true,
             scrollbarOrientation: ScrollbarOrientation.right,
-            child: ScrollConfiguration(
-              behavior: const ScrollBehavior().copyWith(
-                scrollbars: false,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 25.0),
-                child: CustomScrollView(
-                  primary: true,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: CustomerInfoInOrder(
-                        formKey: bloc.fromKey,
-                        isReadOnly: model != null,
-                        model: model ?? bloc.customerModel,
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 25.0),
+              child: CustomScrollView(
+                scrollBehavior:
+                    const ScrollBehavior().copyWith(scrollbars: false),
+                primary: true,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: CustomerInfoInOrder(
+                      formKey: bloc.fromKey,
+                      isReadOnly: model != null,
+                      model: model ?? bloc.customerModel,
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 16,
-                      ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 16,
                     ),
-                    SliverToBoxAdapter(
-                      child: OrderDetails(
-                        kitchenTypesList: bloc.allKitchenTypes,
-                        pickedMeidaList: bloc.mediaOrderList,
-                        formKey: bloc.fromKey,
-                        addMore: () {
-                          bloc.add(AddExtraInOrder());
-                        },
-                        delteItem: (index) {
-                          bloc.add(RemoveExtraItem(index: index));
-                        },
-                        extraList: bloc.extraOrdersList,
-                        colorOrderModel: bloc.colorModel,
-                        orderModel: bloc.orderModel,
-                        changeColorValue: (value) {
-                          bloc.add(ChangeColorOfOrderEvent(colorValue: value));
-                        },
-                        changeDate: (time) {
-                          bloc.add(ChangeDateOfOrderEvent(dateTime: time));
-                        },
-                        changekitchenTypeValue: (type) {
-                          bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
-                        },
-                        addMoreMedia: (media) {
-                          bloc.add(AddMediaInAddOrder(list: media));
-                        },
-                        delteMedia: (int index) {
-                          bloc.add(RemoveMediItemEvent(index: index));
-                        },
-                      ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: OrderDetails(
+                      kitchenTypesList: bloc.allKitchenTypes,
+                      pickedMeidaList: bloc.mediaOrderList,
+                      formKey: bloc.fromKey,
+                      addMore: () {
+                        bloc.add(AddExtraInOrder());
+                      },
+                      delteItem: (index) {
+                        bloc.add(RemoveExtraItem(index: index));
+                      },
+                      extraList: bloc.extraOrdersList,
+                      colorOrderModel: bloc.colorModel,
+                      orderModel: bloc.orderModel,
+                      changeColorValue: (value) {
+                        bloc.add(ChangeColorOfOrderEvent(colorValue: value));
+                      },
+                      changeDate: (time) {
+                        bloc.add(ChangeDateOfOrderEvent(dateTime: time));
+                      },
+                      changekitchenTypeValue: (type) {
+                        bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
+                      },
+                      addMoreMedia: (media) {
+                        bloc.add(AddMediaInAddOrder(list: media));
+                      },
+                      delteMedia: (int index) {
+                        bloc.add(RemoveMediItemEvent(index: index));
+                      },
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 16,
-                      ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 16,
                     ),
-                    SliverToBoxAdapter(
-                      child: BillDetails(
-                        enableController: false,
-                        onTapToChangeRemain: () {
-                          bloc.add(ChangeRemainInAddOrderEvent());
-                        },
-                        changeStepsCounter: (increase) {
-                          bloc.add(ChangeCounterOfStepsInPillEvent(
-                              increase: increase));
-                        },
-                        pillModel: bloc.pillModel,
-                        onChangePayment: (paymentWay) {
-                          bloc.add(
-                              ChangeOptionPaymentEvent(paymentWay: paymentWay));
-                        },
-                      ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: BillDetails(
+                      enableController: false,
+                      onTapToChangeRemain: () {
+                        bloc.add(ChangeRemainInAddOrderEvent());
+                      },
+                      changeStepsCounter: (increase) {
+                        bloc.add(ChangeCounterOfStepsInPillEvent(
+                            increase: increase));
+                      },
+                      pillModel: bloc.pillModel,
+                      onChangePayment: (paymentWay) {
+                        bloc.add(
+                            ChangeOptionPaymentEvent(paymentWay: paymentWay));
+                      },
                     ),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: 20,
-                      ),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 20,
                     ),
-                    SliverToBoxAdapter(
-                      child: Center(
-                          child: CustomPushContainerButton(
-                        onTap: () {
-                          if (bloc.fromKey.currentState!.validate()) {
-                            bloc.add(AddNewOrderEvent(customerModel: model));
-                          }
-                        },
-                        childInstead: bloc.isLoadingActionsOrder
-                            ? const CircularProgressIndicator(
-                                color: AppColors.white,
-                              )
-                            : Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "اضافة ",
-                                    style: AppFontStyles.extraBold30(context)
-                                        .copyWith(
-                                      color: AppColors.white,
-                                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: Center(
+                        child: CustomPushContainerButton(
+                      onTap: () {
+                        if (bloc.fromKey.currentState!.validate()) {
+                          bloc.add(AddNewOrderEvent(customerModel: model));
+                        }
+                      },
+                      childInstead: bloc.isLoadingActionsOrder
+                          ? const CircularProgressIndicator(
+                              color: AppColors.white,
+                            )
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "اضافة ",
+                                  style: AppFontStyles.extraBold30(context)
+                                      .copyWith(
+                                    color: AppColors.white,
                                   ),
-                                  const IconButton(
-                                      onPressed: null,
-                                      icon: Icon(
-                                        Icons.add,
-                                        color: AppColors.white,
-                                        size: 30,
-                                      ))
-                                ],
-                              ),
-                        enableIcon: false,
-                        borderRadius: 16,
-                      )),
-                    ),
-                  ],
-                ),
+                                ),
+                                const IconButton(
+                                    onPressed: null,
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: AppColors.white,
+                                      size: 30,
+                                    ))
+                              ],
+                            ),
+                      enableIcon: false,
+                      borderRadius: 16,
+                    )),
+                  ),
+                ],
               ),
             ),
           ),

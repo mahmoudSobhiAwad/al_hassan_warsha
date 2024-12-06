@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_type.dart';
@@ -44,7 +45,7 @@ class CompleteKitchenType extends StatelessWidget {
                 ],
               )
             : SizedBox(
-                height: MediaQuery.sizeOf(context).height * 0.2,
+                height:context.screenHeight * 0.2,
                 child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

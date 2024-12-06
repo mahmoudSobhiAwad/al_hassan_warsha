@@ -13,10 +13,16 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
     super.key,
     required this.bloc,
     required this.currentTypeModel,
+    this.aspectRatio = 2,
+    this.crossAxisCount = 3,
+    this.imageWidth = 0.4,
   });
 
   final GalleryBloc bloc;
   final KitchenTypeModel currentTypeModel;
+  final int crossAxisCount;
+  final double imageWidth;
+  final double aspectRatio;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
       child: Column(
         children: [
           AppBarWithLinking(
-            enableColor: false,
+              enableColor: false,
               onBack: () {
                 bloc.add(ShowMoreKitcenTypeEvent(
                   currIndex: -1,
@@ -48,8 +54,7 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
                                 galleryBloc: bloc,
                                 pagesGalleryEnum: PagesGalleryEnum.add,
                                 typeId: currentTypeModel.typeId,
-                                titleOfAppBar:
-                                    currentTypeModel.typeName,
+                                titleOfAppBar: currentTypeModel.typeName,
                               )));
                 },
               )),
@@ -58,6 +63,9 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
           ),
           Expanded(
               child: CustomGridKitchenTypes(
+            crossAxisCount: crossAxisCount,
+            aspectRatio: aspectRatio,
+            imageWidth: imageWidth,
             bloc: bloc,
             kitchenList: currentTypeModel.kitchenList,
             typeId: currentTypeModel.typeId,
@@ -66,11 +74,15 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
           const SizedBox(
             height: 18,
           ),
-          currentTypeModel.itemsCount>10? CustomPaginationWidget(
-            length: (currentTypeModel.itemsCount/10).ceil() ,currentPage: bloc.currPageInShowMore, onPageChanged: (int index) {
-              bloc.add(ChangePageIndexInShowMoreEvent(index:index ));
-              },
-          ): const SizedBox(),
+          currentTypeModel.itemsCount > 10
+              ? CustomPaginationWidget(
+                  length: (currentTypeModel.itemsCount / 10).ceil(),
+                  currentPage: bloc.currPageInShowMore,
+                  onPageChanged: (int index) {
+                    bloc.add(ChangePageIndexInShowMoreEvent(index: index));
+                  },
+                )
+              : const SizedBox(),
         ],
       ),
     );

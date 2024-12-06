@@ -9,15 +9,19 @@ class HeaderSetionInGallery extends StatelessWidget {
     required this.addType,
     required this.formKey,
     required this.controller,
+    this.openCloseSideBar,
   });
   final void Function() addType;
   final GlobalKey<FormState> formKey;
   final TextEditingController controller;
+  final Widget?openCloseSideBar;
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Column(
         children: [
+          openCloseSideBar??const SizedBox(),
+          
           CustomPushContainerButton(
             onTap: () {
               showDialog(

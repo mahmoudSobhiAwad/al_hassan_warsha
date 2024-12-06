@@ -19,12 +19,14 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<FetchMoreTypesEvent>(fetchMoreTypes);
     on<ChangePageIndexInShowMoreEvent>(changeCurrentPageOfPaginationInShowMore);
     on<DefineTimerFunctionEvent>(changeCurrPage);
+    on<ChangeSideBarActivationEvent>(changeSideBarActivation);
   }
   int showingIndex = -1;
   bool enableMoreWidget = false;
   int currPageInShowMore = 1;
   bool isLoading = true;
   bool isMoredLoading = true;
+  bool isSideBarActive = false;
 
   List<KitchenTypeModel> basickitchenTypesList = [];
   List<KitchenModel> newestKitchenTypeList = [];
@@ -51,6 +53,12 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
   final formKey = GlobalKey<FormState>();
   Timer? timer;
   int currentPage = 0;
+
+  FutureOr<void> changeSideBarActivation(
+      ChangeSideBarActivationEvent event, Emitter<GalleryState> emit) async {
+    isSideBarActive = !isSideBarActive;
+    emit(ChangeSideBarActivationState());
+  }
 
   FutureOr<void> changeCurrPage(
       DefineTimerFunctionEvent event, Emitter<GalleryState> emit) async {

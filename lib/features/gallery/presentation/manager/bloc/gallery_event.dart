@@ -31,3 +31,5 @@ final class ChangePageIndexInShowMoreEvent extends GalleryEvent {
 }
 final class DefineTimerFunctionEvent extends GalleryEvent {
 }
+final class ChangeSideBarActivationEvent extends GalleryEvent {
+}

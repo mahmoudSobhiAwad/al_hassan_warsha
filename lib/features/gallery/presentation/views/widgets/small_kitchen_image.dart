@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:al_hassan_warsha/core/utils/app_images/home_images.dart';
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/safe_search_extentsion.dart';
@@ -35,7 +36,7 @@ class SmallKitchenTypeImage extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: Container(
                     height: 70,
-                    width: MediaQuery.sizeOf(context).width *(imageWidth?? 0.2),
+                    width: context.screenWidth *(imageWidth?? 0.2),
                     decoration: const BoxDecoration(
                         color: AppColors.blackOpacity50,
                         borderRadius: BorderRadius.only(
@@ -98,9 +99,9 @@ class CustomSmallImageWithCustomWidth extends StatelessWidget {
         pickedMedia==null?Image.asset(
               scale: 1,
               HomeAssets.emptySceen,
-              width: MediaQuery.sizeOf(context).width * 0.2,
-              height: MediaQuery.sizeOf(context).height * 0.2,
-              fit: BoxFit.fitWidth,
+              width: context.screenWidth * 0.2,
+              height:context.screenHeight * 0.2,
+              fit: BoxFit.fill,
             ):
         
         switch (pickedMedia!.mediaType) {
@@ -109,16 +110,16 @@ class CustomSmallImageWithCustomWidth extends StatelessWidget {
               errorBuilder: (context,_,s){
                 return const Icon(Icons.error,color: AppColors.red,);
               },
-              width: MediaQuery.sizeOf(context).width * (widthOfImage ?? 0.2),
-              height: MediaQuery.sizeOf(context).height * 0.2,
+              width: context.screenWidth * (widthOfImage ?? 0.2),
+              height: context.screenHeight * 0.2,
               fit: BoxFit.fill,
             ),
           MediaType.video => const CustomVideoItem(),
           MediaType.unknown => Image.asset(
               scale: 1,
               HomeAssets.emptySceen,
-              width: MediaQuery.sizeOf(context).width * 0.2,
-              height: MediaQuery.sizeOf(context).height * 0.2,
+              width: context.screenHeight* 0.2,
+              height: context.screenHeight * 0.2,
               fit: BoxFit.fitWidth,
             ),
         });

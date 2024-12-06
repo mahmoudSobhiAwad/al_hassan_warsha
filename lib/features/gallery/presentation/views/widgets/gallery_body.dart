@@ -6,9 +6,10 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/lat
 import 'package:flutter/material.dart';
 
 class GalleryBody extends StatefulWidget {
-  const GalleryBody({super.key, required this.bloc, required this.kitchenList});
+  const GalleryBody({super.key, required this.bloc, required this.kitchenList,this.enableLastAdded=true});
   final GalleryBloc bloc;
   final List<KitchenTypeModel> kitchenList;
+  final bool enableLastAdded;
 
   @override
   State<GalleryBody> createState() => _GalleryBodyState();
@@ -41,14 +42,16 @@ class _GalleryBodyState extends State<GalleryBody> {
       child: Scrollbar(
         radius: const Radius.circular(5),
         thickness: 12,
-        thumbVisibility: true,
-        trackVisibility: true,
+        thumbVisibility: widget.enableLastAdded,
+        trackVisibility: widget.enableLastAdded,
         controller: scrollController,
         scrollbarOrientation: ScrollbarOrientation.right,
         child: ScrollConfiguration(
           behavior:const ScrollBehavior().copyWith(scrollbars: false),
-          child: CustomScrollView(controller: scrollController, slivers: [
-            SliverToBoxAdapter(
+          child: CustomScrollView(
+            controller: scrollController,
+             slivers: [
+          widget.enableLastAdded?  SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -86,7 +89,9 @@ class _GalleryBodyState extends State<GalleryBody> {
                   ],
                 ),
               ),
-            ),
+            )
+            :const SliverToBoxAdapter(),
+           
             widget.bloc.isLoading
                 ? const SliverToBoxAdapter(
                     child: SizedBox(

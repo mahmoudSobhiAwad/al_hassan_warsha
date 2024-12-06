@@ -22,20 +22,21 @@ class AddnewTypeWithKitchenName extends StatelessWidget {
           child: SizedBox(),
         ),
         Expanded(
-          flex: 2,
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(0),
-            leading: Text(
-              model.typeName,
-              style: AppFontStyles.extraBold28(context).copyWith(
-                overflow: TextOverflow.ellipsis,
+          flex: 4,
+          child: Row(
+            children: [
+              Text(
+                model.typeName,
+                style: AppFontStyles.extraBold28(context).copyWith(
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-            title: Text(
-              "${model.itemsCount}",
-              style: AppFontStyles.extraBold20(context)
-                  .copyWith(color: AppColors.lightGray1),
-            ),
+              Text(
+                "${model.itemsCount}",
+                style: AppFontStyles.extraBold20(context)
+                    .copyWith(color: AppColors.lightGray1),
+              ),
+            ],
           ),
         ),
         const Expanded(

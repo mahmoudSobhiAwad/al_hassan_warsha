@@ -3,7 +3,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
-import 'package:al_hassan_warsha/features/gallery/presentation/views/gallery_view_desktop.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/gallery_view_desktop.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/mobile_layout/gallery_view_mobile.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/tablet_layout/gallery_tablet_view.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class GalleryView extends StatelessWidget {
             desktopLayout: (context,[constraint]) =>
                 GalleryViewForDesktopLayOut(galleryBloc: galleryBloc,),
             mobileLayout: (context) => const MobileGalleryView(),
-            tabletLayout: (context,[constraint]) =>  const GalleryTabletView()
+            tabletLayout: (context,[constraint]) =>  GalleryTabletView(bloc: galleryBloc,),
           ),
         );
       }),

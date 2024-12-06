@@ -52,10 +52,6 @@ class SearchedOrderResutl extends StatelessWidget {
             : searchedList.isNotEmpty
                 ? Expanded(
                     child: Scrollbar(
-                      radius: const Radius.circular(5),
-                      thickness: 12,
-                      thumbVisibility: true,
-                      trackVisibility: true,
                       scrollbarOrientation: ScrollbarOrientation.right,
                       child: ScrollConfiguration(
                         behavior:

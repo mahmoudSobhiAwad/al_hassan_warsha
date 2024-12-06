@@ -52,25 +52,19 @@ class OrderListWithFilter extends StatelessWidget {
             : bloc.categorizedList.isNotEmpty
                 ? Expanded(
                     child: Scrollbar(
-                      radius: const Radius.circular(5),
-                      thickness: 12,
-                      thumbVisibility: true,
-                      trackVisibility: true,
                       scrollbarOrientation: ScrollbarOrientation.right,
-                      child: ScrollConfiguration(
-                        behavior:
-                            const ScrollBehavior().copyWith(scrollbars: false),
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 10.0),
-                          child: CustomScrollView(
-                            primary: true,
-                            slivers: [
-                              ListOfOrder(
-                                bloc: bloc,
-                                orderList: bloc.categorizedList,
-                              ),
-                            ],
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: CustomScrollView(
+                          scrollBehavior: const ScrollBehavior()
+                              .copyWith(scrollbars: false),
+                          primary: true,
+                          slivers: [
+                            ListOfOrder(
+                              bloc: bloc,
+                              orderList: bloc.categorizedList,
+                            ),
+                          ],
                         ),
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/simple_bloc_observer.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/home.dart';
@@ -45,6 +46,16 @@ class Alwarsha extends StatelessWidget {
           locale: const Locale('ar'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            scrollbarTheme: const ScrollbarThemeData(
+             thumbVisibility: WidgetStatePropertyAll<bool>(true),
+             trackVisibility: WidgetStatePropertyAll<bool>(true),
+             
+              thumbColor: WidgetStatePropertyAll<Color>(AppColors.lightGray2),
+              trackColor:
+                  WidgetStatePropertyAll<Color>(AppColors.veryLightGray),
+              thickness: WidgetStatePropertyAll<double>(8), // Thickness
+              radius: Radius.circular(10), // Rounded edges
+            ),
             iconTheme: const IconThemeData(color: Colors.black),
             iconButtonTheme: const IconButtonThemeData(
                 style: ButtonStyle(
