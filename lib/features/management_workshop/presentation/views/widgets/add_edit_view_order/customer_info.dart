@@ -20,7 +20,7 @@ class CustomerInfoInOrder extends StatelessWidget {
       children: [
         Text(
           "بيانات العميل",
-          style: AppFontStyles.extraBold24(context),
+          style: AppFontStyles.extraBoldNew20(context),
         ),
         const SizedBox(
           height: 10,
@@ -43,7 +43,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                         model.customerName = value ?? "";
                       },
                       initalText: model.customerName,
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
                       text: "اسم العميل",
@@ -55,7 +55,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       onChanged: (String? value) {
                         model.phone = value ?? "";
                       },
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
                       initalText: model.phone ?? "",
@@ -68,7 +68,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       onChanged: (String? value) {
                         model.secondPhone = value ?? "";
                       },
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
                       initalText: model.secondPhone ?? "",
@@ -81,7 +81,7 @@ class CustomerInfoInOrder extends StatelessWidget {
                       onChanged: (String? value) {
                         model.homeAddress = value ?? "";
                       },
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       enableBorder: true,
                       readOnly: isReadOnly,
                       initalText: model.homeAddress ?? "",

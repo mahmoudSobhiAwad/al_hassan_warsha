@@ -21,7 +21,7 @@ class CustomContainerWithTextAbove extends StatelessWidget {
       children: [
         Text(
           textAbove,
-          style: textStyleAbove ?? AppFontStyles.extraBold24(context),
+          style: textStyleAbove ?? AppFontStyles.extraBoldNew20(context),
         ),
         Container(
           constraints: BoxConstraints(
@@ -37,7 +37,7 @@ class CustomContainerWithTextAbove extends StatelessWidget {
                   child: SelectableText(
                 describtionInCont,
                 style:
-                    describeTextStyle ?? AppFontStyles.extraBold24(context),
+                    describeTextStyle ?? AppFontStyles.extraBoldNew20(context),
                 maxLines: 2,
               ))),
         ),

@@ -30,7 +30,7 @@ class ManagemntTabletView extends StatelessWidget {
                             value: index,
                             child: Text(
                               farzListInManagementOrders[index],
-                              style: AppFontStyles.extraBold18(context),
+                              style: AppFontStyles.extraBoldNew16(context),
                             ),
                           )),
                 ];

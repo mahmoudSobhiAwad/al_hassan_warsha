@@ -22,8 +22,8 @@ class CustomBottomNavBarForPhone extends StatelessWidget {
           changePage(index);
         },
         elevation: 0,
-        selectedLabelStyle: AppFontStyles.extraBold18(context),
-        unselectedLabelStyle: AppFontStyles.extraBold16(context),
+        selectedLabelStyle: AppFontStyles.extraBoldNew16(context),
+        unselectedLabelStyle: AppFontStyles.extraBoldNew14(context),
         currentIndex: currIndex,
         items: const [
           BottomNavigationBarItem(

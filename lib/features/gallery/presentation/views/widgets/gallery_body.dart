@@ -68,7 +68,7 @@ class _GalleryBodyState extends State<GalleryBody> {
                                   children: [
                                     Text(
                                       "المضاف حديثا",
-                                      style: AppFontStyles.extraBold50(context),
+                                      style: AppFontStyles.extraBoldNew38(context),
                                     ),
                                     const SizedBox(
                                       height: 8,
@@ -87,7 +87,7 @@ class _GalleryBodyState extends State<GalleryBody> {
                           ),
                           Text(
                             "انواع المطابخ",
-                            style: AppFontStyles.extraBold40(context),
+                            style: AppFontStyles.extraBoldNew30(context),
                           ),
                           const SizedBox(
                             height: 8,

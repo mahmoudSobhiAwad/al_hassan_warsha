@@ -95,7 +95,7 @@ class TranscationView extends StatelessWidget {
                       : Center(
                           child: Text(
                             "لا يوجد تحويلات لهذه الفترة ",
-                            style: AppFontStyles.extraBold24(context),
+                            style: AppFontStyles.extraBoldNew20(context),
                           ),
                         ),
                   const SizedBox(

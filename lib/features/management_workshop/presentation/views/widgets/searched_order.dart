@@ -28,17 +28,17 @@ class SearchedOrderResutl extends StatelessWidget {
             
             Text(
               "نتائج البحث الخاصة ب ",
-              style: AppFontStyles.extraBold40(context),
+              style: AppFontStyles.extraBoldNew30(context),
             ),
             Text(
               searchKey,
-              style: AppFontStyles.extraBold22(context),
+              style: AppFontStyles.extraBoldNew18(context),
             ),
             const Spacer(),
             TextButton(
                 onPressed: backToMain,
                 child: Text("العودة للرئيسية",
-                    style: AppFontStyles.extraBold24(context).copyWith(
+                    style: AppFontStyles.extraBoldNew20(context).copyWith(
                       color: AppColors.blue,
                     )))
           ],
@@ -84,7 +84,7 @@ class SearchedOrderResutl extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "لا يوجد اي تطابق مع كلمات البحث",
-                        style: AppFontStyles.extraBold50(context),
+                        style: AppFontStyles.extraBoldNew38(context),
                       ),
                     ),
                   ),

@@ -8,7 +8,7 @@ class TabletFinanicalView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("هنا النظام المالي ",style: AppFontStyles.extraBold40(context),)
+        Text("هنا النظام المالي ",style: AppFontStyles.extraBoldNew30(context),)
       ],
     );
   }

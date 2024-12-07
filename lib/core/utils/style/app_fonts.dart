@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppFontStyles {
   static  String fontFamily = "Almarai";
 
-  static TextStyle extraBold20(BuildContext context) {
+  static TextStyle extraBoldNew18(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800, // ExtraBold
@@ -12,14 +12,14 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold30(BuildContext context) {
+  static TextStyle extraBoldNew24(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
       fontSize:getResponiveFontSize(context, baseFontSize:  24),
     );
   }
-  static TextStyle extraBold32(BuildContext context) {
+  static TextStyle extraBoldNew28(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -27,7 +27,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold18(BuildContext context) {
+  static TextStyle extraBoldNew16(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -35,7 +35,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold16(BuildContext context) {
+  static TextStyle extraBoldNew14(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -43,7 +43,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold55(BuildContext context) {
+  static TextStyle extraBoldNew40(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -51,7 +51,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold50(BuildContext context) {
+  static TextStyle extraBoldNew38(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -59,7 +59,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold24(BuildContext context) {
+  static TextStyle extraBoldNew20(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -67,15 +67,8 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold22(BuildContext context) {
-    return  TextStyle(
-      fontFamily: fontFamily,
-      fontWeight: FontWeight.w800,
-      fontSize:getResponiveFontSize(context, baseFontSize:  18),
-    );
-  }
 
-  static TextStyle extraBold40(BuildContext context) {
+  static TextStyle extraBoldNew30(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -83,7 +76,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle bold24(BuildContext context) {
+  static TextStyle bold19(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w700, // Bold
@@ -93,12 +86,40 @@ class AppFontStyles {
   static TextStyle bold12(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
-      fontWeight: FontWeight.w500, // Bold
+      fontWeight: FontWeight.w600, // Bold
       fontSize:getResponiveFontSize(context, baseFontSize:  12),
     );
   }
+  static TextStyle meduim12(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w500, // meduim
+      fontSize:getResponiveFontSize(context, baseFontSize:  12),
+    );
+  }
+  static TextStyle regular14(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w400, // meduim
+      fontSize:getResponiveFontSize(context, baseFontSize:  14),
+    );
+  }
+  static TextStyle semiBold14(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w600, // semi bold
+      fontSize:getResponiveFontSize(context, baseFontSize:  14),
+    );
+  }
+  static TextStyle semiBold16(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w600, // semi bold
+      fontSize:getResponiveFontSize(context, baseFontSize:  16),
+    );
+  }
 
-  static TextStyle extraBold25(BuildContext context) {
+  static TextStyle extraBoldNew21(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -106,7 +127,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold35(BuildContext context) {
+  static TextStyle extraBoldNew26(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -114,7 +135,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold60(BuildContext context) {
+  static TextStyle extraBoldNew50(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,
@@ -122,15 +143,7 @@ class AppFontStyles {
     );
   }
 
-  static TextStyle extraBold28(BuildContext context) {
-    return  TextStyle(
-      fontFamily: fontFamily,
-      fontWeight: FontWeight.w800,
-      fontSize:getResponiveFontSize(context, baseFontSize:  24),
-    );
-  }
-
-  static TextStyle extraBold90(BuildContext context) {
+  static TextStyle extraBoldNew60(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,
       fontWeight: FontWeight.w800,

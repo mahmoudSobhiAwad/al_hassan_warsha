@@ -48,7 +48,7 @@ class CustomAlert extends StatelessWidget {
             Text(
               title ??
                   "لا يوجد اي قاعدة بيانات حالية لديك هل لديك بيانات تود استراجعها ؟",
-              style: AppFontStyles.extraBold40(context).copyWith(fontSize: titleSize),
+              style: AppFontStyles.extraBoldNew30(context).copyWith(fontSize: titleSize),
               textAlign: TextAlign.center,
             ),
             enableIcon
@@ -118,7 +118,7 @@ class PickPathForDb extends StatelessWidget {
                   ),
                   Text(
                     "البيانات الاساسية - تم تحديد المكان ",
-                    style: AppFontStyles.extraBold20(context),
+                    style: AppFontStyles.extraBoldNew18(context),
                   ),
                   const SizedBox(
                     width: 12,
@@ -154,7 +154,7 @@ class PickPathForDb extends StatelessWidget {
             ),
             Text(
               "البيانات الاحتياطية",
-              style: AppFontStyles.extraBold20(context),
+              style: AppFontStyles.extraBoldNew18(context),
             ),
             const SizedBox(
               width: 6,
@@ -164,7 +164,7 @@ class PickPathForDb extends StatelessWidget {
                   (isRestoring
                       ? "----- حدد المكان المراد النقل منه "
                       : "----- حدد المكان المراد التخزين به !"),
-              style: AppFontStyles.extraBold20(context)
+              style: AppFontStyles.extraBoldNew18(context)
                   .copyWith(decoration: TextDecoration.underline),
             ),
             const SizedBox(

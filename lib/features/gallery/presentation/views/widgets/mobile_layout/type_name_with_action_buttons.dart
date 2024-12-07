@@ -28,13 +28,13 @@ class TypeNameWithActionsInMobileLayout extends StatelessWidget {
             children: [
               Text(
                 model.typeName,
-                style: AppFontStyles.extraBold18(context).copyWith(
+                style: AppFontStyles.extraBoldNew16(context).copyWith(
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 "${model.itemsCount}",
-                style: AppFontStyles.extraBold20(context)
+                style: AppFontStyles.extraBoldNew18(context)
                     .copyWith(color: AppColors.lightGray1),
               ),
             ],
@@ -55,7 +55,7 @@ class TypeNameWithActionsInMobileLayout extends StatelessWidget {
                     children: [
                       Text(
                         "عرض الكل ",
-                        style: AppFontStyles.extraBold16(context),
+                        style: AppFontStyles.extraBoldNew14(context),
                       ),
                       const IconButton(
                           onPressed: null,
@@ -70,7 +70,7 @@ class TypeNameWithActionsInMobileLayout extends StatelessWidget {
                     children: [
                       Text(
                         "اضافة جديد",
-                        style: AppFontStyles.extraBold16(context),
+                        style: AppFontStyles.extraBoldNew14(context),
                       ),
                       const IconButton(
                           onPressed: null, icon: Icon(Icons.create)),
@@ -84,7 +84,7 @@ class TypeNameWithActionsInMobileLayout extends StatelessWidget {
                     children: [
                       Text(
                         "حذف الكل",
-                        style: AppFontStyles.extraBold16(context)
+                        style: AppFontStyles.extraBoldNew14(context)
                             .copyWith(color: AppColors.red),
                       ),
                       const IconButton(

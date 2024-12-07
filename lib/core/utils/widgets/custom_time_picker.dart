@@ -42,8 +42,8 @@ class CustomDatePicker extends StatelessWidget {
       enableBorder: true,
       readOnly: true,
       textInnerStyle:
-          AppFontStyles.extraBold18(context).copyWith(letterSpacing: 1),
-      textStyle: AppFontStyles.extraBold18(context),
+          AppFontStyles.extraBoldNew16(context).copyWith(letterSpacing: 1),
+      textStyle: AppFontStyles.extraBoldNew16(context),
       textLabel: "",
       suffixIcon: IconButton(
         onPressed: () {

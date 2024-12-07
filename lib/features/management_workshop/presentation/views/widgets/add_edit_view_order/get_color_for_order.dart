@@ -27,7 +27,7 @@ class GetColorForOrder extends StatelessWidget {
           controller: TextEditingController(text: colorOrderModel.colorName??""),
           readOnly:changeColorValue==null?true:false ,
           enableBorder: true,
-          textStyle: AppFontStyles.extraBold18(context),
+          textStyle: AppFontStyles.extraBoldNew16(context),
           textLabel: "حدد اسم اللون او اختار الدرجة المناسبة",
           suffixIcon: Row(
             mainAxisSize: MainAxisSize.min,

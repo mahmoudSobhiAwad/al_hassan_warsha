@@ -37,7 +37,7 @@ class ContentOfAnalysis extends StatelessWidget {
                         children: [
                           Text(
                             analysisList[index].title,
-                            style: AppFontStyles.extraBold32(context)
+                            style: AppFontStyles.extraBoldNew28(context)
                                 .copyWith(color: AppColors.white),
                           ),
                           IconButton(
@@ -53,7 +53,7 @@ class ContentOfAnalysis extends StatelessWidget {
                         children: [
                           Text(
                             "${analysisList[index].moneyQuantity} جنية",
-                            style: AppFontStyles.extraBold32(context).copyWith(
+                            style: AppFontStyles.extraBoldNew28(context).copyWith(
                                 color: AppColors.white, letterSpacing: 3),
                           ),
                           const SizedBox(width: 15,),

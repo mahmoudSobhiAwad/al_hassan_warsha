@@ -31,7 +31,7 @@ class AddTransaction extends StatelessWidget {
       children: [
         Text(
           "تحويل مالي",
-          style: AppFontStyles.extraBold35(context),
+          style: AppFontStyles.extraBoldNew26(context),
         ),
         Row(
           children: [
@@ -69,7 +69,7 @@ class AddTransaction extends StatelessWidget {
                       },
                       controller: TextEditingController(
                           text: transactionModel.transactionName),
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       enableBorder: true,
                       text: "المعاملة",
                       borderWidth: 2,
@@ -97,14 +97,14 @@ class AddTransaction extends StatelessWidget {
                       text: transactionModel.transactionAmount),
                   textInputType: TextInputType.number,
                   textInnerStyle:
-                      AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                      AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
                       RegExp(
                           r'[0-9\u0660-\u0669\u06F0-\u06F9]'), // Allow Arabic and English numerals only
                     ),
                   ],
-                  textStyle: AppFontStyles.extraBold18(context),
+                  textStyle: AppFontStyles.extraBoldNew16(context),
                   enableBorder: true,
                   text: "قيمة المبلغ",
                   textLabel: ".......................",
@@ -112,7 +112,7 @@ class AddTransaction extends StatelessWidget {
                   borderWidth: 2,
                   suffixIcon: Text(
                     "جنية",
-                    style: AppFontStyles.extraBold18(context),
+                    style: AppFontStyles.extraBoldNew16(context),
                     textAlign: TextAlign.center,
                   ),
                 )),
@@ -156,7 +156,7 @@ class AddTransaction extends StatelessWidget {
                   children: [
                     Text(
                       "طريقة الدفع",
-                      style: AppFontStyles.extraBold18(context),
+                      style: AppFontStyles.extraBoldNew16(context),
                     ),
                     const SizedBox(
                       height: 12,

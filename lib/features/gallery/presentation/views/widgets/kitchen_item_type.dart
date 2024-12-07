@@ -28,7 +28,7 @@ class KitchenTypeItem extends StatelessWidget {
         contentPadding: const EdgeInsets.all(0),
         leading: Text(
           model.typeName,
-          style: AppFontStyles.extraBold28(context).copyWith(
+          style: AppFontStyles.extraBoldNew24(context).copyWith(
             decoration: enableUnderline
                 ? TextDecoration.underline
                 : TextDecoration.none,
@@ -37,7 +37,7 @@ class KitchenTypeItem extends StatelessWidget {
         ),
         title: Text(
           "${model.itemsCount}",
-          style: AppFontStyles.extraBold20(context)
+          style: AppFontStyles.extraBoldNew18(context)
               .copyWith(color: AppColors.lightGray1),
         ),
         trailing: (enableUnderline && picked)

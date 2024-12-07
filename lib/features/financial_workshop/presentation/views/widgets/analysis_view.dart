@@ -46,7 +46,7 @@ class AnalysisView extends StatelessWidget {
                 children: [
                   Text(
                     "حدد الفترة الزمنية",
-                    style: AppFontStyles.extraBold35(context),
+                    style: AppFontStyles.extraBoldNew26(context),
                   ),
                   const SizedBox(
                     height: 24,
@@ -77,7 +77,7 @@ class AnalysisView extends StatelessWidget {
                           : Center(
                               child: Text(
                                 "اختار المدي الزمني لتحليل النتائج ",
-                                style: AppFontStyles.extraBold50(context),
+                                style: AppFontStyles.extraBoldNew38(context),
                               ),
                             ),
                 ],

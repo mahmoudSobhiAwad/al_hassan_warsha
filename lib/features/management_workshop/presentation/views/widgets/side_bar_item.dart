@@ -21,13 +21,13 @@ class SideBarManagementItem extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Icon(model.icon, color: Colors.white)),
           Text(model.numberOfItem,
-              style: AppFontStyles.extraBold30(context).copyWith(
+              style: AppFontStyles.extraBoldNew24(context).copyWith(
                 color: AppColors.white,
               )),
           FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(model.title,
-                style: AppFontStyles.extraBold30(context).copyWith(
+                style: AppFontStyles.extraBoldNew24(context).copyWith(
                   color: AppColors.white,
                 )),
           )

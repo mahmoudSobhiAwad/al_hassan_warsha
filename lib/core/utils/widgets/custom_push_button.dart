@@ -49,7 +49,7 @@ class CustomPushContainerButton extends StatelessWidget {
                 Flexible(
                     child: Text(
                   pushButtomText ?? "إضافة نوع جديد",
-                  style: AppFontStyles.extraBold30(context).copyWith(
+                  style: AppFontStyles.extraBoldNew24(context).copyWith(
                     fontSize: pushButtomTextFontSize,
                     color: AppColors.white,
                   ),

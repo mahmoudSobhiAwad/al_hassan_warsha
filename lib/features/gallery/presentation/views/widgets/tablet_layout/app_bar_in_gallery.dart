@@ -24,7 +24,7 @@ class TypeBarInTabletGallery extends StatelessWidget {
           ),
           Text(
             "انواع المطابخ ",
-            style: AppFontStyles.extraBold32(context),
+            style: AppFontStyles.extraBoldNew28(context),
           ),
           const Spacer(),
           const CustomPushContainerButton(

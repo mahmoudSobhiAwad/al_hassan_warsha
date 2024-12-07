@@ -29,7 +29,7 @@ class HomePhoneLayOut extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "الحسن ",
-                  style: AppFontStyles.extraBold60(context),
+                  style: AppFontStyles.extraBoldNew50(context),
                 )),
             const SizedBox(
               height: 24,
@@ -38,7 +38,7 @@ class HomePhoneLayOut extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "اختيارك الأمثل لجميع أعمال الالوميتال",
-                  style: AppFontStyles.extraBold35(context),
+                  style: AppFontStyles.extraBoldNew26(context),
                 )),
             const Expanded(child: SizedBox()),
             Expanded(

@@ -51,13 +51,13 @@ class OneEmployeeItem extends StatelessWidget {
               enableBorder: true,
               borderWidth: 2,
               textLabel: '',
-              textInnerStyle: AppFontStyles.bold24(context),
+              textInnerStyle: AppFontStyles.bold19(context),
               readOnly: !workerModel.enableEdit,
               controller: TextEditingController(text: workerModel.workerName),
               onChanged: (value) {
                 workerModel.workerName = value ?? "";
               },
-              textStyle: AppFontStyles.extraBold24(context),
+              textStyle: AppFontStyles.extraBoldNew20(context),
               maxLine: 1,
             )),
         const Expanded(flex: 1, child: SizedBox()),
@@ -72,10 +72,10 @@ class OneEmployeeItem extends StatelessWidget {
                 workerModel.salaryAmount = value ?? "";
               },
               borderWidth: 2,
-              textStyle: AppFontStyles.extraBold24(context),
+              textStyle: AppFontStyles.extraBoldNew20(context),
               textLabel: '',
               textInnerStyle:
-                  AppFontStyles.extraBold24(context).copyWith(letterSpacing: 3),
+                  AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3),
               textInputType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -91,7 +91,7 @@ class OneEmployeeItem extends StatelessWidget {
             child: CustomColumnWithTextInAddNewType(
               text: "رقم الهاتف ",
               textInnerStyle:
-                  AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                  AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
               readOnly: !workerModel.enableEdit,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -106,7 +106,7 @@ class OneEmployeeItem extends StatelessWidget {
               onChanged: (value) {
                 workerModel.workerPhone = value ?? "";
               },
-              textStyle: AppFontStyles.extraBold24(context),
+              textStyle: AppFontStyles.extraBoldNew20(context),
               textLabel: '',
               maxLine: 1,
             )),
@@ -124,7 +124,7 @@ class OneEmployeeItem extends StatelessWidget {
             onSelected: (model) {
               changeSalaryType(model.valueEnSearh);
             },
-            headerStyle: AppFontStyles.extraBold24(context),
+            headerStyle: AppFontStyles.extraBoldNew20(context),
             dropDownList: [
               SearchModel(valueArSearh: "يومي", valueEnSearh: SalaryType.daily),
               SearchModel(
@@ -143,7 +143,7 @@ class OneEmployeeItem extends StatelessWidget {
               color: AppColors.veryLightGray,
               borderRadius: BorderRadius.circular(12),
             ),
-            textStyle: AppFontStyles.extraBold18(context),
+            textStyle: AppFontStyles.extraBoldNew16(context),
             message: workerModel.lastAddedSalary == null
                 ? "تاريخ اخر قبض غير محدد"
                 : DateFormat('d MMMM y, h:mm a', 'ar')

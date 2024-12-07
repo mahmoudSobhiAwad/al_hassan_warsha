@@ -12,7 +12,7 @@ class FullTableHeader extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Expanded(child: const TableHeader()),
+        const Expanded(child:TableHeader()),
         const SizedBox(
           width: 14,
         ),

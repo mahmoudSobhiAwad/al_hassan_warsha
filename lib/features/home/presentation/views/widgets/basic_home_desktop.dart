@@ -29,7 +29,7 @@ class BasicHomeWithDiffrentLayOut extends StatelessWidget {
           ),
           mobileLayout: (context) => const SizedBox(),
           tabletLayout: (context,[constraint]) => CustomAppBar(
-            textStyle: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white),
+            textStyle: AppFontStyles.extraBoldNew24(context).copyWith(color: AppColors.white),
             currIndex: currIndex,
             enableLogo: false,
             changeIndex: (pageIndex) {

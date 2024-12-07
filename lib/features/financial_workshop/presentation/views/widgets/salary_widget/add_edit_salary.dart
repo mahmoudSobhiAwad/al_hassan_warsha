@@ -28,7 +28,7 @@ class AddEditSalaryView extends StatelessWidget {
                       children: [
                         Text(
                           "تحديد الكل ",
-                          style: AppFontStyles.bold24(context),
+                          style: AppFontStyles.bold19(context),
                         ),
                         IconButton(
                           onPressed: () {
@@ -61,7 +61,7 @@ class AddEditSalaryView extends StatelessWidget {
                       ? Center(
                           child: Text(
                           "لا يوجد لديك موظفين حاليا ",
-                          style: AppFontStyles.extraBold50(context),
+                          style: AppFontStyles.extraBoldNew38(context),
                         ))
                       : SizedBox(
                           height: MediaQuery.sizeOf(context).height * 0.4,
@@ -137,7 +137,7 @@ class AddEditSalaryView extends StatelessWidget {
                 ),
                 Text(
                   "إضافة موظف جديد",
-                  style: AppFontStyles.extraBold30(context).copyWith(
+                  style: AppFontStyles.extraBoldNew24(context).copyWith(
                     color: AppColors.blue,
                   ),
                 ),
@@ -157,7 +157,7 @@ class AddEditSalaryView extends StatelessWidget {
                             )
                           : Text(
                               "حفظ",
-                              style: AppFontStyles.extraBold30(context)
+                              style: AppFontStyles.extraBoldNew24(context)
                                   .copyWith(color: AppColors.white),
                             ),
                       text_2: "الغاء",
@@ -182,7 +182,7 @@ class AddEditSalaryView extends StatelessWidget {
                             )
                           : Text(
                               "دفع المرتبات المحددة",
-                              style: AppFontStyles.extraBold30(context)
+                              style: AppFontStyles.extraBoldNew24(context)
                                   .copyWith(color: AppColors.white),
                             ),
                       text_2: "تعديل",

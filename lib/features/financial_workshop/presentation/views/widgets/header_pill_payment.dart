@@ -27,28 +27,28 @@ class HeaderForBillsPayment extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       text: "اسم الموظف",
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       text: "المرتب",
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       text: "تاريخ القبض",
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.extraBold18(context),
+                      textStyle: AppFontStyles.extraBoldNew16(context),
                       text: " نظام القبض",
                     )),
                 const Expanded(child: SizedBox()),
@@ -62,7 +62,7 @@ class HeaderForBillsPayment extends StatelessWidget {
                           Flexible(
                               child: Text(
                             "تحديد الكل ",
-                            style: AppFontStyles.extraBold18(context),
+                            style: AppFontStyles.extraBoldNew16(context),
                           )),
                           const IconButton(
                               onPressed: null,

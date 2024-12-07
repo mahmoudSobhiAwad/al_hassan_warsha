@@ -83,7 +83,7 @@ class TableHeaderInFinancial extends StatelessWidget {
               children: [
                 Text(
                   "فرز",
-                  style: AppFontStyles.extraBold18(context),
+                  style: AppFontStyles.extraBoldNew16(context),
                 ),
                 PopupMenuButton<SearchModel>(
                     color: AppColors.veryLightGray,
@@ -94,7 +94,7 @@ class TableHeaderInFinancial extends StatelessWidget {
                             value: farzList[index],
                             child: Text(
                               farzList[index].valueArSearh,
-                              style: AppFontStyles.extraBold18(context),
+                              style: AppFontStyles.extraBoldNew16(context),
                             ),
                           );
                         })

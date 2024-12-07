@@ -82,7 +82,7 @@ class _EditPillPaymentState extends State<EditPillPayment> {
               ),
               Text(
                 "إضافة موظف جديد",
-                style: AppFontStyles.extraBold24(context).copyWith(
+                style: AppFontStyles.extraBoldNew20(context).copyWith(
                   color: AppColors.blue,
                 ),
               ),

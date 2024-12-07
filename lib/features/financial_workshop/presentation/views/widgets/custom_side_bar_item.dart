@@ -20,7 +20,7 @@ class CustomFinancialSideBarItem extends StatelessWidget {
       leading: Text(
         model.title,
         style: picked
-            ? AppFontStyles.extraBold24(context)
+            ? AppFontStyles.extraBoldNew20(context)
                 .copyWith(color: AppColors.brown)
             : AppFontStyles.regular22(context).copyWith(color: AppColors.brown),
       ),

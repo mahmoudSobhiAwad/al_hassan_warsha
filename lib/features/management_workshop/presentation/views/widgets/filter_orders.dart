@@ -13,6 +13,9 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
       required this.changeMonth,
       required this.changeYear,
       required this.month,
+      this.dateStyle,
+      this.iconSize,
+      this.titleStyle,
       required this.year,
       required this.searchFor});
   final String? title;
@@ -21,15 +24,20 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
   final void Function() searchFor;
   final int year;
   final int month;
+  final TextStyle? titleStyle;
+  final TextStyle? dateStyle;
+  final double? iconSize;
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: iconSize != null
+          ? CrossAxisAlignment.center
+          : CrossAxisAlignment.start,
       children: [
         const Expanded(child: SizedBox()),
         Text(
           title ?? "الطلبات الحالية ل",
-          style: AppFontStyles.extraBold40(context),
+          style: titleStyle ?? AppFontStyles.extraBoldNew30(context),
         ),
         const Expanded(flex: 5, child: SizedBox()),
         CustomContainerToPickHistory(
@@ -37,10 +45,10 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
             children: [
               Text(
                 monthModelList[month - 1].monthName,
-                style: AppFontStyles.extraBold20(context),
+                style: dateStyle ?? AppFontStyles.extraBoldNew18(context),
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: iconSize == null ? 10 : 0,
               ),
               PopupMenuButton<int>(
                 constraints: const BoxConstraints(maxHeight: 350),
@@ -55,7 +63,7 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
                         child: Center(
                           child: Text(
                             monthModelList[index].monthName,
-                            style: AppFontStyles.extraBold20(context),
+                            style: AppFontStyles.extraBoldNew18(context),
                           ),
                         ),
                       );
@@ -71,11 +79,11 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
           child: Row(
             children: [
               Text(
-              convertToArabicNumbers( year.toString()),
-                style: AppFontStyles.extraBold20(context),
+                convertToArabicNumbers(year.toString()),
+                style: dateStyle ?? AppFontStyles.extraBoldNew18(context),
               ),
-              const SizedBox(
-                width: 10,
+              SizedBox(
+                width: iconSize == null ? 10 : 0,
               ),
               IconButton(
                   onPressed: () {
@@ -103,9 +111,9 @@ class FilterOrdersWithMonthYear extends StatelessWidget {
         const Expanded(child: SizedBox()),
         IconButton(
             onPressed: searchFor,
-            icon: const Icon(
+            icon: Icon(
               Icons.search,
-              size: 40,
+              size: iconSize ?? 40,
             )),
         const Expanded(child: SizedBox()),
       ],
@@ -120,7 +128,9 @@ class CustomContainerToPickHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 4,
+      ),
       decoration: BoxDecoration(
           color: fillColor ?? AppColors.white,
           border: Border.all(color: AppColors.lightGray1, width: 2),

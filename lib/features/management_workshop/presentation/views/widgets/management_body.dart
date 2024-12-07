@@ -78,19 +78,17 @@ class ManagmentBody extends StatelessWidget {
                     height: 24,
                   ),
                   switch (bloc.enableSearchMode) {
-                    true => Builder(builder: (context) {
-                        return Expanded(
-                          child: SearchedOrderResutl(
-                            searchKey: bloc.searchKeyWord,
-                            bloc: bloc,
-                            backToMain: () {
-                              bloc.add(SearchForOrderEvent(enable: false));
-                            },
-                            searchedList: bloc.searchList,
-                            isSearchLoading: bloc.isSearchLoading,
-                          ),
-                        );
-                      }),
+                    true => Expanded(
+                      child: SearchedOrderResutl(
+                        searchKey: bloc.searchKeyWord,
+                        bloc: bloc,
+                        backToMain: () {
+                          bloc.add(SearchForOrderEvent(enable: false));
+                        },
+                        searchedList: bloc.searchList,
+                        isSearchLoading: bloc.isSearchLoading,
+                      ),
+                    ),
                     false => Expanded(
                           child: OrderListWithFilter(
                         bloc: bloc,

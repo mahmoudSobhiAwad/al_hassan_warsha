@@ -18,7 +18,7 @@ class ShowMoreCirlcle extends StatelessWidget {
           children: [
             Text(
               "عرض المزيد ",
-              style: AppFontStyles.extraBold22(context)
+              style: AppFontStyles.extraBoldNew18(context)
                   .copyWith(color: AppColors.white),
             ),
             const Icon(

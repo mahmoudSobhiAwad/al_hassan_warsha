@@ -78,7 +78,7 @@ class ViewKitchenDetailsBody extends StatelessWidget {
                 width: 12,
               ),
               Text("( ${kitchenModel?.mediaCounter} )",
-                  style: AppFontStyles.extraBold30(context)),
+                  style: AppFontStyles.extraBoldNew24(context)),
               const Spacer(),
               kitchenModel!.mediaCounter > 5
                   ? TextButton(
@@ -92,7 +92,7 @@ class ViewKitchenDetailsBody extends StatelessWidget {
                       },
                       child: Text(
                         "عرض المزيد",
-                        style: AppFontStyles.extraBold30(context)
+                        style: AppFontStyles.extraBoldNew24(context)
                             .copyWith(color: AppColors.blue),
                       ))
                   : const SizedBox()
@@ -147,7 +147,7 @@ class BarInViewKitchenWithEditAndDeleteButtons extends StatelessWidget {
           child: Text(
             kitchenModel?.kitchenName ?? "",
             style:
-                AppFontStyles.extraBold40(context).copyWith(fontSize: fontSize),
+                AppFontStyles.extraBoldNew30(context).copyWith(fontSize: fontSize),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
@@ -208,7 +208,7 @@ class BarInViewKitchenWithEditAndDeleteButtons extends StatelessWidget {
                       children: [
                         Text(
                           "حذف",
-                          style: AppFontStyles.extraBold30(context).copyWith(
+                          style: AppFontStyles.extraBoldNew24(context).copyWith(
                               color: AppColors.white,
                               fontSize: fontSizeInButtons),
                         ),

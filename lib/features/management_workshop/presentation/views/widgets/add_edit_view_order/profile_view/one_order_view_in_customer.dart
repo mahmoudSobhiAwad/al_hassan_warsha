@@ -26,7 +26,7 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
                 child: Text(
                   orderModel.orderName,
                   overflow: TextOverflow.ellipsis,
-                  style: AppFontStyles.extraBold32(context),
+                  style: AppFontStyles.extraBoldNew28(context),
                 )),
              CustomPushContainerButton(
               borderRadius: 14,

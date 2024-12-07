@@ -64,7 +64,7 @@ class OneOrderItem extends StatelessWidget {
                 flex: 1,
                 child: CustomTextWithTheSameStyle(
                   textStyle:
-                      AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                      AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
                   text: convertToArabicNumbers(orderModel.pillModel!.remian),
                 )),
           ],

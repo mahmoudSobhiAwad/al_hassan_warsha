@@ -71,7 +71,7 @@ class FinancialBody extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "لا يوجد اي فواتير مستحقة ",
-                        style: AppFontStyles.extraBold30(context),
+                        style: AppFontStyles.extraBoldNew24(context),
                       ),
                     ),
                   )

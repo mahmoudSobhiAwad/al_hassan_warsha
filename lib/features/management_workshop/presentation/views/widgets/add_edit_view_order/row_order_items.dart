@@ -52,7 +52,7 @@ class RowOrderItems extends StatelessWidget {
                     readOnly: formKey == null ? true : false,
                     controller:
                         TextEditingController(text: orderModel.orderName),
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     textLabel: ""))
             : const SizedBox(),
        showKitchenName ?const Expanded(child: SizedBox()):const SizedBox(),
@@ -68,7 +68,7 @@ class RowOrderItems extends StatelessWidget {
               onChanged: (value) {
                 orderModel.kitchenType = value;
               },
-              textStyle: AppFontStyles.extraBold18(context),
+              textStyle: AppFontStyles.extraBoldNew16(context),
               textLabel: "",
               readOnly: formKey == null ? true : false,
               controller: TextEditingController(text: orderModel.kitchenType),
@@ -90,7 +90,7 @@ class RowOrderItems extends StatelessWidget {
                                       child: Text(
                                         allKitchenTypes[index],
                                         style:
-                                            AppFontStyles.extraBold18(context),
+                                            AppFontStyles.extraBoldNew16(context),
                                       ),
                                     ),
                                   ))

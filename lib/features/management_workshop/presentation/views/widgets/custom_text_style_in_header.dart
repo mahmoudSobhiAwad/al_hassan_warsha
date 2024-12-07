@@ -74,13 +74,13 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
     TextStyle adaptiveTextStyle;
 
     if (AppFontsLayout.isMobile(context)) {
-      adaptiveTextStyle = AppFontStyles.bold12(context);
+      adaptiveTextStyle = AppFontStyles.meduim12(context);
     } else if (AppFontsLayout.isTablet(context)) {
-      adaptiveTextStyle = AppFontStyles.bold12(context);
+      adaptiveTextStyle = AppFontStyles.meduim12(context);
     } else if (AppFontsLayout.isDesktop(context)) {
       adaptiveTextStyle = AppFontStyles.extraBold14(context);
     } else {
-      adaptiveTextStyle = AppFontStyles.bold12(context); // Fallback
+      adaptiveTextStyle = AppFontStyles.meduim12(context); // Fallback
     }
 
     return Text(

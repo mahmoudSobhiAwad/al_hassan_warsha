@@ -96,7 +96,7 @@ class PopMenuActionBehindEachOrder extends StatelessWidget {
                         ),
                         Text(moreVerList(orderList[currIndex]
                                 .orderStatus!)[indexOf]
-                            .text,style: AppFontStyles.extraBold18(context),),
+                            .text,style: AppFontStyles.extraBoldNew16(context),),
                       ],
                     ),
                   )))

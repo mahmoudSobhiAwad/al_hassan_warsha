@@ -1,28 +1,25 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/custom_text_form_field.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/rotate_extension.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_box_shadow.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_field_in_search_bar.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_menu_in_search_bar.dart';
 import 'package:flutter/material.dart';
 
 class SearchBarInManagment extends StatelessWidget {
   const SearchBarInManagment(
       {super.key,
-      
       required this.changeSearchType,
       required this.searchFunc,
       this.searchKeyWord,
       required this.changeSearchText,
       required this.searchList,
       required this.searchKey});
-  
+
   final void Function(SearchModel) changeSearchType;
   final void Function(String) changeSearchText;
   final void Function() searchFunc;
   final SearchModel searchKey;
   final String? searchKeyWord;
-  final List<SearchModel>searchList;
+  final List<SearchModel> searchList;
 
   @override
   Widget build(BuildContext context) {
@@ -36,93 +33,19 @@ class SearchBarInManagment extends StatelessWidget {
             decoration: BoxDecoration(boxShadow: [
               customLowBoxShadow(),
             ]),
-            child: CustomTextFormField(
-              enableFill: true,
-              enableFocusBorder: false,
-              fillColor: Colors.white,
-              borderRadius: 12,
-              onChanged: changeSearchText,
-              controller: TextEditingController(text: searchKeyWord),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              labelWidget: Text(
-                "ادخل بعض البيانات للبحث عن ........",
-                style: AppFontStyles.extraBold18(context)
-                    .copyWith(color: AppColors.lightGray2),
-              ),
-              suffixWidget: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  searchKey.valueEnSearh.isNotEmpty
-                      ? Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.lightGray1),
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Text(
-                            searchKey.valueArSearh,
-                            style: AppFontStyles.extraBold16(context),
-                          ),
-                        )
-                      : const SizedBox(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  IconButton(
-                      onPressed: searchFunc,
-                      icon: const Icon(
-                        Icons.search,
-                        size: 30,
-                      )),
-                ],
-              ),
-            ),
+            child: SearchFieldInSearchBar(
+                changeSearchText: changeSearchText,
+                searchKeyWord: searchKeyWord,
+                searchKey: searchKey,
+                searchFunc: searchFunc),
           ),
         ),
         const Expanded(child: SizedBox()),
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            boxShadow: [customLowBoxShadow()],
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            children: [
-              Text(
-                "البحث ب",
-                style: AppFontStyles.extraBold20(context),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              PopupMenuButton<SearchModel>(
-                  color: AppColors.veryLightGray,
-                  onSelected: (value) {
-                    changeSearchType(value);
-                  },
-                  constraints:
-                      const BoxConstraints(maxHeight: 350, maxWidth: 200),
-                  itemBuilder: (context) {
-                    return [
-                      ...List.generate(
-                          searchList.length,
-                          (index) => PopupMenuItem(
-                                value: searchList[index],
-                                child: Center(
-                                    child: Text(
-                                  searchList[index].valueArSearh,
-                                  style: AppFontStyles.bold24(context),
-                                )),
-                              )),
-                    ];
-                  },
-                  icon: const Icon(Icons.arrow_back_ios).rotate(angle: 90))
-            ],
-          ),
-        ),
+        SearchMenuInSearchBar(
+            changeSearchType: changeSearchType, searchList: searchList),
         const Expanded(flex: 2, child: SizedBox()),
       ],
     );
   }
 }
+

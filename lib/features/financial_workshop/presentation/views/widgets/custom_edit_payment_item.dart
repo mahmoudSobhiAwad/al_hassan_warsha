@@ -20,7 +20,7 @@ class CustomEditPillItem extends StatelessWidget {
               text: "اسم الموظف ",
               textLabel: "",
               enableBorder: true,
-              textStyle: AppFontStyles.extraBold18(context),
+              textStyle: AppFontStyles.extraBoldNew16(context),
             )),
         const Expanded(child: SizedBox()),
         Expanded(
@@ -30,7 +30,7 @@ class CustomEditPillItem extends StatelessWidget {
               text: "المرتب",
               textLabel: "",
               enableBorder: true,
-              textStyle: AppFontStyles.extraBold18(context),
+              textStyle: AppFontStyles.extraBoldNew16(context),
               suffixText: "جنية",
             )),
         const Expanded(child: SizedBox()),
@@ -49,7 +49,7 @@ class CustomEditPillItem extends StatelessWidget {
               textLabel: "",
               suffixIcon: const Icon(Icons.calendar_month_rounded),
               enableBorder: true,
-              textStyle: AppFontStyles.extraBold18(context),
+              textStyle: AppFontStyles.extraBoldNew16(context),
             )),
         const Expanded(child: SizedBox()),
         IconButton(

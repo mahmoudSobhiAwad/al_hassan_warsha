@@ -36,7 +36,7 @@ class CustomMobileAppBar extends StatelessWidget {
               : const SizedBox(),
           Text(
             title,
-            style: AppFontStyles.extraBold32(context)
+            style: AppFontStyles.extraBoldNew28(context)
                 .copyWith(color: AppColors.white),
           ),
           const Spacer(),

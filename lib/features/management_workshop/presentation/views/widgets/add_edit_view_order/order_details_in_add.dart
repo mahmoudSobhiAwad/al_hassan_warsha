@@ -47,7 +47,7 @@ class OrderDetails extends StatelessWidget {
       children: [
         Text(
           "تفاصيل الطلب",
-          style: AppFontStyles.extraBold24(context),
+          style: AppFontStyles.extraBoldNew20(context),
         ),
         const SizedBox(
           height: 10,
@@ -77,14 +77,14 @@ class OrderDetails extends StatelessWidget {
                 onChanged: (value) {
                   orderModel.notice = value;
                 },
-                textStyle: AppFontStyles.extraBold18(context),
+                textStyle: AppFontStyles.extraBoldNew16(context),
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(
                 "الوسائط",
-                style: AppFontStyles.extraBold18(context),
+                style: AppFontStyles.extraBoldNew16(context),
               ),
               const SizedBox(
                 height: 10,

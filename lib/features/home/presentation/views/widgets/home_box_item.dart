@@ -47,7 +47,7 @@ class HomeItem extends StatelessWidget {
             FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(homeModel.title,
-                    style: textStyle ?? AppFontStyles.extraBold50(context))),
+                    style: textStyle ?? AppFontStyles.extraBoldNew38(context))),
           ],
         ),
       ),

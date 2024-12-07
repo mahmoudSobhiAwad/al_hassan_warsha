@@ -13,7 +13,7 @@ class SelectedPaymentWay extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         "طريقة التسديد",
-        style: AppFontStyles.extraBold18(context),
+        style: AppFontStyles.extraBoldNew16(context),
       ),
       
       PaymentOptionWidget(

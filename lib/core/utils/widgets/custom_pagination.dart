@@ -64,7 +64,7 @@ class CustomPaginationWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text('1',
-                      style: AppFontStyles.extraBold20(context)
+                      style: AppFontStyles.extraBoldNew18(context)
                           .copyWith(color: AppColors.blue)),
                 ),
               ),
@@ -87,13 +87,13 @@ class CustomPaginationWidget extends StatelessWidget {
                           ),
                           child: Text(
                             '$page',
-                            style: AppFontStyles.extraBold20(context)
+                            style: AppFontStyles.extraBoldNew18(context)
                                 .copyWith(color: AppColors.white),
                           ),
                         )
                       : Text(
                           '$page',
-                          style: AppFontStyles.extraBold20(context),
+                          style: AppFontStyles.extraBoldNew18(context),
                         ),
                 ),
               ),
@@ -108,7 +108,7 @@ class CustomPaginationWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text('$length',
-                      style: AppFontStyles.extraBold20(context)
+                      style: AppFontStyles.extraBoldNew18(context)
                           .copyWith(color: AppColors.blue)),
                 ),
               ),

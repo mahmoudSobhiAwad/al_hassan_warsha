@@ -75,7 +75,7 @@ class OrderListWithFilter extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "لا يوجد طلبات لهذ الشهر",
-                        style: AppFontStyles.extraBold50(context),
+                        style: AppFontStyles.extraBoldNew38(context),
                       ),
                     ),
                   ),

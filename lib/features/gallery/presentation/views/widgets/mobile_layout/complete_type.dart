@@ -68,7 +68,7 @@ class CompleteKitchenTypeInMobileLayout extends StatelessWidget {
                 children: [
                   Text(
                     "لا يوجد اي عناصر من هذا النوع",
-                    style: AppFontStyles.extraBold22(context),
+                    style: AppFontStyles.extraBoldNew18(context),
                   ),
                   const SizedBox(
                     height: 20,

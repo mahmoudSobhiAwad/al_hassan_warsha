@@ -18,28 +18,28 @@ class ContentForBillsPayment extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: CustomTextWithTheSameStyle(
-                    textStyle: AppFontStyles.extraBold16(context),
+                    textStyle: AppFontStyles.extraBoldNew14(context),
                     text: "محمد احمد علي",
                   )),
               const Expanded(child: SizedBox()),
               Expanded(
                   flex: 1,
                   child: CustomTextWithTheSameStyle(
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     text: "4000",
                   )),
               const Expanded(child: SizedBox()),
               Expanded(
                   flex: 1,
                   child: CustomTextWithTheSameStyle(
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     text: " 1 نوفمبر 2024",
                   )),
               const Expanded(child: SizedBox()),
               Expanded(
                   flex: 1,
                   child: CustomTextWithTheSameStyle(
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     text: "يومي",
                   )),
               const Expanded(child: SizedBox()),
@@ -51,7 +51,7 @@ class ContentForBillsPayment extends StatelessWidget {
                     Flexible(
                         child: Text(
                       "تحديد",
-                      style: AppFontStyles.extraBold18(context),
+                      style: AppFontStyles.extraBoldNew16(context),
                     )),
                     const IconButton(
                         onPressed: null,

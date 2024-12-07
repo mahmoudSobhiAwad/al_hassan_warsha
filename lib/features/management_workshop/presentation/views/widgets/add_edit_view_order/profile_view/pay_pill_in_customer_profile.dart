@@ -32,9 +32,9 @@ class PayPillInCustomerProfile extends StatelessWidget {
             textLabel: "",
             enableBorder: true,
             textInnerStyle:
-                AppFontStyles.bold24(context).copyWith(letterSpacing: 3),
+                AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
             readOnly: true,
-            textStyle: AppFontStyles.extraBold18(context),
+            textStyle: AppFontStyles.extraBoldNew16(context),
             controller: TextEditingController(
               text: convertToArabicNumbers(
                   (BigInt.parse(orderModel.pillModel!.payedAmount) +
@@ -56,7 +56,7 @@ class PayPillInCustomerProfile extends StatelessWidget {
             enableBorder: true,
             controller: TextEditingController(
                 text: orderModel.pillModel?.steppedAmount),
-            textStyle: AppFontStyles.extraBold18(context),
+            textStyle: AppFontStyles.extraBoldNew16(context),
             onChanged: (value) {
               orderModel.pillModel!.steppedAmount = value ?? "0";
             },
@@ -67,7 +67,7 @@ class PayPillInCustomerProfile extends StatelessWidget {
             ],
             textInputType: TextInputType.number,
             suffixText: "جنية",
-            textInnerStyle: AppFontStyles.extraBold24(context),
+            textInnerStyle: AppFontStyles.extraBoldNew20(context),
           ),
         ),
         const Expanded(

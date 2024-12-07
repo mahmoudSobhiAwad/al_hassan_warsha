@@ -25,7 +25,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
       children: [
         Text(
           headerText ?? "",
-          style:headerStyle?? AppFontStyles.extraBold18(context),
+          style:headerStyle?? AppFontStyles.extraBoldNew16(context),
         ),
         const SizedBox(
           height: 12,
@@ -45,7 +45,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
               Flexible(
                 child: Text(
                   primaryText,
-                  style: AppFontStyles.extraBold18(context),
+                  style: AppFontStyles.extraBoldNew16(context),
                 ),
               ),
             enableDropDwon?  PopupMenuButton(
@@ -56,7 +56,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
                       ...List.generate(dropDownList.length, (index) {
                         return PopupMenuItem(
                           value: dropDownList[index],
-                          child: Text(dropDownList[index].valueArSearh,style: AppFontStyles.extraBold18(context),),
+                          child: Text(dropDownList[index].valueArSearh,style: AppFontStyles.extraBoldNew16(context),),
                         );
                       })
                     ];

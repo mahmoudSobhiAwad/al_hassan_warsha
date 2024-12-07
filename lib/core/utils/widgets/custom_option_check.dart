@@ -22,7 +22,7 @@ class PaymentOptionWidget extends StatelessWidget {
           fit: FlexFit.loose,
           child: Text(
             label,
-            style: AppFontStyles.extraBold18(context),
+            style: AppFontStyles.extraBoldNew16(context),
           ),
         ),
         Stack(

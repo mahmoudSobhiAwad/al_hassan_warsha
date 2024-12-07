@@ -23,13 +23,13 @@ Future<dynamic> showColorPicker(BuildContext context,
                 },
                 child: Text(
                   "حفظ",
-                  style: AppFontStyles.extraBold18(context)
+                  style: AppFontStyles.extraBoldNew16(context)
                       .copyWith(color: Colors.white),
                 ))
           ],
           title: Text(
             "اختار درجة لون مناسبة",
-            style: AppFontStyles.bold24(context),
+            style: AppFontStyles.bold19(context),
           ),
           content: SingleChildScrollView(
             child: ColorPicker(

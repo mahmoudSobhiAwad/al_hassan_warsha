@@ -22,35 +22,35 @@ class HeaderForTransactionHistory extends StatelessWidget {
                   Expanded(
                       flex: 4,
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: "المعاملة",
                       )),
                   const Expanded(child: SizedBox()),
                   Expanded(
                       flex: 2,
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: "قيمة المعاملة",
                       )),
                   const Expanded(child: SizedBox()),
                   Expanded(
                       flex: 2,
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: "تاريخ المعاملة",
                       )),
                   const Expanded(child: SizedBox()),
                   Expanded(
                       flex: 2,
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: "طريقة المعاملة",
                       )),
                   const Expanded(child: SizedBox()),
                   Expanded(
                       flex: 2,
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: "دفع/ استلام",
                       )),
                 ],

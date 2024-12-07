@@ -27,13 +27,13 @@ class AddnewTypeWithKitchenName extends StatelessWidget {
             children: [
               Text(
                 model.typeName,
-                style: AppFontStyles.extraBold28(context).copyWith(
+                style: AppFontStyles.extraBoldNew24(context).copyWith(
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 "${model.itemsCount}",
-                style: AppFontStyles.extraBold20(context)
+                style: AppFontStyles.extraBoldNew18(context)
                     .copyWith(color: AppColors.lightGray1),
               ),
             ],
@@ -60,7 +60,7 @@ class AddnewTypeWithKitchenName extends StatelessWidget {
                       },
                       child: Text(
                         "إضافة جديد",
-                        style: AppFontStyles.extraBold30(context)
+                        style: AppFontStyles.extraBoldNew24(context)
                             .copyWith(color: AppColors.blue),
                       )),
                   const SizedBox(
@@ -88,7 +88,7 @@ class AddnewTypeWithKitchenName extends StatelessWidget {
                       children: [
                         Text(
                           "حذف ",
-                          style: AppFontStyles.bold24(context).copyWith(
+                          style: AppFontStyles.bold19(context).copyWith(
                             color: AppColors.red,
                           ),
                         ),

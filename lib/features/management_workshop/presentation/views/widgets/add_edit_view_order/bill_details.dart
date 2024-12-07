@@ -29,7 +29,7 @@ class BillDetails extends StatelessWidget {
       children: [
         Text(
           "الفاتورة",
-          style: AppFontStyles.extraBold24(context),
+          style: AppFontStyles.extraBoldNew20(context),
         ),
         const SizedBox(
           height: 10,
@@ -55,7 +55,7 @@ class BillDetails extends StatelessWidget {
                       return null;
                     },
                     formKey: formKey,
-                    textInnerStyle: AppFontStyles.extraBold24(context)
+                    textInnerStyle: AppFontStyles.extraBoldNew20(context)
                         .copyWith(letterSpacing: 3),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
@@ -70,11 +70,11 @@ class BillDetails extends StatelessWidget {
                           ? onTapToChangeRemain!()
                           : () {};
                     },
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     enableBorder: true,
                     suffixIcon: Text(
                       "جنية",
-                      style: AppFontStyles.extraBold18(context),
+                      style: AppFontStyles.extraBoldNew16(context),
                     ),
                   )),
               const Expanded(flex: 1, child: SizedBox()),
@@ -95,7 +95,7 @@ class BillDetails extends StatelessWidget {
                         ? TextEditingController(text: pillModel.interior)
                         : null,
                     formKey: formKey,
-                    textInnerStyle: AppFontStyles.extraBold24(context)
+                    textInnerStyle: AppFontStyles.extraBoldNew20(context)
                         .copyWith(letterSpacing: 3),
                     textInputType:
                         const TextInputType.numberWithOptions(decimal: true),
@@ -110,11 +110,11 @@ class BillDetails extends StatelessWidget {
                           ? onTapToChangeRemain!()
                           : () {};
                     },
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     enableBorder: true,
                     suffixIcon: Text(
                       "جنية",
-                      style: AppFontStyles.extraBold18(context),
+                      style: AppFontStyles.extraBoldNew16(context),
                     ),
                   )),
               const Expanded(flex: 1, child: SizedBox()),
@@ -127,13 +127,13 @@ class BillDetails extends StatelessWidget {
                     controller: TextEditingController(
                       text: convertToArabicNumbers(pillModel.remian),
                     ),
-                    textInnerStyle: AppFontStyles.extraBold24(context)
+                    textInnerStyle: AppFontStyles.extraBoldNew20(context)
                         .copyWith(letterSpacing: 3),
-                    textStyle: AppFontStyles.extraBold18(context),
+                    textStyle: AppFontStyles.extraBoldNew16(context),
                     enableBorder: true,
                     suffixIcon: Text(
                       "جنية",
-                      style: AppFontStyles.extraBold18(context),
+                      style: AppFontStyles.extraBoldNew16(context),
                     ),
                   )),
               const Expanded(flex: 1, child: SizedBox()),
@@ -141,7 +141,7 @@ class BillDetails extends StatelessWidget {
                   ? Center(
                       child: Text(
                         "تم استلام كل المبالغ المتبقية",
-                        style: AppFontStyles.bold24(context),
+                        style: AppFontStyles.bold19(context),
                       ),
                     )
                   : Expanded(
@@ -160,7 +160,7 @@ class BillDetails extends StatelessWidget {
                                 flex: 2,
                                 child: CustomColumnWithTextInAddNewType(
                                   textInnerStyle:
-                                      AppFontStyles.extraBold20(context),
+                                      AppFontStyles.extraBoldNew18(context),
                                   onChanged: (value) {
                                     if (value == null || value.isEmpty) {
                                     } else {
@@ -183,7 +183,7 @@ class BillDetails extends StatelessWidget {
                                           r'[\u0660-\u0669\u06F0-\u06F9]'), // Arabic numerals only
                                     ),
                                   ],
-                                  textStyle: AppFontStyles.extraBold18(context),
+                                  textStyle: AppFontStyles.extraBoldNew16(context),
                                   enableBorder: true,
                                   suffixIcon: changeStepsCounter != null
                                       ? IconButton(

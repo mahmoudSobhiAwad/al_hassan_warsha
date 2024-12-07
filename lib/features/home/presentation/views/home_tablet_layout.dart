@@ -22,7 +22,7 @@ class HomeScreenTabletLayout extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "الحسن ",
-                  style: AppFontStyles.extraBold55(context),
+                  style: AppFontStyles.extraBoldNew40(context),
                 )),
             const SizedBox(
               height: 24,
@@ -31,7 +31,7 @@ class HomeScreenTabletLayout extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "اختيارك الأمثل لجميع أعمال الالوميتال",
-                  style: AppFontStyles.extraBold40(context),
+                  style: AppFontStyles.extraBoldNew30(context),
                 )),
             isLoading
                 ? const CircularProgressIndicator()
@@ -53,7 +53,7 @@ class HomeScreenTabletLayout extends StatelessWidget {
                                       mainAxisSpacing: 15),
                               itemBuilder: (context, index) {
                                 return HomeItem(
-                                  textStyle: AppFontStyles.extraBold40(context),
+                                  textStyle: AppFontStyles.extraBoldNew30(context),
                                   onTap: () {
                                     onTap(index);
                                   },

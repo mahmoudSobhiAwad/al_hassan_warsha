@@ -19,7 +19,7 @@ class CustomItemInCustomLinkingAppBar extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: AppFontStyles.extraBold40(context)
+            style: AppFontStyles.extraBoldNew30(context)
                 .copyWith(fontSize: fontSize,color: enableColor ? AppColors.white : AppColors.black,),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,

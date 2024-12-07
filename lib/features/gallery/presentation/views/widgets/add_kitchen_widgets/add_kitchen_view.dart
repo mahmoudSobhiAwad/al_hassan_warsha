@@ -55,7 +55,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                     return null;
                   },
                   controller: controller,
-                  textStyle: AppFontStyles.extraBold25(context),
+                  textStyle: AppFontStyles.extraBoldNew21(context),
                   text: "الاسم",
                   textLabel: "اضف اسم للمنتج................",
                   enableBorder: true,
@@ -65,7 +65,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             ),
             CustomColumnWithTextInAddNewType(
               controller: describController,
-              textStyle: AppFontStyles.extraBold25(context),
+              textStyle: AppFontStyles.extraBoldNew21(context),
               maxLine: 4,
               text: "الوصف",
               textLabel:
@@ -77,7 +77,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
             ),
             Text(
               "الوسائط",
-              style: AppFontStyles.extraBold25(context),
+              style: AppFontStyles.extraBoldNew21(context),
             ),
             const SizedBox(
               height: 22,
@@ -123,7 +123,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                     )
                   : Text(
                       "إضافة",
-                      style: AppFontStyles.extraBold30(context)
+                      style: AppFontStyles.extraBoldNew24(context)
                           .copyWith(color: AppColors.white),
                     ),
               borderRadius: 15,

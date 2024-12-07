@@ -62,7 +62,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                     return null;
                   },
                   controller: editNameController,
-                  textStyle: AppFontStyles.extraBold25(context),
+                  textStyle: AppFontStyles.extraBoldNew21(context),
                   text: "الاسم",
                   textLabel: "اضف اسم للمنتج................",
                   enableBorder: true,
@@ -72,7 +72,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
             ),
             CustomColumnWithTextInAddNewType(
               controller: editDescribeController,
-              textStyle: AppFontStyles.extraBold25(context),
+              textStyle: AppFontStyles.extraBoldNew21(context),
               maxLine: 2,
               text: "الوصف",
               textLabel:
@@ -87,14 +87,14 @@ class _EditKitchenViewState extends State<EditKitchenView> {
               children: [
                 Text(
                   "الوسائط",
-                  style: AppFontStyles.extraBold25(context),
+                  style: AppFontStyles.extraBoldNew21(context),
                 ),
                 const SizedBox(
                   width: 12,
                 ),
                 Text(
                   "( ${widget.model.mediaCounter} )",
-                  style: AppFontStyles.extraBold24(context),
+                  style: AppFontStyles.extraBoldNew20(context),
                 ),
               ],
             ),
@@ -152,7 +152,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                       pickedMediaList: widget.pickedList));
                 }
               },
-              childInstead: widget.bloc.isLoding?const CircularProgressIndicator(color: AppColors.white,):Text("تعديل",style: AppFontStyles.extraBold30(context).copyWith(color: AppColors.white,)),
+              childInstead: widget.bloc.isLoding?const CircularProgressIndicator(color: AppColors.white,):Text("تعديل",style: AppFontStyles.extraBoldNew24(context).copyWith(color: AppColors.white,)),
               borderRadius: 15,
               padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 12),
               enableIcon: false,

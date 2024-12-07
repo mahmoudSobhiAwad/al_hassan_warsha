@@ -17,7 +17,7 @@ class CustomTextWithCheckBox extends StatelessWidget {
         Flexible(
           child: Text(
             title,
-            style: AppFontStyles.extraBold18(context),
+            style: AppFontStyles.extraBoldNew16(context),
           ),
         ),
         const SizedBox(width: 10,),

@@ -39,7 +39,7 @@ class EmptyDataScreen extends StatelessWidget {
                 ),
                 Text(
                   emptyText ?? "",
-                  style: AppFontStyles.extraBold50(context),
+                  style: AppFontStyles.extraBoldNew38(context),
                 ),
                 SizedBox(
                   height: enablePush ? 24 : 0,

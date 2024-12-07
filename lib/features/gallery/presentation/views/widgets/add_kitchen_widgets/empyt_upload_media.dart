@@ -38,7 +38,7 @@ class EmptyUploadMedia extends StatelessWidget {
           children: [
             Text(
               "ارفع بعض الصور ومقاطع الفيديو حتي تعرض المنتج بأفضل صورة ممكنة ",
-              style: AppFontStyles.extraBold28(context),
+              style: AppFontStyles.extraBoldNew24(context),
             ),
             const Icon(
               Icons.cloud_upload,

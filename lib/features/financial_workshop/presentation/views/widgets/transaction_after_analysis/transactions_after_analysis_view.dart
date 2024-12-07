@@ -53,7 +53,7 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                           child: Center(
                                             child: Text(
                                               "لا يوجد اي معاملات من هذا النوع لهذه الفترة ",
-                                              style: AppFontStyles.extraBold35(
+                                              style: AppFontStyles.extraBoldNew26(
                                                   context),
                                             ),
                                           ),

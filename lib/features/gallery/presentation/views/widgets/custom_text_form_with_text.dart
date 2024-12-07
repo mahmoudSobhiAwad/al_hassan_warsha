@@ -35,7 +35,7 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
       children: [
         Text(
           text,
-          style: textStyle?? AppFontStyles.extraBold30(context),
+          style: textStyle?? AppFontStyles.extraBoldNew24(context),
         ),
         const SizedBox(
           height: 12,

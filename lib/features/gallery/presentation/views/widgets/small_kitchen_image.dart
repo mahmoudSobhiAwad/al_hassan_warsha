@@ -46,14 +46,14 @@ class SmallKitchenTypeImage extends StatelessWidget {
                       children: [
                         Text(
                           model.kitchenName ?? "",
-                          style: AppFontStyles.extraBold24(context)
+                          style: AppFontStyles.extraBoldNew20(context)
                               .copyWith(color: AppColors.white),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           model.kitchenDesc ?? "",
-                          style: AppFontStyles.extraBold20(context)
+                          style: AppFontStyles.extraBoldNew18(context)
                               .copyWith(color: AppColors.white),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

@@ -11,7 +11,7 @@ void showCustomSnackBar(BuildContext context, String message,
       
       content: Text(
         message,
-        style: AppFontStyles.extraBold18(context).copyWith(color: AppColors.white),
+        style: AppFontStyles.extraBoldNew16(context).copyWith(color: AppColors.white),
       ),
       backgroundColor: backgroundColor,
       duration: duration,

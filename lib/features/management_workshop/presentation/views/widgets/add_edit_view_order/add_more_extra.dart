@@ -18,12 +18,12 @@ class AddsForOrder extends StatelessWidget {
         addMore == null && list.isEmpty
             ? Text(
                 "لا يوجد اي اضافات ",
-                style: AppFontStyles.bold24(context),
+                style: AppFontStyles.bold19(context),
                 textAlign: TextAlign.center,
               )
             : Text(
                 "اضافات للمنتج",
-                style: AppFontStyles.extraBold18(context),
+                style: AppFontStyles.extraBoldNew16(context),
               ),
         const SizedBox(
           height: 10,
@@ -75,7 +75,7 @@ class AddsForOrder extends StatelessWidget {
                         children: [
                           Text(
                             "المزيد",
-                            style: AppFontStyles.extraBold18(context),
+                            style: AppFontStyles.extraBoldNew16(context),
                           ),
                           const Icon(Icons.add)
                         ],

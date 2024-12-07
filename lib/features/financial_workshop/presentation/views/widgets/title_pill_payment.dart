@@ -15,7 +15,7 @@ class TitleInBillPayment extends StatelessWidget {
         const Expanded(child: SizedBox()),
         Text(
           "دفع المرتبات",
-          style: AppFontStyles.extraBold35(context),
+          style: AppFontStyles.extraBoldNew26(context),
         ),
         const Expanded(flex: 13, child: SizedBox()),
         CustomContainerToPickHistory(
@@ -23,7 +23,7 @@ class TitleInBillPayment extends StatelessWidget {
             children: [
               Text(
                 "فرز",
-                style: AppFontStyles.extraBold18(context),
+                style: AppFontStyles.extraBoldNew16(context),
               ),
               const IconButton(
                   onPressed: null,

@@ -16,7 +16,7 @@ class AppBarItem extends StatelessWidget {
             fit: BoxFit.scaleDown,
             child: Text(
               text,
-              style:textStyle?? AppFontStyles.extraBold50(context).copyWith(
+              style:textStyle?? AppFontStyles.extraBoldNew38(context).copyWith(
                 color: AppColors.white,
               ),
             ),

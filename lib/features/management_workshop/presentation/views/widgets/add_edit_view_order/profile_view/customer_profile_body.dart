@@ -76,12 +76,12 @@ class CustomerProfileBody extends StatelessWidget {
                     children: [
                       Text(
                         "كل الطلبات ",
-                        style: AppFontStyles.extraBold28(context),
+                        style: AppFontStyles.extraBoldNew24(context),
                       ),
                       const SizedBox(width: 7),
                       Text(
                         "( ${model.orderModelList.length} )",
-                        style: AppFontStyles.extraBold20(context)
+                        style: AppFontStyles.extraBoldNew18(context)
                             .copyWith(color: AppColors.lightGray1),
                       ),
                     ],

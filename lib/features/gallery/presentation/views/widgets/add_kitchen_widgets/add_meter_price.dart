@@ -15,7 +15,7 @@ class AddMeterPrice extends StatelessWidget {
         const Spacer(),
         Text(
           "سعر المتر",
-          style: AppFontStyles.extraBold40(context),
+          style: AppFontStyles.extraBoldNew30(context),
         ),
         const Spacer(),
         const Spacer(),
@@ -28,7 +28,7 @@ class AddMeterPrice extends StatelessWidget {
               labelWidget: Center(
                 child: Text(
                   "............... جنية",
-                  style: AppFontStyles.bold24(context)
+                  style: AppFontStyles.bold19(context)
                       .copyWith(color: AppColors.veryLightGray),
                 ),
               ),

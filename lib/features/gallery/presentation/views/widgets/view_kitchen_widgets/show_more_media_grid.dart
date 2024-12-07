@@ -53,7 +53,7 @@ class ShowMoreMediaGridView extends StatelessWidget {
                                   width: 30,
                                 ),
                                 Text("عرض كل الوسائط ",
-                                    style: AppFontStyles.extraBold30(context)),
+                                    style: AppFontStyles.extraBoldNew24(context)),
                               ],
                             ),
                             const SizedBox(

@@ -120,7 +120,7 @@ class AddOrderBody extends StatelessWidget {
                               children: [
                                 Text(
                                   "اضافة ",
-                                  style: AppFontStyles.extraBold30(context)
+                                  style: AppFontStyles.extraBoldNew24(context)
                                       .copyWith(
                                     color: AppColors.white,
                                   ),

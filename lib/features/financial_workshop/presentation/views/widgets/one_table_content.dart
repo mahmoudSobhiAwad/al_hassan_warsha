@@ -57,7 +57,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context)
+                      textStyle: AppFontStyles.bold19(context)
                           .copyWith(letterSpacing: 2),
                       text: pillModel.interior,
                     )),
@@ -65,7 +65,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold24(context)
+                      textStyle: AppFontStyles.bold19(context)
                           .copyWith(letterSpacing: 3),
                       text: convertToArabicNumbers(pillModel.remian),
                     )),
@@ -73,14 +73,14 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.bold24(context),
+                        textStyle: AppFontStyles.bold19(context),
                         text:int.parse(convertToEnglishNumbers(pillModel.remian))!=0? convertToArabicNumbers(
                             pillModel.stepsCounter.toString()):convertToArabicNumbers('0'))),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
                     child: CustomTextFormField(
-                      textStyle: AppFontStyles.extraBold20(context)
+                      textStyle: AppFontStyles.extraBoldNew18(context)
                           .copyWith(letterSpacing: 3),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       fillColor: AppColors.white,
@@ -108,7 +108,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                       borderColor: AppColors.lightGray1,
                       suffixWidget: Text(
                         "جنية",
-                        style: AppFontStyles.extraBold18(context),
+                        style: AppFontStyles.extraBoldNew16(context),
                       ),
                       labelWidget: Text(
                         "...................",
@@ -159,7 +159,7 @@ class ContentOfFinancialTable extends StatelessWidget {
             ),
             child: Text(
               "تنزيل دفعة",
-              style: AppFontStyles.extraBold16(context)
+              style: AppFontStyles.extraBoldNew14(context)
                   .copyWith(color: AppColors.white),
             ),
           ),

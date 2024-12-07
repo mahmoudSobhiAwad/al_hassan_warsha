@@ -30,7 +30,7 @@ class CompleteKitchenType extends StatelessWidget {
                 children: [
                   Text(
                     "لا يوجد اي عناصر من هذا النوع",
-                    style: AppFontStyles.extraBold30(context),
+                    style: AppFontStyles.extraBoldNew24(context),
                   ),
                   const SizedBox(
                     height: 20,

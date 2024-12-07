@@ -24,11 +24,11 @@ class CustomInnerShadowInLastKitchen extends StatelessWidget {
           child: Column(
             children: [
               Text(name,
-                  style: AppFontStyles.extraBold40(context).copyWith(
+                  style: AppFontStyles.extraBoldNew30(context).copyWith(
                     color: AppColors.white,
                   )),
               Text(desc,
-                  style: AppFontStyles.extraBold25(context).copyWith(
+                  style: AppFontStyles.extraBoldNew21(context).copyWith(
                     color: AppColors.white,
                   )),
             ],

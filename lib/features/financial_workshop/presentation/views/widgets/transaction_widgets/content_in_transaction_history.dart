@@ -37,7 +37,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                 Expanded(
                     flex: 4,
                     child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: switch (model.allTransactionTypes) {
                           AllTransactionTypes.interior => "مقدم",
                           AllTransactionTypes.stepDown => "تنزيل قسط",
@@ -53,14 +53,14 @@ class ContentInTransactionHistory extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomTextWithTheSameStyle(
-                          textStyle: AppFontStyles.extraBold18(context)
+                          textStyle: AppFontStyles.extraBoldNew16(context)
                               .copyWith(letterSpacing: 3),
                           text:
                               "${convertToArabicNumbers(model.transactionAmount)} ",
                         ),
                         Text(
                           "جنية",
-                          style: AppFontStyles.extraBold18(context),
+                          style: AppFontStyles.extraBoldNew16(context),
                         ),
                       ],
                     )),
@@ -69,7 +69,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 2,
                     child: CustomTextWithTheSameStyle(
                       letterSpacing: 3,
-                      textStyle: AppFontStyles.extraBold18(
+                      textStyle: AppFontStyles.extraBoldNew16(
                         context,
                       ),
                       text: DateFormat('d MMMM y - h:mm a', 'ar')
@@ -80,7 +80,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 2,
                     child: Center(
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text:
                             model.transactionMethod == TransactionMethod.caching
                                 ? "كاش"
@@ -92,7 +92,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 2,
                     child: Center(
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBold18(context),
+                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: model.transactionType == TransactionType.buy
                             ? "دفع"
                             : "استلام",
@@ -138,7 +138,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                       Flexible(
                         child: Text(
                           "حذف التحويل",
-                          style: AppFontStyles.extraBold18(context).copyWith(
+                          style: AppFontStyles.extraBoldNew16(context).copyWith(
                             color: AppColors.red,
                           ),
                         ),

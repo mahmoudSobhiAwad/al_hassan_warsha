@@ -20,7 +20,7 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "الحسن ",
-                  style: AppFontStyles.extraBold90(context),
+                  style: AppFontStyles.extraBoldNew60(context),
                 )),
             const SizedBox(
               height: 24,
@@ -29,7 +29,7 @@ class HomeScreenDesktopLayOut extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   "اختيارك الأمثل لجميع أعمال الالوميتال",
-                  style: AppFontStyles.extraBold60(context),
+                  style: AppFontStyles.extraBoldNew50(context),
                 )),
             isLoading
                 ? const CircularProgressIndicator()

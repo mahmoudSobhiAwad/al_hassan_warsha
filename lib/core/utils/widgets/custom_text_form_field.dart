@@ -70,10 +70,10 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: textInputType,
       cursorColor: Colors.black,
       onTap: onTap,
-      style: textStyle ?? AppFontStyles.extraBold18(context),
+      style: textStyle ?? AppFontStyles.extraBoldNew16(context),
       decoration: InputDecoration(
         
-        errorStyle: AppFontStyles.extraBold16(context),
+        errorStyle: AppFontStyles.extraBoldNew14(context),
         contentPadding: contentPadding,
         focusColor: Colors.black,
         suffixIcon: suffixWidget,
