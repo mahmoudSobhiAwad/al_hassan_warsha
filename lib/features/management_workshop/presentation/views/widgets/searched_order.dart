@@ -25,6 +25,7 @@ class SearchedOrderResutl extends StatelessWidget {
       children: [
         Row(
           children: [
+            
             Text(
               "نتائج البحث الخاصة ب ",
               style: AppFontStyles.extraBold40(context),

@@ -1,3 +1,58 @@
+// import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+ import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
+// import 'package:flutter/material.dart';
+
+// class AdaptiveTextDemo extends StatelessWidget {
+//   const AdaptiveTextDemo({
+//     super.key,
+//     required this.text,
+//     this.textStyle,
+//     this.letterSpacing,
+//   });
+//   final String text;
+//   final TextStyle? textStyle;
+//   final double? letterSpacing;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text(
+//       text,
+//       style: textStyle,
+//       maxLines: 2,
+//       overflow: TextOverflow.ellipsis,
+//       textAlign: TextAlign.start,
+//     );
+//   }
+// }
+
+// class CustomTextWithTheSameStyle extends StatelessWidget {
+//   const CustomTextWithTheSameStyle({
+//     super.key,
+//     required this.text,
+//     this.textStyle,
+//     this.letterSpacing,
+//   });
+//   final String text;
+//   final TextStyle? textStyle;
+//   final double? letterSpacing;
+//   @override
+//   Widget build(BuildContext context) {
+//     return CustomAdaptiveLayout(
+//       mobileLayout: (context) => AdaptiveTextDemo(
+//         text: text,
+//         textStyle: AppFontStyles.bold12(context),
+//       ),
+//       tabletLayout: (context) => AdaptiveTextDemo(
+//         text: text,
+//         textStyle: AppFontStyles.bold12(context),
+//       ),
+//       desktopLayout: (context) => AdaptiveTextDemo(
+//         text: text,
+//         textStyle:  AppFontStyles.extraBold25(context),
+//       ),
+//     );
+//   }
+// }
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 
@@ -8,13 +63,33 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
     this.textStyle,
     this.letterSpacing,
   });
+
   final String text;
-  final TextStyle?textStyle;
+  final TextStyle? textStyle;
   final double? letterSpacing;
-  
 
   @override
   Widget build(BuildContext context) {
-    return Text(text,style:textStyle?? AppFontStyles.extraBold14(context).copyWith(letterSpacing: letterSpacing),maxLines: 2,overflow: TextOverflow.ellipsis,textAlign: TextAlign.start,);
+    // Example adaptive text styles based on layout
+    TextStyle adaptiveTextStyle;
+
+    if (AppFontsLayout.isMobile(context)) {
+      adaptiveTextStyle = AppFontStyles.bold12(context);
+    } else if (AppFontsLayout.isTablet(context)) {
+      adaptiveTextStyle = AppFontStyles.bold12(context);
+    } else if (AppFontsLayout.isDesktop(context)) {
+      adaptiveTextStyle = AppFontStyles.extraBold14(context);
+    } else {
+      adaptiveTextStyle = AppFontStyles.bold12(context); // Fallback
+    }
+
+    return Text(
+      text,
+      style: (textStyle ?? adaptiveTextStyle).copyWith(letterSpacing: letterSpacing),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.start,
+    );
   }
 }
+

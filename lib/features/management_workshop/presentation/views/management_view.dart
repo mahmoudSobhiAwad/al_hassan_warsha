@@ -26,9 +26,9 @@ class ManagementView extends StatelessWidget {
         var bloc = context.read<ManagementBloc>();
         return Expanded(
           child: CustomAdaptiveLayout(
-              desktopLayout: (context,[constraint]) => ManagmentBody(bloc: bloc,),
+              desktopLayout: (context) => ManagmentBody(bloc: bloc,),
               mobileLayout: (context) => const ManagmentMobileView(),
-              tabletLayout: (context,[constraint]) => const ManagemntTabletView(),
+              tabletLayout: (context) => ManagemntTabletView(bloc: bloc,),
               ),
         );
       }, listener: (context, state) {

@@ -13,31 +13,37 @@ class ManagmentBody extends StatelessWidget {
   const ManagmentBody({
     super.key,
     required this.bloc,
+    this.enableSideBar = true,
+    this.farzWidget,
   });
 
   final ManagementBloc bloc;
+  final bool enableSideBar;
+  final Widget?farzWidget;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-            child: SideBarManagement(
-          neverLength: bloc.ordersList
-              .where((item) => item.orderStatus != OrderStatus.finished)
-              .length,
-          finishedLength: bloc.ordersList
-              .where((item) => item.orderStatus == OrderStatus.finished)
-              .length,
-          totalLength: bloc.ordersList.length,
-          nearLenght: bloc.ordersList
-              .where((item) => item.orderStatus == OrderStatus.veryNear)
-              .length,
-          changeIndex: (index) {
-            bloc.add(ChangeCategrizedListEvent(index: index));
-          },
-          currIndex: bloc.currIndex,
-        )),
+        enableSideBar
+            ? Expanded(
+                child: SideBarManagement(
+                neverLength: bloc.ordersList
+                    .where((item) => item.orderStatus != OrderStatus.finished)
+                    .length,
+                finishedLength: bloc.ordersList
+                    .where((item) => item.orderStatus == OrderStatus.finished)
+                    .length,
+                totalLength: bloc.ordersList.length,
+                nearLenght: bloc.ordersList
+                    .where((item) => item.orderStatus == OrderStatus.veryNear)
+                    .length,
+                changeIndex: (index) {
+                  bloc.add(ChangeCategrizedListEvent(index: index));
+                },
+                currIndex: bloc.currIndex,
+              ))
+            : const SizedBox(),
         Expanded(
           flex: 4,
           child: Padding(
@@ -88,6 +94,7 @@ class ManagmentBody extends StatelessWidget {
                     false => Expanded(
                           child: OrderListWithFilter(
                         bloc: bloc,
+                        farzWidget: farzWidget,
                       )),
                   }
                 ],

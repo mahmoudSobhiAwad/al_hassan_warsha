@@ -4,25 +4,24 @@ import 'package:flutter/material.dart';
 class FullTableHeader extends StatelessWidget {
   const FullTableHeader({
     super.key,
+    this.farzWidget,
   });
-
+  final Widget? farzWidget;
   @override
   Widget build(BuildContext context) {
-    return const Row(
-     mainAxisSize: MainAxisSize.min,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(child: TableHeader()),
-        SizedBox(
+        const Expanded(child: const TableHeader()),
+        const SizedBox(
           width: 14,
         ),
-        Icon(
-          Icons.new_label_outlined,
-          color: Colors.white,
-        ),
+        farzWidget ??
+            const Icon(
+              Icons.new_label_outlined,
+              color: Colors.white,
+            ),
       ],
     );
   }
 }
-
-
-

@@ -26,9 +26,6 @@ class ManagementRepoImpl implements ManagementRepo {
 
   Future<Either<List<String>, String>> getAllKitchenTypes() async {
     try {
-      for (final kitchenType in kitchenTypesInOrderList) {
-        await dataBaseHelper.database.insert(kitchenTypesInOrder, kitchenType);
-      }
       final result = await dataBaseHelper.database.query(kitchenTypesInOrder);
 
       List<String> kitchenTypesList = [];

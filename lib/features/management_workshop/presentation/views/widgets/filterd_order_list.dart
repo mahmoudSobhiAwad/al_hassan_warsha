@@ -12,9 +12,11 @@ class OrderListWithFilter extends StatelessWidget {
   const OrderListWithFilter({
     super.key,
     required this.bloc,
+    this.farzWidget,
   });
 
   final ManagementBloc bloc;
+  final Widget?farzWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +39,9 @@ class OrderListWithFilter extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-        const Padding(
-          padding: EdgeInsets.only(right: 25.0),
-          child: FullTableHeader(),
+        Padding(
+          padding:const EdgeInsets.only(right: 25.0),
+          child: FullTableHeader(farzWidget: farzWidget,),
         ),
         const Padding(
           padding: EdgeInsets.only(right: 25.0),

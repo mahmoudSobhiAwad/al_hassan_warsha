@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:flutter/material.dart';
 
 class CustomAdaptiveLayout extends StatelessWidget {
@@ -8,16 +9,24 @@ class CustomAdaptiveLayout extends StatelessWidget {
     required this.tabletLayout,
   });
 
-  final Widget Function(BuildContext context,) mobileLayout;
-  final Widget Function(BuildContext context, ) tabletLayout;
-  final Widget Function(BuildContext context,) desktopLayout;
+  final Widget Function(
+    BuildContext context,
+  ) mobileLayout;
+  final Widget Function(
+    BuildContext context,
+  ) tabletLayout;
+  final Widget Function(
+    BuildContext context,
+  ) desktopLayout;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth < 600) {
-          return mobileLayout(context,);
+          return mobileLayout(
+            context,
+          );
         } else if (constraints.maxWidth < 1025) {
           return tabletLayout(context);
         } else {
@@ -26,4 +35,12 @@ class CustomAdaptiveLayout extends StatelessWidget {
       },
     );
   }
+}
+
+class AppFontsLayout {
+  static bool isMobile(BuildContext context) => context.screenWidth < 600;
+
+  static bool isTablet(BuildContext context) => context.screenWidth < 1025;
+
+  static bool isDesktop(BuildContext context) => context.screenWidth >= 1025;
 }
