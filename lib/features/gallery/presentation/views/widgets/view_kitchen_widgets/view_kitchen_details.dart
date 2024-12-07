@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_container_with_above_text.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
@@ -10,6 +11,7 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/show_more_media_grid.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 class ViewKitchenDetailsBody extends StatelessWidget {
   const ViewKitchenDetailsBody(
@@ -29,85 +31,31 @@ class ViewKitchenDetailsBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(
-                  kitchenModel?.kitchenName ?? "",
-                  style: AppFontStyles.extraBold40(context),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ),
-              const Expanded(flex: 2, child: SizedBox()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomPushContainerButton(
-                    onTap: () {
-                      changeEditState(true);
-                    },
-                    iconBehind: Icons.create_rounded,
-                    borderRadius: 16,
-                    pushButtomText: "تعديل",
-                  ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  CustomPushContainerButton(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          useSafeArea: true,
-                          builder: (context) {
-                            return Dialog(
-                              child: CustomAlert(
-                                title: "هل أنت متأكد من حذف هذا المطبخ ؟",
-                                enableIcon: false,
-                                actionButtonsInstead:
-                                    DialogAddNewTypeActionButton(
-                                  onPressed_1: deleteKitchen,
-                                  onPressed_2: () {
-                                    Navigator.pop(context);
-                                  },
-                                  text_1: "حذف",
-                                  text_2: "إلغاء",
-                                  color_1: AppColors.red,
-                                  color_2: AppColors.green,
-                                ),
-                              ),
-                            );
-                          });
-                    },
-                    borderRadius: 16,
-                    color: AppColors.red,
-                    childInstead: bloc.isLoding
-                        ? const CircularProgressIndicator(
-                            color: AppColors.white,
-                          )
-                        : Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "حذف",
-                                style: AppFontStyles.extraBold30(context)
-                                    .copyWith(color: AppColors.white),
-                              ),
-                              const IconButton(
-                                  onPressed: null,
-                                  icon: Icon(
-                                    size: 32,
-                                    Icons.delete,
-                                    color: AppColors.white,
-                                  )),
-                            ],
-                          ),
-                  ),
-                ],
-              ),
-            ],
+          CustomAdaptiveLayout(
+            desktopLayout: (context) =>
+                BarInViewKitchenWithEditAndDeleteButtons(
+              kitchenModel: kitchenModel,
+              changeEditState: changeEditState,
+              deleteKitchen: deleteKitchen,
+              isLoding: bloc.isLoding,
+            ),
+            mobileLayout: (context) => BarInViewKitchenWithEditAndDeleteButtons(
+              kitchenModel: kitchenModel,
+              changeEditState: changeEditState,
+              deleteKitchen: deleteKitchen,
+              isLoding: bloc.isLoding,
+              fontSize: 20,
+              iconSize: 24,
+              fontSizeInButtons: 18,
+              edgeInsets:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            ),
+            tabletLayout: (context) => BarInViewKitchenWithEditAndDeleteButtons(
+              kitchenModel: kitchenModel,
+              changeEditState: changeEditState,
+              deleteKitchen: deleteKitchen,
+              isLoding: bloc.isLoding,
+            ),
           ),
           const SizedBox(
             height: 12,
@@ -165,6 +113,118 @@ class ViewKitchenDetailsBody extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class BarInViewKitchenWithEditAndDeleteButtons extends StatelessWidget {
+  const BarInViewKitchenWithEditAndDeleteButtons(
+      {super.key,
+      required this.kitchenModel,
+      required this.changeEditState,
+      required this.deleteKitchen,
+      required this.isLoding,
+      this.fontSize,
+      this.edgeInsets,
+      this.fontSizeInButtons,
+      this.iconSize});
+
+  final KitchenModel? kitchenModel;
+  final void Function(bool enableEdit) changeEditState;
+  final void Function() deleteKitchen;
+  final bool isLoding;
+  final double? fontSize;
+  final double? iconSize;
+  final double? fontSizeInButtons;
+  final EdgeInsets? edgeInsets;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            kitchenModel?.kitchenName ?? "",
+            style:
+                AppFontStyles.extraBold40(context).copyWith(fontSize: fontSize),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        const Expanded(flex: 2, child: SizedBox()),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomPushContainerButton(
+              padding: edgeInsets,
+              iconSize: iconSize,
+              pushButtomTextFontSize: fontSizeInButtons,
+              onTap: () {
+                changeEditState(true);
+              },
+              iconBehind: Icons.create_rounded,
+              borderRadius: 16,
+              pushButtomText: "تعديل",
+            ),
+            const SizedBox(
+              width: 24,
+            ),
+            CustomPushContainerButton(
+              padding: edgeInsets,
+              iconSize: iconSize,
+              pushButtomTextFontSize: fontSizeInButtons,
+              onTap: () {
+                showDialog(
+                    context: context,
+                    useSafeArea: true,
+                    builder: (context) {
+                      return Dialog(
+                        child: CustomAlert(
+                          title: "هل أنت متأكد من حذف هذا المطبخ ؟",
+                          enableIcon: false,
+                          actionButtonsInstead: DialogAddNewTypeActionButton(
+                            onPressed_1: deleteKitchen,
+                            onPressed_2: () {
+                              Navigator.pop(context);
+                            },
+                            text_1: "حذف",
+                            text_2: "إلغاء",
+                            color_1: AppColors.red,
+                            color_2: AppColors.green,
+                          ),
+                        ),
+                      );
+                    });
+              },
+              borderRadius: 16,
+              color: AppColors.red,
+              childInstead: isLoding
+                  ? const CircularProgressIndicator(
+                      color: AppColors.white,
+                    )
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "حذف",
+                          style: AppFontStyles.extraBold30(context).copyWith(
+                              color: AppColors.white,
+                              fontSize: fontSizeInButtons),
+                        ),
+                        const SizedBox(width: 7,),
+                        Icon(
+                          size: iconSize ?? 32,
+                          Icons.delete,
+                          color: AppColors.white,
+                        ),
+                      ],
+                    ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

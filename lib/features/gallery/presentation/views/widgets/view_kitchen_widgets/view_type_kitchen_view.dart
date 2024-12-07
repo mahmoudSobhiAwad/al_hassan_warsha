@@ -50,17 +50,13 @@ class _ViewKitchenInGalleryViewState extends State<ViewKitchenInGalleryView> {
           return SafeArea(
             child: Scaffold(
               backgroundColor: AppColors.white,
-              body: CustomAdaptiveLayout(
-                desktopLayout: (context,[constraint]) => KitchenGalleryCustomView(
+              body: KitchenGalleryCustomView(
                   bloc: bloc,
                   typeId: widget.typeId,
                   kitchenModel: widget.kitchenModel,
                   titleOfAppBar: widget.titleOfAppBar,
                   kitchenMediaList: pickedMediaList,
                 ),
-                mobileLayout: (context) => const Text("Mobile Layout"),
-                tabletLayout: (context,[constraint]) => const Text("Tablet Layout"),
-              ),
             ),
           );
         }, listener: (context, state) {

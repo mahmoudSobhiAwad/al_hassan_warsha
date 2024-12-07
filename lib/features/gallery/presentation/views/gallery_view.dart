@@ -41,15 +41,24 @@ class GalleryView extends StatelessWidget {
 
         return Expanded(
           child: CustomAdaptiveLayout(
-            desktopLayout: (context,[constraint]) =>
-                GalleryViewForDesktopLayOut(galleryBloc: galleryBloc,),
-            mobileLayout: (context) => const MobileGalleryView(),
-            tabletLayout: (context,[constraint]) =>  GalleryTabletView(bloc: galleryBloc,),
+            desktopLayout: (
+              context,
+            ) =>
+                GalleryViewForDesktopLayOut(
+              galleryBloc: galleryBloc,
+            ),
+            mobileLayout: (context) => MobileGalleryView(
+              bloc: galleryBloc,
+            ),
+            tabletLayout: (
+              context,
+            ) =>
+                GalleryTabletView(
+              bloc: galleryBloc,
+            ),
           ),
         );
       }),
     );
   }
 }
-
-

@@ -1,3 +1,4 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class CustomContainerWithTextAbove extends StatelessWidget {
         ),
         Container(
           constraints: BoxConstraints(
-              maxHeight: MediaQuery.sizeOf(context).height * 0.125),
+              maxHeight: context.screenHeight * 0.125),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),

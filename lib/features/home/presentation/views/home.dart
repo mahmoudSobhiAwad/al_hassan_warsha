@@ -19,7 +19,7 @@ class HomeScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.ltr,
+      textDirection: TextDirection.rtl,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.white,

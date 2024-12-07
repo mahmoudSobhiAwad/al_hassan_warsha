@@ -21,6 +21,7 @@ class KitchenTypeItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      
         onTap: () {
           onTap != null ? onTap!(index) : null;
         },

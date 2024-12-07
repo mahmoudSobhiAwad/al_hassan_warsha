@@ -9,8 +9,8 @@ class CustomAdaptiveLayout extends StatelessWidget {
   });
 
   final Widget Function(BuildContext context,) mobileLayout;
-  final Widget Function(BuildContext context, [BoxConstraints ?constraints]) tabletLayout;
-  final Widget Function(BuildContext context, [BoxConstraints? constraints]) desktopLayout;
+  final Widget Function(BuildContext context, ) tabletLayout;
+  final Widget Function(BuildContext context,) desktopLayout;
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,9 @@ class CustomAdaptiveLayout extends StatelessWidget {
         if (constraints.maxWidth < 600) {
           return mobileLayout(context,);
         } else if (constraints.maxWidth < 1025) {
-          return tabletLayout(context,constraints);
+          return tabletLayout(context);
         } else {
-          return desktopLayout(context,constraints);
+          return desktopLayout(context);
         }
       },
     );

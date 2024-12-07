@@ -8,9 +8,11 @@ class CustomMobileAppBar extends StatelessWidget {
     super.key,
     required this.title,
     this.enableDrawer = true,
+    this.openDrawer,
   });
   final String title;
   final bool enableDrawer;
+  final void Function ()?openDrawer;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,8 @@ class CustomMobileAppBar extends StatelessWidget {
       child: Row(
         children: [
           enableDrawer
-              ? const IconButton(
-                  onPressed: null, icon: Icon(FontAwesomeIcons.bars,color: AppColors.white,))
+              ? IconButton(
+                  onPressed: openDrawer, icon: const Icon(FontAwesomeIcons.bars,color: AppColors.white,))
               : const SizedBox(),
           Text(
             title,
