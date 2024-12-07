@@ -9,6 +9,8 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/signature.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
+import 'package:local_notifier/local_notifier.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -21,6 +23,11 @@ Future<void> getPdfContract(OrderModel orderModel) async {
   const headerContent = ContentForCustomerInfo();
   const contentForOrderDetails = ContentForOrderInfo();
   const contractSignature = ContractSignature();
+  LocalNotification notification = LocalNotification(
+    title: "استخراج نسخة عقد",
+    body: orderModel.customerModel?.customerName,
+    subtitle: orderModel.orderName,
+  );
   final Uint8List watermarkImageData = await rootBundle
       .load(HomeAssets.waterMark)
       .then((data) => data.buffer.asUint8List());
@@ -117,12 +124,16 @@ Future<void> getPdfContract(OrderModel orderModel) async {
           ]),
         );
       }));
-  
-  String? directoryPath = await FilePicker.platform.getDirectoryPath(dialogTitle:"استخراج نسخة عقد" );
+
+  String? directoryPath = await FilePicker.platform
+      .getDirectoryPath(dialogTitle: "استخراج نسخة عقد");
   if (directoryPath != null) {
-    final file = File("$directoryPath/${orderModel.customerModel?.customerName}.pdf");
+    final file =
+        File("$directoryPath/${orderModel.customerModel?.customerName}.pdf");
     await file.writeAsBytes(await pdf.save());
+    await notification.show();
+    notification.onClick = ()async {
+    await OpenFile.open(file.path);
+    };
   }
 }
-
-
