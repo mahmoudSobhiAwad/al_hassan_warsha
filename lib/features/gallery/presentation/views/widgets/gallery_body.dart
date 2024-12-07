@@ -6,10 +6,16 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/lat
 import 'package:flutter/material.dart';
 
 class GalleryBody extends StatefulWidget {
-  const GalleryBody({super.key, required this.bloc, required this.kitchenList,this.enableLastAdded=true});
+  const GalleryBody(
+      {super.key,
+      required this.bloc,
+      required this.kitchenList,
+      this.enableLastAdded = true,
+      this.completeKitchenTypeInstead});
   final GalleryBloc bloc;
   final List<KitchenTypeModel> kitchenList;
   final bool enableLastAdded;
+  final Widget Function({required KitchenTypeModel model,required int index})? completeKitchenTypeInstead;
 
   @override
   State<GalleryBody> createState() => _GalleryBodyState();
@@ -47,51 +53,50 @@ class _GalleryBodyState extends State<GalleryBody> {
         controller: scrollController,
         scrollbarOrientation: ScrollbarOrientation.right,
         child: ScrollConfiguration(
-          behavior:const ScrollBehavior().copyWith(scrollbars: false),
-          child: CustomScrollView(
-            controller: scrollController,
-             slivers: [
-          widget.enableLastAdded?  SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    widget.bloc.newestKitchenTypeList.isNotEmpty
-                        ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "المضاف حديثا",
-                                style: AppFontStyles.extraBold50(context),
-                              ),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              AutoScrollingPageView(
-                                kitchenModelList:
-                                    widget.bloc.newestKitchenTypeList,
-                                pageController: widget.bloc.pageController,
-                              ),
-                            ],
-                          )
-                        : const SizedBox(),
-                    const SizedBox(
-                      height: 24,
+          behavior: const ScrollBehavior().copyWith(scrollbars: false),
+          child: CustomScrollView(controller: scrollController, slivers: [
+            widget.enableLastAdded
+                ? SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          widget.bloc.newestKitchenTypeList.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "المضاف حديثا",
+                                      style: AppFontStyles.extraBold50(context),
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    AutoScrollingPageView(
+                                      kitchenModelList:
+                                          widget.bloc.newestKitchenTypeList,
+                                      pageController:
+                                          widget.bloc.pageController,
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                          const SizedBox(
+                            height: 24,
+                          ),
+                          Text(
+                            "انواع المطابخ",
+                            style: AppFontStyles.extraBold40(context),
+                          ),
+                          const SizedBox(
+                            height: 8,
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      "انواع المطابخ",
-                      style: AppFontStyles.extraBold40(context),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                ),
-              ),
-            )
-            :const SliverToBoxAdapter(),
-           
+                  )
+                : const SliverToBoxAdapter(),
             widget.bloc.isLoading
                 ? const SliverToBoxAdapter(
                     child: SizedBox(
@@ -100,16 +105,18 @@ class _GalleryBodyState extends State<GalleryBody> {
                         child: CircularProgressIndicator()))
                 : SliverList.separated(
                     itemBuilder: (context, index) {
-                      return CompleteKitchenType(
-                        bloc: widget.bloc,
-                        model: widget.kitchenList[index],
-                        changeShowMore: () {
-                          widget.bloc.add(ShowMoreKitcenTypeEvent(
-                              currIndex: index,
-                              typeId: widget.kitchenList[index].typeId,
-                              isOpen: true));
-                        },
-                      );
+                      return widget.completeKitchenTypeInstead != null
+                          ? widget.completeKitchenTypeInstead!(model:widget.kitchenList[index],index: index)
+                          : CompleteKitchenType(
+                              bloc: widget.bloc,
+                              model: widget.kitchenList[index],
+                              changeShowMore: () {
+                                widget.bloc.add(ShowMoreKitcenTypeEvent(
+                                    currIndex: index,
+                                    typeId: widget.kitchenList[index].typeId,
+                                    isOpen: true));
+                              },
+                            );
                     },
                     separatorBuilder: (context, index) {
                       return const SizedBox(

@@ -1,6 +1,8 @@
 import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/manager/bloc/gallery_bloc.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/add_new_type_dialog.dart';
+import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/mobile_layout/gallery_mobile_body.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/side_bar_gallery.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +16,29 @@ class MobileGalleryView extends StatelessWidget {
         Column(
           children: [
             CustomMobileAppBar(
+              onCreate: () {
+                showDialogToAddNewKitchenType(
+                  context,
+                  formKey: bloc.formKey,
+                  controller: bloc.controller,
+                  add: () {
+                    if (bloc.formKey.currentState!.validate() &&
+                        bloc.controller.text.trim().isNotEmpty) {
+                      bloc.add(AddNewKitchenTypeEvent());
+                    }
+                  },
+                );
+              },
               openDrawer: () {
                 bloc.add(ChangeSideBarActivationEvent());
               },
               title: "المعرض ",
+            ),
+            GalleryMobileBody(
+              bloc: bloc,
+            ),
+            const SizedBox(
+              height: 15,
             ),
           ],
         ),
@@ -58,3 +79,4 @@ class MobileGalleryView extends StatelessWidget {
     );
   }
 }
+

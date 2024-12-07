@@ -6,32 +6,29 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/vie
 import 'package:flutter/material.dart';
 
 class ListOfOneKitchenType extends StatelessWidget {
-  const ListOfOneKitchenType({super.key,this.enableInner=true,required this.bloc,this.enableClose=false,required this.kitchenModelList,required this.typeName});
+  const ListOfOneKitchenType({super.key,this.enableInner=true,required this.bloc,this.enableClose=false,required this.kitchenModelList,required this.typeName,this.imageWidth});
   final bool enableInner;
   final bool enableClose;
   final List<KitchenModel>kitchenModelList;
   final String typeName;
   final GalleryBloc bloc;
+  final double?imageWidth;
   @override
   Widget build(BuildContext context) {
-    
-    return Expanded(
-      flex: 4,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-          scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder:(context)=>ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.view,titleOfAppBar:typeName ,kitchenModel: kitchenModelList[index],galleryBloc: bloc,)));
-              },
-              child: SmallKitchenTypeImage(enableInner: enableInner,enableClose: enableClose,model: kitchenModelList[index],));
-          },
-          separatorBuilder: (context, index) => const SizedBox(
-                width: 14,
-              ),
-          itemCount: kitchenModelList.length),
-    );
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder:(context)=>ViewKitchenInGalleryView(pagesGalleryEnum: PagesGalleryEnum.view,titleOfAppBar:typeName ,kitchenModel: kitchenModelList[index],galleryBloc: bloc,)));
+            },
+            child: SmallKitchenTypeImage(enableInner: enableInner,enableClose: enableClose,model: kitchenModelList[index],imageWidth: imageWidth,));
+        },
+        separatorBuilder: (context, index) => const SizedBox(
+              width: 14,
+            ),
+        itemCount: kitchenModelList.length);
   }
 }

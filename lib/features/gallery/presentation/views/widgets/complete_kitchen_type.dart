@@ -49,9 +49,12 @@ class CompleteKitchenType extends StatelessWidget {
                 child:  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ListOfOneKitchenType(
-                      bloc: bloc,
-                      kitchenModelList: model.kitchenList,typeName: model.typeName,),
+                    Expanded(
+                      flex: 4,
+                      child: ListOfOneKitchenType(
+                        bloc: bloc,
+                        kitchenModelList: model.kitchenList,typeName: model.typeName,),
+                    ),
                     const SizedBox(
                       width: 16,
                     ),
@@ -71,3 +74,4 @@ class CompleteKitchenType extends StatelessWidget {
     );
   }
 }
+

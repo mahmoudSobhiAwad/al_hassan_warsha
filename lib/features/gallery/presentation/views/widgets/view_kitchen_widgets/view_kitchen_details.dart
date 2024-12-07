@@ -11,7 +11,6 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/show_more_media_grid.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/widgets/alert_to_check_db.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 class ViewKitchenDetailsBody extends StatelessWidget {
   const ViewKitchenDetailsBody(

@@ -3,16 +3,19 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_ingradient.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 class CustomMobileAppBar extends StatelessWidget {
   const CustomMobileAppBar({
     super.key,
     required this.title,
     this.enableDrawer = true,
     this.openDrawer,
+    this.onCreate,
   });
   final String title;
   final bool enableDrawer;
-  final void Function ()?openDrawer;
+  final void Function()? openDrawer;
+  final void Function()? onCreate;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +28,16 @@ class CustomMobileAppBar extends StatelessWidget {
         children: [
           enableDrawer
               ? IconButton(
-                  onPressed: openDrawer, icon: const Icon(FontAwesomeIcons.bars,color: AppColors.white,))
+                  onPressed: openDrawer,
+                  icon: const Icon(
+                    FontAwesomeIcons.bars,
+                    color: AppColors.white,
+                  ))
               : const SizedBox(),
           Text(
             title,
-            style: AppFontStyles.extraBold32(context).copyWith(color: AppColors.white),
+            style: AppFontStyles.extraBold32(context)
+                .copyWith(color: AppColors.white),
           ),
           const Spacer(),
           Container(
@@ -37,8 +45,9 @@ class CustomMobileAppBar extends StatelessWidget {
               color: AppColors.white,
               shape: BoxShape.circle,
             ),
-            child: const Center(
-                child: IconButton(onPressed: null, icon: Icon(Icons.create))),
+            child: Center(
+                child:
+                    IconButton(onPressed: onCreate, icon: const Icon(Icons.create))),
           )
         ],
       ),

@@ -14,8 +14,13 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
     required this.bloc,
     required this.currentTypeModel,
     this.aspectRatio = 2,
+    this.fontSize,
     this.crossAxisCount = 3,
+    this.fontSizeInButtons,
     this.imageWidth = 0.4,
+    this.iconSize,
+    this.items,
+    this.borderRadius,
   });
 
   final GalleryBloc bloc;
@@ -23,14 +28,21 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
   final int crossAxisCount;
   final double imageWidth;
   final double aspectRatio;
+  final double? fontSize;
+  final double? fontSizeInButtons;
+  final double? iconSize;
+  final double? borderRadius;
+  final List<String>? items;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0,),
       child: Column(
         children: [
           AppBarWithLinking(
+              iconSize: iconSize,
+              fontSize: fontSize,
               enableColor: false,
               onBack: () {
                 bloc.add(ShowMoreKitcenTypeEvent(
@@ -38,14 +50,18 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
                   isOpen: false,
                 ));
               },
-              items: [
-                "الرئيسية",
-                currentTypeModel.typeName,
-              ]),
+              items: items ??
+                  [
+                    "الرئيسية",
+                    currentTypeModel.typeName,
+                  ]),
           Align(
               alignment: Alignment.centerLeft,
               child: CustomPushContainerButton(
+                pushButtomTextFontSize: fontSizeInButtons,
                 pushButtomText: "اضافة مطبخ جديد",
+                iconSize: iconSize,
+                borderRadius: borderRadius,
                 onTap: () {
                   Navigator.push(
                       context,
@@ -59,7 +75,7 @@ class ShowingAllKitchenItemsGrid extends StatelessWidget {
                 },
               )),
           const SizedBox(
-            height: 18,
+            height: 16,
           ),
           Expanded(
               child: CustomGridKitchenTypes(

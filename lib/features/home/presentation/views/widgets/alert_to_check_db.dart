@@ -13,14 +13,19 @@ class CustomAlert extends StatelessWidget {
       this.enableIcon = true,
       this.pickPathesWidget,
       this.iconData,
+      this.titleSize,
+      this.iconSize,
       this.title});
   final void Function()? onPressed_2;
   final void Function()? onPressed_1;
   final String? title;
+  final double?titleSize;
+  final double?iconSize;
   final bool enableIcon;
   final Widget? actionButtonsInstead;
   final Widget? pickPathesWidget;
   final IconData? iconData;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class CustomAlert extends StatelessWidget {
             Text(
               title ??
                   "لا يوجد اي قاعدة بيانات حالية لديك هل لديك بيانات تود استراجعها ؟",
-              style: AppFontStyles.extraBold40(context),
+              style: AppFontStyles.extraBold40(context).copyWith(fontSize: titleSize),
               textAlign: TextAlign.center,
             ),
             enableIcon
@@ -52,7 +57,7 @@ class CustomAlert extends StatelessWidget {
                     icon: Icon(
                       iconData ?? Icons.warning,
                       color: AppColors.orange,
-                      size: 70,
+                      size: iconSize?? 70,
                     ),
                   )
                 : const SizedBox(
