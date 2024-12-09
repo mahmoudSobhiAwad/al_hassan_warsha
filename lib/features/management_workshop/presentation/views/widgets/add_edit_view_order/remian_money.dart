@@ -9,10 +9,11 @@ class RemainMoneyInBillDetails extends StatelessWidget {
   const RemainMoneyInBillDetails({
     super.key,
     required this.pillModel,
+    this.fontSizeInner,
   });
 
   final PillModel pillModel;
-
+  final double?fontSizeInner;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -23,7 +24,7 @@ class RemainMoneyInBillDetails extends StatelessWidget {
         text: convertToArabicNumbers(pillModel.remian),
       ),
       textInnerStyle:
-          AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3),
+          AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3,fontSize: fontSizeInner),
       textStyle: AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
       suffixIcon: Text(

@@ -28,7 +28,7 @@ class BillDetailsInTablet extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(
         "الفاتورة",
-        style: AppFontStyles.bold19(context),
+        style: AppFontStyles.bold18(context),
       ),
       const SizedBox(
         height: 10,
@@ -40,7 +40,6 @@ class BillDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 4,
                   child: TotalMoneyInBillDetails(
-                      changeStepsCounter: changeStepsCounter,
                       enableController: enableController,
                       pillModel: pillModel,
                       formKey: formKey,
@@ -49,7 +48,6 @@ class BillDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 4,
                   child: InteriorMoneyInBillDetails(
-                      changeStepsCounter: changeStepsCounter,
                       enableController: enableController,
                       pillModel: pillModel,
                       formKey: formKey,
@@ -62,16 +60,19 @@ class BillDetailsInTablet extends StatelessWidget {
             ],
           )),
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: BigInt.parse(convertToEnglishNumbers(pillModel.remian)) ==
                 BigInt.from(0)
             ? Center(
                 child: Text(
                   "تم استلام كل المبالغ المتبقية",
-                  style: AppFontStyles.bold19(context),
+                  style: AppFontStyles.bold18(context),
                 ),
               )
-            : PayMentOptionRowWithSteps(pillModel: pillModel, onChangePayment: onChangePayment, changeStepsCounter: changeStepsCounter),
+            : PayMentOptionRowWithSteps(
+                pillModel: pillModel,
+                onChangePayment: onChangePayment,
+                changeStepsCounter: changeStepsCounter),
       ),
     ]);
   }

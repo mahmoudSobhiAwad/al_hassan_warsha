@@ -32,7 +32,7 @@ class PayPillInCustomerProfile extends StatelessWidget {
             textLabel: "",
             enableBorder: true,
             textInnerStyle:
-                AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
+                AppFontStyles.bold18(context).copyWith(letterSpacing: 3),
             readOnly: true,
             textStyle: AppFontStyles.extraBoldNew16(context),
             controller: TextEditingController(

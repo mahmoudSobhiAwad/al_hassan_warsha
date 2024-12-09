@@ -28,7 +28,7 @@ class AddEditSalaryView extends StatelessWidget {
                       children: [
                         Text(
                           "تحديد الكل ",
-                          style: AppFontStyles.bold19(context),
+                          style: AppFontStyles.bold18(context),
                         ),
                         IconButton(
                           onPressed: () {

@@ -43,7 +43,6 @@ class BillDetails extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: TotalMoneyInBillDetails(
-                      changeStepsCounter: changeStepsCounter,
                       enableController: enableController,
                       pillModel: pillModel,
                       formKey: formKey,
@@ -52,7 +51,6 @@ class BillDetails extends StatelessWidget {
               Expanded(
                   flex: 2,
                   child: InteriorMoneyInBillDetails(
-                      changeStepsCounter: changeStepsCounter,
                       enableController: enableController,
                       pillModel: pillModel,
                       formKey: formKey,
@@ -67,7 +65,7 @@ class BillDetails extends StatelessWidget {
                   ? Center(
                       child: Text(
                         "تم استلام كل المبالغ المتبقية",
-                        style: AppFontStyles.bold19(context),
+                        style: AppFontStyles.bold18(context),
                       ),
                     )
                   : Expanded(
@@ -99,6 +97,3 @@ class BillDetails extends StatelessWidget {
     );
   }
 }
-
-
-

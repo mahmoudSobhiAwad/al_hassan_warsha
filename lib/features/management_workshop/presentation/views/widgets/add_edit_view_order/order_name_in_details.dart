@@ -7,11 +7,12 @@ class OrderNameInOrderDetails extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.orderModel,
+    this.textStyle,
   });
 
   final GlobalKey<FormState>? formKey;
   final OrderModel orderModel;
-
+  final TextStyle?textStyle;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -29,7 +30,7 @@ class OrderNameInOrderDetails extends StatelessWidget {
         enableBorder: true,
         readOnly: formKey == null ? true : false,
         controller: TextEditingController(text: orderModel.orderName),
-        textStyle: AppFontStyles.extraBoldNew16(context),
+        textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
         textLabel: "");
   }
 }

@@ -34,7 +34,7 @@ class OrderDetailsInTablet extends StatelessWidget {
       children: [
         Text(
           "تفاصيل الطلب",
-          style: AppFontStyles.bold19(context),
+          style: AppFontStyles.bold18(context),
         ),
         const SizedBox(
           height: 10,

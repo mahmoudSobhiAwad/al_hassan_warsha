@@ -28,7 +28,7 @@ class AddMeterPrice extends StatelessWidget {
               labelWidget: Center(
                 child: Text(
                   "............... جنية",
-                  style: AppFontStyles.bold19(context)
+                  style: AppFontStyles.bold18(context)
                       .copyWith(color: AppColors.veryLightGray),
                 ),
               ),

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EmptyUploadMedia extends StatelessWidget {
-  const EmptyUploadMedia({super.key, this.addMedia,this.fontSize});
+  const EmptyUploadMedia({super.key, this.addMedia,this.fontSize,this.edgeInsets});
   final void Function(List<String>)? addMedia;
   final double? fontSize;
+  final EdgeInsets? edgeInsets;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class EmptyUploadMedia extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 70),
+        padding:edgeInsets?? const EdgeInsets.symmetric(vertical: 70),
         decoration: BoxDecoration(
           color: AppColors.veryLightGray,
           borderRadius: BorderRadius.circular(20),

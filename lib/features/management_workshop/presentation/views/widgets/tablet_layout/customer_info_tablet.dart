@@ -22,7 +22,7 @@ class CustomerInfoInOrderInTablet extends StatelessWidget {
       children: [
         Text(
           "بيانات العميل",
-          style: AppFontStyles.bold19(context),
+          style: AppFontStyles.bold18(context),
         ),
         const SizedBox(
           height: 10,

@@ -49,7 +49,7 @@ class ManagmentMobileView extends StatelessWidget {
                         bloc.add(SearchForOrderEvent(enable: false));
                       },
                       child: Text("العودة للرئيسية",
-                          style: AppFontStyles.bold19(context).copyWith(
+                          style: AppFontStyles.bold18(context).copyWith(
                             color: AppColors.blue,
                           )))
                 ],

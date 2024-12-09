@@ -57,7 +57,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold19(context)
+                      textStyle: AppFontStyles.bold18(context)
                           .copyWith(letterSpacing: 2),
                       text: pillModel.interior,
                     )),
@@ -65,7 +65,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold19(context)
+                      textStyle: AppFontStyles.bold18(context)
                           .copyWith(letterSpacing: 3),
                       text: convertToArabicNumbers(pillModel.remian),
                     )),
@@ -73,7 +73,7 @@ class ContentOfFinancialTable extends StatelessWidget {
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.bold19(context),
+                        textStyle: AppFontStyles.bold18(context),
                         text:int.parse(convertToEnglishNumbers(pillModel.remian))!=0? convertToArabicNumbers(
                             pillModel.stepsCounter.toString()):convertToArabicNumbers('0'))),
                 const Expanded(child: SizedBox()),

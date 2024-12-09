@@ -10,12 +10,14 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
     required this.formKey,
     required this.changekitchenTypeValue,
     required this.allKitchenTypes,
+    this.textStyle,
   });
 
   final OrderModel orderModel;
   final GlobalKey<FormState>? formKey;
   final void Function(String p1)? changekitchenTypeValue;
   final List<String> allKitchenTypes;
+  final TextStyle?textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
       onChanged: (value) {
         orderModel.kitchenType = value;
       },
-      textStyle: AppFontStyles.extraBoldNew16(context),
+      textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
       textLabel: "",
       readOnly: formKey == null ? true : false,
       controller: TextEditingController(text: orderModel.kitchenType),

@@ -10,12 +10,14 @@ class GetColorForOrder extends StatelessWidget {
     super.key,
     required this.colorOrderModel,
     required this.changeColorValue,
-    this.label
+    this.label,
+    this.textStyle,
   });
 
   final ColorOrderModel colorOrderModel;
   final void Function(int p1)? changeColorValue;
   final String?label;
+  final TextStyle?textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class GetColorForOrder extends StatelessWidget {
       controller: TextEditingController(text: colorOrderModel.colorName??""),
       readOnly:changeColorValue==null?true:false ,
       enableBorder: true,
-      textStyle: AppFontStyles.extraBoldNew16(context),
+      textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
       textLabel:label?? "حدد اسم اللون او اختار الدرجة المناسبة",
       suffixIcon: Row(
         mainAxisSize: MainAxisSize.min,

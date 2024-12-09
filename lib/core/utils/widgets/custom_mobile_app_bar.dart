@@ -11,11 +11,15 @@ class CustomMobileAppBar extends StatelessWidget {
     this.enableDrawer = true,
     this.openDrawer,
     this.onCreate,
+    this.enableActionButton = true,
+    this.drawerIconInstead,
   });
   final String title;
   final bool enableDrawer;
   final void Function()? openDrawer;
   final void Function()? onCreate;
+  final bool enableActionButton;
+  final IconData? drawerIconInstead;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +33,8 @@ class CustomMobileAppBar extends StatelessWidget {
           enableDrawer
               ? IconButton(
                   onPressed: openDrawer,
-                  icon: const Icon(
-                    FontAwesomeIcons.bars,
+                  icon: Icon(
+                    drawerIconInstead ?? FontAwesomeIcons.bars,
                     color: AppColors.white,
                   ))
               : const SizedBox(),
@@ -40,15 +44,17 @@ class CustomMobileAppBar extends StatelessWidget {
                 .copyWith(color: AppColors.white),
           ),
           const Spacer(),
-          Container(
-            decoration: const BoxDecoration(
-              color: AppColors.white,
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-                child:
-                    IconButton(onPressed: onCreate, icon: const Icon(Icons.create))),
-          )
+          enableActionButton
+              ? Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                      child: IconButton(
+                          onPressed: onCreate, icon: const Icon(Icons.create))),
+                )
+              : const SizedBox(),
         ],
       ),
     );

@@ -8,18 +8,18 @@ import 'package:flutter/services.dart';
 class InteriorMoneyInBillDetails extends StatelessWidget {
   const InteriorMoneyInBillDetails({
     super.key,
-    required this.changeStepsCounter,
     required this.enableController,
     required this.pillModel,
     required this.formKey,
     required this.onTapToChangeRemain,
+    this.fontSizeInner,
   });
 
-  final void Function(bool p1)? changeStepsCounter;
   final bool enableController;
   final PillModel pillModel;
   final GlobalKey<FormState>? formKey;
   final void Function()? onTapToChangeRemain;
+  final double? fontSizeInner;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +32,14 @@ class InteriorMoneyInBillDetails extends StatelessWidget {
       },
       text: "المقدم ",
       textLabel: "",
-      readOnly: changeStepsCounter == null ? true : false,
+      readOnly: enableController ? true : false,
       initalText: enableController ? null : pillModel.interior,
       controller: enableController
           ? TextEditingController(text: pillModel.interior)
           : null,
       formKey: formKey,
-      textInnerStyle:
-          AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3),
+      textInnerStyle: AppFontStyles.extraBoldNew20(context)
+          .copyWith(letterSpacing: 3, fontSize: fontSizeInner),
       textInputType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: [
         FilteringTextInputFormatter.allow(

@@ -97,7 +97,7 @@ class AddTransaction extends StatelessWidget {
                       text: transactionModel.transactionAmount),
                   textInputType: TextInputType.number,
                   textInnerStyle:
-                      AppFontStyles.bold19(context).copyWith(letterSpacing: 3),
+                      AppFontStyles.bold18(context).copyWith(letterSpacing: 3),
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(
                       RegExp(

@@ -6,6 +6,7 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/custom
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_order_body.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/view_order.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/add_order_view_mobile.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/add_order_view_tablet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class AddOrderView extends StatelessWidget {
                   );
                 },
                 mobileLayout: (context) {
-                  return const Text("mobile add order");
+                  return AddOrderViewMobile(bloc: bloc);
                 },
                 tabletLayout: (context) => AddOrderViewTablet(
                       bloc: bloc,

@@ -1,8 +1,6 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/bill_details.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_info.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/order_details_in_add.dart';
@@ -104,40 +102,12 @@ class AddOrderBody extends StatelessWidget {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Center(
-                        child: CustomPushContainerButton(
-                      onTap: () {
-                        if (bloc.fromKey.currentState!.validate()) {
-                          bloc.add(AddNewOrderEvent(customerModel: model));
-                        }
-                      },
-                      childInstead: bloc.isLoadingActionsOrder
-                          ? const CircularProgressIndicator(
-                              color: AppColors.white,
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "اضافة ",
-                                  style: AppFontStyles.extraBoldNew24(context)
-                                      .copyWith(
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                                const IconButton(
-                                    onPressed: null,
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: AppColors.white,
-                                      size: 30,
-                                    ))
-                              ],
-                            ),
-                      enableIcon: false,
-                      borderRadius: 16,
-                    )),
-                  ),
+                      child: AddNewOrderButton(
+                          formKey: bloc.fromKey,
+                          addOrder: () {
+                            bloc.add(AddNewOrderEvent(customerModel: model));
+                          },
+                          isLoading: bloc.isLoadingActionsOrder))
                 ],
               ),
             ),

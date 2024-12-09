@@ -88,7 +88,7 @@ class AddnewTypeWithKitchenName extends StatelessWidget {
                       children: [
                         Text(
                           "حذف ",
-                          style: AppFontStyles.bold19(context).copyWith(
+                          style: AppFontStyles.bold18(context).copyWith(
                             color: AppColors.red,
                           ),
                         ),

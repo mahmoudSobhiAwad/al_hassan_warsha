@@ -1,12 +1,11 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/empyt_upload_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_more_extra.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/customer_info_tablet.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/order_details_tablet.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/pill_details_tablet.dart';
@@ -104,7 +103,6 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                             },
                           ),
                   ),
-
                   const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 16,
@@ -121,7 +119,7 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                       },
                     ),
                   ),
-                   const SliverToBoxAdapter(
+                  const SliverToBoxAdapter(
                     child: SizedBox(
                       height: 16,
                     ),
@@ -148,40 +146,12 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                       height: 12,
                     ),
                   ),
-                  SliverToBoxAdapter(
-                    child: Center(
-                        child: CustomPushContainerButton(
-                      onTap: () {
-                        if (bloc.fromKey.currentState!.validate()) {
-                          bloc.add(AddNewOrderEvent(customerModel: model));
-                        }
-                      },
-                      childInstead: bloc.isLoadingActionsOrder
-                          ? const CircularProgressIndicator(
-                              color: AppColors.white,
-                            )
-                          : Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  "اضافة ",
-                                  style: AppFontStyles.extraBoldNew24(context)
-                                      .copyWith(
-                                    color: AppColors.white,
-                                  ),
-                                ),
-                                const IconButton(
-                                    onPressed: null,
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: AppColors.white,
-                                      size: 30,
-                                    ))
-                              ],
-                            ),
-                      enableIcon: false,
-                      borderRadius: 16,
-                    )),
+                  AddNewOrderButton(
+                    formKey: bloc.fromKey,
+                    addOrder: () {
+                      bloc.add(AddNewOrderEvent(customerModel: model));
+                    },
+                    isLoading: bloc.isLoadingActionsOrder,
                   ),
                 ],
               ),

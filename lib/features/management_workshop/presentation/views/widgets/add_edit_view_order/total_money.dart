@@ -8,25 +8,26 @@ import 'package:flutter/services.dart';
 class TotalMoneyInBillDetails extends StatelessWidget {
   const TotalMoneyInBillDetails({
     super.key,
-    required this.changeStepsCounter,
+    
     required this.enableController,
     required this.pillModel,
     required this.formKey,
     required this.onTapToChangeRemain,
+    this.fontSizeInner,
   });
 
-  final void Function(bool p1)? changeStepsCounter;
+  
   final bool enableController;
   final PillModel pillModel;
   final GlobalKey<FormState>? formKey;
   final void Function()? onTapToChangeRemain;
-
+  final double? fontSizeInner;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
       text: "المبلغ الكلي",
       textLabel: "",
-      readOnly: changeStepsCounter == null ? true : false,
+      readOnly: enableController ? true : false,
       initalText: enableController ? null : pillModel.totalMoney,
       controller: enableController
           ? TextEditingController(text: pillModel.totalMoney)

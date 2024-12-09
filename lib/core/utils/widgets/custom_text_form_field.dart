@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -57,11 +58,9 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       readOnly: readOnly,
       textAlign: textAlign ?? TextAlign.start,
       validator: validator,
-      
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
@@ -70,9 +69,8 @@ class CustomTextFormField extends StatelessWidget {
       keyboardType: textInputType,
       cursorColor: Colors.black,
       onTap: onTap,
-      style: textStyle ?? AppFontStyles.extraBoldNew16(context),
+      style: textStyle ?? getAdaptiveFontStyle(context),
       decoration: InputDecoration(
-        
         errorStyle: AppFontStyles.extraBoldNew14(context),
         contentPadding: contentPadding,
         focusColor: Colors.black,
@@ -114,5 +112,19 @@ class CustomTextFormField extends StatelessWidget {
         hoverColor: Colors.white,
       ),
     );
+  }
+}
+
+TextStyle getAdaptiveFontStyle(
+  BuildContext context,
+) {
+  if (AppFontsLayout.isMobile(context)) {
+    return AppFontStyles.extraBold14(context);
+  } else if (AppFontsLayout.isTablet(context)) {
+    return AppFontStyles.bold16(context);
+  } else if (AppFontsLayout.isDesktop(context)) {
+    return AppFontStyles.extraBoldNew16(context);
+  } else {
+    return AppFontStyles.meduim12(context); // Fallback
   }
 }

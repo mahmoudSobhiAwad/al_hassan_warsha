@@ -21,11 +21,11 @@ class SearchedListInFinancial extends StatelessWidget {
             children: [
               Text(
                 "عرض الفواتير الخاصة ب",
-                style: AppFontStyles.bold19(context),
+                style: AppFontStyles.bold18(context),
               ),
               Text(
                 bloc.searchKeyWord,
-                style: AppFontStyles.bold19(context),
+                style: AppFontStyles.bold18(context),
               ),
               const Spacer(),
               TextButton(
@@ -34,7 +34,7 @@ class SearchedListInFinancial extends StatelessWidget {
                 },
                 child: Text(
                   "العودة للرئيسية ",
-                  style: AppFontStyles.bold19(context)
+                  style: AppFontStyles.bold18(context)
                       .copyWith(color: AppColors.blue),
                 ),
               )

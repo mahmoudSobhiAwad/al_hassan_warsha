@@ -76,7 +76,7 @@ class _CustomMediaViewState extends State<CustomMediaView> {
                               return InteractiveViewer(
                                 child: Image.file(
                                   File(widget.medialList[index].mediaPath),
-                                  fit: BoxFit.contain,
+                                   fit: BoxFit.fill,
                                   errorBuilder: (context, error, stackTrace) =>
                                       const Text("Error in displaying media"),
                                 ),

@@ -29,7 +29,7 @@ Future<dynamic> showColorPicker(BuildContext context,
           ],
           title: Text(
             "اختار درجة لون مناسبة",
-            style: AppFontStyles.bold19(context),
+            style: AppFontStyles.bold18(context),
           ),
           content: SingleChildScrollView(
             child: ColorPicker(
