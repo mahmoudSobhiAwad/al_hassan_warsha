@@ -24,10 +24,14 @@ Future<void> getPdfContract(OrderModel orderModel) async {
   const contentForOrderDetails = ContentForOrderInfo();
   const contractSignature = ContractSignature();
   LocalNotification notification = LocalNotification(
-    title: "استخراج نسخة عقد",
-    body: orderModel.customerModel?.customerName,
-    subtitle: orderModel.orderName,
-  );
+      title: "استخراج نسخة عقد",
+      body: orderModel.customerModel?.customerName,
+      subtitle: orderModel.orderName,
+      actions: [
+        LocalNotificationAction(
+          text: "عرض",
+        )
+      ]);
   final Uint8List watermarkImageData = await rootBundle
       .load(HomeAssets.waterMark)
       .then((data) => data.buffer.asUint8List());
@@ -132,8 +136,8 @@ Future<void> getPdfContract(OrderModel orderModel) async {
         File("$directoryPath/${orderModel.customerModel?.customerName}.pdf");
     await file.writeAsBytes(await pdf.save());
     await notification.show();
-    notification.onClick = ()async {
-    await OpenFile.open(file.path);
+    notification.onClickAction = (actionIndex) async {
+      await OpenFile.open(file.path);
     };
   }
 }

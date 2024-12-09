@@ -13,6 +13,8 @@ class CustomDatePicker extends StatelessWidget {
     this.format,
     this.enableShowDayTime = false,
     this.startDate,
+    this.aboveTextStyle,
+    this.textInnerStyle,
   });
 
   final GlobalKey<FormState>? formKey;
@@ -22,6 +24,8 @@ class CustomDatePicker extends StatelessWidget {
   final String? format;
   final DateTime?startDate;
   final bool enableShowDayTime;
+  final TextStyle?aboveTextStyle;
+  final TextStyle?textInnerStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,8 @@ class CustomDatePicker extends StatelessWidget {
       enableBorder: true,
       readOnly: true,
       textInnerStyle:
-          AppFontStyles.extraBoldNew16(context).copyWith(letterSpacing: 1),
-      textStyle: AppFontStyles.extraBoldNew16(context),
+         textInnerStyle?? AppFontStyles.extraBoldNew16(context).copyWith(letterSpacing: 1),
+      textStyle:aboveTextStyle?? AppFontStyles.extraBoldNew16(context),
       textLabel: "",
       suffixIcon: IconButton(
         onPressed: () {

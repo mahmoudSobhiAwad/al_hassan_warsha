@@ -118,6 +118,13 @@ class AppFontStyles {
       fontSize:getResponiveFontSize(context, baseFontSize:  16),
     );
   }
+  static TextStyle bold16(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w700, //  bold
+      fontSize:getResponiveFontSize(context, baseFontSize:  16),
+    );
+  }
 
   static TextStyle extraBoldNew21(BuildContext context) {
     return  TextStyle(

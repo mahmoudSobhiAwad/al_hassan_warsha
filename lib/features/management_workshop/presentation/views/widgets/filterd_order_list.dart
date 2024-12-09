@@ -1,7 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/expanded_divider.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/filter_orders.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/full_header.dart';
@@ -88,7 +88,7 @@ class OrderListWithFilter extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddEditViewOrder(bloc: bloc)));
+                    builder: (context) => AddOrderView(bloc: bloc)));
           },
           pushButtomText: "طلب جديد",
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),

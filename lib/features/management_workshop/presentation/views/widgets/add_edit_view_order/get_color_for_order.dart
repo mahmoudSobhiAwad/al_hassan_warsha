@@ -10,53 +10,53 @@ class GetColorForOrder extends StatelessWidget {
     super.key,
     required this.colorOrderModel,
     required this.changeColorValue,
+    this.label
   });
 
   final ColorOrderModel colorOrderModel;
   final void Function(int p1)? changeColorValue;
+  final String?label;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        flex: 2,
-        child: CustomColumnWithTextInAddNewType(
-          text: "اللون المطلوب",
-          onChanged: (value) {
-            colorOrderModel.colorName = value ?? "";
-          },
-          controller: TextEditingController(text: colorOrderModel.colorName??""),
-          readOnly:changeColorValue==null?true:false ,
-          enableBorder: true,
-          textStyle: AppFontStyles.extraBoldNew16(context),
-          textLabel: "حدد اسم اللون او اختار الدرجة المناسبة",
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              colorOrderModel.colorDegree != null
-                  ? IconButton(
-                      onPressed: () {
-                        showColorInBigMood(
-                            context,
-                            Color(
-                              colorOrderModel.colorDegree!,
-                            ));
-                      },
-                      icon: Icon(
-                        Icons.square,
-                        color: Color(colorOrderModel.colorDegree!),
-                      ))
-                  : const SizedBox(),
-              changeColorValue != null
-                  ? IconButton(
-                      onPressed: () {
-                        showColorPicker(context, onColorChanged: (color) {
-                          changeColorValue!(color.value);
-                        });
-                      },
-                      icon: const Icon(Icons.color_lens_rounded))
-                  : const SizedBox(),
-            ],
-          ),
-        ));
+    return CustomColumnWithTextInAddNewType(
+      text: "اللون المطلوب",
+      onChanged: (value) {
+        colorOrderModel.colorName = value ?? "";
+      },
+      controller: TextEditingController(text: colorOrderModel.colorName??""),
+      readOnly:changeColorValue==null?true:false ,
+      enableBorder: true,
+      textStyle: AppFontStyles.extraBoldNew16(context),
+      textLabel:label?? "حدد اسم اللون او اختار الدرجة المناسبة",
+      suffixIcon: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          colorOrderModel.colorDegree != null
+              ? IconButton(
+                  onPressed: () {
+                    showColorInBigMood(
+                        context,
+                        Color(
+                          colorOrderModel.colorDegree!,
+                        ));
+                  },
+                  icon: Icon(
+                    Icons.square,
+                    color: Color(colorOrderModel.colorDegree!),
+                  ))
+              : const SizedBox(),
+          changeColorValue != null
+              ? IconButton(
+                  onPressed: () {
+                    showColorPicker(context, onColorChanged: (color) {
+                      changeColorValue!(color.value);
+                    });
+                  },
+                  icon: const Icon(Icons.color_lens_rounded))
+              : const SizedBox(),
+        ],
+      ),
+    );
   }
 }

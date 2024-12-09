@@ -3,7 +3,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_info.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/profile_view/order_pages.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +44,7 @@ class CustomerProfileBody extends StatelessWidget {
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddEditViewOrder(
+                          builder: (context) => AddOrderView(
                             bloc: bloc,
                             model: model,
                           ),

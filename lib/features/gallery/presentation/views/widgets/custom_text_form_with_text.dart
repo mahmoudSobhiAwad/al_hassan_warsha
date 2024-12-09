@@ -35,6 +35,8 @@ class CustomColumnWithTextInAddNewType extends StatelessWidget {
       children: [
         Text(
           text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: textStyle?? AppFontStyles.extraBoldNew24(context),
         ),
         const SizedBox(

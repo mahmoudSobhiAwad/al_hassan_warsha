@@ -3,6 +3,8 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/simple_bloc_observer.dart';
 import 'package:al_hassan_warsha/features/home/presentation/manager/bloc/home_basic_bloc.dart';
 import 'package:al_hassan_warsha/features/home/presentation/views/home.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -23,7 +25,12 @@ void main() async {
   appName: 'الورشة',
   shortcutPolicy: ShortcutPolicy.requireCreate,
 );
-  runApp(const Alwarsha());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) {
+      return const Alwarsha();
+    }
+  ));
 }
 
 class Alwarsha extends StatelessWidget {

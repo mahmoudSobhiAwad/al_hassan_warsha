@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EmptyUploadMedia extends StatelessWidget {
-  const EmptyUploadMedia({super.key, this.addMedia});
+  const EmptyUploadMedia({super.key, this.addMedia,this.fontSize});
   final void Function(List<String>)? addMedia;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class EmptyUploadMedia extends StatelessWidget {
           children: [
             Text(
               "ارفع بعض الصور ومقاطع الفيديو حتي تعرض المنتج بأفضل صورة ممكنة ",
-              style: AppFontStyles.extraBoldNew24(context),
+              style: AppFontStyles.extraBoldNew24(context).copyWith(fontSize: fontSize),
             ),
             const Icon(
               Icons.cloud_upload,

@@ -3,7 +3,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_edit_view.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/order_list_in_mobile.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/search_bar_mobile.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class ManagmentMobileView extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddEditViewOrder(bloc: bloc)));
+                    builder: (context) => AddOrderView(bloc: bloc)));
           },
           pushButtomText: "طلب جديد",
           pushButtomTextFontSize: 16,
