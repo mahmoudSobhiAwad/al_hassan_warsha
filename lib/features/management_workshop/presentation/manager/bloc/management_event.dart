@@ -133,3 +133,8 @@ final class StepDownMoneyEvent extends ManagementEvent {
   final PillModel pillModel;
   StepDownMoneyEvent({required this.pillModel});
 }
+
+final class ChangeCurrPageInMobile extends ManagementEvent {
+  final bool isForward;
+  ChangeCurrPageInMobile({required this.isForward});
+}

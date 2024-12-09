@@ -47,6 +47,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<GetCustomerProfileEvent>(getCustomerProfileDate);
     on<ChangeCurrPageEvent>(changeCurrPage);
     on<StepDownMoneyEvent>(stepDownMoney);
+    on<ChangeCurrPageInMobile>(changeCurrPageInMobile);
   }
   // get all order
   bool isLoadingAllOrders = true;
@@ -76,6 +77,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   ColorOrderModel colorModel = ColorOrderModel(colorId: const Uuid().v6());
   List<ExtraInOrderModel> extraOrdersList = [];
   final fromKey = GlobalKey<FormState>();
+  int currPageMobile = 0;
+  PageController pageControllerInMobileOrder = PageController();
   //
 
 //customer profile view
@@ -209,6 +212,20 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
         emit(FailureAddNewOrderState());
       });
     }
+  }
+
+  FutureOr<void> changeCurrPageInMobile(
+      ChangeCurrPageInMobile event, Emitter<ManagementState> emit) async {
+    if (event.isForward && currPageMobile < 2) {
+      pageControllerInMobileOrder.nextPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      currPageMobile++;
+    } else if (!event.isForward && currPageMobile > 0) {
+      pageControllerInMobileOrder.previousPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      currPageMobile--;
+    }
+    emit(ChangeCurrPageState());
   }
 
   void updateOrderModel(CustomerModel newCustomerModel) {

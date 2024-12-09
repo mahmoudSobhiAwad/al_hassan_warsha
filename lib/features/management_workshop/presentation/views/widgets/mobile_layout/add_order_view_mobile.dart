@@ -26,6 +26,8 @@ class AddOrderViewMobile extends StatelessWidget {
         ),
         Expanded(
           child: PageView(
+            controller: bloc.pageControllerInMobileOrder,
+            physics:const NeverScrollableScrollPhysics(),
             children: [
               FirstPageInAddOrderInMobileLayout(
                 isReadOnly: false,
@@ -95,18 +97,30 @@ class AddOrderViewMobile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextButton(
-                onPressed: null,
+                onPressed: bloc.currPageMobile == 0
+                    ? null
+                    : () {
+                        bloc.add(ChangeCurrPageInMobile(isForward: false));
+                      },
                 child: Text(
                   "العودة",
-                  style: AppFontStyles.extraBold14(context)
-                      .copyWith(color: AppColors.lightGray1),
+                  style: AppFontStyles.extraBold14(context).copyWith(
+                      color: bloc.currPageMobile != 0
+                          ? AppColors.blueGray
+                          : AppColors.lightGray1),
                 )),
             TextButton(
-                onPressed: null,
+                onPressed: bloc.currPageMobile == 2
+                    ? null
+                    : () {
+                        bloc.add(ChangeCurrPageInMobile(isForward: true));
+                      },
                 child: Text(
                   "الخطوة القادمة",
-                  style: AppFontStyles.extraBold14(context)
-                      .copyWith(color: AppColors.blue),
+                  style: AppFontStyles.extraBold14(context).copyWith(
+                      color: bloc.currPageMobile != 2
+                          ? AppColors.blue
+                          : AppColors.lightGray1),
                 )),
           ],
         ),
