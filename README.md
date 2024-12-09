@@ -4,7 +4,8 @@ Desktop Flutter Project
 
 ## Getting Started
 
-This project meant to controll for workshop that makes alometal kitchens
+This project meant to con![Uploading cover for app.jpg…]()
+troll for workshop that makes alometal kitchens
 we cover three basic topics :
 1- Gallery : to view previous works to the customer with images, videos and other details.
 2- Management : in this section app show manager how to add new order, see the current order, edit any of them , get contract for new order, search for any order upon date or with specific key word.
