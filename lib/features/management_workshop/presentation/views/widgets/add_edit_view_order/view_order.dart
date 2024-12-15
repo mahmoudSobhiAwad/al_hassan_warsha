@@ -17,7 +17,7 @@ class ShowOneOrderView extends StatelessWidget {
   final OrderModel orderModel;
   @override
   Widget build(BuildContext context) {
-    return BlocListener(
+    return BlocConsumer(
       bloc: bloc,
       listener: (context, state) {
         if (state is DeletedOrderSuccessState) {
@@ -40,52 +40,55 @@ class ShowOneOrderView extends StatelessWidget {
                       model: state.customerModel, bloc: bloc)));
         }
       },
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: SafeArea(
-          child: Scaffold(
-            backgroundColor: AppColors.white,
-            body: CustomAdaptiveLayout(desktopLayout: (context) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppBarWithLinking(
-                    items: [
-                      "إدارة الورشة",
-                      orderModel.orderName,
-                    ],
-                  ),
-                  ShowOneOrderBody(
-                    isLoading: bloc.isLoadingActionsOrder,
-                    navToProfileView: (customerId) {
-                      bloc.add(GetCustomerProfileEvent(customerId: customerId));
-                    },
-                    markAsDone: (orderId, check) {
-                      bloc.add(MarkOrderAsDelievredEvent(
-                          orderId: orderId, makeItDone: check));
-                    },
-                    deleteOrder: (orderId, list) {
-                      bloc.add(
-                          DeleteOrderEvent(mediaList: list, orderId: orderId));
-                    },
-                    orderModel: orderModel,
-                    navToEdit: (model) {
-                      bloc.add(NavToEditEvent(orderModel: model));
-                    },
-                  )
-                ],
-              );
-            }, mobileLayout: (context) {
-              return OrderViewInMobileLayout(
-                bloc: bloc,
-                orderModel: orderModel,
-              );
-            }, tabletLayout: (context) {
-              return const Text("Tablet");
-            }),
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: SafeArea(
+            child: Scaffold(
+              backgroundColor: AppColors.white,
+              body: CustomAdaptiveLayout(desktopLayout: (context) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppBarWithLinking(
+                      items: [
+                        "إدارة الورشة",
+                        orderModel.orderName,
+                      ],
+                    ),
+                    ShowOneOrderBody(
+                      isLoading: bloc.isLoadingActionsOrder,
+                      navToProfileView: (customerId) {
+                        bloc.add(
+                            GetCustomerProfileEvent(customerId: customerId));
+                      },
+                      markAsDone: (orderId, check) {
+                        bloc.add(MarkOrderAsDelievredEvent(
+                            orderId: orderId, makeItDone: check));
+                      },
+                      deleteOrder: (orderId, list) {
+                        bloc.add(DeleteOrderEvent(
+                            mediaList: list, orderId: orderId));
+                      },
+                      orderModel: orderModel,
+                      navToEdit: (model) {
+                        bloc.add(NavToEditEvent(orderModel: model));
+                      },
+                    )
+                  ],
+                );
+              }, mobileLayout: (context) {
+                return OrderViewInMobileLayout(
+                  bloc: bloc,
+                  orderModel: orderModel,
+                );
+              }, tabletLayout: (context) {
+                return const Text("Tablet");
+              }),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

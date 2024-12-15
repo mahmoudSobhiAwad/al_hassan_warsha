@@ -25,6 +25,7 @@ class OrderDetails extends StatelessWidget {
       required this.pickedMeidaList,
       required this.addMoreMedia,
       this.kitchenTypesList = const [],
+      required this.isReadOnly,
       required this.delteMedia});
   final OrderModel orderModel;
   final ColorOrderModel colorOrderModel;
@@ -39,7 +40,7 @@ class OrderDetails extends StatelessWidget {
   final List<PickedMedia> pickedMeidaList;
   final GlobalKey<FormState>? formKey;
   final List<String> kitchenTypesList;
-
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -58,6 +59,7 @@ class OrderDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RowOrderItems(
+                isReadOnly: isReadOnly,
                   allKitchenTypes: kitchenTypesList,
                   formKey: formKey,
                   orderModel: orderModel,

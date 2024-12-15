@@ -1,8 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/interior_money.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/number_of_steps.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/remian_money.dart';
@@ -14,22 +12,19 @@ class ThirdPageInOrderMobile extends StatelessWidget {
   const ThirdPageInOrderMobile(
       {super.key,
       required this.pillModel,
-      required this.addOrder,
-      required this.isLoading,
       required this.onTapToChangeRemain,
       required this.enableController,
       required this.changeStepsCounter,
       required this.onChangePayment,
+      required this.actionButton,
       required this.formKey});
   final PillModel pillModel;
   final bool enableController;
-  final bool isLoading;
   final GlobalKey<FormState> formKey;
   final void Function()? onTapToChangeRemain;
   final void Function(OptionPaymentWay)? onChangePayment;
   final void Function(bool)? changeStepsCounter;
-  final void Function() addOrder;
-  
+  final Widget actionButton;
 
   @override
   Widget build(BuildContext context) {
@@ -119,14 +114,8 @@ class ThirdPageInOrderMobile extends StatelessWidget {
                         ],
                       ),
                 const SizedBox(height: 20,),
-                AddNewOrderButton(
-                    edgeInsets:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    textStyle: AppFontStyles.bold18(context)
-                        .copyWith(color: AppColors.white),
-                    formKey: formKey,
-                    addOrder: addOrder,
-                    isLoading: isLoading),
+               
+                actionButton,
               ],
             ),
           ),

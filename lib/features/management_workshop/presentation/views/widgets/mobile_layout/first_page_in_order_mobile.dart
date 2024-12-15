@@ -39,7 +39,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scrollbar(
       child: CustomScrollView(
-        physics:const BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         primary: true,
         slivers: [
           SliverToBoxAdapter(
@@ -120,6 +120,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                         Expanded(
                             flex: 4,
                             child: OrderNameInOrderDetails(
+                              isReadOnly: isReadOnly,
                               textStyle: AppFontStyles.bold16(context),
                               formKey: formKey,
                               orderModel: orderModel,
@@ -128,6 +129,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                         Expanded(
                             flex: 3,
                             child: KitchenTypeInOrderDetails(
+                              isReadOnly: isReadOnly,
                               textStyle: AppFontStyles.bold16(context),
                               orderModel: orderModel,
                               formKey: formKey,
@@ -151,9 +153,11 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                             child: GetColorForOrder(
                               textStyle: AppFontStyles.bold16(context),
                               colorOrderModel: colorModel,
-                              changeColorValue: (colorHex) {
-                                onChangeColorValue(colorHex);
-                              },
+                              changeColorValue: isReadOnly
+                                  ? null
+                                  : (colorHex) {
+                                      onChangeColorValue(colorHex);
+                                    },
                             )),
                         const Expanded(child: SizedBox()),
                         Expanded(
@@ -163,9 +167,11 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                                 textInnerStyle: AppFontStyles.bold12(context),
                                 formKey: formKey,
                                 recieveTime: orderModel.recieveTime,
-                                changeDate: (date) {
-                                  onChangeDate(date);
-                                })),
+                                changeDate: isReadOnly
+                                    ? null
+                                    : (date) {
+                                        onChangeDate(date);
+                                      })),
                       ],
                     ),
                   ),
@@ -177,10 +183,12 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                     child: CustomColumnWithTextInAddNewType(
                       text: "ملاحظات",
                       textLabel: "",
+                      readOnly: isReadOnly,
                       textInnerStyle: AppFontStyles.bold16(context),
                       enableBorder: true,
                       maxLine: 5,
-                      controller: TextEditingController(text: orderModel.notice),
+                      controller:
+                          TextEditingController(text: orderModel.notice),
                       onChanged: (value) {
                         onChangeNotice(value);
                       },

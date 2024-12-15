@@ -45,6 +45,7 @@ class AddOrderBody extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: OrderDetails(
+                      isReadOnly: false,
                       kitchenTypesList: bloc.allKitchenTypes,
                       pickedMeidaList: bloc.mediaOrderList,
                       formKey: bloc.fromKey,

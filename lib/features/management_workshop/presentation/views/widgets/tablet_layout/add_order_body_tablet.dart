@@ -45,6 +45,7 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: OrderDetailsInTablet(
+                      isReadOnly: false,
                       allKitchenTypes: bloc.allKitchenTypes,
                       formKey: bloc.fromKey,
                       colorOrderModel: bloc.colorModel,
@@ -146,12 +147,14 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                       height: 12,
                     ),
                   ),
-                  AddNewOrderButton(
-                    formKey: bloc.fromKey,
-                    addOrder: () {
-                      bloc.add(AddNewOrderEvent(customerModel: model));
-                    },
-                    isLoading: bloc.isLoadingActionsOrder,
+                  SliverToBoxAdapter(
+                    child: AddNewOrderButton(
+                      formKey: bloc.fromKey,
+                      addOrder: () {
+                        bloc.add(AddNewOrderEvent(customerModel: model));
+                      },
+                      isLoading: bloc.isLoadingActionsOrder,
+                    ),
                   ),
                 ],
               ),
@@ -162,4 +165,3 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
     );
   }
 }
-

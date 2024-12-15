@@ -18,6 +18,7 @@ class RowOrderItems extends StatelessWidget {
     this.showKitchenName = true,
     this.formKey,
     this.allKitchenTypes = const [],
+    required this.isReadOnly,
   });
 
   final OrderModel orderModel;
@@ -29,6 +30,7 @@ class RowOrderItems extends StatelessWidget {
   final List<String> allKitchenTypes;
   final bool showKitchenName;
   final TextStyle? aboveTextStyle;
+  final bool isReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class RowOrderItems extends StatelessWidget {
             ? Expanded(
                 flex: 3,
                 child: OrderNameInOrderDetails(
+                  isReadOnly: isReadOnly,
                     formKey: formKey, orderModel: orderModel))
             : const SizedBox(),
         showKitchenName ? const Expanded(child: SizedBox()) : const SizedBox(),
@@ -52,6 +55,7 @@ class RowOrderItems extends StatelessWidget {
             flex: 2,
             child: KitchenTypeInOrderDetails(
                 orderModel: orderModel,
+                isReadOnly: isReadOnly,
                 formKey: formKey,
                 changekitchenTypeValue: changekitchenTypeValue,
                 allKitchenTypes: allKitchenTypes)),

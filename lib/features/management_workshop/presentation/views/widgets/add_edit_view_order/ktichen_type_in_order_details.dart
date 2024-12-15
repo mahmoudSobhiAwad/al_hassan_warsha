@@ -11,6 +11,7 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
     required this.changekitchenTypeValue,
     required this.allKitchenTypes,
     this.textStyle,
+    required this.isReadOnly
   });
 
   final OrderModel orderModel;
@@ -18,6 +19,7 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
   final void Function(String p1)? changekitchenTypeValue;
   final List<String> allKitchenTypes;
   final TextStyle?textStyle;
+  final bool isReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
       },
       textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
       textLabel: "",
-      readOnly: formKey == null ? true : false,
+      readOnly:isReadOnly,
       controller: TextEditingController(text: orderModel.kitchenType),
       suffixIcon: changekitchenTypeValue != null
           ? PopupMenuButton(

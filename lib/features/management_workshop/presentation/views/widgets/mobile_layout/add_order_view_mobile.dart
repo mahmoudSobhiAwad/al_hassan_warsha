@@ -1,11 +1,11 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
-import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/first_page_in_order_mobile.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/custom_page_view_list_mobile.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/second_page_in_order_mobile.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/third_page_in_order_mobile.dart';
 import 'package:flutter/material.dart';
 
 class AddOrderViewMobile extends StatelessWidget {
@@ -21,12 +21,25 @@ class AddOrderViewMobile extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
+            bloc.currPageMobile=0;
             Navigator.pop(context);
           },
         ),
         Expanded(
           child: CustomPageViewInViewOrderMobile(
-              bloc: bloc,),
+            customerModel: customerModel,
+            bloc: bloc,
+            bottomOrderAction: AddNewOrderButton(
+                edgeInsets:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                textStyle: AppFontStyles.bold18(context)
+                    .copyWith(color: AppColors.white),
+                formKey: bloc.fromKey,
+                addOrder: () {
+                  bloc.add(AddNewOrderEvent(customerModel: customerModel));
+                },
+                isLoading: bloc.isLoadingActionsOrder),
+          ),
         ),
         const SizedBox(
           height: 12,
@@ -40,89 +53,6 @@ class AddOrderViewMobile extends StatelessWidget {
         const SizedBox(
           height: 12,
         ),
-      ],
-    );
-  }
-}
-
-class CustomPageViewInViewOrderMobile extends StatelessWidget {
-  const CustomPageViewInViewOrderMobile({
-    super.key,
-    required this.bloc,
-    this.customerModel,
-    this.isReadOnly = false,
-    this.orderModel,
-  });
-
-  final ManagementBloc bloc;
-  final CustomerModel? customerModel;
-  final bool isReadOnly;
-  final OrderModel?orderModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-      controller: bloc.pageControllerInMobileOrder,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        FirstPageInAddOrderInMobileLayout(
-          isReadOnly: isReadOnly,
-          orderModel:orderModel?? bloc.orderModel,
-          formKey: bloc.fromKey,
-          colorModel:orderModel?.colorModel?? bloc.colorModel,
-          customerModel:orderModel?.customerModel ?? bloc.customerModel,
-          onChangeNotice: (notice) {
-            bloc.orderModel.notice = notice;
-          },
-          onChangeColorValue: (colorHex) {
-            bloc.add(ChangeColorOfOrderEvent(colorValue: colorHex));
-          },
-          onChangeDate: (date) {
-            bloc.add(ChangeDateOfOrderEvent(dateTime: date));
-          },
-          allKitchenTypes: bloc.allKitchenTypes,
-          onChangeKitchenType: (type) {
-            bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
-          },
-        ),
-        SecondPageInOrderMobile(
-          enableClear:! isReadOnly,
-          list:orderModel?.extraOrdersList?? bloc.extraOrdersList,
-          mediaOrderList:orderModel?.getPickedMedia()?? bloc.mediaOrderList,
-          addMedia: (list) {
-            bloc.add(AddMediaInAddOrder(list: list));
-          },
-          addMoreExtras: () {
-            bloc.add(AddExtraInOrder());
-          },
-          addMoreMedia: (items) {
-            bloc.add(AddMediaInAddOrder(list: items));
-          },
-          removeItemFromExtras: (index) {
-            bloc.add(RemoveExtraItem(index: index));
-          },
-          removeMedia: (index) {
-            bloc.add(RemoveMediItemEvent(index: index));
-          },
-        ),
-        ThirdPageInOrderMobile(
-          pillModel:orderModel?.pillModel?? bloc.pillModel,
-          onTapToChangeRemain: () {
-            bloc.add(ChangeRemainInAddOrderEvent());
-          },
-          enableController: isReadOnly,
-          changeStepsCounter: (status) {
-            bloc.add(ChangeCounterOfStepsInPillEvent(increase: status));
-          },
-          onChangePayment: (payment) {
-            bloc.add(ChangeOptionPaymentEvent(paymentWay: payment));
-          },
-          formKey: bloc.fromKey,
-          addOrder: () {
-            bloc.add(AddNewOrderEvent(customerModel: customerModel));
-          },
-          isLoading: bloc.isLoadingActionsOrder,
-        )
       ],
     );
   }

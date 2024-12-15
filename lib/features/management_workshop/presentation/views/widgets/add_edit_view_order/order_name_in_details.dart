@@ -8,11 +8,13 @@ class OrderNameInOrderDetails extends StatelessWidget {
     required this.formKey,
     required this.orderModel,
     this.textStyle,
+    required this.isReadOnly,
   });
 
   final GlobalKey<FormState>? formKey;
   final OrderModel orderModel;
   final TextStyle?textStyle;
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -28,7 +30,7 @@ class OrderNameInOrderDetails extends StatelessWidget {
           orderModel.orderName = value ?? "";
         },
         enableBorder: true,
-        readOnly: formKey == null ? true : false,
+        readOnly: isReadOnly,
         controller: TextEditingController(text: orderModel.orderName),
         textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
         textLabel: "");

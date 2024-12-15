@@ -45,6 +45,7 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
           height: 12,
         ),
         RowOrderItems(
+          isReadOnly: true,
             showKitchenName: false,
             orderModel: orderModel,
             colorOrderModel: orderModel.colorModel!),

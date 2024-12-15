@@ -18,6 +18,7 @@ class OrderDetailsInTablet extends StatelessWidget {
     this.aboveTextStyle,
     this.formKey,
     this.allKitchenTypes = const [],
+    required this.isReadOnly,
   });
   final OrderModel orderModel;
   final ColorOrderModel colorOrderModel;
@@ -27,6 +28,7 @@ class OrderDetailsInTablet extends StatelessWidget {
   final GlobalKey<FormState>? formKey;
   final List<String> allKitchenTypes;
   final TextStyle? aboveTextStyle;
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,6 +48,7 @@ class OrderDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 5,
                   child: OrderNameInOrderDetails(
+                    isReadOnly: isReadOnly,
                       formKey: formKey, orderModel: orderModel)),
               const Expanded(child: SizedBox()),
               Expanded(
@@ -59,6 +62,7 @@ class OrderDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 4,
                   child: KitchenTypeInOrderDetails(
+                    isReadOnly: isReadOnly,
                       orderModel: orderModel,
                       formKey: formKey,
                       changekitchenTypeValue: changekitchenTypeValue,

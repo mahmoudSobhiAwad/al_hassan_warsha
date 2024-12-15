@@ -1,8 +1,10 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/bottom_actions_in_order_view.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/edit_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/upper_action_view_order.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/add_order_view_mobile.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/custom_page_view_list_mobile.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +25,7 @@ class OrderViewInMobileLayout extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
+            bloc.currPageMobile=0;
             Navigator.pop(context);
           },
         ),
@@ -38,7 +41,13 @@ class OrderViewInMobileLayout extends StatelessWidget {
                 edgeInsets:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 iconSize: 20,
-                navToEdit: (m) {},
+                navToEdit: (m) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditOrderView(
+                              bloc: bloc, orderModel: orderModel)));
+                },
                 onTapForCustomerProfileView: () {},
                 orderModel: orderModel),
           ),
@@ -46,6 +55,17 @@ class OrderViewInMobileLayout extends StatelessWidget {
         Expanded(
           child: CustomPageViewInViewOrderMobile(
             orderModel: orderModel,
+            bottomOrderAction: BottomActionOrderInViewOrder(
+              fontSize:18,
+                orderModel: orderModel,
+                markAsDone: (orderId, check) {
+                  bloc.add(MarkOrderAsDelievredEvent(
+                      orderId: orderId, makeItDone: check));
+                },
+                deleteOrder: (orderId, list) {
+                  bloc.add(DeleteOrderEvent(mediaList: list, orderId: orderId));
+                },
+                isLoading: bloc.isLoadingActionsOrder),
             isReadOnly: true,
             bloc: bloc,
           ),
