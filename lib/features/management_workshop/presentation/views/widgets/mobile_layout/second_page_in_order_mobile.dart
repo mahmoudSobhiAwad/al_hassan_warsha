@@ -12,19 +12,20 @@ class SecondPageInOrderMobile extends StatelessWidget {
     required this.list,
     required this.mediaOrderList,
     this.addMoreExtras,
-    this.removeItemFromExtras,
+    required this.removeItemFromExtras,
     this.addMedia,
     this.addMoreMedia,
     this.removeMedia,
+    this.enableClear = true,
   });
   final List<ExtraInOrderModel> list;
   final void Function()? addMoreExtras;
-  final void Function(int)? removeItemFromExtras;
+  final void Function(int) removeItemFromExtras;
   final List<PickedMedia> mediaOrderList;
   final void Function(List<String>)? addMoreMedia;
   final void Function(List<String>)? addMedia;
   final void Function(int)? removeMedia;
-
+  final bool enableClear;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -48,7 +49,7 @@ class SecondPageInOrderMobile extends StatelessWidget {
                     ? CustomGridMediaInMobile(
                         addMediaMore: addMoreMedia,
                         pickedMediaList: mediaOrderList,
-                        enableClear: true,
+                        enableClear: enableClear,
                         removeIndex: removeMedia,
                       )
                     : EmptyUploadMedia(

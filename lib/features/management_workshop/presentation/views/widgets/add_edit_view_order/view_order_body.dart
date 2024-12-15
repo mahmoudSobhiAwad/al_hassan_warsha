@@ -51,12 +51,14 @@ class ShowOneOrderBody extends StatelessWidget {
             child: CustomScrollView(
               primary: true,
               slivers: [
-                UpperButtonsInViewOrder(
-                  navToEdit: navToEdit,
-                  orderModel: orderModel,
-                  onTapForCustomerProfileView: () {
-                    navToProfileView(orderModel.customerId);
-                  },
+                SliverToBoxAdapter(
+                  child: UpperButtonsInViewOrder(
+                    navToEdit: navToEdit,
+                    orderModel: orderModel,
+                    onTapForCustomerProfileView: () {
+                      navToProfileView(orderModel.customerId);
+                    },
+                  ),
                 ),
                 const SliverToBoxAdapter(
                   child: SizedBox(
@@ -126,7 +128,9 @@ class ShowOneOrderBody extends StatelessWidget {
                         height: 16,
                       ),
                       AddsForOrder(
+                        isReadOnly: true,
                         list: orderModel.extraOrdersList,
+                        removeItem: (index) {},
                       ),
                     ],
                   ),
@@ -179,8 +183,8 @@ class ShowOneOrderBody extends StatelessWidget {
                                                 color: AppColors.white,
                                               )
                                             : Text("حذف",
-                                                style: AppFontStyles.extraBoldNew24(
-                                                        context)
+                                                style: AppFontStyles
+                                                        .extraBoldNew24(context)
                                                     .copyWith(
                                                   color: AppColors.white,
                                                 )),

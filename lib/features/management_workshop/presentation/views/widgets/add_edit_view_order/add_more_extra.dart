@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 
 class AddsForOrder extends StatelessWidget {
   const AddsForOrder(
-      {super.key, required this.list, this.addMore, this.removeItem,this.addWidth});
+      {super.key, required this.list, this.addMore,required this.removeItem,this.addWidth,this.isReadOnly=false});
   final List<ExtraInOrderModel> list;
   final void Function()? addMore;
-  final void Function(int)? removeItem;
+  final void Function(int) removeItem;
   final double? addWidth;
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,17 +38,17 @@ class AddsForOrder extends StatelessWidget {
               return SizedBox(
                 width:addWidth?? 300,
                 child: CustomTextFormField(
-                  readOnly: removeItem == null ? true : false,
+                  readOnly: isReadOnly,
                   controller:
                       TextEditingController(text: list[index].extraName),
                   onChanged: (value) {
                     list[index].extraName = value;
                   },
                   borderRadius: 12,
-                  suffixWidget: removeItem != null
+                  suffixWidget:!isReadOnly
                       ? IconButton(
                           onPressed: () {
-                            removeItem!(index);
+                            removeItem(index);
                           },
                           icon: const Icon(
                             Icons.delete,

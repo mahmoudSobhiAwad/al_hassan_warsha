@@ -9,10 +9,13 @@ import 'package:flutter/material.dart';
 
 class OneOrderInViewCustomerProfile extends StatelessWidget {
   const OneOrderInViewCustomerProfile(
-      {super.key, required this.orderModel, required this.stepDown,required this.editOrder});
+      {super.key,
+      required this.orderModel,
+      required this.stepDown,
+      required this.editOrder});
   final OrderModel orderModel;
   final void Function() stepDown;
-  final void Function ()editOrder;
+  final void Function() editOrder;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,7 +31,7 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: AppFontStyles.extraBoldNew28(context),
                 )),
-             CustomPushContainerButton(
+            CustomPushContainerButton(
               borderRadius: 14,
               iconBehind: Icons.edit,
               iconSize: 25,
@@ -52,6 +55,8 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
           height: 12,
         ),
         AddsForOrder(
+          isReadOnly: true,
+          removeItem: (index) {},
           list: orderModel.extraOrdersList,
         ),
         const SizedBox(
@@ -69,4 +74,3 @@ class OneOrderInViewCustomerProfile extends StatelessWidget {
     );
   }
 }
-

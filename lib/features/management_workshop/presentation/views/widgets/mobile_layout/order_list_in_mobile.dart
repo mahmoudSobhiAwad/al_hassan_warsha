@@ -1,6 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/view_order.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/filter_orders.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/order_item_in_mobile.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +53,21 @@ class OrderListInMobileManagement extends StatelessWidget {
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 10),
                   itemBuilder: (context, index) {
-                    return OrderItemInMobile(
-                        orderModel:
-                            searchedList?[index] ?? bloc.ordersList[index]);
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShowOneOrderView(
+                                      orderModel: searchedList?[index] ??
+                                          bloc.ordersList[index],
+                                      bloc: bloc,
+                                    )));
+                      },
+                      child: OrderItemInMobile(
+                          orderModel:
+                              searchedList?[index] ?? bloc.ordersList[index]),
+                    );
                   })),
           const SizedBox(
             height: 12,

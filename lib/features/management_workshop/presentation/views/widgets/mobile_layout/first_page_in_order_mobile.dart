@@ -4,7 +4,6 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/cus
 import 'package:al_hassan_warsha/features/management_workshop/data/models/color_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
-import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_name.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_phone.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/get_color_for_order.dart';
@@ -20,7 +19,6 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
       required this.orderModel,
       required this.colorModel,
       required this.customerModel,
-      required this.pillModel,
       required this.onChangeNotice,
       required this.onChangeColorValue,
       required this.onChangeDate,
@@ -31,7 +29,6 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
   final OrderModel orderModel;
   final CustomerModel customerModel;
   final ColorOrderModel colorModel;
-  final PillModel pillModel;
   final GlobalKey<FormState> formKey;
   final void Function(int) onChangeColorValue;
   final void Function(String) onChangeKitchenType;

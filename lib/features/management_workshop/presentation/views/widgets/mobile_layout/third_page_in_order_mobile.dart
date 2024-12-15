@@ -29,9 +29,11 @@ class ThirdPageInOrderMobile extends StatelessWidget {
   final void Function(OptionPaymentWay)? onChangePayment;
   final void Function(bool)? changeStepsCounter;
   final void Function() addOrder;
+  
 
   @override
   Widget build(BuildContext context) {
+    
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -133,3 +135,4 @@ class ThirdPageInOrderMobile extends StatelessWidget {
     );
   }
 }
+
