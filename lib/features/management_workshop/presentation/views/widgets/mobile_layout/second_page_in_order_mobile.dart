@@ -17,6 +17,7 @@ class SecondPageInOrderMobile extends StatelessWidget {
     this.addMoreMedia,
     this.removeMedia,
     this.enableClear = true,
+    required this.isReadOnly
   });
   final List<ExtraInOrderModel> list;
   final void Function()? addMoreExtras;
@@ -26,6 +27,7 @@ class SecondPageInOrderMobile extends StatelessWidget {
   final void Function(List<String>)? addMedia;
   final void Function(int)? removeMedia;
   final bool enableClear;
+  final bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -37,6 +39,7 @@ class SecondPageInOrderMobile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AddsForOrder(
+                  isReadOnly: isReadOnly,
                   addWidth: context.screenWidth * 0.425,
                   list: list,
                   addMore: addMoreExtras,

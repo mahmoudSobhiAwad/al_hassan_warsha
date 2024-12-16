@@ -39,7 +39,7 @@ class EditOrderView extends StatelessWidget {
                       );
                     },
                     mobileLayout: (context) {
-                      return const EditOrderViewMobile();
+                      return  EditOrderViewMobile(orderModel: orderModel, bloc: bloc);
                     },
                     tabletLayout: (context) => const Text("Tablet")),
               )));

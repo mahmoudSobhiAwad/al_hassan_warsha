@@ -12,20 +12,23 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
     required this.bloc,
     this.customerModel,
     this.isReadOnly = false,
+    this.isEdit = false,
     this.orderModel,
     required this.bottomOrderAction,
   });
 
   final ManagementBloc bloc;
   final CustomerModel? customerModel;
+  final bool isEdit;
   final bool isReadOnly;
   final OrderModel? orderModel;
   final Widget bottomOrderAction;
   @override
   Widget build(BuildContext context) {
     return PageView(
-      
-      controller: bloc.pageControllerInMobileOrder,
+      controller: isEdit
+          ? bloc.pageControllerInMobileOrderForEditScreen
+          : bloc.pageControllerInMobileOrder,
       physics: const NeverScrollableScrollPhysics(),
       children: [
         FirstPageInAddOrderInMobileLayout(
@@ -38,53 +41,61 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
             bloc.orderModel.notice = notice;
           },
           onChangeColorValue: (colorHex) {
-            bloc.add(ChangeColorOfOrderEvent(colorValue: colorHex));
+            bloc.add(
+                ChangeColorOfOrderEvent(colorValue: colorHex, isEdit: isEdit));
           },
           onChangeDate: (date) {
-            bloc.add(ChangeDateOfOrderEvent(dateTime: date));
+            bloc.add(ChangeDateOfOrderEvent(dateTime: date, isEdit: isEdit));
           },
           allKitchenTypes: bloc.allKitchenTypes,
           onChangeKitchenType: (type) {
-            bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
+            bloc.add(ChangeKitchenTypeEvent(kitchenType: type, isEdit: isEdit));
           },
         ),
         SecondPageInOrderMobile(
           enableClear: !isReadOnly,
+          isReadOnly: isReadOnly,
           list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
           mediaOrderList: orderModel?.getPickedMedia() ?? bloc.mediaOrderList,
-          addMedia: (list) {
-            bloc.add(AddMediaInAddOrder(list: list));
-          },
-          addMoreExtras: () {
-            bloc.add(AddExtraInOrder());
-          },
+          addMedia: isReadOnly
+              ? null
+              : (list) {
+                  bloc.add(AddMediaInAddOrder(list: list, isEdit: isEdit));
+                },
+          addMoreExtras: isReadOnly
+              ? null
+              : () {
+                  bloc.add(AddExtraInOrder(isEdit: isEdit));
+                },
           addMoreMedia: (items) {
-            bloc.add(AddMediaInAddOrder(list: items));
+            bloc.add(AddMediaInAddOrder(list: items, isEdit: isEdit));
           },
           removeItemFromExtras: (index) {
-            bloc.add(RemoveExtraItem(index: index));
+            bloc.add(RemoveExtraItem(index: index, isEdit: isEdit));
           },
-          removeMedia: (index) {
-            bloc.add(RemoveMediItemEvent(index: index));
-          },
+          removeMedia: isReadOnly
+              ? null
+              : (index) {
+                  bloc.add(RemoveMediItemEvent(index: index, isEdit: isEdit));
+                },
         ),
         ThirdPageInOrderMobile(
-          pillModel: orderModel?.pillModel ?? bloc.pillModel,
-          onTapToChangeRemain: () {
-            bloc.add(ChangeRemainInAddOrderEvent());
-          },
-          enableController: isReadOnly,
-          changeStepsCounter: (status) {
-            bloc.add(ChangeCounterOfStepsInPillEvent(increase: status));
-          },
-          onChangePayment: (payment) {
-            bloc.add(ChangeOptionPaymentEvent(paymentWay: payment));
-          },
-          formKey: bloc.fromKey,
-          actionButton: bottomOrderAction
-        )
+            pillModel: orderModel?.pillModel ?? bloc.pillModel,
+            onTapToChangeRemain: () {
+              bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
+            },
+            enableController: isReadOnly,
+            changeStepsCounter: (status) {
+              bloc.add(ChangeCounterOfStepsInPillEvent(
+                  increase: status, isEdit: isEdit));
+            },
+            onChangePayment: (payment) {
+              bloc.add(ChangeOptionPaymentEvent(
+                  paymentWay: payment, isEdit: isEdit));
+            },
+            formKey: bloc.fromKey,
+            actionButton: bottomOrderAction)
       ],
     );
   }
 }
-

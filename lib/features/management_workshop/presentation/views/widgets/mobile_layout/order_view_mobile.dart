@@ -42,6 +42,7 @@ class OrderViewInMobileLayout extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                 iconSize: 20,
                 navToEdit: (m) {
+                  bloc.currPageMobile=0;
                   Navigator.push(
                       context,
                       MaterialPageRoute(

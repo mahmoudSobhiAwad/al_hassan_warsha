@@ -48,6 +48,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     on<ChangeCurrPageEvent>(changeCurrPage);
     on<StepDownMoneyEvent>(stepDownMoney);
     on<ChangeCurrPageInMobile>(changeCurrPageInMobile);
+    on<SetCurrPageIndexToZero>(setCurrPageInMobileToZero);
   }
   // get all order
   bool isLoadingAllOrders = true;
@@ -79,6 +80,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   final fromKey = GlobalKey<FormState>();
   int currPageMobile = 0;
   PageController pageControllerInMobileOrder = PageController();
+  PageController pageControllerInMobileOrderForEditScreen = PageController();
   //
 
 //customer profile view
@@ -214,15 +216,33 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     }
   }
 
+  FutureOr<void> setCurrPageInMobileToZero(
+      SetCurrPageIndexToZero even, Emitter<ManagementState> emit) {
+    currPageMobile = 0;
+    pageControllerInMobileOrder.jumpToPage(0);
+    emit(ChangeCurrPageState());
+  }
+
   FutureOr<void> changeCurrPageInMobile(
       ChangeCurrPageInMobile event, Emitter<ManagementState> emit) async {
     if (event.isForward && currPageMobile < 2) {
-      pageControllerInMobileOrder.nextPage(
-          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      if (event.isEdit) {
+        pageControllerInMobileOrderForEditScreen.nextPage(
+            duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      } else {
+        pageControllerInMobileOrder.nextPage(
+            duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      }
+
       currPageMobile++;
     } else if (!event.isForward && currPageMobile > 0) {
-      pageControllerInMobileOrder.previousPage(
-          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      if (event.isEdit) {
+        pageControllerInMobileOrderForEditScreen.previousPage(
+            duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      } else {
+        pageControllerInMobileOrder.previousPage(
+            duration: const Duration(milliseconds: 300), curve: Curves.linear);
+      }
       currPageMobile--;
     }
     emit(ChangeCurrPageState());

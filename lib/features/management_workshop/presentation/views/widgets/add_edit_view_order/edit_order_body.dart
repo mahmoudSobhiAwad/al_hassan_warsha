@@ -28,15 +28,14 @@ class EditOrderBody extends StatelessWidget {
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
       child: Scrollbar(
-        radius:const Radius.circular(5),
+        radius: const Radius.circular(5),
         thickness: 12,
         scrollbarOrientation: ScrollbarOrientation.right,
         child: Padding(
           padding: const EdgeInsets.only(right: 25),
           child: ScrollConfiguration(
-            behavior:const ScrollBehavior().copyWith(scrollbars: false),
+            behavior: const ScrollBehavior().copyWith(scrollbars: false),
             child: CustomScrollView(
-              
               primary: true,
               slivers: [
                 SliverToBoxAdapter(
@@ -61,15 +60,15 @@ class EditOrderBody extends StatelessWidget {
                         height: 10,
                       ),
                       RowOrderItems(
-                        isReadOnly:false ,
+                          isReadOnly: false,
                           allKitchenTypes: bloc.allKitchenTypes,
                           changeColorValue: (value) {
                             bloc.add(ChangeColorOfOrderEvent(
                                 colorValue: value, isEdit: true));
                           },
                           changeDate: (time) {
-                            bloc.add(
-                                ChangeDateOfOrderEvent(dateTime: time, isEdit: true));
+                            bloc.add(ChangeDateOfOrderEvent(
+                                dateTime: time, isEdit: true));
                           },
                           changekitchenTypeValue: (type) {
                             bloc.add(ChangeKitchenTypeEvent(
@@ -84,8 +83,8 @@ class EditOrderBody extends StatelessWidget {
                       CustomColumnWithTextInAddNewType(
                         text: "ملاحظات",
                         textLabel: "",
-                        controller:
-                            TextEditingController(text: orderModel.notice ?? ""),
+                        controller: TextEditingController(
+                            text: orderModel.notice ?? ""),
                         enableBorder: true,
                         maxLine: 4,
                         onChanged: (value) {
@@ -106,20 +105,20 @@ class EditOrderBody extends StatelessWidget {
                       orderModel.mediaOrderList.isNotEmpty
                           ? MediaListExist(
                               addMore: (media) {
-                                bloc.add(
-                                    AddMediaInAddOrder(list: media, isEdit: true));
+                                bloc.add(AddMediaInAddOrder(
+                                    list: media, isEdit: true));
                               },
                               removeIndex: (index) {
-                                bloc.add(
-                                    RemoveMediItemEvent(index: index, isEdit: true));
+                                bloc.add(RemoveMediItemEvent(
+                                    index: index, isEdit: true));
                               },
                               enableClear: true,
                               pickedList: orderModel.getPickedMedia(),
                             )
                           : EmptyUploadMedia(
                               addMedia: (media) {
-                                bloc.add(
-                                    AddMediaInAddOrder(list: media, isEdit: true));
+                                bloc.add(AddMediaInAddOrder(
+                                    list: media, isEdit: true));
                               },
                             ),
                       const SizedBox(
@@ -167,8 +166,9 @@ class EditOrderBody extends StatelessWidget {
                                   children: [
                                     Text(
                                       "تعديل ",
-                                      style: AppFontStyles.extraBoldNew24(context)
-                                          .copyWith(color: AppColors.white),
+                                      style:
+                                          AppFontStyles.extraBoldNew24(context)
+                                              .copyWith(color: AppColors.white),
                                     ),
                                     const IconButton(
                                         onPressed: null,

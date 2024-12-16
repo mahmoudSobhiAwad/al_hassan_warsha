@@ -136,5 +136,7 @@ final class StepDownMoneyEvent extends ManagementEvent {
 
 final class ChangeCurrPageInMobile extends ManagementEvent {
   final bool isForward;
-  ChangeCurrPageInMobile({required this.isForward});
+  final bool isEdit;
+  ChangeCurrPageInMobile({required this.isForward,this.isEdit=false});
 }
+final class SetCurrPageIndexToZero extends ManagementEvent {}
