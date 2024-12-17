@@ -13,7 +13,7 @@ class RemainMoneyInBillDetails extends StatelessWidget {
   });
 
   final PillModel pillModel;
-  final double?fontSizeInner;
+  final double? fontSizeInner;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -23,8 +23,8 @@ class RemainMoneyInBillDetails extends StatelessWidget {
       controller: TextEditingController(
         text: convertToArabicNumbers(pillModel.remian),
       ),
-      textInnerStyle:
-          AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3,fontSize: fontSizeInner),
+      textInnerStyle: AppFontStyles.extraBoldNew20(context)
+          .copyWith(letterSpacing: 3, fontSize: fontSizeInner),
       textStyle: AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
       suffixIcon: Text(

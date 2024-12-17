@@ -38,7 +38,9 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
             orderModel: orderModel ?? bloc.orderModel,
             formKey: isEdit ? bloc.fromKeyFirstPageEdit : bloc.fromKeyFirstPage,
             colorModel: orderModel?.colorModel ?? bloc.colorModel,
-            customerModel: orderModel?.customerModel ?? bloc.customerModel,
+            customerModel:customerModel?? orderModel?.customerModel ??
+                customerModel ??
+                bloc.customerModel,
             onChangeNotice: (notice) {
               isEdit
                   ? orderModel?.notice = notice

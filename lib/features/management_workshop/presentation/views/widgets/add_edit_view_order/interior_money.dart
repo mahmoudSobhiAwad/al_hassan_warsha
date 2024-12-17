@@ -33,10 +33,7 @@ class InteriorMoneyInBillDetails extends StatelessWidget {
       text: "المقدم ",
       textLabel: "",
       readOnly: enableController ? true : false,
-      initalText: enableController ? null : pillModel.interior,
-      controller: enableController
-          ? TextEditingController(text: pillModel.interior)
-          : null,
+      initalText: pillModel.interior,
       formKey: formKey,
       textInnerStyle: AppFontStyles.extraBoldNew20(context)
           .copyWith(letterSpacing: 3, fontSize: fontSizeInner),

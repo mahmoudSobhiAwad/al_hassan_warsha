@@ -59,7 +59,7 @@ class OrderDetails extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               RowOrderItems(
-                isReadOnly: isReadOnly,
+                  isReadOnly: isReadOnly,
                   allKitchenTypes: kitchenTypesList,
                   formKey: formKey,
                   orderModel: orderModel,
@@ -103,7 +103,7 @@ class OrderDetails extends StatelessWidget {
                       },
                     )
                   : EmptyUploadMedia(
-                    isReadOnly: isReadOnly,
+                      isReadOnly: isReadOnly,
                       addMedia: (media) {
                         addMoreMedia(media);
                       },

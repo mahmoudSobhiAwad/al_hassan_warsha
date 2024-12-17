@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
@@ -17,6 +19,7 @@ class AddOrderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild add");
     return Form(
       key: bloc.fromKey,
       child: Expanded(

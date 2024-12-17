@@ -4,6 +4,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -50,25 +51,7 @@ class PayPillInCustomerProfile extends StatelessWidget {
         ),
         Expanded(
           flex: 2,
-          child: CustomColumnWithTextInAddNewType(
-            text: "  تنزيل دفعة ",
-            textLabel: "",
-            enableBorder: true,
-            controller: TextEditingController(
-                text: orderModel.pillModel?.steppedAmount),
-            textStyle: AppFontStyles.extraBoldNew16(context),
-            onChanged: (value) {
-              orderModel.pillModel!.steppedAmount = value ?? "0";
-            },
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(
-                RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
-              )
-            ],
-            textInputType: TextInputType.number,
-            suffixText: "جنية",
-            textInnerStyle: AppFontStyles.extraBoldNew20(context),
-          ),
+          child: DownStepMoneyFormField(pillModel: orderModel.pillModel!),
         ),
         const Expanded(
           child: SizedBox(),
@@ -93,6 +76,37 @@ class PayPillInCustomerProfile extends StatelessWidget {
           child: SizedBox(),
         ),
       ],
+    );
+  }
+}
+
+class DownStepMoneyFormField extends StatelessWidget {
+  const DownStepMoneyFormField({
+    super.key,
+    required this.pillModel,
+  });
+
+  final PillModel pillModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomColumnWithTextInAddNewType(
+      text: "  تنزيل دفعة ",
+      textLabel: "",
+      enableBorder: true,
+      controller: TextEditingController(text: pillModel.steppedAmount),
+      textStyle: AppFontStyles.extraBoldNew16(context),
+      onChanged: (value) {
+        pillModel.steppedAmount = value ?? "0";
+      },
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(
+          RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+        )
+      ],
+      textInputType: TextInputType.number,
+      suffixText: "جنية",
+      textInnerStyle: AppFontStyles.extraBoldNew20(context),
     );
   }
 }

@@ -44,8 +44,7 @@ class AddsForOrder extends StatelessWidget {
                 width: addWidth ?? 300,
                 child: CustomTextFormField(
                   readOnly: isReadOnly,
-                  controller:
-                      TextEditingController(text: list[index].extraName),
+                  initialValue: list[index].extraName,
                   onChanged: (value) {
                     list[index].extraName = value;
                   },

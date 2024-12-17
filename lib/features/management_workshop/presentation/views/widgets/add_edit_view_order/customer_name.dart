@@ -2,10 +2,11 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:flutter/material.dart';
+
 class CustomerNameInOrder extends StatelessWidget {
   const CustomerNameInOrder({
     super.key,
-    required this.formKey,
+    this.formKey,
     required this.model,
     required this.isReadOnly,
     this.textStyle,
@@ -14,7 +15,7 @@ class CustomerNameInOrder extends StatelessWidget {
   final GlobalKey<FormState>? formKey;
   final CustomerModel model;
   final bool isReadOnly;
-  final TextStyle?textStyle;
+  final TextStyle? textStyle;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -29,7 +30,7 @@ class CustomerNameInOrder extends StatelessWidget {
           model.customerName = value ?? "";
         },
         initalText: model.customerName,
-        textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
+        textStyle: textStyle ?? AppFontStyles.extraBoldNew16(context),
         enableBorder: true,
         readOnly: isReadOnly,
         text: "اسم العميل",

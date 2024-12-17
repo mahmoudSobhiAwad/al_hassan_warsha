@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
@@ -24,6 +26,7 @@ class EditOrderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild edit");
     return Form(
       key: bloc.fromKeyEdit,
       child: Expanded(
@@ -41,7 +44,8 @@ class EditOrderBody extends StatelessWidget {
                 primary: true,
                 slivers: [
                   SliverToBoxAdapter(
-                    child: CustomerInfoInOrder(model: orderModel.customerModel!),
+                    child:
+                        CustomerInfoInOrder(model: orderModel.customerModel!),
                   ),
                   const SliverToBoxAdapter(
                     child: SizedBox(
@@ -85,8 +89,7 @@ class EditOrderBody extends StatelessWidget {
                         CustomColumnWithTextInAddNewType(
                           text: "ملاحظات",
                           textLabel: "",
-                          controller: TextEditingController(
-                              text: orderModel.notice ?? ""),
+                          initalText: orderModel.notice ?? "",
                           enableBorder: true,
                           maxLine: 4,
                           onChanged: (value) {
@@ -118,7 +121,7 @@ class EditOrderBody extends StatelessWidget {
                                 pickedList: orderModel.getPickedMedia(),
                               )
                             : EmptyUploadMedia(
-                              isReadOnly: false,
+                                isReadOnly: false,
                                 addMedia: (media) {
                                   bloc.add(AddMediaInAddOrder(
                                       list: media, isEdit: true));
@@ -133,7 +136,8 @@ class EditOrderBody extends StatelessWidget {
                             bloc.add(AddExtraInOrder(isEdit: true));
                           },
                           removeItem: (index) {
-                            bloc.add(RemoveExtraItem(index: index, isEdit: true));
+                            bloc.add(
+                                RemoveExtraItem(index: index, isEdit: true));
                           },
                           list: orderModel.extraOrdersList,
                         ),
@@ -170,9 +174,9 @@ class EditOrderBody extends StatelessWidget {
                                     children: [
                                       Text(
                                         "تعديل ",
-                                        style:
-                                            AppFontStyles.extraBoldNew24(context)
-                                                .copyWith(color: AppColors.white),
+                                        style: AppFontStyles.extraBoldNew24(
+                                                context)
+                                            .copyWith(color: AppColors.white),
                                       ),
                                       const IconButton(
                                           onPressed: null,

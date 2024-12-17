@@ -15,20 +15,20 @@ class SelectedPaymentWay extends StatelessWidget {
         "طريقة التسديد",
         style: AppFontStyles.extraBoldNew16(context),
       ),
-      
       PaymentOptionWidget(
         label: "الدفع عند الاستلام",
         isSelected: optionPaymentWay == OptionPaymentWay.atRecieve,
-        onPressed: () =>
-            onPressed == null ? null : onPressed!(OptionPaymentWay.atRecieve),
+        onPressed: onPressed != null
+            ? () => onPressed!(OptionPaymentWay.atRecieve)
+            : null,
       ),
       PaymentOptionWidget(
         label: "الدفع علي دفعات",
         isSelected: optionPaymentWay == OptionPaymentWay.onSteps,
-        onPressed: () =>
-            onPressed == null ? null : onPressed!(OptionPaymentWay.onSteps),
+        onPressed: onPressed != null
+            ? () => onPressed!(OptionPaymentWay.onSteps)
+            : null,
       ),
     ]);
   }
 }
-

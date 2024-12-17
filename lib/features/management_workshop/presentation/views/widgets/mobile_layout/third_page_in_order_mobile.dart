@@ -34,7 +34,7 @@ class ThirdPageInOrderMobile extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Form(
-              key: formKey,
+              key:enableController?null: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

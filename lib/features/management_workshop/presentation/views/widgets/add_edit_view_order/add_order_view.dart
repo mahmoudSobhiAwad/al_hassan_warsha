@@ -38,7 +38,7 @@ class AddOrderView extends StatelessWidget {
                 ],
               );
             }, mobileLayout: (context) {
-              return AddOrderViewMobile(bloc: bloc);
+              return AddOrderViewMobile(bloc: bloc,customerModel: model,);
             }, tabletLayout: (context) {
               bloc.currPageMobile = 0;
               return AddOrderViewTablet(

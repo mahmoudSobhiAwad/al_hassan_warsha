@@ -38,7 +38,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: formKey,
+      key:isReadOnly?null: formKey,
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [

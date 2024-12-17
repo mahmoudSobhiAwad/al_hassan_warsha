@@ -45,7 +45,10 @@ class OrderViewInMobileLayout extends StatelessWidget {
                 bloc.currPageMobile = 0;
                 bloc.add(NavToEditEvent(orderModel: orderModel));
               },
-              onTapForCustomerProfileView: () {},
+              onTapForCustomerProfileView: () {
+                bloc.add(
+                    GetCustomerProfileEvent(customerId: orderModel.customerId));
+              },
               getPdfContract: () async {
                 await getPdfContract(orderModel);
               },
@@ -53,8 +56,7 @@ class OrderViewInMobileLayout extends StatelessWidget {
           ),
         ),
         Expanded(
-          child:
-           CustomPageViewInViewOrderMobile(
+          child: CustomPageViewInViewOrderMobile(
             orderModel: orderModel,
             bottomOrderAction: BottomActionOrderInViewOrder(
                 fontSize: 18,

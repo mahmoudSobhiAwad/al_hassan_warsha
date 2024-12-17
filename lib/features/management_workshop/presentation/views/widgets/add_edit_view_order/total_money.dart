@@ -8,15 +8,13 @@ import 'package:flutter/services.dart';
 class TotalMoneyInBillDetails extends StatelessWidget {
   const TotalMoneyInBillDetails({
     super.key,
-    
     required this.enableController,
     required this.pillModel,
-    required this.formKey,
-    required this.onTapToChangeRemain,
+    this.formKey,
+    this.onTapToChangeRemain,
     this.fontSizeInner,
   });
 
-  
   final bool enableController;
   final PillModel pillModel;
   final GlobalKey<FormState>? formKey;
@@ -28,10 +26,7 @@ class TotalMoneyInBillDetails extends StatelessWidget {
       text: "المبلغ الكلي",
       textLabel: "",
       readOnly: enableController ? true : false,
-      initalText: enableController ? null : pillModel.totalMoney,
-      controller: enableController
-          ? TextEditingController(text: pillModel.totalMoney)
-          : null,
+      initalText: pillModel.totalMoney,
       validator: (value) {
         if (value == null || value.trim().isEmpty) {
           return "المبلغ الكلي لا يمكن ان يكون خاليا ";
@@ -49,7 +44,7 @@ class TotalMoneyInBillDetails extends StatelessWidget {
       ],
       onChanged: (value) {
         pillModel.totalMoney = value ?? "";
-        onTapToChangeRemain != null ? onTapToChangeRemain!() : () {};
+        onTapToChangeRemain?.call();
       },
       textStyle: AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
