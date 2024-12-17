@@ -48,6 +48,7 @@ class ShowOneOrderView extends StatelessWidget {
             child: Scaffold(
               backgroundColor: AppColors.white,
               body: CustomAdaptiveLayout(desktopLayout: (context) {
+                bloc.currPageMobile = 0;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -84,6 +85,7 @@ class ShowOneOrderView extends StatelessWidget {
                   orderModel: orderModel,
                 );
               }, tabletLayout: (context) {
+                bloc.currPageMobile = 0;
                 return ViewOrderTablet(
                   bloc: bloc,
                   model: orderModel,

@@ -48,7 +48,7 @@ class AddOrderViewMobile extends StatelessWidget {
           currPageIndex: bloc.currPageMobile,
           nextOrBack: (stauts) {
             if (bloc.currPageMobile == 0) {
-              if (stauts && bloc.fromKey.currentState!.validate()) {
+              if (stauts && bloc.fromKeyFirstPage.currentState!.validate()) {
                 bloc.add(ChangeCurrPageInMobile(isForward: stauts));
               }
             } else {

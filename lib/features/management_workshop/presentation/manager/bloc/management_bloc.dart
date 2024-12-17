@@ -78,8 +78,11 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   ColorOrderModel colorModel = ColorOrderModel(colorId: const Uuid().v6());
   List<ExtraInOrderModel> extraOrdersList = [];
   final fromKey = GlobalKey<FormState>();
-  final fromKeyThirdPage = GlobalKey<FormState>();
   final fromKeyEdit = GlobalKey<FormState>();
+  final fromKeyFirstPage = GlobalKey<FormState>();
+  final fromKeyFirstPageEdit = GlobalKey<FormState>();
+  final fromKeyThirdPage = GlobalKey<FormState>();
+
   final fromKeyThirdPageEdit = GlobalKey<FormState>();
   int currPageMobile = 0;
   PageController pageControllerInMobileOrder = PageController();
@@ -94,7 +97,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   @override
   Future<void> close() async {
     await TempCrudOperation.closeDb();
-    return super.close(); // Ensure the parent close method is called
+    return super.close();
   }
 
   FutureOr<void> getCustomerProfileDate(
@@ -222,7 +225,6 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> setCurrPageInMobileToZero(
       SetCurrPageIndexToZero even, Emitter<ManagementState> emit) {
     currPageMobile = 0;
-    pageControllerInMobileOrder.jumpToPage(0);
     emit(ChangeCurrPageState());
   }
 

@@ -53,7 +53,8 @@ class OrderViewInMobileLayout extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: CustomPageViewInViewOrderMobile(
+          child:
+           CustomPageViewInViewOrderMobile(
             orderModel: orderModel,
             bottomOrderAction: BottomActionOrderInViewOrder(
                 fontSize: 18,

@@ -25,26 +25,27 @@ class AddOrderView extends StatelessWidget {
           child: SafeArea(
               child: Scaffold(
             backgroundColor: AppColors.white,
-            body: CustomAdaptiveLayout(
-                desktopLayout: (context) {
-                  return Column(
-                    children: [
-                      const AppBarWithLinking(
-                          items: ["إدارة الورشة", "اضافة عمل جديد"]),
-                      AddOrderBody(
-                        bloc: bloc,
-                        model: model,
-                      ),
-                    ],
-                  );
-                },
-                mobileLayout: (context) {
-                  return AddOrderViewMobile(bloc: bloc);
-                },
-                tabletLayout: (context) => AddOrderViewTablet(
-                      bloc: bloc,
-                      model: model,
-                    )),
+            body: CustomAdaptiveLayout(desktopLayout: (context) {
+              bloc.currPageMobile = 0;
+              return Column(
+                children: [
+                  const AppBarWithLinking(
+                      items: ["إدارة الورشة", "اضافة عمل جديد"]),
+                  AddOrderBody(
+                    bloc: bloc,
+                    model: model,
+                  ),
+                ],
+              );
+            }, mobileLayout: (context) {
+              return AddOrderViewMobile(bloc: bloc);
+            }, tabletLayout: (context) {
+              bloc.currPageMobile = 0;
+              return AddOrderViewTablet(
+                bloc: bloc,
+                model: model,
+              );
+            }),
           )),
         );
       },

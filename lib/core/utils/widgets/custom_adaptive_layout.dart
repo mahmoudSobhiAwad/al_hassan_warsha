@@ -23,7 +23,7 @@ class CustomAdaptiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth < 600) {
+        if (constraints.maxWidth < 500) {
           return mobileLayout(
             context,
           );
@@ -38,7 +38,7 @@ class CustomAdaptiveLayout extends StatelessWidget {
 }
 
 class AppFontsLayout {
-  static bool isMobile(BuildContext context) => context.screenWidth < 600;
+  static bool isMobile(BuildContext context) => context.screenWidth < 500;
 
   static bool isTablet(BuildContext context) => context.screenWidth < 1025;
 

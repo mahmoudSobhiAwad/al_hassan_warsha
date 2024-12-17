@@ -24,18 +24,20 @@ class ViewOrderTablet extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 5.0),
-          child: UpperButtonsInViewOrder(
-            fontSize: 18,
-            edgeInsets: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-            navToEdit: () {
-              bloc.add(NavToEditEvent(orderModel: model));
-            },
-            getPdfContract: () async {
-              await getPdfContract(model);
-            },
-            onTapForCustomerProfileView: () {
-              //navToProfileView(orderModel.customerId);
-            },
+          child: FittedBox(
+            child: UpperButtonsInViewOrder(
+              fontSize: 18,
+              edgeInsets: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+              navToEdit: () {
+                bloc.add(NavToEditEvent(orderModel: model));
+              },
+              getPdfContract: () async {
+                await getPdfContract(model);
+              },
+              onTapForCustomerProfileView: () {
+                //navToProfileView(orderModel.customerId);
+              },
+            ),
           ),
         ),
         CustomOrderBodyTablet(

@@ -33,162 +33,156 @@ class CustomOrderBodyTablet extends StatelessWidget {
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-          child: Scrollbar(
-            scrollbarOrientation: ScrollbarOrientation.right,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: CustomScrollView(
-                scrollBehavior:
-                    const ScrollBehavior().copyWith(scrollbars: false),
-                primary: true,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: CustomerInfoInOrderInTablet(
-                      formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
-                      isReadOnly: isReadOnly,
-                      model: orderModel?.customerModel ??
-                          model ??
-                          bloc.customerModel,
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: OrderDetailsInTablet(
-                      aboveTextStyle: AppFontStyles.extraBoldNew16(context),
-                      isReadOnly: isReadOnly,
-                      allKitchenTypes: bloc.allKitchenTypes,
-                      formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
-                      colorOrderModel:
-                          orderModel?.colorModel ?? bloc.colorModel,
-                      orderModel: orderModel ?? bloc.orderModel,
-                      changeColorValue: (value) {
-                        bloc.add(ChangeColorOfOrderEvent(
-                            colorValue: value, isEdit: isEdit));
-                      },
-                      changeDate: (time) {
-                        bloc.add(ChangeDateOfOrderEvent(
-                            dateTime: time, isEdit: isEdit));
-                      },
-                      changekitchenTypeValue: (type) {
-                        bloc.add(ChangeKitchenTypeEvent(
-                            kitchenType: type, isEdit: isEdit));
-                      },
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: CustomColumnWithTextInAddNewType(
-                      text: "ملاحظات",
-                      readOnly: isReadOnly,
-                      textLabel: "",
-                      enableBorder: true,
-                      maxLine: 5,
-                      controller: TextEditingController(
-                          text: orderModel?.notice ?? bloc.orderModel.notice),
-                      onChanged: (value) {
-                        orderModel != null
-                            ? orderModel?.notice = value
-                            : bloc.orderModel.notice = value;
-                      },
-                      textStyle: AppFontStyles.extraBoldNew16(context),
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 10,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: orderModel?.mediaOrderList.isNotEmpty ??
-                            bloc.mediaOrderList.isNotEmpty
-                        ? MediaListExist(
-                            addMore: (media) {
-                              isReadOnly
-                                  ? null
-                                  : bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
-                            },
-                            enableClear: !isReadOnly,
-                            pickedList: orderModel?.getPickedMedia() ??
-                                bloc.mediaOrderList,
-                            removeIndex: (index) {
-                              isReadOnly
-                                  ? null
-                                  : bloc.add(RemoveMediItemEvent(index: index,isEdit: isEdit));
-                            },
-                          )
-                        : EmptyUploadMedia(
-                            isReadOnly: isReadOnly,
-                            fontSize: 20,
-                            addMedia: (media) {
-                              bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
-                            },
-                          ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 16,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: AddsForOrder(
-                      
-                      isReadOnly: isReadOnly,
-                      list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
-                      addMore: () {
-                        isReadOnly ? null : bloc.add(AddExtraInOrder(isEdit: isEdit));
-                      },
-                      removeItem: (index) {
-                        isReadOnly
-                            ? null
-                            : bloc.add(RemoveExtraItem(index: index,isEdit: isEdit));
-                      },
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 16,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: BillDetailsInTablet(
-                      enableController: isReadOnly,
-                      onTapToChangeRemain: () {
-                        isReadOnly
-                            ? null
-                            : bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
-                      },
-                      changeStepsCounter: (increase) {
-                        isReadOnly
-                            ? null
-                            : bloc.add(ChangeCounterOfStepsInPillEvent(
-                                increase: increase,isEdit: isEdit));
-                      },
-                      pillModel: orderModel?.pillModel ?? bloc.pillModel,
-                      onChangePayment: (paymentWay) {
-                        bloc.add(
-                            ChangeOptionPaymentEvent(paymentWay: paymentWay,isEdit: isEdit));
-                      },
-                    ),
-                  ),
-                  const SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: 12,
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: bottomActionWidget,
-                  ),
-                ],
+          child: CustomScrollView(
+            // scrollBehavior:
+            //     const ScrollBehavior().copyWith(scrollbars: false),
+            // primary: true,
+            slivers: [
+              SliverToBoxAdapter(
+                child: CustomerInfoInOrderInTablet(
+                  formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+                  isReadOnly: isReadOnly,
+                  model: orderModel?.customerModel ??
+                      model ??
+                      bloc.customerModel,
+                ),
               ),
-            ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: OrderDetailsInTablet(
+                  aboveTextStyle: AppFontStyles.extraBoldNew16(context),
+                  isReadOnly: isReadOnly,
+                  allKitchenTypes: bloc.allKitchenTypes,
+                  formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+                  colorOrderModel:
+                      orderModel?.colorModel ?? bloc.colorModel,
+                  orderModel: orderModel ?? bloc.orderModel,
+                  changeColorValue: (value) {
+                    bloc.add(ChangeColorOfOrderEvent(
+                        colorValue: value, isEdit: isEdit));
+                  },
+                  changeDate: (time) {
+                    bloc.add(ChangeDateOfOrderEvent(
+                        dateTime: time, isEdit: isEdit));
+                  },
+                  changekitchenTypeValue: (type) {
+                    bloc.add(ChangeKitchenTypeEvent(
+                        kitchenType: type, isEdit: isEdit));
+                  },
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: CustomColumnWithTextInAddNewType(
+                  text: "ملاحظات",
+                  readOnly: isReadOnly,
+                  textLabel: "",
+                  enableBorder: true,
+                  maxLine: 5,
+                  controller: TextEditingController(
+                      text: orderModel?.notice ?? bloc.orderModel.notice),
+                  onChanged: (value) {
+                    orderModel != null
+                        ? orderModel?.notice = value
+                        : bloc.orderModel.notice = value;
+                  },
+                  textStyle: AppFontStyles.extraBoldNew16(context),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 10,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: orderModel?.mediaOrderList.isNotEmpty ??
+                        bloc.mediaOrderList.isNotEmpty
+                    ? MediaListExist(
+                        addMore: (media) {
+                          isReadOnly
+                              ? null
+                              : bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
+                        },
+                        enableClear: !isReadOnly,
+                        pickedList: orderModel?.getPickedMedia() ??
+                            bloc.mediaOrderList,
+                        removeIndex: (index) {
+                          isReadOnly
+                              ? null
+                              : bloc.add(RemoveMediItemEvent(index: index,isEdit: isEdit));
+                        },
+                      )
+                    : EmptyUploadMedia(
+                        isReadOnly: isReadOnly,
+                        fontSize: 20,
+                        addMedia: (media) {
+                          bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
+                        },
+                      ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 16,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: AddsForOrder(
+                  
+                  isReadOnly: isReadOnly,
+                  list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
+                  addMore: () {
+                    isReadOnly ? null : bloc.add(AddExtraInOrder(isEdit: isEdit));
+                  },
+                  removeItem: (index) {
+                    isReadOnly
+                        ? null
+                        : bloc.add(RemoveExtraItem(index: index,isEdit: isEdit));
+                  },
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 16,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: BillDetailsInTablet(
+                  enableController: isReadOnly,
+                  onTapToChangeRemain: () {
+                    isReadOnly
+                        ? null
+                        : bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
+                  },
+                  changeStepsCounter: (increase) {
+                    isReadOnly
+                        ? null
+                        : bloc.add(ChangeCounterOfStepsInPillEvent(
+                            increase: increase,isEdit: isEdit));
+                  },
+                  pillModel: orderModel?.pillModel ?? bloc.pillModel,
+                  onChangePayment: (paymentWay) {
+                    bloc.add(
+                        ChangeOptionPaymentEvent(paymentWay: paymentWay,isEdit: isEdit));
+                  },
+                ),
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 12,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: bottomActionWidget,
+              ),
+            ],
           ),
         ),
       ),

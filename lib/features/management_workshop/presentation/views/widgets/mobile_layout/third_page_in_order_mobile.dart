@@ -28,7 +28,6 @@ class ThirdPageInOrderMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -115,10 +114,13 @@ class ThirdPageInOrderMobile extends StatelessWidget {
                             },
                           ],
                         ),
-                  const SizedBox(height: 20,),
-                 
+                  const SizedBox(
+                    height: 20,
+                  ),
                   actionButton,
                 ],
+              
+              
               ),
             ),
           ),
@@ -127,4 +129,3 @@ class ThirdPageInOrderMobile extends StatelessWidget {
     );
   }
 }
-

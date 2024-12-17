@@ -72,7 +72,7 @@ class EditOrderViewMobile extends StatelessWidget {
           currPageIndex: bloc.currPageMobile,
           nextOrBack: (stauts) {
             if (bloc.currPageMobile == 0) {
-              if (stauts && bloc.fromKeyEdit.currentState!.validate()) {
+              if (stauts && bloc.fromKeyFirstPageEdit.currentState!.validate()) {
                 bloc.add(
                     ChangeCurrPageInMobile(isForward: stauts, isEdit: true));
               }
