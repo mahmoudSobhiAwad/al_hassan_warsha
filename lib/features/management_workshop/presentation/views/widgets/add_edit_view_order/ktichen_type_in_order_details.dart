@@ -7,7 +7,6 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
   const KitchenTypeInOrderDetails({
     super.key,
     required this.orderModel,
-    required this.formKey,
     required this.changekitchenTypeValue,
     required this.allKitchenTypes,
     this.textStyle,
@@ -15,7 +14,6 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
   });
 
   final OrderModel orderModel;
-  final GlobalKey<FormState>? formKey;
   final void Function(String p1)? changekitchenTypeValue;
   final List<String> allKitchenTypes;
   final TextStyle?textStyle;

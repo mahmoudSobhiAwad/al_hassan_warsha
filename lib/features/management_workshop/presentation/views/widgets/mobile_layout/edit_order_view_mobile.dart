@@ -30,6 +30,7 @@ class EditOrderViewMobile extends StatelessWidget {
           child: CustomPageViewInViewOrderMobile(
             bloc: bloc,
             isEdit: true,
+            isReadOnly: false,
             orderModel: orderModel,
             bottomOrderAction: Center(
               child: CustomPushContainerButton(
@@ -55,7 +56,9 @@ class EditOrderViewMobile extends StatelessWidget {
                         ],
                       ),
                 onTap: () {
-                  bloc.add(EditOrderEvent());
+                  if (bloc.fromKeyThirdPageEdit.currentState!.validate()) {
+                    bloc.add(EditOrderEvent());
+                  }
                 },
                 borderRadius: 14,
               ),
@@ -68,7 +71,14 @@ class EditOrderViewMobile extends StatelessWidget {
         NextPageOrBackButtons(
           currPageIndex: bloc.currPageMobile,
           nextOrBack: (stauts) {
-            bloc.add(ChangeCurrPageInMobile(isForward: stauts,isEdit: true));
+            if (bloc.currPageMobile == 0) {
+              if (stauts && bloc.fromKeyEdit.currentState!.validate()) {
+                bloc.add(
+                    ChangeCurrPageInMobile(isForward: stauts, isEdit: true));
+              }
+            } else {
+              bloc.add(ChangeCurrPageInMobile(isForward: stauts, isEdit: true));
+            }
           },
         ),
         const SizedBox(

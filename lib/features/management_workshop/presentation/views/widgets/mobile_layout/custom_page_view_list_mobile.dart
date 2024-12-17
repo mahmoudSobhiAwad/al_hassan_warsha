@@ -25,77 +25,84 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
   final Widget bottomOrderAction;
   @override
   Widget build(BuildContext context) {
-    return PageView(
+    return PageView.builder(
+      itemCount: 3,
       controller: isEdit
           ? bloc.pageControllerInMobileOrderForEditScreen
           : bloc.pageControllerInMobileOrder,
       physics: const NeverScrollableScrollPhysics(),
-      children: [
-        FirstPageInAddOrderInMobileLayout(
-          isReadOnly: isReadOnly,
-          orderModel: orderModel ?? bloc.orderModel,
-          formKey: bloc.fromKey,
-          colorModel: orderModel?.colorModel ?? bloc.colorModel,
-          customerModel: orderModel?.customerModel ?? bloc.customerModel,
-          onChangeNotice: (notice) {
-            bloc.orderModel.notice = notice;
-          },
-          onChangeColorValue: (colorHex) {
-            bloc.add(
-                ChangeColorOfOrderEvent(colorValue: colorHex, isEdit: isEdit));
-          },
-          onChangeDate: (date) {
-            bloc.add(ChangeDateOfOrderEvent(dateTime: date, isEdit: isEdit));
-          },
-          allKitchenTypes: bloc.allKitchenTypes,
-          onChangeKitchenType: (type) {
-            bloc.add(ChangeKitchenTypeEvent(kitchenType: type, isEdit: isEdit));
-          },
-        ),
-        SecondPageInOrderMobile(
-          enableClear: !isReadOnly,
-          isReadOnly: isReadOnly,
-          list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
-          mediaOrderList: orderModel?.getPickedMedia() ?? bloc.mediaOrderList,
-          addMedia: isReadOnly
-              ? null
-              : (list) {
-                  bloc.add(AddMediaInAddOrder(list: list, isEdit: isEdit));
-                },
-          addMoreExtras: isReadOnly
-              ? null
-              : () {
-                  bloc.add(AddExtraInOrder(isEdit: isEdit));
-                },
-          addMoreMedia: (items) {
-            bloc.add(AddMediaInAddOrder(list: items, isEdit: isEdit));
-          },
-          removeItemFromExtras: (index) {
-            bloc.add(RemoveExtraItem(index: index, isEdit: isEdit));
-          },
-          removeMedia: isReadOnly
-              ? null
-              : (index) {
-                  bloc.add(RemoveMediItemEvent(index: index, isEdit: isEdit));
-                },
-        ),
-        ThirdPageInOrderMobile(
-            pillModel: orderModel?.pillModel ?? bloc.pillModel,
-            onTapToChangeRemain: () {
-              bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
+      itemBuilder: (context, index) {
+        return [
+          FirstPageInAddOrderInMobileLayout(
+            isReadOnly: isReadOnly,
+            orderModel: orderModel ?? bloc.orderModel,
+            formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+            colorModel: orderModel?.colorModel ?? bloc.colorModel,
+            customerModel: orderModel?.customerModel ?? bloc.customerModel,
+            onChangeNotice: (notice) {
+              isEdit
+                  ? orderModel?.notice = notice
+                  : bloc.orderModel.notice = notice;
             },
-            enableController: isReadOnly,
-            changeStepsCounter: (status) {
-              bloc.add(ChangeCounterOfStepsInPillEvent(
-                  increase: status, isEdit: isEdit));
+            onChangeColorValue: (colorHex) {
+              bloc.add(ChangeColorOfOrderEvent(
+                  colorValue: colorHex, isEdit: isEdit));
             },
-            onChangePayment: (payment) {
-              bloc.add(ChangeOptionPaymentEvent(
-                  paymentWay: payment, isEdit: isEdit));
+            onChangeDate: (date) {
+              bloc.add(ChangeDateOfOrderEvent(dateTime: date, isEdit: isEdit));
             },
-            formKey: bloc.fromKey,
-            actionButton: bottomOrderAction)
-      ],
+            allKitchenTypes: bloc.allKitchenTypes,
+            onChangeKitchenType: (type) {
+              bloc.add(
+                  ChangeKitchenTypeEvent(kitchenType: type, isEdit: isEdit));
+            },
+          ),
+          SecondPageInOrderMobile(
+            enableClear: !isReadOnly,
+            isReadOnly: isReadOnly,
+            list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
+            mediaOrderList: orderModel?.getPickedMedia() ?? bloc.mediaOrderList,
+            addMedia: isReadOnly
+                ? null
+                : (list) {
+                    bloc.add(AddMediaInAddOrder(list: list, isEdit: isEdit));
+                  },
+            addMoreExtras: isReadOnly
+                ? null
+                : () {
+                    bloc.add(AddExtraInOrder(isEdit: isEdit));
+                  },
+            addMoreMedia: (items) {
+              bloc.add(AddMediaInAddOrder(list: items, isEdit: isEdit));
+            },
+            removeItemFromExtras: (index) {
+              bloc.add(RemoveExtraItem(index: index, isEdit: isEdit));
+            },
+            removeMedia: isReadOnly
+                ? null
+                : (index) {
+                    bloc.add(RemoveMediItemEvent(index: index, isEdit: isEdit));
+                  },
+          ),
+          ThirdPageInOrderMobile(
+              pillModel: orderModel?.pillModel ?? bloc.pillModel,
+              onTapToChangeRemain: () {
+                bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
+              },
+              enableController: isReadOnly,
+              changeStepsCounter: (status) {
+                bloc.add(ChangeCounterOfStepsInPillEvent(
+                    increase: status, isEdit: isEdit));
+              },
+              onChangePayment: (payment) {
+                bloc.add(ChangeOptionPaymentEvent(
+                    paymentWay: payment, isEdit: isEdit));
+              },
+              formKey:
+                  isEdit ? bloc.fromKeyThirdPageEdit : bloc.fromKeyThirdPage,
+              actionButton: bottomOrderAction)
+        ][index];
+      },
     );
   }
 }

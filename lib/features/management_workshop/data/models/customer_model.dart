@@ -48,5 +48,4 @@ class CustomerModel {
       homeAddress: homeAddress ?? this.homeAddress,
     );
   }
-  
 }

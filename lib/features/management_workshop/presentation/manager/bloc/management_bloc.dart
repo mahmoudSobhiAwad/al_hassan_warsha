@@ -78,6 +78,9 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   ColorOrderModel colorModel = ColorOrderModel(colorId: const Uuid().v6());
   List<ExtraInOrderModel> extraOrdersList = [];
   final fromKey = GlobalKey<FormState>();
+  final fromKeyThirdPage = GlobalKey<FormState>();
+  final fromKeyEdit = GlobalKey<FormState>();
+  final fromKeyThirdPageEdit = GlobalKey<FormState>();
   int currPageMobile = 0;
   PageController pageControllerInMobileOrder = PageController();
   PageController pageControllerInMobileOrderForEditScreen = PageController();

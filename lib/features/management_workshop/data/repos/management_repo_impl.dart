@@ -146,7 +146,7 @@ class ManagementRepoImpl implements ManagementRepo {
               transactionTime: DateTime.now(),
               transactionType: TransactionType.recieve,
               transactionName: "استلام مقدم من "));
-              
+
       await TempCrudOperation.createNewOrderInTemp(model, forTheSameCustomer);
       return left(" تمت الاضافة بنجاح ");
     } catch (e) {
@@ -198,6 +198,7 @@ class ManagementRepoImpl implements ManagementRepo {
           whereClause: 'orderId = ?');
 
 // Update customer
+     
       batch.update(customerTableName, model.customerModel!.toJson(),
           where: 'customerId = ?', whereArgs: [model.customerId]);
       await TempCrudOperation.updateWithoutCommandIntoTemp(
@@ -338,7 +339,6 @@ class ManagementRepoImpl implements ManagementRepo {
 
       // Extract the main order data from the first row
       final orderData = results.first;
-      log(orderData.toString());
       // Extract customer data
       CustomerModel? customerModel = orderData['customerId'] != null
           ? CustomerModel.fromJson(orderData)

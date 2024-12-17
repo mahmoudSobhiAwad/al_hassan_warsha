@@ -1,7 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
-import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/get_contract.dart';
 import 'package:flutter/material.dart';
 
 class UpperButtonsInViewOrder extends StatelessWidget {
@@ -9,14 +7,14 @@ class UpperButtonsInViewOrder extends StatelessWidget {
     super.key,
     required this.navToEdit,
     required this.onTapForCustomerProfileView,
-    required this.orderModel,
+    required this.getPdfContract,
     this.edgeInsets,
     this.fontSize,
     this.iconSize,
   });
 
-  final void Function(OrderModel orderModel) navToEdit;
-  final OrderModel orderModel;
+  final void Function() navToEdit;
+  final void Function ()getPdfContract;
   final void Function() onTapForCustomerProfileView;
   final EdgeInsets? edgeInsets;
   final double? fontSize;
@@ -29,9 +27,7 @@ class UpperButtonsInViewOrder extends StatelessWidget {
       children: [
         CustomPushContainerButton(
           borderRadius: 12,
-          onTap: () {
-            navToEdit(orderModel);
-          },
+          onTap: navToEdit,
           pushButtomText: "تعديل الطلب",
           iconBehind: Icons.edit,
           iconSize: iconSize ?? 30,
@@ -59,9 +55,7 @@ class UpperButtonsInViewOrder extends StatelessWidget {
         CustomPushContainerButton(
           borderRadius: 12,
           pushButtomTextFontSize: fontSize,
-          onTap: () async {
-            await getPdfContract(orderModel);
-          },
+          onTap:getPdfContract,
           pushButtomText: " استخراج نسخة عقد",
           iconBehind: Icons.file_present_sharp,
           color: AppColors.blueGray,

@@ -56,7 +56,6 @@ class RowOrderItems extends StatelessWidget {
             child: KitchenTypeInOrderDetails(
                 orderModel: orderModel,
                 isReadOnly: isReadOnly,
-                formKey: formKey,
                 changekitchenTypeValue: changekitchenTypeValue,
                 allKitchenTypes: allKitchenTypes)),
         const Expanded(child: SizedBox()),

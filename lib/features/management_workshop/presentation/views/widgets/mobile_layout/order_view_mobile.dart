@@ -2,8 +2,8 @@ import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/bottom_actions_in_order_view.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/edit_order_view.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/upper_action_view_order.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/get_contract.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/custom_page_view_list_mobile.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class OrderViewInMobileLayout extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
-            bloc.currPageMobile=0;
+            bloc.add(SetCurrPageIndexToZero());
             Navigator.pop(context);
           },
         ),
@@ -37,27 +37,26 @@ class OrderViewInMobileLayout extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: UpperButtonsInViewOrder(
-                fontSize: 14,
-                edgeInsets:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                iconSize: 20,
-                navToEdit: (m) {
-                  bloc.currPageMobile=0;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditOrderView(
-                              bloc: bloc, orderModel: orderModel)));
-                },
-                onTapForCustomerProfileView: () {},
-                orderModel: orderModel),
+              fontSize: 14,
+              edgeInsets:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+              iconSize: 20,
+              navToEdit: () {
+                bloc.currPageMobile = 0;
+                bloc.add(NavToEditEvent(orderModel: orderModel));
+              },
+              onTapForCustomerProfileView: () {},
+              getPdfContract: () async {
+                await getPdfContract(orderModel);
+              },
+            ),
           ),
         ),
         Expanded(
           child: CustomPageViewInViewOrderMobile(
             orderModel: orderModel,
             bottomOrderAction: BottomActionOrderInViewOrder(
-              fontSize:18,
+                fontSize: 18,
                 orderModel: orderModel,
                 markAsDone: (orderId, check) {
                   bloc.add(MarkOrderAsDelievredEvent(

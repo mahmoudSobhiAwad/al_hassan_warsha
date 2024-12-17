@@ -50,6 +50,7 @@ class AddOrderView extends StatelessWidget {
       },
       listener: (context, state) {
         if (state is SuccessAddNewOrderState) {
+          bloc.currPageMobile = 0;
           showCustomSnackBar(context, "تمت اضافة الطلب بنجاح ");
           model != null
               ? Navigator.pop(context)

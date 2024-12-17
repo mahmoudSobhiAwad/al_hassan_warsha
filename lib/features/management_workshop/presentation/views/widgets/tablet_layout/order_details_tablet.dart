@@ -64,7 +64,6 @@ class OrderDetailsInTablet extends StatelessWidget {
                   child: KitchenTypeInOrderDetails(
                     isReadOnly: isReadOnly,
                       orderModel: orderModel,
-                      formKey: formKey,
                       changekitchenTypeValue: changekitchenTypeValue,
                       allKitchenTypes: allKitchenTypes)),
               const Expanded(child: SizedBox()),

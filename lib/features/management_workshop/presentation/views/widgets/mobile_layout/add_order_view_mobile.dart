@@ -21,7 +21,7 @@ class AddOrderViewMobile extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
-            bloc.currPageMobile=0;
+            bloc.currPageMobile = 0;
             Navigator.pop(context);
           },
         ),
@@ -34,7 +34,7 @@ class AddOrderViewMobile extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 textStyle: AppFontStyles.bold18(context)
                     .copyWith(color: AppColors.white),
-                formKey: bloc.fromKey,
+                formKey: bloc.fromKeyThirdPage,
                 addOrder: () {
                   bloc.add(AddNewOrderEvent(customerModel: customerModel));
                 },
@@ -47,7 +47,13 @@ class AddOrderViewMobile extends StatelessWidget {
         NextPageOrBackButtons(
           currPageIndex: bloc.currPageMobile,
           nextOrBack: (stauts) {
-            bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+            if (bloc.currPageMobile == 0) {
+              if (stauts && bloc.fromKey.currentState!.validate()) {
+                bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+              }
+            } else {
+              bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+            }
           },
         ),
         const SizedBox(

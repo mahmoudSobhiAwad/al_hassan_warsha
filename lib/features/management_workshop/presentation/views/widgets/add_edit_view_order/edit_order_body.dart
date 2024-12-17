@@ -24,178 +24,183 @@ class EditOrderBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-      child: Scrollbar(
-        radius: const Radius.circular(5),
-        thickness: 12,
-        scrollbarOrientation: ScrollbarOrientation.right,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 25),
-          child: ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(scrollbars: false),
-            child: CustomScrollView(
-              primary: true,
-              slivers: [
-                SliverToBoxAdapter(
-                  child: CustomerInfoInOrder(model: orderModel.customerModel!),
-                ),
-                const SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 12,
+    return Form(
+      key: bloc.fromKeyEdit,
+      child: Expanded(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+        child: Scrollbar(
+          radius: const Radius.circular(5),
+          thickness: 12,
+          scrollbarOrientation: ScrollbarOrientation.right,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25),
+            child: ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(scrollbars: false),
+              child: CustomScrollView(
+                primary: true,
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: CustomerInfoInOrder(model: orderModel.customerModel!),
                   ),
-                ),
-                SliverToBoxAdapter(
-                    child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "تفاصيل الطلب",
-                        style: AppFontStyles.extraBoldNew20(context),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      RowOrderItems(
-                          isReadOnly: false,
-                          allKitchenTypes: bloc.allKitchenTypes,
-                          changeColorValue: (value) {
-                            bloc.add(ChangeColorOfOrderEvent(
-                                colorValue: value, isEdit: true));
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 12,
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                      child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "تفاصيل الطلب",
+                          style: AppFontStyles.extraBoldNew20(context),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        RowOrderItems(
+                            isReadOnly: false,
+                            allKitchenTypes: bloc.allKitchenTypes,
+                            changeColorValue: (value) {
+                              bloc.add(ChangeColorOfOrderEvent(
+                                  colorValue: value, isEdit: true));
+                            },
+                            changeDate: (time) {
+                              bloc.add(ChangeDateOfOrderEvent(
+                                  dateTime: time, isEdit: true));
+                            },
+                            changekitchenTypeValue: (type) {
+                              bloc.add(ChangeKitchenTypeEvent(
+                                  kitchenType: type, isEdit: true));
+                            },
+                            formKey: bloc.fromKey,
+                            orderModel: orderModel,
+                            colorOrderModel: orderModel.colorModel!),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomColumnWithTextInAddNewType(
+                          text: "ملاحظات",
+                          textLabel: "",
+                          controller: TextEditingController(
+                              text: orderModel.notice ?? ""),
+                          enableBorder: true,
+                          maxLine: 4,
+                          onChanged: (value) {
+                            orderModel.notice = value;
                           },
-                          changeDate: (time) {
-                            bloc.add(ChangeDateOfOrderEvent(
-                                dateTime: time, isEdit: true));
+                          textStyle: AppFontStyles.extraBoldNew16(context),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "الوسائط",
+                          style: AppFontStyles.extraBoldNew16(context),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        orderModel.mediaOrderList.isNotEmpty
+                            ? MediaListExist(
+                                addMore: (media) {
+                                  bloc.add(AddMediaInAddOrder(
+                                      list: media, isEdit: true));
+                                },
+                                removeIndex: (index) {
+                                  bloc.add(RemoveMediItemEvent(
+                                      index: index, isEdit: true));
+                                },
+                                enableClear: true,
+                                pickedList: orderModel.getPickedMedia(),
+                              )
+                            : EmptyUploadMedia(
+                                addMedia: (media) {
+                                  bloc.add(AddMediaInAddOrder(
+                                      list: media, isEdit: true));
+                                },
+                              ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        AddsForOrder(
+                          addMore: () {
+                            bloc.add(AddExtraInOrder(isEdit: true));
                           },
-                          changekitchenTypeValue: (type) {
-                            bloc.add(ChangeKitchenTypeEvent(
-                                kitchenType: type, isEdit: true));
+                          removeItem: (index) {
+                            bloc.add(RemoveExtraItem(index: index, isEdit: true));
+                          },
+                          list: orderModel.extraOrdersList,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        BillDetails(
+                          enableController: false,
+                          pillModel: orderModel.pillModel!,
+                          onTapToChangeRemain: () {
+                            bloc.add(ChangeRemainInAddOrderEvent(isEdit: true));
+                          },
+                          onChangePayment: (paymentWay) {
+                            bloc.add(ChangeOptionPaymentEvent(
+                                paymentWay: paymentWay, isEdit: true));
                           },
                           formKey: bloc.fromKey,
-                          orderModel: orderModel,
-                          colorOrderModel: orderModel.colorModel!),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      CustomColumnWithTextInAddNewType(
-                        text: "ملاحظات",
-                        textLabel: "",
-                        controller: TextEditingController(
-                            text: orderModel.notice ?? ""),
-                        enableBorder: true,
-                        maxLine: 4,
-                        onChanged: (value) {
-                          orderModel.notice = value;
-                        },
-                        textStyle: AppFontStyles.extraBoldNew16(context),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        "الوسائط",
-                        style: AppFontStyles.extraBoldNew16(context),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      orderModel.mediaOrderList.isNotEmpty
-                          ? MediaListExist(
-                              addMore: (media) {
-                                bloc.add(AddMediaInAddOrder(
-                                    list: media, isEdit: true));
-                              },
-                              removeIndex: (index) {
-                                bloc.add(RemoveMediItemEvent(
-                                    index: index, isEdit: true));
-                              },
-                              enableClear: true,
-                              pickedList: orderModel.getPickedMedia(),
-                            )
-                          : EmptyUploadMedia(
-                              addMedia: (media) {
-                                bloc.add(AddMediaInAddOrder(
-                                    list: media, isEdit: true));
-                              },
-                            ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      AddsForOrder(
-                        addMore: () {
-                          bloc.add(AddExtraInOrder(isEdit: true));
-                        },
-                        removeItem: (index) {
-                          bloc.add(RemoveExtraItem(index: index, isEdit: true));
-                        },
-                        list: orderModel.extraOrdersList,
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      BillDetails(
-                        enableController: false,
-                        pillModel: orderModel.pillModel!,
-                        onTapToChangeRemain: () {
-                          bloc.add(ChangeRemainInAddOrderEvent(isEdit: true));
-                        },
-                        onChangePayment: (paymentWay) {
-                          bloc.add(ChangeOptionPaymentEvent(
-                              paymentWay: paymentWay, isEdit: true));
-                        },
-                        formKey: bloc.fromKey,
-                        changeStepsCounter: (status) {
-                          bloc.add(ChangeCounterOfStepsInPillEvent(
-                              increase: status, isEdit: true));
-                        },
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Center(
-                        child: CustomPushContainerButton(
-                          childInstead: bloc.isLoadingActionsOrder
-                              ? const CircularProgressIndicator(
-                                  color: AppColors.white,
-                                )
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      "تعديل ",
-                                      style:
-                                          AppFontStyles.extraBoldNew24(context)
-                                              .copyWith(color: AppColors.white),
-                                    ),
-                                    const IconButton(
-                                        onPressed: null,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: AppColors.white,
-                                          size: 30,
-                                        ))
-                                  ],
-                                ),
-                          onTap: () {
-                            bloc.add(EditOrderEvent());
+                          changeStepsCounter: (status) {
+                            bloc.add(ChangeCounterOfStepsInPillEvent(
+                                increase: status, isEdit: true));
                           },
-                          borderRadius: 14,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                    ],
-                  ),
-                )),
-              ],
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Center(
+                          child: CustomPushContainerButton(
+                            childInstead: bloc.isLoadingActionsOrder
+                                ? const CircularProgressIndicator(
+                                    color: AppColors.white,
+                                  )
+                                : Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "تعديل ",
+                                        style:
+                                            AppFontStyles.extraBoldNew24(context)
+                                                .copyWith(color: AppColors.white),
+                                      ),
+                                      const IconButton(
+                                          onPressed: null,
+                                          icon: Icon(
+                                            Icons.edit,
+                                            color: AppColors.white,
+                                            size: 30,
+                                          ))
+                                    ],
+                                  ),
+                            onTap: () {
+                              if (bloc.fromKeyEdit.currentState!.validate()) {
+                                bloc.add(EditOrderEvent());
+                              }
+                            },
+                            borderRadius: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
+                  )),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    ));
+      )),
+    );
   }
 }

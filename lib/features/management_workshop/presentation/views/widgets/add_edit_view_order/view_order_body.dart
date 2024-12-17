@@ -11,6 +11,7 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/customer_info.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/row_order_items.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/upper_action_view_order.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/get_contract/get_contract.dart';
 import 'package:flutter/material.dart';
 
 class ShowOneOrderBody extends StatelessWidget {
@@ -50,8 +51,12 @@ class ShowOneOrderBody extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: UpperButtonsInViewOrder(
-                    navToEdit: navToEdit,
-                    orderModel: orderModel,
+                    navToEdit: () {
+                      navToEdit(orderModel);
+                    },
+                    getPdfContract: () async {
+                      await getPdfContract(orderModel);
+                    },
                     onTapForCustomerProfileView: () {
                       navToProfileView(orderModel.customerId);
                     },
@@ -163,4 +168,3 @@ class ShowOneOrderBody extends StatelessWidget {
     ));
   }
 }
-
