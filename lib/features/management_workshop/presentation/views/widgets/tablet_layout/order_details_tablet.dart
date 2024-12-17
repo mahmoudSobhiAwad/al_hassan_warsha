@@ -48,13 +48,15 @@ class OrderDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 5,
                   child: OrderNameInOrderDetails(
-                    isReadOnly: isReadOnly,
-                      formKey: formKey, orderModel: orderModel)),
+                      isReadOnly: isReadOnly,
+                      formKey: formKey,
+                      orderModel: orderModel)),
               const Expanded(child: SizedBox()),
               Expanded(
                 flex: 4,
                 child: GetColorForOrder(
                     label: "حدد اللون",
+                    isReadOnly: isReadOnly,
                     colorOrderModel: colorOrderModel,
                     changeColorValue: changeColorValue),
               ),
@@ -62,7 +64,7 @@ class OrderDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 4,
                   child: KitchenTypeInOrderDetails(
-                    isReadOnly: isReadOnly,
+                      isReadOnly: isReadOnly,
                       orderModel: orderModel,
                       changekitchenTypeValue: changekitchenTypeValue,
                       allKitchenTypes: allKitchenTypes)),
@@ -70,6 +72,7 @@ class OrderDetailsInTablet extends StatelessWidget {
               Expanded(
                   flex: 4,
                   child: CustomDatePicker(
+                      isReadOnly: isReadOnly,
                       textInnerStyle: AppFontStyles.regular14(context)
                           .copyWith(fontSize: 14),
                       aboveTextStyle: AppFontStyles.bold16(context),
@@ -83,4 +86,3 @@ class OrderDetailsInTablet extends StatelessWidget {
     );
   }
 }
-

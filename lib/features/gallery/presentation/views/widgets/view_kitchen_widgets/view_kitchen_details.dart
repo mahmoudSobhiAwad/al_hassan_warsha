@@ -106,7 +106,9 @@ class ViewKitchenDetailsBody extends StatelessWidget {
                   enableClear: false,
                   pickedList: kitchenModel!.getPickedMedia(),
                 )
-              : const EmptyUploadMedia(),
+              : const EmptyUploadMedia(
+                isReadOnly: true,
+              ),
           const SizedBox(
             height: 12,
           ),

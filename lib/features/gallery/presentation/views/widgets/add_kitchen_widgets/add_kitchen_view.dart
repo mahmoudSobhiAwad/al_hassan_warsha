@@ -96,6 +96,7 @@ class _AddKitchenViewState extends State<AddKitchenView> {
                     },
                   )
                 : EmptyUploadMedia(
+                  isReadOnly: false,
                     addMedia: (media) {
                       widget.bloc
                           .add(RecieveMediaToAddEvent(medialList: media));

@@ -25,6 +25,7 @@ class HeaderOfAnalysis extends StatelessWidget {
         Expanded(
           flex: 2,
           child: CustomDatePicker(
+            isReadOnly: false,
             labelText: "البداية",
             recieveTime: startDate,
             changeDate: changeStartDate,
@@ -34,6 +35,7 @@ class HeaderOfAnalysis extends StatelessWidget {
         Expanded(
           flex: 2,
           child: CustomDatePicker(
+            isReadOnly: false,
             startDate: startDate,
             labelText: "النهاية",
             recieveTime: endDate,

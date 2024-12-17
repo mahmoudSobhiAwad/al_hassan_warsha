@@ -3,22 +3,33 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/add_kitchen_widgets/list_of_exist_media.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_more_extra.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/customer_info_tablet.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/order_details_tablet.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/pill_details_tablet.dart';
 import 'package:flutter/material.dart';
 
-class AddOrderBodyTabletLayOut extends StatelessWidget {
-  const AddOrderBodyTabletLayOut({super.key, required this.bloc, this.model});
+class CustomOrderBodyTablet extends StatelessWidget {
+  const CustomOrderBodyTablet(
+      {super.key,
+      required this.bloc,
+      this.model,
+      this.orderModel,
+      this.isEdit = false,
+      required this.bottomActionWidget,
+      this.isReadOnly = false});
   final ManagementBloc bloc;
   final CustomerModel? model;
+  final OrderModel? orderModel;
+  final bool isReadOnly;
+  final bool isEdit;
+  final Widget bottomActionWidget;
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: bloc.fromKey,
+      key:isEdit?bloc.fromKeyEdit: bloc.fromKey,
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -33,9 +44,11 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: CustomerInfoInOrderInTablet(
-                      formKey: bloc.fromKey,
-                      isReadOnly: model != null,
-                      model: model ?? bloc.customerModel,
+                      formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+                      isReadOnly: isReadOnly,
+                      model: orderModel?.customerModel ??
+                          model ??
+                          bloc.customerModel,
                     ),
                   ),
                   const SliverToBoxAdapter(
@@ -45,19 +58,24 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: OrderDetailsInTablet(
-                      isReadOnly: false,
+                      aboveTextStyle: AppFontStyles.extraBoldNew16(context),
+                      isReadOnly: isReadOnly,
                       allKitchenTypes: bloc.allKitchenTypes,
-                      formKey: bloc.fromKey,
-                      colorOrderModel: bloc.colorModel,
-                      orderModel: bloc.orderModel,
+                      formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+                      colorOrderModel:
+                          orderModel?.colorModel ?? bloc.colorModel,
+                      orderModel: orderModel ?? bloc.orderModel,
                       changeColorValue: (value) {
-                        bloc.add(ChangeColorOfOrderEvent(colorValue: value));
+                        bloc.add(ChangeColorOfOrderEvent(
+                            colorValue: value, isEdit: isEdit));
                       },
                       changeDate: (time) {
-                        bloc.add(ChangeDateOfOrderEvent(dateTime: time));
+                        bloc.add(ChangeDateOfOrderEvent(
+                            dateTime: time, isEdit: isEdit));
                       },
                       changekitchenTypeValue: (type) {
-                        bloc.add(ChangeKitchenTypeEvent(kitchenType: type));
+                        bloc.add(ChangeKitchenTypeEvent(
+                            kitchenType: type, isEdit: isEdit));
                       },
                     ),
                   ),
@@ -69,13 +87,16 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: CustomColumnWithTextInAddNewType(
                       text: "ملاحظات",
+                      readOnly: isReadOnly,
                       textLabel: "",
                       enableBorder: true,
                       maxLine: 5,
-                      controller:
-                          TextEditingController(text: bloc.orderModel.notice),
+                      controller: TextEditingController(
+                          text: orderModel?.notice ?? bloc.orderModel.notice),
                       onChanged: (value) {
-                        bloc.orderModel.notice = value;
+                        orderModel != null
+                            ? orderModel?.notice = value
+                            : bloc.orderModel.notice = value;
                       },
                       textStyle: AppFontStyles.extraBoldNew16(context),
                     ),
@@ -86,21 +107,28 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: bloc.mediaOrderList.isNotEmpty
+                    child: orderModel?.mediaOrderList.isNotEmpty ??
+                            bloc.mediaOrderList.isNotEmpty
                         ? MediaListExist(
                             addMore: (media) {
-                              bloc.add(AddMediaInAddOrder(list: media));
+                              isReadOnly
+                                  ? null
+                                  : bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
                             },
-                            enableClear: true,
-                            pickedList: bloc.mediaOrderList,
+                            enableClear: !isReadOnly,
+                            pickedList: orderModel?.getPickedMedia() ??
+                                bloc.mediaOrderList,
                             removeIndex: (index) {
-                              bloc.add(RemoveMediItemEvent(index: index));
+                              isReadOnly
+                                  ? null
+                                  : bloc.add(RemoveMediItemEvent(index: index,isEdit: isEdit));
                             },
                           )
                         : EmptyUploadMedia(
+                            isReadOnly: isReadOnly,
                             fontSize: 20,
                             addMedia: (media) {
-                              bloc.add(AddMediaInAddOrder(list: media));
+                              bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
                             },
                           ),
                   ),
@@ -111,12 +139,16 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: AddsForOrder(
-                      list: bloc.extraOrdersList,
+                      
+                      isReadOnly: isReadOnly,
+                      list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
                       addMore: () {
-                        bloc.add(AddExtraInOrder());
+                        isReadOnly ? null : bloc.add(AddExtraInOrder(isEdit: isEdit));
                       },
                       removeItem: (index) {
-                        bloc.add(RemoveExtraItem(index: index));
+                        isReadOnly
+                            ? null
+                            : bloc.add(RemoveExtraItem(index: index,isEdit: isEdit));
                       },
                     ),
                   ),
@@ -127,18 +159,22 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: BillDetailsInTablet(
-                      enableController: false,
+                      enableController: isReadOnly,
                       onTapToChangeRemain: () {
-                        bloc.add(ChangeRemainInAddOrderEvent());
+                        isReadOnly
+                            ? null
+                            : bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
                       },
                       changeStepsCounter: (increase) {
-                        bloc.add(ChangeCounterOfStepsInPillEvent(
-                            increase: increase));
+                        isReadOnly
+                            ? null
+                            : bloc.add(ChangeCounterOfStepsInPillEvent(
+                                increase: increase,isEdit: isEdit));
                       },
-                      pillModel: bloc.pillModel,
+                      pillModel: orderModel?.pillModel ?? bloc.pillModel,
                       onChangePayment: (paymentWay) {
                         bloc.add(
-                            ChangeOptionPaymentEvent(paymentWay: paymentWay));
+                            ChangeOptionPaymentEvent(paymentWay: paymentWay,isEdit: isEdit));
                       },
                     ),
                   ),
@@ -148,13 +184,7 @@ class AddOrderBodyTabletLayOut extends StatelessWidget {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: AddNewOrderButton(
-                      formKey: bloc.fromKey,
-                      addOrder: () {
-                        bloc.add(AddNewOrderEvent(customerModel: model));
-                      },
-                      isLoading: bloc.isLoadingActionsOrder,
-                    ),
+                    child: bottomActionWidget,
                   ),
                 ],
               ),

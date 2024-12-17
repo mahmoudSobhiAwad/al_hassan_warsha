@@ -129,6 +129,7 @@ class _EditKitchenViewState extends State<EditKitchenView> {
                     enableShowMore: widget.bloc.isLoadingEnabled,
                   )
                 : EmptyUploadMedia(
+                  isReadOnly: false,
                     addMedia: (media) {
                       addedList.addAll(media);
                       widget.bloc.add(RecieveMediaToAddEvent(medialList: media));

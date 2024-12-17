@@ -118,6 +118,7 @@ class EditOrderBody extends StatelessWidget {
                                 pickedList: orderModel.getPickedMedia(),
                               )
                             : EmptyUploadMedia(
+                              isReadOnly: false,
                                 addMedia: (media) {
                                   bloc.add(AddMediaInAddOrder(
                                       list: media, isEdit: true));
@@ -127,6 +128,7 @@ class EditOrderBody extends StatelessWidget {
                           height: 16,
                         ),
                         AddsForOrder(
+                          isReadOnly: false,
                           addMore: () {
                             bloc.add(AddExtraInOrder(isEdit: true));
                           },

@@ -47,6 +47,7 @@ class RowOrderItems extends StatelessWidget {
         Expanded(
           flex: 2,
           child: GetColorForOrder(
+            isReadOnly: isReadOnly,
               colorOrderModel: colorOrderModel,
               changeColorValue: changeColorValue),
         ),
@@ -62,6 +63,7 @@ class RowOrderItems extends StatelessWidget {
         Expanded(
             flex: 2,
             child: CustomDatePicker(
+              isReadOnly: isReadOnly,
                 formKey: formKey,
                 recieveTime: orderModel.recieveTime,
                 changeDate: changeDate)),

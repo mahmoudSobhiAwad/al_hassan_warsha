@@ -6,7 +6,12 @@ import 'package:flutter/material.dart';
 
 class AddsForOrder extends StatelessWidget {
   const AddsForOrder(
-      {super.key, required this.list, this.addMore,required this.removeItem,this.addWidth,this.isReadOnly=false});
+      {super.key,
+      required this.list,
+      this.addMore,
+      required this.removeItem,
+      this.addWidth,
+      this.isReadOnly = false});
   final List<ExtraInOrderModel> list;
   final void Function()? addMore;
   final void Function(int) removeItem;
@@ -36,7 +41,7 @@ class AddsForOrder extends StatelessWidget {
           children: [
             ...List.generate(list.length, (index) {
               return SizedBox(
-                width:addWidth?? 300,
+                width: addWidth ?? 300,
                 child: CustomTextFormField(
                   readOnly: isReadOnly,
                   controller:
@@ -45,7 +50,7 @@ class AddsForOrder extends StatelessWidget {
                     list[index].extraName = value;
                   },
                   borderRadius: 12,
-                  suffixWidget:!isReadOnly
+                  suffixWidget: !isReadOnly
                       ? IconButton(
                           onPressed: () {
                             removeItem(index);
@@ -63,7 +68,7 @@ class AddsForOrder extends StatelessWidget {
                 ),
               );
             }),
-            addMore == null
+            isReadOnly
                 ? const SizedBox()
                 : InkWell(
                     onTap: addMore,

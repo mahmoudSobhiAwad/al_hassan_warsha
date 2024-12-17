@@ -12,6 +12,7 @@ class CustomDatePicker extends StatelessWidget {
     this.labelText,
     this.format,
     this.enableShowDayTime = false,
+    this.isReadOnly = false,
     this.startDate,
     this.aboveTextStyle,
     this.textInnerStyle,
@@ -22,10 +23,11 @@ class CustomDatePicker extends StatelessWidget {
   final void Function(DateTime p1)? changeDate;
   final String? labelText;
   final String? format;
-  final DateTime?startDate;
+  final DateTime? startDate;
   final bool enableShowDayTime;
-  final TextStyle?aboveTextStyle;
-  final TextStyle?textInnerStyle;
+  final TextStyle? aboveTextStyle;
+  final TextStyle? textInnerStyle;
+  final bool isReadOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -45,20 +47,21 @@ class CustomDatePicker extends StatelessWidget {
       text: labelText ?? " تاريخ الاستلام ",
       enableBorder: true,
       readOnly: true,
-      textInnerStyle:
-         textInnerStyle?? AppFontStyles.extraBoldNew16(context).copyWith(letterSpacing: 1),
-      textStyle:aboveTextStyle?? AppFontStyles.extraBoldNew16(context),
+      textInnerStyle: textInnerStyle ??
+          AppFontStyles.extraBoldNew16(context).copyWith(letterSpacing: 1),
+      textStyle: aboveTextStyle ?? AppFontStyles.extraBoldNew16(context),
       textLabel: "",
       suffixIcon: IconButton(
-        onPressed: () {
-          changeDate != null
-              ? showDatePicker(
-                      locale: const Locale('ar'),
-                      context: context,
-                      initialDate:startDate?? DateTime.now(),
-                      firstDate:startDate?? DateTime(DateTime.now().year - 1),
-                      lastDate: DateTime(DateTime.now().year + 2))
-                  .then((value) {
+        onPressed: !isReadOnly
+            ? () {
+                showDatePicker(
+                        locale: const Locale('ar'),
+                        context: context,
+                        initialDate: startDate ?? DateTime.now(),
+                        firstDate:
+                            startDate ?? DateTime(DateTime.now().year - 1),
+                        lastDate: DateTime(DateTime.now().year + 2))
+                    .then((value) {
                   if (context.mounted && enableShowDayTime && value != null) {
                     showTimePicker(
                             context: context, initialTime: TimeOfDay.now())
@@ -76,9 +79,9 @@ class CustomDatePicker extends StatelessWidget {
                       changeDate!(value);
                     }
                   }
-                })
-              : null;
-        },
+                });
+              }
+            : null,
         icon: const Icon(Icons.calendar_month_rounded),
       ),
     );

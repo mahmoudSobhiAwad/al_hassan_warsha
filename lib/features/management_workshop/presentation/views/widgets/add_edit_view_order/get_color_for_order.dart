@@ -10,14 +10,16 @@ class GetColorForOrder extends StatelessWidget {
     super.key,
     required this.colorOrderModel,
     required this.changeColorValue,
+    required this.isReadOnly,
     this.label,
     this.textStyle,
   });
 
   final ColorOrderModel colorOrderModel;
   final void Function(int p1)? changeColorValue;
-  final String?label;
-  final TextStyle?textStyle;
+  final bool isReadOnly;
+  final String? label;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +28,11 @@ class GetColorForOrder extends StatelessWidget {
       onChanged: (value) {
         colorOrderModel.colorName = value ?? "";
       },
-      controller: TextEditingController(text: colorOrderModel.colorName??""),
-      readOnly:changeColorValue==null?true:false ,
+      controller: TextEditingController(text: colorOrderModel.colorName ?? ""),
+      readOnly: isReadOnly,
       enableBorder: true,
-      textStyle:textStyle?? AppFontStyles.extraBoldNew16(context),
-      textLabel:label?? "حدد اسم اللون او اختار الدرجة المناسبة",
+      textStyle: textStyle ?? AppFontStyles.extraBoldNew16(context),
+      textLabel: label ?? "حدد اسم اللون او اختار الدرجة المناسبة",
       suffixIcon: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -48,7 +50,7 @@ class GetColorForOrder extends StatelessWidget {
                     color: Color(colorOrderModel.colorDegree!),
                   ))
               : const SizedBox(),
-          changeColorValue != null
+          !isReadOnly
               ? IconButton(
                   onPressed: () {
                     showColorPicker(context, onColorChanged: (color) {

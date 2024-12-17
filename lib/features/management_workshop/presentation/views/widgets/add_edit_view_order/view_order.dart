@@ -7,6 +7,7 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/manag
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/profile_view/view_profile_for_customer.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/view_order_body.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/order_view_mobile.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/view_order_tablet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +84,10 @@ class ShowOneOrderView extends StatelessWidget {
                   orderModel: orderModel,
                 );
               }, tabletLayout: (context) {
-                return const Text("Tablet");
+                return ViewOrderTablet(
+                  bloc: bloc,
+                  model: orderModel,
+                );
               }),
             ),
           ),

@@ -103,6 +103,7 @@ class OrderDetails extends StatelessWidget {
                       },
                     )
                   : EmptyUploadMedia(
+                    isReadOnly: isReadOnly,
                       addMedia: (media) {
                         addMoreMedia(media);
                       },
@@ -111,6 +112,7 @@ class OrderDetails extends StatelessWidget {
                 height: 16,
               ),
               AddsForOrder(
+                isReadOnly: isReadOnly,
                 list: extraList,
                 addMore: addMore,
                 removeItem: (index) {

@@ -1,6 +1,7 @@
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/customer_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/add_new_order_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/tablet_layout/add_order_body_tablet.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,14 @@ class AddOrderViewTablet extends StatelessWidget {
           items: ["إدارة الورشة", "اضافة عمل جديد"],
           fontSize: 22,
         ),
-        AddOrderBodyTabletLayOut(
+        CustomOrderBodyTablet(
+          bottomActionWidget: AddNewOrderButton(
+            formKey: bloc.fromKey,
+            addOrder: () {
+              bloc.add(AddNewOrderEvent(customerModel: model));
+            },
+            isLoading: bloc.isLoadingActionsOrder,
+          ),
           bloc: bloc,
           model: model,
         ),
@@ -24,4 +32,3 @@ class AddOrderViewTablet extends StatelessWidget {
     );
   }
 }
-

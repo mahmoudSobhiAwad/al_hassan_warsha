@@ -31,7 +31,7 @@ class KitchenTypeInOrderDetails extends StatelessWidget {
       textLabel: "",
       readOnly:isReadOnly,
       controller: TextEditingController(text: orderModel.kitchenType),
-      suffixIcon: changekitchenTypeValue != null
+      suffixIcon: !isReadOnly 
           ? PopupMenuButton(
               onSelected: (value) {
                 changekitchenTypeValue!(value);

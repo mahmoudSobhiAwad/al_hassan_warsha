@@ -126,7 +126,9 @@ class ShowOneOrderBody extends StatelessWidget {
                               enableClear: false,
                               pickedList: orderModel.getPickedMedia(),
                             )
-                          : const EmptyUploadMedia(),
+                          : const EmptyUploadMedia(
+                            isReadOnly: true,
+                          ),
                       const SizedBox(
                         height: 16,
                       ),
@@ -159,7 +161,7 @@ class ShowOneOrderBody extends StatelessWidget {
                         orderModel: orderModel,
                         markAsDone: markAsDone,
                         deleteOrder: deleteOrder,
-                        isLoading: isLoading))
+                        isLoading: isLoading),)
               ],
             ),
           ),

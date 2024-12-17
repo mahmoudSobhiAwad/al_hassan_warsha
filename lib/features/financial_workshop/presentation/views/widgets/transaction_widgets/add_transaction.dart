@@ -140,6 +140,7 @@ class AddTransaction extends StatelessWidget {
             Expanded(
                 flex: 3,
                 child: CustomDatePicker(
+                  isReadOnly: false,
                   formKey: formKey,
                   format: 'd MMMM y - HH:mm',
                   enableShowDayTime: true,

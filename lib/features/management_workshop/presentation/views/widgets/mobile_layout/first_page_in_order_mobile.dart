@@ -152,6 +152,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                           Expanded(
                               flex: 4,
                               child: GetColorForOrder(
+                                isReadOnly: isReadOnly,
                                 textStyle: AppFontStyles.bold16(context),
                                 colorOrderModel: colorModel,
                                 changeColorValue: isReadOnly
@@ -164,6 +165,7 @@ class FirstPageInAddOrderInMobileLayout extends StatelessWidget {
                           Expanded(
                               flex: 3,
                               child: CustomDatePicker(
+                                isReadOnly: isReadOnly,
                                   aboveTextStyle: AppFontStyles.bold16(context),
                                   textInnerStyle: AppFontStyles.bold12(context),
                                   formKey: formKey,

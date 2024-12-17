@@ -7,18 +7,17 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class SecondPageInOrderMobile extends StatelessWidget {
-  const SecondPageInOrderMobile({
-    super.key,
-    required this.list,
-    required this.mediaOrderList,
-    this.addMoreExtras,
-    required this.removeItemFromExtras,
-    this.addMedia,
-    this.addMoreMedia,
-    this.removeMedia,
-    this.enableClear = true,
-    required this.isReadOnly
-  });
+  const SecondPageInOrderMobile(
+      {super.key,
+      required this.list,
+      required this.mediaOrderList,
+      this.addMoreExtras,
+      required this.removeItemFromExtras,
+      this.addMedia,
+      this.addMoreMedia,
+      this.removeMedia,
+      this.enableClear = true,
+      required this.isReadOnly});
   final List<ExtraInOrderModel> list;
   final void Function()? addMoreExtras;
   final void Function(int) removeItemFromExtras;
@@ -56,6 +55,7 @@ class SecondPageInOrderMobile extends StatelessWidget {
                         removeIndex: removeMedia,
                       )
                     : EmptyUploadMedia(
+                        isReadOnly: isReadOnly,
                         edgeInsets: const EdgeInsets.symmetric(vertical: 25),
                         fontSize: 18,
                         addMedia: addMedia,
