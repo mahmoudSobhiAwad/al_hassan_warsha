@@ -8,11 +8,23 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
 import 'package:flutter/material.dart';
 
-class EditOrderViewMobile extends StatelessWidget {
+class EditOrderViewMobile extends StatefulWidget {
   const EditOrderViewMobile(
       {super.key, required this.bloc, required this.orderModel});
   final ManagementBloc bloc;
   final OrderModel orderModel;
+
+  @override
+  State<EditOrderViewMobile> createState() => _EditOrderViewMobileState();
+}
+
+class _EditOrderViewMobileState extends State<EditOrderViewMobile> {
+  final PageController _pageController = PageController();
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -22,19 +34,20 @@ class EditOrderViewMobile extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
-            bloc.add(SetCurrPageIndexToZero());
+            widget.bloc.add(SetCurrPageIndexToZero());
             Navigator.pop(context);
           },
         ),
         Expanded(
           child: CustomPageViewInViewOrderMobile(
-            bloc: bloc,
+            pageController:_pageController ,
+            bloc: widget.bloc,
             isEdit: true,
             isReadOnly: false,
-            orderModel: orderModel,
+            orderModel: widget.orderModel,
             bottomOrderAction: Center(
               child: CustomPushContainerButton(
-                childInstead: bloc.isLoadingActionsOrder
+                childInstead: widget.bloc.isLoadingActionsOrder
                     ? const CircularProgressIndicator(
                         color: AppColors.white,
                       )
@@ -56,8 +69,8 @@ class EditOrderViewMobile extends StatelessWidget {
                         ],
                       ),
                 onTap: () {
-                  if (bloc.fromKeyThirdPageEdit.currentState!.validate()) {
-                    bloc.add(EditOrderEvent());
+                  if (widget.bloc.fromKeyThirdPageEdit.currentState!.validate()) {
+                    widget.bloc.add(EditOrderEvent());
                   }
                 },
                 borderRadius: 14,
@@ -69,15 +82,15 @@ class EditOrderViewMobile extends StatelessWidget {
           height: 12,
         ),
         NextPageOrBackButtons(
-          currPageIndex: bloc.currPageMobile,
+          currPageIndex: widget.bloc.currPageMobile,
           nextOrBack: (stauts) {
-            if (bloc.currPageMobile == 0) {
-              if (stauts && bloc.fromKeyFirstPageEdit.currentState!.validate()) {
-                bloc.add(
-                    ChangeCurrPageInMobile(isForward: stauts, isEdit: true));
+            if (widget.bloc.currPageMobile == 0) {
+              if (stauts && widget.bloc.fromKeyFirstPageEdit.currentState!.validate()) {
+                widget.bloc.add(
+                    ChangeCurrPageInMobile(isForward: stauts, controller: _pageController));
               }
             } else {
-              bloc.add(ChangeCurrPageInMobile(isForward: stauts, isEdit: true));
+              widget.bloc.add(ChangeCurrPageInMobile(isForward: stauts, controller: _pageController));
             }
           },
         ),

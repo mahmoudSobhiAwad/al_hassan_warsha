@@ -15,6 +15,7 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
     this.isEdit = false,
     this.orderModel,
     required this.bottomOrderAction,
+    required this.pageController,
   });
 
   final ManagementBloc bloc;
@@ -23,22 +24,25 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
   final bool isReadOnly;
   final OrderModel? orderModel;
   final Widget bottomOrderAction;
+  final PageController pageController;
+
   @override
   Widget build(BuildContext context) {
     return PageView.builder(
       itemCount: 3,
-      controller: isEdit
-          ? bloc.pageControllerInMobileOrderForEditScreen
-          : bloc.pageControllerInMobileOrder,
+      controller:pageController,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         return [
           FirstPageInAddOrderInMobileLayout(
             isReadOnly: isReadOnly,
             orderModel: orderModel ?? bloc.orderModel,
-            formKey: isEdit ? bloc.fromKeyFirstPageEdit : bloc.fromKeyFirstPage,
+            formKey: isEdit
+                ? bloc.fromKeyFirstPageEdit
+                : bloc.fromKeyFirstPage,
             colorModel: orderModel?.colorModel ?? bloc.colorModel,
-            customerModel:customerModel?? orderModel?.customerModel ??
+            customerModel: customerModel ??
+                orderModel?.customerModel ??
                 customerModel ??
                 bloc.customerModel,
             onChangeNotice: (notice) {
@@ -51,23 +55,27 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
                   colorValue: colorHex, isEdit: isEdit));
             },
             onChangeDate: (date) {
-              bloc.add(ChangeDateOfOrderEvent(dateTime: date, isEdit: isEdit));
+              bloc.add(ChangeDateOfOrderEvent(
+                  dateTime: date, isEdit: isEdit));
             },
             allKitchenTypes: bloc.allKitchenTypes,
             onChangeKitchenType: (type) {
-              bloc.add(
-                  ChangeKitchenTypeEvent(kitchenType: type, isEdit: isEdit));
+              bloc.add(ChangeKitchenTypeEvent(
+                  kitchenType: type, isEdit: isEdit));
             },
           ),
           SecondPageInOrderMobile(
             enableClear: !isReadOnly,
             isReadOnly: isReadOnly,
-            list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
-            mediaOrderList: orderModel?.getPickedMedia() ?? bloc.mediaOrderList,
+            list: orderModel?.extraOrdersList ??
+                bloc.extraOrdersList,
+            mediaOrderList: orderModel?.getPickedMedia() ??
+                bloc.mediaOrderList,
             addMedia: isReadOnly
                 ? null
                 : (list) {
-                    bloc.add(AddMediaInAddOrder(list: list, isEdit: isEdit));
+                    bloc.add(
+                        AddMediaInAddOrder(list: list, isEdit: isEdit));
                   },
             addMoreExtras: isReadOnly
                 ? null
@@ -75,21 +83,25 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
                     bloc.add(AddExtraInOrder(isEdit: isEdit));
                   },
             addMoreMedia: (items) {
-              bloc.add(AddMediaInAddOrder(list: items, isEdit: isEdit));
+              bloc
+                  .add(AddMediaInAddOrder(list: items, isEdit: isEdit));
             },
             removeItemFromExtras: (index) {
-              bloc.add(RemoveExtraItem(index: index, isEdit: isEdit));
+              bloc
+                  .add(RemoveExtraItem(index: index, isEdit: isEdit));
             },
             removeMedia: isReadOnly
                 ? null
                 : (index) {
-                    bloc.add(RemoveMediItemEvent(index: index, isEdit: isEdit));
+                    bloc.add(RemoveMediItemEvent(
+                        index: index, isEdit: isEdit));
                   },
           ),
           ThirdPageInOrderMobile(
               pillModel: orderModel?.pillModel ?? bloc.pillModel,
               onTapToChangeRemain: () {
-                bloc.add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
+                bloc
+                    .add(ChangeRemainInAddOrderEvent(isEdit: isEdit));
               },
               enableController: isReadOnly,
               changeStepsCounter: (status) {
@@ -100,8 +112,9 @@ class CustomPageViewInViewOrderMobile extends StatelessWidget {
                 bloc.add(ChangeOptionPaymentEvent(
                     paymentWay: payment, isEdit: isEdit));
               },
-              formKey:
-                  isEdit ? bloc.fromKeyThirdPageEdit : bloc.fromKeyThirdPage,
+              formKey: isEdit
+                  ? bloc.fromKeyThirdPageEdit
+                  : bloc.fromKeyThirdPage,
               actionButton: bottomOrderAction)
         ][index];
       },

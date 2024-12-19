@@ -22,15 +22,14 @@ void main() async {
   windowManager.setMinimumSize(const Size(350, 650));
   Bloc.observer = SimpleBlocObserver();
   await localNotifier.setup(
-  appName: 'الورشة',
-  shortcutPolicy: ShortcutPolicy.requireCreate,
-);
+    appName: 'الورشة',
+    shortcutPolicy: ShortcutPolicy.requireCreate,
+  );
   runApp(DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) {
-      return const Alwarsha();
-    }
-  ));
+      enabled: !kReleaseMode,
+      builder: (context) {
+        return const Alwarsha();
+      }));
 }
 
 class Alwarsha extends StatelessWidget {
@@ -40,7 +39,6 @@ class Alwarsha extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBasicBloc()..add(CheckDbExistEvent()),
       child: MaterialApp(
-        
           supportedLocales: const [
             Locale('ar'), // Arabic
             Locale('en'), // English (if needed)
@@ -53,11 +51,10 @@ class Alwarsha extends StatelessWidget {
           locale: const Locale('ar'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            
             scrollbarTheme: const ScrollbarThemeData(
-             thumbVisibility: WidgetStatePropertyAll<bool>(true),
-             trackVisibility: WidgetStatePropertyAll<bool>(true),
-             
+              thumbVisibility: WidgetStatePropertyAll<bool>(true),
+              trackVisibility: WidgetStatePropertyAll<bool>(true),
+
               thumbColor: WidgetStatePropertyAll<Color>(AppColors.lightGray2),
               trackColor:
                   WidgetStatePropertyAll<Color>(AppColors.veryLightGray),

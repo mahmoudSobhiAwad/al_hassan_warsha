@@ -8,10 +8,23 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
 import 'package:flutter/material.dart';
 
-class AddOrderViewMobile extends StatelessWidget {
+class AddOrderViewMobile extends StatefulWidget {
   const AddOrderViewMobile({super.key, required this.bloc, this.customerModel});
   final ManagementBloc bloc;
   final CustomerModel? customerModel;
+
+  @override
+  State<AddOrderViewMobile> createState() => _AddOrderViewMobileState();
+}
+
+class _AddOrderViewMobileState extends State<AddOrderViewMobile> {
+  final PageController _pageController = PageController();
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,38 +34,41 @@ class AddOrderViewMobile extends StatelessWidget {
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
-            bloc.currPageMobile = 0;
+            widget.bloc.add(SetCurrPageIndexToZero());
             Navigator.pop(context);
           },
         ),
         Expanded(
           child: CustomPageViewInViewOrderMobile(
-            customerModel: customerModel,
-            bloc: bloc,
+            customerModel: widget.customerModel,
+            bloc: widget.bloc,
             bottomOrderAction: AddNewOrderButton(
                 edgeInsets:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 textStyle: AppFontStyles.bold18(context)
                     .copyWith(color: AppColors.white),
-                formKey: bloc.fromKeyThirdPage,
+                formKey: widget.bloc.fromKeyThirdPage,
                 addOrder: () {
-                  bloc.add(AddNewOrderEvent(customerModel: customerModel));
+                  widget.bloc.add(
+                      AddNewOrderEvent(customerModel: widget.customerModel));
                 },
-                isLoading: bloc.isLoadingActionsOrder),
+                isLoading: widget.bloc.isLoadingActionsOrder),
+            pageController:_pageController,
           ),
         ),
         const SizedBox(
           height: 12,
         ),
         NextPageOrBackButtons(
-          currPageIndex: bloc.currPageMobile,
+          currPageIndex: widget.bloc.currPageMobile,
           nextOrBack: (stauts) {
-            if (bloc.currPageMobile == 0) {
-              if (stauts && bloc.fromKeyFirstPage.currentState!.validate()) {
-                bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+            if (widget.bloc.currPageMobile == 0) {
+              if (stauts &&
+                  widget.bloc.fromKeyFirstPage.currentState!.validate()) {
+                widget.bloc.add(ChangeCurrPageInMobile(isForward: stauts,controller: _pageController));
               }
             } else {
-              bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+              widget.bloc.add(ChangeCurrPageInMobile(isForward: stauts,controller: _pageController));
             }
           },
         ),

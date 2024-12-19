@@ -8,7 +8,7 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/nex_back_buttons.dart';
 import 'package:flutter/material.dart';
 
-class OrderViewInMobileLayout extends StatelessWidget {
+class OrderViewInMobileLayout extends StatefulWidget {
   const OrderViewInMobileLayout({
     super.key,
     required this.orderModel,
@@ -16,16 +16,31 @@ class OrderViewInMobileLayout extends StatelessWidget {
   });
   final OrderModel orderModel;
   final ManagementBloc bloc;
+
+  @override
+  State<OrderViewInMobileLayout> createState() =>
+      _OrderViewInMobileLayoutState();
+}
+
+class _OrderViewInMobileLayoutState extends State<OrderViewInMobileLayout> {
+  final PageController _pageController = PageController(keepPage: false);
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         CustomMobileAppBar(
-          title: orderModel.orderName,
+          title: widget.orderModel.orderName,
           drawerIconInstead: Icons.arrow_back_ios_rounded,
           enableActionButton: false,
           openDrawer: () {
-            bloc.add(SetCurrPageIndexToZero());
+            widget.bloc.add(SetCurrPageIndexToZero());
             Navigator.pop(context);
           },
         ),
@@ -42,44 +57,50 @@ class OrderViewInMobileLayout extends StatelessWidget {
                   const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
               iconSize: 20,
               navToEdit: () {
-                bloc.currPageMobile = 0;
-                bloc.add(NavToEditEvent(orderModel: orderModel));
+                widget.bloc.add(NavToEditEvent(orderModel: widget.orderModel));
+                widget.bloc.currPageMobile = 0;
+                _pageController.jumpToPage(0);
               },
               onTapForCustomerProfileView: () {
-                bloc.add(
-                    GetCustomerProfileEvent(customerId: orderModel.customerId));
+                widget.bloc.add(GetCustomerProfileEvent(
+                    customerId: widget.orderModel.customerId));
+                widget.bloc.currPageMobile = 0;
+                _pageController.jumpToPage(0);
               },
               getPdfContract: () async {
-                await getPdfContract(orderModel);
+                await getPdfContract(widget.orderModel);
               },
             ),
           ),
         ),
         Expanded(
           child: CustomPageViewInViewOrderMobile(
-            orderModel: orderModel,
+            pageController: _pageController,
+            orderModel: widget.orderModel,
             bottomOrderAction: BottomActionOrderInViewOrder(
                 fontSize: 18,
-                orderModel: orderModel,
+                orderModel: widget.orderModel,
                 markAsDone: (orderId, check) {
-                  bloc.add(MarkOrderAsDelievredEvent(
+                  widget.bloc.add(MarkOrderAsDelievredEvent(
                       orderId: orderId, makeItDone: check));
                 },
                 deleteOrder: (orderId, list) {
-                  bloc.add(DeleteOrderEvent(mediaList: list, orderId: orderId));
+                  widget.bloc
+                      .add(DeleteOrderEvent(mediaList: list, orderId: orderId));
                 },
-                isLoading: bloc.isLoadingActionsOrder),
+                isLoading: widget.bloc.isLoadingActionsOrder),
             isReadOnly: true,
-            bloc: bloc,
+            bloc: widget.bloc,
           ),
         ),
         const SizedBox(
           height: 12,
         ),
         NextPageOrBackButtons(
-          currPageIndex: bloc.currPageMobile,
+          currPageIndex: widget.bloc.currPageMobile,
           nextOrBack: (stauts) {
-            bloc.add(ChangeCurrPageInMobile(isForward: stauts));
+            widget.bloc.add(ChangeCurrPageInMobile(
+                isForward: stauts, controller: _pageController));
           },
         ),
         const SizedBox(

@@ -85,8 +85,8 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
 
   final fromKeyThirdPageEdit = GlobalKey<FormState>();
   int currPageMobile = 0;
-  PageController pageControllerInMobileOrder = PageController();
-  PageController pageControllerInMobileOrderForEditScreen = PageController();
+  // PageController pageControllerInMobileOrder = PageController();
+  // PageController pageControllerInMobileOrderForEditScreen = PageController();
   //
 
 //customer profile view
@@ -231,23 +231,13 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   FutureOr<void> changeCurrPageInMobile(
       ChangeCurrPageInMobile event, Emitter<ManagementState> emit) async {
     if (event.isForward && currPageMobile < 2) {
-      if (event.isEdit) {
-        pageControllerInMobileOrderForEditScreen.nextPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      } else {
-        pageControllerInMobileOrder.nextPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      }
-
+      event.controller.nextPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
       currPageMobile++;
     } else if (!event.isForward && currPageMobile > 0) {
-      if (event.isEdit) {
-        pageControllerInMobileOrderForEditScreen.previousPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      } else {
-        pageControllerInMobileOrder.previousPage(
-            duration: const Duration(milliseconds: 300), curve: Curves.linear);
-      }
+      event.controller.previousPage(
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+
       currPageMobile--;
     }
     emit(ChangeCurrPageState());
