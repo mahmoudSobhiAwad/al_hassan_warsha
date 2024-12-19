@@ -129,13 +129,14 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
     PillModel steppedPill = event.pillModel;
     BigInt steppedAmount =
         BigInt.parse(convertToEnglishNumbers(steppedPill.steppedAmount));
-    steppedPill.payedAmount =
-        (steppedAmount + BigInt.parse(steppedPill.payedAmount)).toString();
     BigInt remainAmount = BigInt.parse(steppedPill.remian);
     if (steppedAmount > remainAmount) {
+      steppedAmount = BigInt.zero;
       emit(
           FailureStepDownMoneyState(errMessage: "هذا المبلغ اكبر من المتبقي "));
     } else {
+      steppedPill.payedAmount =
+          (steppedAmount + BigInt.parse(steppedPill.payedAmount)).toString();
       final result = await managementRepoImpl.stepDownFromOrder(steppedPill);
       result.fold((newPillModel) {
         isLoadingStepPill = false;

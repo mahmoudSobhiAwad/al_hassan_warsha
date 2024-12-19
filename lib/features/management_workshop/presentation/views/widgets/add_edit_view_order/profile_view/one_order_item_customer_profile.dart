@@ -37,7 +37,7 @@ class OneOrderItemInCustomerProfile extends StatelessWidget {
         int.parse(convertToEnglishNumbers(pillModel.remian));
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16,).copyWith(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.white,

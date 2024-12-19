@@ -29,22 +29,26 @@ class CustomOrderBodyTablet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key:isEdit?bloc.fromKeyEdit: bloc.fromKey,
+      key: isEdit
+          ? bloc.fromKeyEdit
+          : isReadOnly
+              ? null
+              : bloc.fromKey,
       child: Expanded(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           child: CustomScrollView(
-            // scrollBehavior:
-            //     const ScrollBehavior().copyWith(scrollbars: false),
-            // primary: true,
             slivers: [
               SliverToBoxAdapter(
                 child: CustomerInfoInOrderInTablet(
-                  formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
+                  formKey: isEdit
+                      ? bloc.fromKeyEdit
+                      : isReadOnly
+                          ? null
+                          : bloc.fromKey,
                   isReadOnly: isReadOnly,
-                  model: orderModel?.customerModel ??
-                      model ??
-                      bloc.customerModel,
+                  model:
+                      orderModel?.customerModel ?? model ?? bloc.customerModel,
                 ),
               ),
               const SliverToBoxAdapter(
@@ -57,17 +61,20 @@ class CustomOrderBodyTablet extends StatelessWidget {
                   aboveTextStyle: AppFontStyles.extraBoldNew16(context),
                   isReadOnly: isReadOnly,
                   allKitchenTypes: bloc.allKitchenTypes,
-                  formKey: isEdit ? bloc.fromKeyEdit : bloc.fromKey,
-                  colorOrderModel:
-                      orderModel?.colorModel ?? bloc.colorModel,
+                  formKey: isEdit
+                      ? bloc.fromKeyEdit
+                      : isReadOnly
+                          ? null
+                          : bloc.fromKey,
+                  colorOrderModel: orderModel?.colorModel ?? bloc.colorModel,
                   orderModel: orderModel ?? bloc.orderModel,
                   changeColorValue: (value) {
                     bloc.add(ChangeColorOfOrderEvent(
                         colorValue: value, isEdit: isEdit));
                   },
                   changeDate: (time) {
-                    bloc.add(ChangeDateOfOrderEvent(
-                        dateTime: time, isEdit: isEdit));
+                    bloc.add(
+                        ChangeDateOfOrderEvent(dateTime: time, isEdit: isEdit));
                   },
                   changekitchenTypeValue: (type) {
                     bloc.add(ChangeKitchenTypeEvent(
@@ -109,22 +116,25 @@ class CustomOrderBodyTablet extends StatelessWidget {
                         addMore: (media) {
                           isReadOnly
                               ? null
-                              : bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
+                              : bloc.add(AddMediaInAddOrder(
+                                  list: media, isEdit: isEdit));
                         },
                         enableClear: !isReadOnly,
-                        pickedList: orderModel?.getPickedMedia() ??
-                            bloc.mediaOrderList,
+                        pickedList:
+                            orderModel?.getPickedMedia() ?? bloc.mediaOrderList,
                         removeIndex: (index) {
                           isReadOnly
                               ? null
-                              : bloc.add(RemoveMediItemEvent(index: index,isEdit: isEdit));
+                              : bloc.add(RemoveMediItemEvent(
+                                  index: index, isEdit: isEdit));
                         },
                       )
                     : EmptyUploadMedia(
                         isReadOnly: isReadOnly,
                         fontSize: 20,
                         addMedia: (media) {
-                          bloc.add(AddMediaInAddOrder(list: media,isEdit: isEdit));
+                          bloc.add(
+                              AddMediaInAddOrder(list: media, isEdit: isEdit));
                         },
                       ),
               ),
@@ -135,16 +145,18 @@ class CustomOrderBodyTablet extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: AddsForOrder(
-                  
                   isReadOnly: isReadOnly,
                   list: orderModel?.extraOrdersList ?? bloc.extraOrdersList,
                   addMore: () {
-                    isReadOnly ? null : bloc.add(AddExtraInOrder(isEdit: isEdit));
+                    isReadOnly
+                        ? null
+                        : bloc.add(AddExtraInOrder(isEdit: isEdit));
                   },
                   removeItem: (index) {
                     isReadOnly
                         ? null
-                        : bloc.add(RemoveExtraItem(index: index,isEdit: isEdit));
+                        : bloc
+                            .add(RemoveExtraItem(index: index, isEdit: isEdit));
                   },
                 ),
               ),
@@ -156,6 +168,11 @@ class CustomOrderBodyTablet extends StatelessWidget {
               SliverToBoxAdapter(
                 child: BillDetailsInTablet(
                   enableController: isReadOnly,
+                  formKey: isEdit
+                      ? bloc.fromKeyEdit
+                      : isReadOnly
+                          ? null
+                          : bloc.fromKey,
                   onTapToChangeRemain: () {
                     isReadOnly
                         ? null
@@ -165,12 +182,12 @@ class CustomOrderBodyTablet extends StatelessWidget {
                     isReadOnly
                         ? null
                         : bloc.add(ChangeCounterOfStepsInPillEvent(
-                            increase: increase,isEdit: isEdit));
+                            increase: increase, isEdit: isEdit));
                   },
                   pillModel: orderModel?.pillModel ?? bloc.pillModel,
                   onChangePayment: (paymentWay) {
-                    bloc.add(
-                        ChangeOptionPaymentEvent(paymentWay: paymentWay,isEdit: isEdit));
+                    bloc.add(ChangeOptionPaymentEvent(
+                        paymentWay: paymentWay, isEdit: isEdit));
                   },
                 ),
               ),
