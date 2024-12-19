@@ -1,4 +1,5 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
@@ -52,7 +53,7 @@ class CustomerProfileView extends StatelessWidget {
                       ],
                     );
                   }, mobileLayout: (context) {
-                    return MobileProfileView(
+                    return MobileTabletProfileView(
                       customerModel: model,
                       stepDown: (pill) {
                         bloc.add(StepDownMoneyEvent(pillModel: pill));
@@ -73,7 +74,28 @@ class CustomerProfileView extends StatelessWidget {
                       },
                     );
                   }, tabletLayout: (context) {
-                    return const Text("Tabelt is Here");
+                    return MobileTabletProfileView(
+                      edgeInsets:const EdgeInsets.symmetric(horizontal: 12,vertical: 10),
+                      textStyle: AppFontStyles.extraBoldNew18(context),
+                      customerModel: model,
+                      stepDown: (pill) {
+                        bloc.add(StepDownMoneyEvent(pillModel: pill));
+                      },
+                      addNewOrder: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddOrderView(
+                              bloc: bloc,
+                              model: model,
+                            ),
+                          ),
+                        );
+                      },
+                      navigteToEdit: (model) {
+                        bloc.add(NavToEditEvent(orderModel: model));
+                      },
+                    );
                   })),
             ),
           );

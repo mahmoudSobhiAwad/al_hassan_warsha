@@ -2,26 +2,26 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/cupertino.dart';
 
 class TableHeader extends StatelessWidget {
-  const TableHeader({super.key});
-
+  const TableHeader({super.key,this.enableAddress=true});
+  final bool enableAddress;
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return  Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(child: CustomTextWithTheSameStyle(text: "الطلب",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "وقت التسليم",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "اسم العميل ",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "هاتف العميل",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "عنوان العميل",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: " حالة الطلب",)),
-        Expanded(child: SizedBox()),
-        Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "المبلغ المطلوب",)),
+        const Expanded(child: CustomTextWithTheSameStyle(text: "الطلب",)),
+        const Expanded(child: SizedBox()),
+        const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "وقت التسليم",)),
+        const Expanded(child: SizedBox()),
+        const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "اسم العميل ",)),
+        const Expanded(child: SizedBox()),
+        const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "هاتف العميل",)),
+        const Expanded(child: SizedBox()),
+        enableAddress?const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "عنوان العميل",)):const SizedBox(),
+        enableAddress?const Expanded(child: SizedBox()):const SizedBox(),
+        const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: " حالة الطلب",)),
+        const Expanded(child: SizedBox()),
+        const Expanded(flex: 1,child: CustomTextWithTheSameStyle(text: "المبلغ المطلوب",)),
         
       ],
     );

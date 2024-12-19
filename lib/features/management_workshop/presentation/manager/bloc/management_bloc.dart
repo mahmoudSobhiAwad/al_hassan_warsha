@@ -85,9 +85,6 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
 
   final fromKeyThirdPageEdit = GlobalKey<FormState>();
   int currPageMobile = 0;
-  // PageController pageControllerInMobileOrder = PageController();
-  // PageController pageControllerInMobileOrderForEditScreen = PageController();
-  //
 
 //customer profile view
   int currPage = 0;

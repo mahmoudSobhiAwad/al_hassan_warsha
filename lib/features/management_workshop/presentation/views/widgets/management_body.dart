@@ -15,11 +15,13 @@ class ManagmentBody extends StatelessWidget {
     required this.bloc,
     this.enableSideBar = true,
     this.farzWidget,
+    this.enableAddress = true,
   });
 
   final ManagementBloc bloc;
   final bool enableSideBar;
-  final Widget?farzWidget;
+  final Widget? farzWidget;
+  final bool enableAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +81,20 @@ class ManagmentBody extends StatelessWidget {
                   ),
                   switch (bloc.enableSearchMode) {
                     true => Expanded(
-                      child: SearchedOrderResutl(
-                        searchKey: bloc.searchKeyWord,
-                        bloc: bloc,
-                        backToMain: () {
-                          bloc.add(SearchForOrderEvent(enable: false));
-                        },
-                        searchedList: bloc.searchList,
-                        isSearchLoading: bloc.isSearchLoading,
+                        child: SearchedOrderResutl(
+                          enableAddress: enableAddress,
+                          searchKey: bloc.searchKeyWord,
+                          bloc: bloc,
+                          backToMain: () {
+                            bloc.add(SearchForOrderEvent(enable: false));
+                          },
+                          searchedList: bloc.searchList,
+                          isSearchLoading: bloc.isSearchLoading,
+                        ),
                       ),
-                    ),
                     false => Expanded(
                           child: OrderListWithFilter(
+                        enableAddress: enableAddress,
                         bloc: bloc,
                         farzWidget: farzWidget,
                       )),

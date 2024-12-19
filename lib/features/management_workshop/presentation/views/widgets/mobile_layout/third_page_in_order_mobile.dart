@@ -49,7 +49,6 @@ class ThirdPageInOrderMobile extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TotalMoneyInBillDetails(
-                            fontSizeInner: 18,
                             enableController: enableController,
                             pillModel: pillModel,
                             formKey: formKey,

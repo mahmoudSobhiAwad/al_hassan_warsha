@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OneOrderItem extends StatelessWidget {
-  const OneOrderItem({super.key, required this.orderModel});
+  const OneOrderItem({super.key, required this.orderModel,this.enableAddress=true});
   final OrderModel orderModel;
+  final bool enableAddress;
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -44,12 +45,12 @@ class OneOrderItem extends StatelessWidget {
                   text: orderModel.customerModel?.phone ?? "غير محدد",
                 )),
             const Expanded(child: SizedBox()),
-            Expanded(
+          enableAddress?  Expanded(
                 flex: 1,
                 child: CustomTextWithTheSameStyle(
                   text: orderModel.customerModel?.homeAddress ?? "غير محدد",
-                )),
-            const Expanded(child: SizedBox()),
+                )):const SizedBox(),
+            enableAddress? const Expanded(child: SizedBox()):const SizedBox(),
             Expanded(
                 flex: 1,
                 child: CustomTextWithTheSameStyle(

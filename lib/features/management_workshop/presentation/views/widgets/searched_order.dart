@@ -7,17 +7,20 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class SearchedOrderResutl extends StatelessWidget {
-  const SearchedOrderResutl(
-      {super.key,
-      required this.searchKey,
-      required this.searchedList,
-      required this.isSearchLoading,
-      required this.backToMain,
-      required this.bloc});
+  const SearchedOrderResutl({
+    super.key,
+    required this.searchKey,
+    required this.searchedList,
+    required this.isSearchLoading,
+    required this.backToMain,
+    required this.bloc,
+    this.enableAddress = true,
+  });
   final String searchKey;
   final void Function() backToMain;
   final ManagementBloc bloc;
   final bool isSearchLoading;
+  final bool enableAddress;
   final List<OrderModel> searchedList;
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,6 @@ class SearchedOrderResutl extends StatelessWidget {
       children: [
         Row(
           children: [
-            
             Text(
               "نتائج البحث الخاصة ب ",
               style: AppFontStyles.extraBoldNew30(context),
@@ -58,12 +60,14 @@ class SearchedOrderResutl extends StatelessWidget {
                         behavior:
                             const ScrollBehavior().copyWith(scrollbars: false),
                         child: Padding(
-                          padding: const EdgeInsets.only(right:10),
+                          padding: const EdgeInsets.only(right: 10),
                           child: CustomScrollView(
                             primary: true,
                             slivers: [
-                              const SliverToBoxAdapter(
-                                child: FullTableHeader(),
+                              SliverToBoxAdapter(
+                                child: FullTableHeader(
+                                  enableAddress: enableAddress,
+                                ),
                               ),
                               const SliverToBoxAdapter(
                                 child: SizedBox(
@@ -71,6 +75,7 @@ class SearchedOrderResutl extends StatelessWidget {
                                 ),
                               ),
                               ListOfOrder(
+                                enableAddress: enableAddress,
                                 bloc: bloc,
                                 orderList: searchedList,
                               ),

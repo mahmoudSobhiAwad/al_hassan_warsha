@@ -14,6 +14,7 @@ class ManagemntTabletView extends StatelessWidget {
         Expanded(
             child: ManagmentBody(
           bloc: bloc,
+          enableAddress: false,
           enableSideBar: false,
           farzWidget: PopupMenuButton(
             icon:const Icon(Icons.filter_list_rounded,color: AppColors.blackOpacity50,size: 30,),

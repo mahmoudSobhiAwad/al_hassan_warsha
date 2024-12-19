@@ -12,14 +12,14 @@ class TotalMoneyInBillDetails extends StatelessWidget {
     required this.pillModel,
     this.formKey,
     this.onTapToChangeRemain,
-    this.fontSizeInner,
+    this.aboveTextStyle
   });
 
   final bool enableController;
   final PillModel pillModel;
   final GlobalKey<FormState>? formKey;
   final void Function()? onTapToChangeRemain;
-  final double? fontSizeInner;
+  final TextStyle?aboveTextStyle;
   @override
   Widget build(BuildContext context) {
     return CustomColumnWithTextInAddNewType(
@@ -46,7 +46,7 @@ class TotalMoneyInBillDetails extends StatelessWidget {
         pillModel.totalMoney = value ?? "";
         onTapToChangeRemain?.call();
       },
-      textStyle: AppFontStyles.extraBoldNew16(context),
+      textStyle:aboveTextStyle?? AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
       suffixIcon: Text(
         "جنية",

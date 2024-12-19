@@ -9,18 +9,21 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:flutter/material.dart';
 
 class OneOrderItemInCustomerProfile extends StatelessWidget {
-  const OneOrderItemInCustomerProfile({
-    super.key,
-    required this.orderName,
-    required this.pillModel,
-    required this.stepDown,
-    required this.navigteToEdit,
-  });
+  const OneOrderItemInCustomerProfile(
+      {super.key,
+      required this.orderName,
+      required this.pillModel,
+      required this.stepDown,
+      required this.navigteToEdit,
+      this.textStyle,
+      this.edgeInsets});
 
   final PillModel pillModel;
   final String orderName;
   final void Function() stepDown;
   final void Function() navigteToEdit;
+  final TextStyle? textStyle;
+  final EdgeInsets? edgeInsets;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +51,14 @@ class OneOrderItemInCustomerProfile extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  orderName + orderName + orderName,
-                  style: AppFontStyles.bold18(context),
+                  orderName,
+                  style: textStyle ?? AppFontStyles.bold18(context),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-               IconButton(
+              IconButton(
                 onPressed: navigteToEdit,
-                icon:const Icon(Icons.mode_edit_outline_rounded),
+                icon: const Icon(Icons.mode_edit_outline_rounded),
               ),
             ],
           ),
@@ -65,7 +68,7 @@ class OneOrderItemInCustomerProfile extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: TotalMoneyInBillDetails(
-                  fontSizeInner: 16,
+                  aboveTextStyle: textStyle,
                   enableController: true,
                   pillModel: pillModel,
                 ),
@@ -77,12 +80,13 @@ class OneOrderItemInCustomerProfile extends StatelessWidget {
                   text: "اجمالي المسدد",
                   textLabel: "",
                   enableBorder: true,
-                  textInnerStyle: AppFontStyles.extraBoldNew16(context)
-                      .copyWith(letterSpacing: 3),
+                  textInnerStyle: textStyle?.copyWith(letterSpacing: 3) ??
+                      AppFontStyles.extraBoldNew16(context)
+                          .copyWith(letterSpacing: 3),
                   readOnly: true,
-                  textStyle: AppFontStyles.extraBoldNew16(context),
+                  textStyle: textStyle ?? AppFontStyles.extraBoldNew16(context),
                   controller: TextEditingController(text: payedAmountArabic),
-                  suffixText: "جنية",
+                  suffixIcon:Text("جنية",style:  AppFontStyles.extraBoldNew16(context),)
                 ),
               ),
             ],
@@ -98,14 +102,14 @@ class OneOrderItemInCustomerProfile extends StatelessWidget {
                 flex: 3,
                 child: CustomPushContainerButton(
                   borderRadius: 12,
-                  pushButtomTextFontSize: 18,
+                  pushButtomTextFontSize: textStyle?.fontSize ?? 18,
                   pushButtomText: "تنزيل دفعة",
                   enableIcon: false,
                   onTap: remainingAmount > 0 ? stepDown : null,
                   color: remainingAmount > 0
                       ? AppColors.green
                       : AppColors.green.withOpacity(0.5),
-                  padding:
+                  padding: edgeInsets ??
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
               ),

@@ -5,14 +5,19 @@ class FullTableHeader extends StatelessWidget {
   const FullTableHeader({
     super.key,
     this.farzWidget,
+    this.enableAddress = true,
   });
   final Widget? farzWidget;
+  final bool enableAddress;
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Expanded(child:TableHeader()),
+        Expanded(
+            child: TableHeader(
+          enableAddress: enableAddress,
+        )),
         const SizedBox(
           width: 14,
         ),

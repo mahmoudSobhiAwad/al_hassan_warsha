@@ -10,17 +10,22 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/views
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/profile_view/one_order_item_customer_profile.dart';
 import 'package:flutter/material.dart';
 
-class MobileProfileView extends StatelessWidget {
-  const MobileProfileView(
-      {super.key,
-      required this.customerModel,
-      required this.stepDown,
-      required this.addNewOrder,
-      required this.navigteToEdit});
+class MobileTabletProfileView extends StatelessWidget {
+  const MobileTabletProfileView({
+    super.key,
+    required this.customerModel,
+    required this.stepDown,
+    required this.addNewOrder,
+    required this.navigteToEdit,
+    this.textStyle,
+    this.edgeInsets,
+  });
   final CustomerModel customerModel;
   final void Function(PillModel) stepDown;
   final void Function() addNewOrder;
   final void Function(OrderModel) navigteToEdit;
+  final TextStyle? textStyle;
+  final EdgeInsets? edgeInsets;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -40,10 +45,11 @@ class MobileProfileView extends StatelessWidget {
             child: CustomPushContainerButton(
               enableIcon: false,
               pushButtomText: "اضافة طلب جديد",
-              pushButtomTextFontSize: 16,
+              pushButtomTextFontSize: textStyle?.fontSize ?? 16,
               onTap: addNewOrder,
               borderRadius: 8,
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+              padding: edgeInsets ??
+                  const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
             ),
           ),
         ),
@@ -58,7 +64,7 @@ class MobileProfileView extends StatelessWidget {
                     children: [
                       Text(
                         "بيانات العميل",
-                        style: AppFontStyles.bold18(context),
+                        style: textStyle ?? AppFontStyles.bold18(context),
                       ),
                       const SizedBox(
                         height: 10,
@@ -72,7 +78,8 @@ class MobileProfileView extends StatelessWidget {
                                 child: CustomerNameInOrder(
                                   model: customerModel,
                                   isReadOnly: true,
-                                  textStyle: AppFontStyles.bold16(context),
+                                  textStyle: textStyle ??
+                                      AppFontStyles.bold16(context),
                                 )),
                             const Expanded(child: SizedBox()),
                             Expanded(
@@ -80,7 +87,8 @@ class MobileProfileView extends StatelessWidget {
                                 child: NumberPhoneInOrder(
                                   model: customerModel,
                                   isReadOnly: true,
-                                  textStyle: AppFontStyles.bold16(context),
+                                  textStyle: textStyle ??
+                                      AppFontStyles.bold16(context),
                                 ))
                           ],
                         ),
@@ -97,7 +105,8 @@ class MobileProfileView extends StatelessWidget {
                                 child: HomeAddressInOrder(
                                   model: customerModel,
                                   isReadOnly: true,
-                                  textStyle: AppFontStyles.bold16(context),
+                                  textStyle: textStyle ??
+                                      AppFontStyles.bold16(context),
                                 )),
                             const Expanded(child: SizedBox()),
                             Expanded(
@@ -105,7 +114,8 @@ class MobileProfileView extends StatelessWidget {
                                 child: SecondPhoneInOrder(
                                   model: customerModel,
                                   isReadOnly: true,
-                                  textStyle: AppFontStyles.bold16(context),
+                                  textStyle: textStyle ??
+                                      AppFontStyles.bold16(context),
                                 )),
                           ],
                         ),
@@ -117,10 +127,22 @@ class MobileProfileView extends StatelessWidget {
                   ),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  child: Text(
+                    "كل الطلبات (${customerModel.orderModelList.length})",
+                    style: AppFontStyles.extraBoldNew21(context),
+                  ),
+                ),
+              ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return OneOrderItemInCustomerProfile(
+                      edgeInsets: edgeInsets,
+                      textStyle: textStyle,
                       navigteToEdit: () {
                         navigteToEdit(customerModel.orderModelList[index]);
                       },

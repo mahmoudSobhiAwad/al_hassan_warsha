@@ -13,10 +13,12 @@ class OrderListWithFilter extends StatelessWidget {
     super.key,
     required this.bloc,
     this.farzWidget,
+    this.enableAddress = true,
   });
 
   final ManagementBloc bloc;
-  final Widget?farzWidget;
+  final Widget? farzWidget;
+  final bool enableAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +42,11 @@ class OrderListWithFilter extends StatelessWidget {
           height: 12,
         ),
         Padding(
-          padding:const EdgeInsets.only(right: 25.0),
-          child: FullTableHeader(farzWidget: farzWidget,),
+          padding: const EdgeInsets.only(right: 25.0),
+          child: FullTableHeader(
+            farzWidget: farzWidget,
+            enableAddress: enableAddress,
+          ),
         ),
         const Padding(
           padding: EdgeInsets.only(right: 25.0),
@@ -63,6 +68,7 @@ class OrderListWithFilter extends StatelessWidget {
                           primary: true,
                           slivers: [
                             ListOfOrder(
+                              enableAddress: enableAddress,
                               bloc: bloc,
                               orderList: bloc.categorizedList,
                             ),
