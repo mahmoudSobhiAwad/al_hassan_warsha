@@ -30,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
       this.textStyle,
       this.enableFill = true,
       this.onTap,
+      this.contextMenuBuilder,
       this.fillColor});
   final Widget? labelWidget;
   final double? borderRadius;
@@ -54,17 +55,20 @@ class CustomTextFormField extends StatelessWidget {
   final String? initialValue;
   final TextStyle? textStyle;
   final bool readOnly;
+  final Widget Function(BuildContext, EditableTextState)? contextMenuBuilder;
   final void Function()? onTap;
+  // final EdgeInsets?scrollPadding;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      contextMenuBuilder: contextMenuBuilder,
       readOnly: readOnly,
       textAlign: textAlign ?? TextAlign.start,
       validator: validator,
       controller: controller,
       initialValue: initialValue,
       onChanged: onChanged,
-      maxLines: maxLine ?? 1,
+      maxLines: maxLine,
       inputFormatters: inputFormatters,
       keyboardType: textInputType,
       cursorColor: Colors.black,

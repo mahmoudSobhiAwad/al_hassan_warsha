@@ -1,8 +1,12 @@
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_box_shadow.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_field_in_search_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_menu_in_search_bar.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/table_creation/create_table_view.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchBarInManagment extends StatelessWidget {
   const SearchBarInManagment(
@@ -43,9 +47,19 @@ class SearchBarInManagment extends StatelessWidget {
         const Expanded(child: SizedBox()),
         SearchMenuInSearchBar(
             changeSearchType: changeSearchType, searchList: searchList),
-        const Expanded(flex: 2, child: SizedBox()),
+        const Expanded(child: SizedBox()),
+         CustomPushContainerButton(
+          pushButtomText: "إنشاء جدول",
+          borderRadius: 12,
+          color: AppColors.blueGray,
+          iconSize: 30,
+          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>const TableManager())),
+          pushButtomTextFontSize: 18,
+          padding:const  EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+          iconBehind: FontAwesomeIcons.tableCells,
+        ),
+        const Expanded(child: SizedBox()),
       ],
     );
   }
 }
-

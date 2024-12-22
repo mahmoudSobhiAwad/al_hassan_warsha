@@ -54,7 +54,6 @@ class Alwarsha extends StatelessWidget {
             scrollbarTheme: const ScrollbarThemeData(
               thumbVisibility: WidgetStatePropertyAll<bool>(true),
               trackVisibility: WidgetStatePropertyAll<bool>(true),
-
               thumbColor: WidgetStatePropertyAll<Color>(AppColors.lightGray2),
               trackColor:
                   WidgetStatePropertyAll<Color>(AppColors.veryLightGray),
