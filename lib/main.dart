@@ -39,6 +39,7 @@ class Alwarsha extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeBasicBloc()..add(CheckDbExistEvent()),
       child: MaterialApp(
+        
           supportedLocales: const [
             Locale('ar'), // Arabic
             Locale('en'), // English (if needed)
@@ -51,6 +52,7 @@ class Alwarsha extends StatelessWidget {
           locale: const Locale('ar'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
+            
             scrollbarTheme: const ScrollbarThemeData(
               thumbVisibility: WidgetStatePropertyAll<bool>(true),
               trackVisibility: WidgetStatePropertyAll<bool>(true),
@@ -70,3 +72,4 @@ class Alwarsha extends StatelessWidget {
     );
   }
 }
+
