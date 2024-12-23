@@ -21,3 +21,4 @@ final class UpdateTableRowOrColumnState extends TableState {}
 final class EnableOrDisableCounterState extends TableState {}
 
 final class ChangeOptionInAddOrDeleteTableElement extends TableState {}
+

@@ -41,7 +41,8 @@ Future<void> getPdfContract(OrderModel orderModel) async {
       build: (pw.Context context) {
         return pw.Directionality(
           textDirection: pw.TextDirection.rtl,
-          child: pw.Stack(children: [
+          child: pw.Stack(
+            children: [
             pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                 children: [

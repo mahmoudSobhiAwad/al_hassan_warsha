@@ -9,9 +9,9 @@ class InteractiveTable extends StatelessWidget {
   final List<double> rowHeights;
   final List<List<CellInTableModel>> cellList;
   final ScrollController scrollController;
-
   final void Function(int colIndex, double newWidth) adjustColumnWidth;
   final void Function(int rowIndex, double newHeight) adjustRowHeight;
+  final void Function({required int colorValue,required int rowIndex,required int columnIndex}) changeColorValue;
 
   const InteractiveTable({
     required this.rows,
@@ -22,6 +22,7 @@ class InteractiveTable extends StatelessWidget {
     required this.scrollController,
     required this.adjustColumnWidth,
     required this.adjustRowHeight,
+    required this.changeColorValue,
     super.key,
   });
 
@@ -32,7 +33,7 @@ class InteractiveTable extends StatelessWidget {
       child: Scrollbar(
         controller: scrollController,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 20.0, left: 20),
+          padding: const EdgeInsets.only(bottom: 30.0, left: 20),
           child: ScrollConfiguration(
             behavior: const ScrollBehavior().copyWith(scrollbars: false),
             child: SingleChildScrollView(
@@ -63,7 +64,9 @@ class InteractiveTable extends StatelessWidget {
                                     height: rowHeights[rowIndex],
                                     rowIndex: rowIndex,
                                     colIndex: colIndex,
-                                    adjustColumnWidth: adjustColumnWidth,
+                                    changeColorValue: (value){
+                                      changeColorValue(colorValue: value,columnIndex:colIndex ,rowIndex: rowIndex);
+                                    },
                                   ),
                                   // Column Resizing Handle
                                   Positioned(

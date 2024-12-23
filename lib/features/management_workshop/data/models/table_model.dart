@@ -1,6 +1,6 @@
 class CellInTableModel {
   int? _backgroundColorHex;
-  int? _fontSize;
+  double? _fontSize;
   String? _content;
   // Getter for backgroundColorHex
   CellInTableModel() {
@@ -24,10 +24,10 @@ class CellInTableModel {
   }
 
   // Getter for fontSize
-  int? get getFontSize => _fontSize;
+  double? get getFontSize => _fontSize;
 
   // Setter for fontSize
-  set setFontSize(int? value) {
+  set setFontSize(double? value) {
     if (value != null) _fontSize = value;
   }
 }

@@ -18,12 +18,11 @@ class TableCubit extends Cubit<TableState> {
   bool enableCounter = true;
   List<List<CellInTableModel>> cellList = [];
 
-  // TODO: add background color for each cell from right click,
   // TODO: change font size for each cell from right click
   // TODO: add new row button - from right click
   // TODO: add new column from right click
   // TODO: delete row,column from right click.
-  // TODO: make pdf for the table from button.
+ 
 
   // fucntion to create the table
   void createTable() {
@@ -83,7 +82,11 @@ class TableCubit extends Cubit<TableState> {
   //   emit(UpdateTableRowOrColumnDimensionsState());
   // }
 
-  void changeBackGroundForCell() {}
+  void changeBackGroundForCell(
+      {required int colorValue, required int colIndex, required int rowIndex}) {
+    cellList[rowIndex][colIndex].setBackgroundColorHex = colorValue;
+    emit(ChangeBackGroundColorState());
+  }
 
   void adjustColumnWidth(int colIndex, double newWidth) {
     columnWidths[colIndex] = newWidth.clamp(50.0, double.infinity);

@@ -1,16 +1,16 @@
-
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/table_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/table_creation/custom_contex_menu.dart';
 import 'package:flutter/material.dart';
+
 class TableCellWidget extends StatefulWidget {
   final double width;
   final double height;
   final int rowIndex;
   final int colIndex;
   final CellInTableModel cellItem;
-  final void Function(int colIndex, double newWidth) adjustColumnWidth;
+  final void Function(int)changeColorValue;
 
   const TableCellWidget({
     required this.width,
@@ -18,7 +18,7 @@ class TableCellWidget extends StatefulWidget {
     required this.rowIndex,
     required this.colIndex,
     required this.cellItem,
-    required this.adjustColumnWidth,
+    required this.changeColorValue,
     super.key,
   });
 
@@ -48,13 +48,18 @@ class TableCellWidgetState extends State<TableCellWidget> {
               cursorColor: AppColors.black,
               contextMenuBuilder: (context, editableTextState) {
                 return MyContextMenu(
-                    anchor: editableTextState.contextMenuAnchors.primaryAnchor);
+                  anchor: editableTextState.contextMenuAnchors.primaryAnchor,
+                  changeColorValue: (int value) {
+                    widget.changeColorValue(value);
+                  },
+                );
               },
               controller: _cellController,
               onChanged: (value) {
                 widget.cellItem.setContentInCell = value;
               },
               maxLines: null,
+              expands: true,
               decoration: InputDecoration(
                 filled: true,
                 fillColor:
@@ -67,4 +72,3 @@ class TableCellWidgetState extends State<TableCellWidget> {
     );
   }
 }
-

@@ -1,11 +1,11 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/show_color_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MyContextMenu extends StatelessWidget {
-  const MyContextMenu({required this.anchor, super.key});
-
+  const MyContextMenu({required this.anchor, super.key,required this.changeColorValue});
+  final void Function(int value)changeColorValue;
   final Offset anchor;
 
   @override
@@ -43,7 +43,11 @@ class MyContextMenu extends StatelessWidget {
               CustomContextMenuItem(
                 title: "تغيير لون الخلفية",
                 iconData: Icons.colorize_rounded,
-                onTap: () {},
+                onTap: () {
+                  showColorPicker(context, onColorChanged: (color) {
+                    changeColorValue(color.value);
+                  });
+                },
               ),
               const SizedBox(
                 height: 12,
