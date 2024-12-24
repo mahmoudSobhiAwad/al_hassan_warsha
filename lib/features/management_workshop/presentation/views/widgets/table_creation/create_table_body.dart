@@ -105,12 +105,13 @@ class CreateTableBody extends StatelessWidget {
               },
               insertNewRowOrCol: (
                   {required int columnIndex, required int rowIndex}) {
-                addNewRowOrColumn(context, tableCubit,
+                addOrRemoveColOrRows(context, tableCubit,
                     colIndex: columnIndex, rowIndex: rowIndex);
               },
               deleteRowOrCol: (
                   {required int columnIndex, required int rowIndex}) {
-                
+                addOrRemoveColOrRows(context, tableCubit,
+                    colIndex: columnIndex, rowIndex: rowIndex,isRemove: true);
               },
             ),
           ),

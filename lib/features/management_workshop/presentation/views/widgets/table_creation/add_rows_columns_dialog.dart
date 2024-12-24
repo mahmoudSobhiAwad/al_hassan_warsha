@@ -7,8 +7,8 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/manag
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
-    {required int rowIndex, required colIndex}) {
+Future<dynamic> addOrRemoveColOrRows(BuildContext context, TableCubit cubit,
+    {required int rowIndex, required colIndex, bool isRemove = false}) {
   return showDialog(
       useSafeArea: false,
       context: context,
@@ -20,7 +20,8 @@ Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
                 child: Container(
               padding: const EdgeInsets.all(5),
               constraints: BoxConstraints(
-                  maxWidth: 200, maxHeight: context.screenHeight * 0.4),
+                  maxWidth: 200,
+                  maxHeight: context.screenHeight * (isRemove ? 0.3 : 0.4)),
               decoration: BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(8)),
@@ -41,24 +42,26 @@ Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
                     const SizedBox(
                       height: 5,
                     ),
-                    ...List.generate(insertOptionList.length, (index) {
+                    ...List.generate(
+                        isRemove
+                            ? removeOptionList.length
+                            : insertOptionList.length, (index) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            [
-                              "انشاء صف للاسفل",
-                              "انشاء صف للاعلي",
-                              "انشاء عمود لليمين",
-                              "انشاء عمود لليسار",
-                            ][index],
+                            isRemove
+                                ? removeOptionText[index]
+                                : insertOptionText[index],
                             style: AppFontStyles.bold16(context),
                           ),
                           Checkbox(
                               activeColor: AppColors.green,
-                              value: insertOptionList[index].getIsActive,
+                              value: isRemove
+                                  ? removeOptionList[index].getIsActive
+                                  : insertOptionList[index].getIsActive,
                               onChanged: (value) {
-                                cubit.changeInsertOption(index);
+                                cubit.changeInsertOption(index,isRemove: isRemove);
                               }),
                         ],
                       );
@@ -67,21 +70,32 @@ Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
                       height: 5,
                     ),
                     CustomPushContainerButton(
-                      pushButtomText: "اختيار",
+                      pushButtomText: isRemove ? "حذف " : "اضافة",
                       pushButtomTextFontSize: 14,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 5),
                       borderRadius: 8,
                       enableIcon: false,
-                      onTap: () {
-                        cubit.insertOperationInTable(
-                            insertOptionList
-                                .firstWhere((item) => item.getIsActive)
-                                .getInsertType,
-                            insertedColIndex: colIndex,
-                            insertedRowIndex: rowIndex);
-                        Navigator.pop(context);
-                      },
+                      color: isRemove ? AppColors.red : null,
+                      onTap: isRemove
+                          ? () {
+                              cubit.removeOptionInTable(
+                                  removeOptionList
+                                      .firstWhere((item) => item.getIsActive)
+                                      .getRemoveType,
+                                  removedRowIndex: rowIndex,
+                                  removedColIndex: colIndex);
+                              Navigator.pop(context);
+                            }
+                          : () {
+                              cubit.insertOperationInTable(
+                                  insertOptionList
+                                      .firstWhere((item) => item.getIsActive)
+                                      .getInsertType,
+                                  insertedColIndex: colIndex,
+                                  insertedRowIndex: rowIndex);
+                              Navigator.pop(context);
+                            },
                     )
                   ],
                 ),
@@ -91,3 +105,14 @@ Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
         );
       });
 }
+
+List<String> insertOptionText = [
+  "انشاء صف للاسفل",
+  "انشاء صف للاعلي",
+  "انشاء عمود لليمين",
+  "انشاء عمود لليسار",
+];
+List<String> removeOptionText = [
+  "حذف الصف بالكامل ",
+  "حذف العمود بالكامل ",
+];

@@ -15,13 +15,10 @@ class TableCubit extends Cubit<TableState> {
   int rowsNum = 0;
   int colsNum = 0;
   bool isTableCreated = false;
-  bool enableCounter = true;
+  bool enableCounter = false;
   bool isRowUpdated = false;
   bool isColumnUpdated = false;
   List<List<CellInTableModel>> cellList = [];
-
-  // TODO: delete row,column from right click.
-
   // fucntion to create the table
   void createTable(double initWidth) {
     if (rowsController.text.trim().isNotEmpty &&
@@ -75,10 +72,17 @@ class TableCubit extends Cubit<TableState> {
     }
   }
 
-  void changeInsertOption(int index) {
-    insertOptionList[index].setIsActive = true;
-    for (int i = 0; i < insertOptionList.length; i++) {
-      index != i ? insertOptionList[i].setIsActive = false : null;
+  void changeInsertOption(int index, {bool isRemove = false}) {
+    if (isRemove) {
+      removeOptionList[index].setIsActive = true;
+      for (int i = 0; i < removeOptionList.length; i++) {
+        index != i ? removeOptionList[i].setIsActive = false : null;
+      }
+    } else {
+      insertOptionList[index].setIsActive = true;
+      for (int i = 0; i < insertOptionList.length; i++) {
+        index != i ? insertOptionList[i].setIsActive = false : null;
+      }
     }
     emit(ChangeCheckedBoxForAnyState());
   }
@@ -111,6 +115,20 @@ class TableCubit extends Cubit<TableState> {
     emit(UpdateTableRowOrColumnState());
   }
 
+  void removeOptionInTable(RemoveType removeType,
+      {required int removedRowIndex, required int removedColIndex}) {
+    switch (removeType) {
+      case RemoveType.removeEntireRow:
+        removeEntireRow(removedRowIndex);
+        break;
+      case RemoveType.removeEntireCol:
+        removeEntireCol(removedColIndex);
+        break;
+    }
+
+    emit(UpdateTableRowOrColumnState());
+  }
+
   void insertRow({int? insertedIndex, bool isBelow = true}) {
     rowsNum++;
     // Append a new row to the cell list
@@ -119,8 +137,10 @@ class TableCubit extends Cubit<TableState> {
     if (insertedIndex != null) {
       cellList.insert(isBelow ? insertedIndex + 1 : insertedIndex, newRow);
       rowHeights.insert(isBelow ? insertedIndex + 1 : insertedIndex, 50.0);
-      for (int i = 1; i < rowsNum; i++) {
-        cellList[i][0].setContentInCell = i.toString();
+      if (enableCounter) {
+        for (int i = 1; i < rowsNum; i++) {
+          cellList[i][0].setContentInCell = i.toString();
+        }
       }
     } else {
       cellList.add(newRow);
@@ -160,5 +180,25 @@ class TableCubit extends Cubit<TableState> {
       }
       columnWidths.insert(isRight ? insertedIndex : insertedIndex + 1, 150);
     }
+  }
+
+  void removeEntireRow(int removedRowIndex) {
+    cellList.removeAt(removedRowIndex);
+    rowHeights.removeAt(removedRowIndex);
+    rowsNum--;
+    if (enableCounter&&cellList[0][0].getContentofCell=='ترتيب') {
+      for (int i = 1; i < rowsNum; i++) {
+        cellList[i][0].setContentInCell = i.toString();
+      }
+    }
+  }
+
+  void removeEntireCol(int removedColIndex) {
+    for (int rowIndex = 0; rowIndex < rowsNum; rowIndex++) {
+      cellList[rowIndex].removeAt(removedColIndex);
+    }
+
+    columnWidths.removeAt(removedColIndex);
+    colsNum--;
   }
 }
