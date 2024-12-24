@@ -19,12 +19,11 @@ class TableCubit extends Cubit<TableState> {
   bool isRowUpdated = false;
   bool isColumnUpdated = false;
   List<List<CellInTableModel>> cellList = [];
-  // TODO: add new row from right click
-  // TODO: add new column from right click
+
   // TODO: delete row,column from right click.
 
   // fucntion to create the table
-  void createTable() {
+  void createTable(double initWidth) {
     if (rowsController.text.trim().isNotEmpty &&
         columnsController.text.trim().isNotEmpty) {
       rowsNum = int.tryParse(rowsController.text) ?? 0;
@@ -33,6 +32,8 @@ class TableCubit extends Cubit<TableState> {
         rowsNum = colsNum = 0;
         emit(FailureCreateOrEditTableState(errMessage: "عدد كبير للجدول"));
       } else if (rowsNum * colsNum < 1) {
+        rowsNum = colsNum = 0;
+        isTableCreated ? cellList.clear() : null;
         emit(FailureCreateOrEditTableState(
             errMessage: "العدد لا يمكن ان يساوي صفر"));
       } else {
@@ -41,7 +42,7 @@ class TableCubit extends Cubit<TableState> {
           rowHeights.clear();
         }
         isTableCreated = true;
-        initTableDimensionsWithContent();
+        initTableDimensionsWithContent(initWidth);
         emit(CreateOrEditTableState());
       }
     } else {
@@ -54,8 +55,8 @@ class TableCubit extends Cubit<TableState> {
     emit(EnableOrDisableCounterState());
   }
 
-  void initTableDimensionsWithContent() {
-    columnWidths = List.filled(colsNum, 100.0, growable: true);
+  void initTableDimensionsWithContent(double initWidth) {
+    columnWidths = List.filled(colsNum, initWidth / colsNum, growable: true);
     rowHeights = List.filled(rowsNum, 50.0, growable: true);
     // cellList = List.filled(rowsNum,growable: true ,List.filled(colsNum, CellInTableModel()));
     cellList = List.generate(rowsNum, (rowIndex) {
@@ -75,7 +76,7 @@ class TableCubit extends Cubit<TableState> {
   }
 
   void changeInsertOption(int index) {
-    insertOptionList[index].setIsActive= true;
+    insertOptionList[index].setIsActive = true;
     for (int i = 0; i < insertOptionList.length; i++) {
       index != i ? insertOptionList[i].setIsActive = false : null;
     }
@@ -88,21 +89,46 @@ class TableCubit extends Cubit<TableState> {
     emit(ChangeFontSizeState());
   }
 
-  void updateTable() {
-    rowsNum++; // Increment row count
-    rowHeights.add(50.0); // Add default height for the new row
+  void insertOperationInTable(InsertType insertType,
+      {int? insertedRowIndex, int? insertedColIndex}) {
+    switch (insertType) {
+      case InsertType.addBelowRow:
+        insertRow(
+          insertedIndex: insertedRowIndex,
+        );
+        break;
+      case InsertType.addAboveRow:
+        insertRow(insertedIndex: insertedRowIndex, isBelow: false);
+        break;
+      case InsertType.addRightCol:
+        insertColumn(insertedIndex: insertedColIndex);
+        break;
+      case InsertType.addLeftCol:
+        insertColumn(insertedIndex: insertedColIndex, isRight: false);
+        break;
+    }
 
+    emit(UpdateTableRowOrColumnState());
+  }
+
+  void insertRow({int? insertedIndex, bool isBelow = true}) {
+    rowsNum++;
     // Append a new row to the cell list
     List<CellInTableModel> newRow =
         List.generate(colsNum, (colIndex) => CellInTableModel());
-    cellList.add(newRow);
-
-    // If enableCounter is true, update the numbering in the first column
-    if (enableCounter) {
-      cellList[rowsNum - 1][0].setContentInCell = (rowsNum - 1).toString();
+    if (insertedIndex != null) {
+      cellList.insert(isBelow ? insertedIndex + 1 : insertedIndex, newRow);
+      rowHeights.insert(isBelow ? insertedIndex + 1 : insertedIndex, 50.0);
+      for (int i = 1; i < rowsNum; i++) {
+        cellList[i][0].setContentInCell = i.toString();
+      }
+    } else {
+      cellList.add(newRow);
+      rowHeights.add(50.0); // Add default height for the new row
+      if (enableCounter) {
+        cellList[rowsNum - 1][0].setContentInCell = (rowsNum - 1).toString();
+      }
     }
-
-    emit(UpdateTableRowOrColumnDimensionsState());
   }
 
   void changeBackGroundForCell(
@@ -119,5 +145,20 @@ class TableCubit extends Cubit<TableState> {
   void adjustRowHeight(int rowIndex, double newHeight) {
     rowHeights[rowIndex] = newHeight.clamp(50.0, double.infinity);
     emit(UpdateTableRowOrColumnDimensionsState());
+  }
+
+  void insertColumn({int? insertedIndex, bool isRight = true}) {
+    colsNum++; // Increment the total number of columns
+    // Loop through each row and insert a new cell
+    if (insertedIndex != null) {
+      for (int rowIndex = 0; rowIndex < rowsNum; rowIndex++) {
+        final newCell = CellInTableModel(); // Create a new cell
+        cellList[rowIndex].insert(
+          isRight ? insertedIndex : insertedIndex + 1,
+          newCell,
+        );
+      }
+      columnWidths.insert(isRight ? insertedIndex : insertedIndex + 1, 150);
+    }
   }
 }

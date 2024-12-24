@@ -6,21 +6,18 @@ import 'package:al_hassan_warsha/features/management_workshop/data/models/table_
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/table_creation/custom_contex_menu.dart';
 import 'package:flutter/material.dart';
 
-class TableCellWidget extends StatefulWidget {
+class TableCellWidget extends StatelessWidget {
   final double width;
   final double height;
-  final int rowIndex;
-  final int colIndex;
   final CellInTableModel cellItem;
   final void Function() changeColorValue;
   final void Function() changeFontValue;
   final void Function() insertNewRowOrCol;
   final void Function() deleteRowOrCol;
+
   const TableCellWidget({
     required this.width,
     required this.height,
-    required this.rowIndex,
-    required this.colIndex,
     required this.cellItem,
     required this.changeColorValue,
     required this.changeFontValue,
@@ -30,25 +27,15 @@ class TableCellWidget extends StatefulWidget {
   });
 
   @override
-  TableCellWidgetState createState() => TableCellWidgetState();
-}
-
-class TableCellWidgetState extends State<TableCellWidget> {
-  final TextEditingController _cellController = TextEditingController();
-  @override
-  void initState() {
-    super.initState();
-    _cellController.text = widget.cellItem.getContentofCell ?? "";
-  }
-
-  @override
   Widget build(BuildContext context) {
-    log("rebuild Cell");
+    log("rebuild");
+    final TextEditingController controller =
+        TextEditingController(text: cellItem.getContentofCell);
     return Stack(
       children: [
         Container(
-          width: widget.width,
-          height: widget.height,
+          width: width,
+          height: height,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
           ),
@@ -57,26 +44,25 @@ class TableCellWidgetState extends State<TableCellWidget> {
               contextMenuBuilder: (context, editableTextState) {
                 return MyContextMenu(
                   anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-                  changeColorValue: widget.changeColorValue,
-                  changeFontValue: widget.changeFontValue,
-                  insertNewRowOrCol: widget.insertNewRowOrCol,
-                  deleteRowOrCol:widget.deleteRowOrCol,
+                  changeColorValue: changeColorValue,
+                  changeFontValue: changeFontValue,
+                  insertNewRowOrCol: insertNewRowOrCol,
+                  deleteRowOrCol: deleteRowOrCol,
                 );
               },
-              controller: _cellController,
               onChanged: (value) {
-                widget.cellItem.setContentInCell = value;
+                cellItem.setContentInCell = value;
               },
               maxLines: null,
               expands: true,
+              controller: controller,
               decoration: InputDecoration(
                 filled: true,
-                fillColor:
-                    Color(widget.cellItem.getBackgroundColorHex ?? 0xfffffff),
+                fillColor: Color(cellItem.getBackgroundColorHex ?? 0xfffffff),
                 border: InputBorder.none,
               ),
               style: AppFontStyles.extraBold14(context)
-                  .copyWith(fontSize: widget.cellItem.getFontSize)),
+                  .copyWith(fontSize: cellItem.getFontSize)),
         ),
       ],
     );

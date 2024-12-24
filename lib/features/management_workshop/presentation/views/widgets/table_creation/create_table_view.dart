@@ -24,6 +24,7 @@ class TableManager extends StatelessWidget {
         },
         builder: (context, state) {
           var tableCubit = context.read<TableCubit>();
+
           return Directionality(
             textDirection: TextDirection.rtl,
             child: SafeArea(

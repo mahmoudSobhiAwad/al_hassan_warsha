@@ -1,6 +1,8 @@
+import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/view_kitchen_widgets/app_bar_with_linking.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/table_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/cubit/table_cubit.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/add_edit_view_order/show_color_picker.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/table_creation/add_rows_columns_dialog.dart';
@@ -36,7 +38,7 @@ class CreateTableBody extends StatelessWidget {
             tableCubit.enableOrDisableCounter();
           },
           createTable: () {
-            tableCubit.createTable();
+            tableCubit.createTable(context.screenWidth * 0.8);
           },
         ),
         const SizedBox(height: 15),
@@ -98,12 +100,18 @@ class CreateTableBody extends StatelessWidget {
                     rowIndex: rowIndex);
               },
               addNewRow: () {
-                tableCubit.updateTable();
+                tableCubit
+                    .insertOperationInTable(insertOptionList[0].getInsertType);
               },
-              insertNewRowOrCol: () {
-                 addNewRowOrColumn(context,tableCubit);
+              insertNewRowOrCol: (
+                  {required int columnIndex, required int rowIndex}) {
+                addNewRowOrColumn(context, tableCubit,
+                    colIndex: columnIndex, rowIndex: rowIndex);
               },
-              deleteRowOrCol: () {},
+              deleteRowOrCol: (
+                  {required int columnIndex, required int rowIndex}) {
+                
+              },
             ),
           ),
         const SizedBox(height: 20),

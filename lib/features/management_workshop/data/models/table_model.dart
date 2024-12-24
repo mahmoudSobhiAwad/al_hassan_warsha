@@ -42,23 +42,41 @@ enum InsertType { addBelowRow, addAboveRow, addRightCol, addLeftCol }
 
 enum RemoveType { removeEntireRow, removeEntireCol }
 
-class InsertOption {
-  bool _isActive;
-  InsertType _insertType;
-  InsertOption(this._insertType, this._isActive);
-  set setIsActive(bool value){
-    _isActive=value;
+class InsertOrRemoveOptions {
+  late bool _isActive;
+  late InsertType _insertType;
+  late RemoveType _removeType;
+  InsertOrRemoveOptions(
+      {bool isActive = false,
+      InsertType insertType = InsertType.addBelowRow,
+      RemoveType removeType = RemoveType.removeEntireCol}) {
+    _isActive = isActive;
+    _insertType = insertType;
+    _removeType = removeType;
   }
-  set setInsertType(InsertType value){
-    _insertType=value;
+  set setIsActive(bool value) {
+    _isActive = value;
   }
-  bool get getIsActive =>_isActive;
-  InsertType get getInsertType =>_insertType;
+
+  set setInsertType(InsertType value) {
+    _insertType = value;
+  }
+  set setDeleteType(RemoveType value) {
+    _removeType = value;
+  }
+
+  bool get getIsActive => _isActive;
+  InsertType get getInsertType => _insertType;
+  RemoveType get getRemoveType => _removeType;
 }
 
-List<InsertOption>insertOptionList=[
-  InsertOption(InsertType.addBelowRow, true),
-  InsertOption(InsertType.addAboveRow, false),
-  InsertOption(InsertType.addRightCol, false),
-  InsertOption(InsertType.addLeftCol, false),
+List<InsertOrRemoveOptions> insertOptionList = [
+  InsertOrRemoveOptions(insertType: InsertType.addBelowRow, isActive: true),
+  InsertOrRemoveOptions(insertType: InsertType.addAboveRow, isActive: false),
+  InsertOrRemoveOptions(insertType: InsertType.addRightCol, isActive: false),
+  InsertOrRemoveOptions(insertType: InsertType.addLeftCol, isActive: false),
+];
+List<InsertOrRemoveOptions> removeOptionList = [
+  InsertOrRemoveOptions(removeType: RemoveType.removeEntireRow, isActive: true),
+  InsertOrRemoveOptions(removeType: RemoveType.removeEntireCol, isActive: false),
 ];

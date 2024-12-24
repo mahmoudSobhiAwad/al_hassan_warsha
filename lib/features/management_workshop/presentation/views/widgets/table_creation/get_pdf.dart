@@ -20,15 +20,17 @@ Future<void> generateTablePdf({
       LocalNotification(title: "جدول", body: "إنشاء جدول جديد", actions: [
     LocalNotificationAction(text: "عرض"),
   ]);
-
+  double totalWidth = 0;
   final pdf = pw.Document();
-
+  for (int i = 0; i < columnWidths.length; i++) {
+    totalWidth += columnWidths[i];
+  }
   // Determine page format based on the total table width
-  final double totalWidth = columnWidths.fold(0, (sum, width) => sum + width);
+
   PdfPageFormat pageFormat;
-  if (totalWidth <= PdfPageFormat.a4.availableWidth) {
+  if (totalWidth <= PdfPageFormat.a4.availableWidth-5) {
     pageFormat = PdfPageFormat.a4;
-  } else if (totalWidth <= PdfPageFormat.a3.availableWidth) {
+  } else if (totalWidth <= PdfPageFormat.a3.availableWidth-5) {
     pageFormat = PdfPageFormat.a3;
   } else {
     pageFormat = PdfPageFormat(
@@ -65,7 +67,7 @@ Future<void> generateTablePdf({
                       child: pw.Text(
                         content,
                         style: pw.TextStyle(
-                          fontSize:cell.getFontSize ,
+                          fontSize: cell.getFontSize,
                           font: font,
                           fontWeight: pw.FontWeight.bold,
                         ),

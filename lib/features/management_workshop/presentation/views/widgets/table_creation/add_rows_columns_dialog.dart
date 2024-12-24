@@ -7,10 +7,8 @@ import 'package:al_hassan_warsha/features/management_workshop/presentation/manag
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<dynamic> addNewRowOrColumn(
-  BuildContext context,
-  TableCubit cubit,
-) {
+Future<dynamic> addNewRowOrColumn(BuildContext context, TableCubit cubit,
+    {required int rowIndex, required colIndex}) {
   return showDialog(
       useSafeArea: false,
       context: context,
@@ -68,13 +66,22 @@ Future<dynamic> addNewRowOrColumn(
                     const SizedBox(
                       height: 5,
                     ),
-                    const CustomPushContainerButton(
+                    CustomPushContainerButton(
                       pushButtomText: "اختيار",
                       pushButtomTextFontSize: 14,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       borderRadius: 8,
                       enableIcon: false,
+                      onTap: () {
+                        cubit.insertOperationInTable(
+                            insertOptionList
+                                .firstWhere((item) => item.getIsActive)
+                                .getInsertType,
+                            insertedColIndex: colIndex,
+                            insertedRowIndex: rowIndex);
+                        Navigator.pop(context);
+                      },
                     )
                   ],
                 ),
