@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/table_model.dart';
@@ -10,8 +12,10 @@ class TableCellWidget extends StatefulWidget {
   final int rowIndex;
   final int colIndex;
   final CellInTableModel cellItem;
-  final void Function(int)changeColorValue;
-
+  final void Function() changeColorValue;
+  final void Function() changeFontValue;
+  final void Function() insertNewRowOrCol;
+  final void Function() deleteRowOrCol;
   const TableCellWidget({
     required this.width,
     required this.height,
@@ -19,7 +23,10 @@ class TableCellWidget extends StatefulWidget {
     required this.colIndex,
     required this.cellItem,
     required this.changeColorValue,
+    required this.changeFontValue,
     super.key,
+    required this.insertNewRowOrCol,
+    required this.deleteRowOrCol,
   });
 
   @override
@@ -36,6 +43,7 @@ class TableCellWidgetState extends State<TableCellWidget> {
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild Cell");
     return Stack(
       children: [
         Container(
@@ -49,9 +57,10 @@ class TableCellWidgetState extends State<TableCellWidget> {
               contextMenuBuilder: (context, editableTextState) {
                 return MyContextMenu(
                   anchor: editableTextState.contextMenuAnchors.primaryAnchor,
-                  changeColorValue: (int value) {
-                    widget.changeColorValue(value);
-                  },
+                  changeColorValue: widget.changeColorValue,
+                  changeFontValue: widget.changeFontValue,
+                  insertNewRowOrCol: widget.insertNewRowOrCol,
+                  deleteRowOrCol:widget.deleteRowOrCol,
                 );
               },
               controller: _cellController,
@@ -66,7 +75,8 @@ class TableCellWidgetState extends State<TableCellWidget> {
                     Color(widget.cellItem.getBackgroundColorHex ?? 0xfffffff),
                 border: InputBorder.none,
               ),
-              style: AppFontStyles.extraBold14(context)),
+              style: AppFontStyles.extraBold14(context)
+                  .copyWith(fontSize: widget.cellItem.getFontSize)),
         ),
       ],
     );

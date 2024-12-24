@@ -16,13 +16,12 @@ class TableCubit extends Cubit<TableState> {
   int colsNum = 0;
   bool isTableCreated = false;
   bool enableCounter = true;
+  bool isRowUpdated = false;
+  bool isColumnUpdated = false;
   List<List<CellInTableModel>> cellList = [];
-
-  // TODO: change font size for each cell from right click
-  // TODO: add new row button - from right click
+  // TODO: add new row from right click
   // TODO: add new column from right click
   // TODO: delete row,column from right click.
- 
 
   // fucntion to create the table
   void createTable() {
@@ -75,12 +74,36 @@ class TableCubit extends Cubit<TableState> {
     }
   }
 
-  // void adjustCellHeight(int rowIndex, int colIndex, double newHeight) {
-  //   double clampedHeight = newHeight.clamp(50.0, double.infinity);
-  //  // cellHeights[rowIndex] = clampedHeight;
-  //   rowHeights.reduce((a, b) => a > b ? a : b);
-  //   emit(UpdateTableRowOrColumnDimensionsState());
-  // }
+  void changeInsertOption(int index) {
+    insertOptionList[index].setIsActive= true;
+    for (int i = 0; i < insertOptionList.length; i++) {
+      index != i ? insertOptionList[i].setIsActive = false : null;
+    }
+    emit(ChangeCheckedBoxForAnyState());
+  }
+
+  void changeFontSize(
+      {required bool fontState, required int colIndex, required int rowIndex}) {
+    cellList[rowIndex][colIndex].setFontSize = fontState;
+    emit(ChangeFontSizeState());
+  }
+
+  void updateTable() {
+    rowsNum++; // Increment row count
+    rowHeights.add(50.0); // Add default height for the new row
+
+    // Append a new row to the cell list
+    List<CellInTableModel> newRow =
+        List.generate(colsNum, (colIndex) => CellInTableModel());
+    cellList.add(newRow);
+
+    // If enableCounter is true, update the numbering in the first column
+    if (enableCounter) {
+      cellList[rowsNum - 1][0].setContentInCell = (rowsNum - 1).toString();
+    }
+
+    emit(UpdateTableRowOrColumnDimensionsState());
+  }
 
   void changeBackGroundForCell(
       {required int colorValue, required int colIndex, required int rowIndex}) {

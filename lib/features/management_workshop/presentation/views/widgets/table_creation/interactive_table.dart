@@ -1,3 +1,5 @@
+import 'dart:developer';
+import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/table_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/table_creation/table_cell_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,13 @@ class InteractiveTable extends StatelessWidget {
   final ScrollController scrollController;
   final void Function(int colIndex, double newWidth) adjustColumnWidth;
   final void Function(int rowIndex, double newHeight) adjustRowHeight;
-  final void Function({required int colorValue,required int rowIndex,required int columnIndex}) changeColorValue;
+  final void Function() addNewRow;
+  final void Function({required int rowIndex, required int columnIndex})
+      changeColorValue;
+  final void Function({required int rowIndex, required int columnIndex})
+      changeFontValue;
+  final void Function() insertNewRowOrCol;
+  final void Function() deleteRowOrCol;
 
   const InteractiveTable({
     required this.rows,
@@ -24,10 +32,15 @@ class InteractiveTable extends StatelessWidget {
     required this.adjustRowHeight,
     required this.changeColorValue,
     super.key,
+    required this.changeFontValue,
+    required this.addNewRow,
+    required this.insertNewRowOrCol,
+    required this.deleteRowOrCol,
   });
 
   @override
   Widget build(BuildContext context) {
+    log("rebuild interactive");
     return Align(
       alignment: columns > 1 ? Alignment.center : Alignment.centerRight,
       child: Scrollbar(
@@ -49,8 +62,8 @@ class InteractiveTable extends StatelessWidget {
                     child: SingleChildScrollView(
                       primary: true,
                       scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: List.generate(
+                      child: Column(children: [
+                        ...List.generate(
                           rows,
                           (rowIndex) => Row(
                             children: List.generate(
@@ -64,9 +77,18 @@ class InteractiveTable extends StatelessWidget {
                                     height: rowHeights[rowIndex],
                                     rowIndex: rowIndex,
                                     colIndex: colIndex,
-                                    changeColorValue: (value){
-                                      changeColorValue(colorValue: value,columnIndex:colIndex ,rowIndex: rowIndex);
+                                    changeColorValue: () {
+                                      changeColorValue(
+                                          columnIndex: colIndex,
+                                          rowIndex: rowIndex);
                                     },
+                                    changeFontValue: () {
+                                      changeFontValue(
+                                          columnIndex: colIndex,
+                                          rowIndex: rowIndex);
+                                    },
+                                    insertNewRowOrCol: insertNewRowOrCol,
+                                    deleteRowOrCol: deleteRowOrCol,
                                   ),
                                   // Column Resizing Handle
                                   Positioned(
@@ -111,7 +133,20 @@ class InteractiveTable extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        IconButton(
+                            onPressed: addNewRow,
+                            icon: const Icon(
+                              Icons.add_circle,
+                              color: AppColors.blue,
+                              size: 40,
+                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ]),
                     ),
                   ),
                 ),
