@@ -9,14 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SearchBarInManagment extends StatelessWidget {
-  const SearchBarInManagment(
-      {super.key,
-      required this.changeSearchType,
-      required this.searchFunc,
-      this.searchKeyWord,
-      required this.changeSearchText,
-      required this.searchList,
-      required this.searchKey});
+  const SearchBarInManagment({
+    super.key,
+    required this.changeSearchType,
+    required this.searchFunc,
+    this.searchKeyWord,
+    required this.changeSearchText,
+    required this.searchList,
+    required this.searchKey,
+    this.enableCreateTable = true,
+    this.textStyle,
+  });
 
   final void Function(SearchModel) changeSearchType;
   final void Function(String) changeSearchText;
@@ -24,6 +27,8 @@ class SearchBarInManagment extends StatelessWidget {
   final SearchModel searchKey;
   final String? searchKeyWord;
   final List<SearchModel> searchList;
+  final bool enableCreateTable;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +43,7 @@ class SearchBarInManagment extends StatelessWidget {
               customLowBoxShadow(),
             ]),
             child: SearchFieldInSearchBar(
+                textStyle: textStyle,
                 changeSearchText: changeSearchText,
                 searchKeyWord: searchKeyWord,
                 searchKey: searchKey,
@@ -46,18 +52,20 @@ class SearchBarInManagment extends StatelessWidget {
         ),
         const Expanded(child: SizedBox()),
         SearchMenuInSearchBar(
-            changeSearchType: changeSearchType, searchList: searchList),
+            changeSearchType: changeSearchType, searchList: searchList,searchedStyle: textStyle,),
         const Expanded(child: SizedBox()),
-         CustomPushContainerButton(
-          pushButtomText: "إنشاء جدول",
-          borderRadius: 12,
-          color: AppColors.blueGray,
-          iconSize: 30,
-          onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>const TableManager())),
-          pushButtomTextFontSize: 18,
-          padding:const  EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-          iconBehind: FontAwesomeIcons.tableCells,
-        ),
+        if (enableCreateTable)
+          CustomPushContainerButton(
+            pushButtomText: "إنشاء جدول",
+            borderRadius: 12,
+            color: AppColors.blueGray,
+            iconSize: 30,
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const TableManager())),
+            pushButtomTextFontSize: 18,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            iconBehind: FontAwesomeIcons.tableCells,
+          ),
         const Expanded(child: SizedBox()),
       ],
     );

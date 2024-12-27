@@ -12,7 +12,7 @@ class PaymentOptionWidget extends StatelessWidget {
 
   final String label;
   final bool isSelected;
-  final VoidCallback? onPressed;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +25,12 @@ class PaymentOptionWidget extends StatelessWidget {
             style: AppFontStyles.extraBoldNew16(context),
           ),
         ),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            IconButton(
-              onPressed: onPressed,
-              icon: const Icon(
-                Icons.check_box_outline_blank_rounded,
-                size: 33,
-              ),
-            ),
-            if (isSelected)
-              const Icon(
-                Icons.check,
-                color: AppColors.vibrantGreen,
-              ),
-          ],
-        ),
+        Checkbox(
+          activeColor: AppColors.green,
+            value: isSelected,
+            onChanged: (v) {
+             onPressed!=null? onPressed!():null;
+            }),
       ],
     );
   }

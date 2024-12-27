@@ -49,7 +49,7 @@ class SearchMenuInSearchBar extends StatelessWidget {
                             child: Center(
                                 child: Text(
                               searchList[index].valueArSearh,
-                              style: AppFontStyles.bold18(context),
+                              style:searchedStyle?? AppFontStyles.bold18(context),
                             )),
                           )),
                 ];

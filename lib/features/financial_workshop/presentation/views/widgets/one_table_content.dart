@@ -9,13 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ContentOfFinancialTable extends StatelessWidget {
-  const ContentOfFinancialTable(
-      {super.key,
-      required this.orderName,
-      required this.pillModel,
-      required this.downStep});
+  const ContentOfFinancialTable({
+    super.key,
+    required this.orderName,
+    required this.pillModel,
+    required this.downStep,
+    this.isTabletLayOut = false,
+  });
   final PillModel pillModel;
   final String orderName;
+  final bool isTabletLayOut;
   final void Function(
       {required String pillId,
       required String addedAmount,
@@ -37,8 +40,12 @@ class ContentOfFinancialTable extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(child: CustomTextWithTheSameStyle(text: orderName)),
-                const Expanded(child: SizedBox()),
+                if (!isTabletLayOut)
+                  Expanded(
+                      child: CustomTextWithTheSameStyle(
+                    text: orderName,
+                  )),
+              if (!isTabletLayOut)   const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
@@ -50,38 +57,58 @@ class ContentOfFinancialTable extends StatelessWidget {
                     child: CustomTextWithTheSameStyle(
                       text: pillModel.optionPaymentWay ==
                               OptionPaymentWay.atRecieve
-                          ? "دفع عند الاستلام"
-                          : "دفع بالتقسيط",
+                          ? isTabletLayOut
+                              ? "استلام"
+                              : "دفع عند الاستلام"
+                          : isTabletLayOut
+                              ? "تقسيط"
+                              : "دفع بالتقسيط",
                     )),
                 const Expanded(child: SizedBox()),
+                if (!isTabletLayOut)
+                  Expanded(
+                      flex: 1,
+                      child: CustomTextWithTheSameStyle(
+                        textStyle: isTabletLayOut
+                            ? AppFontStyles.meduim12(context)
+                                .copyWith(letterSpacing: 2)
+                            : AppFontStyles.bold18(context).copyWith(
+                                letterSpacing: 2,
+                              ),
+                        text: pillModel.interior,
+                      )),
+                if (!isTabletLayOut) const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold18(context)
-                          .copyWith(letterSpacing: 2),
-                      text: pillModel.interior,
-                    )),
-                const Expanded(child: SizedBox()),
-                Expanded(
-                    flex: 1,
-                    child: CustomTextWithTheSameStyle(
-                      textStyle: AppFontStyles.bold18(context)
-                          .copyWith(letterSpacing: 3),
+                      textStyle: isTabletLayOut
+                          ? AppFontStyles.bold12(context)
+                              .copyWith(letterSpacing: 3)
+                          : AppFontStyles.bold18(context).copyWith(
+                              letterSpacing: 3,
+                            ),
                       text: convertToArabicNumbers(pillModel.remian),
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.bold18(context),
-                        text:int.parse(convertToEnglishNumbers(pillModel.remian))!=0? convertToArabicNumbers(
-                            pillModel.stepsCounter.toString()):convertToArabicNumbers('0'))),
+                        text: int.parse(convertToEnglishNumbers(
+                                    pillModel.remian)) !=
+                                0
+                            ? convertToArabicNumbers(
+                                pillModel.stepsCounter.toString())
+                            : convertToArabicNumbers('0'))),
                 const Expanded(child: SizedBox()),
                 Expanded(
                     flex: 2,
                     child: CustomTextFormField(
-                      textStyle: AppFontStyles.extraBoldNew18(context)
-                          .copyWith(letterSpacing: 3),
+                      textStyle: isTabletLayOut
+                          ? AppFontStyles.bold12(context)
+                              .copyWith(letterSpacing: 2)
+                          : AppFontStyles.bold18(context).copyWith(
+                              letterSpacing: 2,
+                            ),
                       contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                       fillColor: AppColors.white,
                       enableFill: true,
@@ -89,8 +116,8 @@ class ContentOfFinancialTable extends StatelessWidget {
                           const TextInputType.numberWithOptions(decimal: true),
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                        RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
-                      )
+                          RegExp(r'[0-9\u0660-\u0669\u06F0-\u06F9]'),
+                        )
                       ],
                       validator: (value) {
                         if (value == null || value == "0.0") {
@@ -99,17 +126,17 @@ class ContentOfFinancialTable extends StatelessWidget {
                         return null;
                       },
                       borderRadius: 8,
-                      controller:
-                          TextEditingController(text: pillModel.steppedAmount),
                       onChanged: (value) {
                         pillModel.steppedAmount = value;
                       },
                       borderWidth: 2,
                       borderColor: AppColors.lightGray1,
-                      suffixWidget: Text(
-                        "جنية",
-                        style: AppFontStyles.extraBoldNew16(context),
-                      ),
+                      suffixWidget: !isTabletLayOut
+                          ? Text(
+                              "جنية",
+                              style: AppFontStyles.extraBoldNew16(context),
+                            )
+                          : null,
                       labelWidget: Text(
                         "...................",
                         style: AppFontStyles.extraBold12(context)
@@ -126,8 +153,9 @@ class ContentOfFinancialTable extends StatelessWidget {
         InkWell(
           onTap: () {
             if (pillModel.stepsCounter > 0 || int.parse(pillModel.remian) > 0) {
-              final steppedAmount =
-                  int.parse(convertToEnglishNumbers(pillModel.steppedAmount));
+              final steppedAmount = int.tryParse(
+                      convertToEnglishNumbers(pillModel.steppedAmount)) ??
+                  0;
               final remainAmount =
                   int.parse(convertToEnglishNumbers(pillModel.remian));
 
@@ -159,8 +187,11 @@ class ContentOfFinancialTable extends StatelessWidget {
             ),
             child: Text(
               "تنزيل دفعة",
-              style: AppFontStyles.extraBoldNew14(context)
-                  .copyWith(color: AppColors.white),
+              style: isTabletLayOut
+                  ? AppFontStyles.extraBold12(context)
+                      .copyWith(color: AppColors.white)
+                  : AppFontStyles.extraBoldNew14(context)
+                      .copyWith(color: AppColors.white),
             ),
           ),
         )

@@ -8,8 +8,10 @@ class TableHeaderInFinancial extends StatelessWidget {
   const TableHeaderInFinancial({
     super.key,
     required this.onFarz,
+    this.isTabletLayOut = false,
   });
   final void Function(SearchModel) onFarz;
+  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,45 +23,46 @@ class TableHeaderInFinancial extends StatelessWidget {
             decoration: BoxDecoration(
                 color: AppColors.veryLightGray2,
                 borderRadius: BorderRadius.circular(12)),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
+              if(!isTabletLayOut)  const Expanded(
                     child: CustomTextWithTheSameStyle(
                   text: "الطلب",
                 )),
-                Expanded(child: SizedBox()),
-                Expanded(
+             if(!isTabletLayOut)   const Expanded(child: SizedBox()),
+                const Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                       text: "اسم العميل",
                     )),
-                Expanded(child: SizedBox()),
-                Expanded(
+                const Expanded(child: SizedBox()),
+                const Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                       text: "نظام الدفع",
                     )),
-                Expanded(child: SizedBox()),
-                Expanded(
-                    flex: 1,
-                    child: CustomTextWithTheSameStyle(
-                      text: "المقدم",
-                    )),
-                Expanded(child: SizedBox()),
-                Expanded(
+                const Expanded(child: SizedBox()),
+                if (!isTabletLayOut)
+                  const Expanded(
+                      flex: 1,
+                      child: CustomTextWithTheSameStyle(
+                        text: "المقدم",
+                      )),
+                if (!isTabletLayOut) const Expanded(child: SizedBox()),
+                const Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                       text: "المبلغ المتبقي",
                     )),
-                Expanded(child: SizedBox()),
-                Expanded(
+                const Expanded(child: SizedBox()),
+                const Expanded(
                     flex: 1,
                     child: CustomTextWithTheSameStyle(
                       text: "الدفعات المتبقية",
                     )),
-                Expanded(child: SizedBox()),
-                Expanded(
+                const Expanded(child: SizedBox()),
+                const Expanded(
                     flex: 2,
                     child: CustomTextWithTheSameStyle(
                       text: "المبلغ المستحق",

@@ -132,7 +132,7 @@ final class MakeAnalysisEvent extends FinanicalEvent {}
 final class NavToAnlysisListEvent extends FinanicalEvent {
   final int index;
   final String type;
-  NavToAnlysisListEvent({required this.index,required this.type});
+  NavToAnlysisListEvent({required this.index, required this.type});
 }
 
 final class GetAllAnalysisTransactionListEvent extends FinanicalEvent {
@@ -143,5 +143,11 @@ final class GetAllAnalysisTransactionListEvent extends FinanicalEvent {
 final class ChangeCurrPageEvent extends FinanicalEvent {
   final int pageIndex;
   final int indexType;
-  ChangeCurrPageEvent({required this.pageIndex,required this.indexType});
+  ChangeCurrPageEvent({required this.pageIndex, required this.indexType});
+}
+
+final class ChangeSideBarActiveEvent extends FinanicalEvent {
+  final bool isActiveState;
+
+  ChangeSideBarActiveEvent({required this.isActiveState});
 }

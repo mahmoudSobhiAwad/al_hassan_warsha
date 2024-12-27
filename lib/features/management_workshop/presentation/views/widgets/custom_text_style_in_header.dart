@@ -22,7 +22,7 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
     if (AppFontsLayout.isMobile(context)) {
       adaptiveTextStyle = AppFontStyles.meduim12(context);
     } else if (AppFontsLayout.isTablet(context)) {
-      adaptiveTextStyle = AppFontStyles.meduim12(context);
+      adaptiveTextStyle = AppFontStyles.bold10(context);
     } else if (AppFontsLayout.isDesktop(context)) {
       adaptiveTextStyle = AppFontStyles.extraBold14(context);
     } else {

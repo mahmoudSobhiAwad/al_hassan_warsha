@@ -90,6 +90,13 @@ class AppFontStyles {
       fontSize:getResponiveFontSize(context, baseFontSize:  12),
     );
   }
+  static TextStyle bold10(BuildContext context) {
+    return  TextStyle(
+      fontFamily: fontFamily,
+      fontWeight: FontWeight.w600, // Bold
+      fontSize:getResponiveFontSize(context, baseFontSize:  10),
+    );
+  }
   static TextStyle meduim12(BuildContext context) {
     return  TextStyle(
       fontFamily: fontFamily,

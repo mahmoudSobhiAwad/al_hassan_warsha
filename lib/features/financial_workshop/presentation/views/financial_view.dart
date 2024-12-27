@@ -6,7 +6,6 @@ import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financia
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/financial_desktop.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/mobile_financial_view.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/tablet_layout/tablet_finanical_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_after_analysis/transactions_after_analysis_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +61,7 @@ class FinancialView extends StatelessWidget {
           child: CustomAdaptiveLayout(
               desktopLayout: (context,[constraint]) => FinancialDesktopLayOuts(bloc: bloc),
               mobileLayout: (context) => const MobileFinancialView(),
-              tabletLayout: (context,[constraint]) => const TabletFinanicalView()),
+              tabletLayout: (context,[constraint]) => FinancialDesktopLayOuts(bloc: bloc,isTabletLayOut: true,)),
         );
       }),
     );

@@ -132,6 +132,8 @@ final class NavToAnlysisListState extends FinanicalState {
 
 final class ChangeCurrPageState extends FinanicalState {}
 
+final class ChangeSideBarActiveState extends FinanicalState {}
+
 final class LoadingGetAnalysisListState extends FinanicalState {}
 
 final class SuccessGetAnalysisListState extends FinanicalState {}

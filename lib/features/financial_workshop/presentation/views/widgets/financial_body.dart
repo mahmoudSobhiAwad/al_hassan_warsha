@@ -14,9 +14,12 @@ class FinancialBody extends StatelessWidget {
   const FinancialBody({
     super.key,
     required this.bloc,
+    this.isTabletLayOut = false,
   });
 
   final FinanicalBloc bloc;
+
+  final bool isTabletLayOut;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,9 @@ class FinancialBody extends StatelessWidget {
             height: 16,
           ),
           SearchBarInManagment(
+            textStyle:
+                isTabletLayOut ? AppFontStyles.extraBoldNew18(context) : null,
+            enableCreateTable: false,
             searchList: searchListInFinanical,
             searchKeyWord: bloc.searchKeyWord,
             changeSearchType: (model) {
@@ -52,10 +58,14 @@ class FinancialBody extends StatelessWidget {
           const SizedBox(
             height: 24,
           ),
-          TableHeaderInFinancial(
-            onFarz: (value) {
-              bloc.add(ChangeSearchModelEvent(model: value, isFarz: true));
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: TableHeaderInFinancial(
+              isTabletLayOut: isTabletLayOut,
+              onFarz: (value) {
+                bloc.add(ChangeSearchModelEvent(model: value, isFarz: true));
+              },
+            ),
           ),
           const SizedBox(
             height: 10,
@@ -76,6 +86,7 @@ class FinancialBody extends StatelessWidget {
                     ),
                   )
                 : ListOfOrdersInFinancial(
+                    isTabletLayOut: isTabletLayOut,
                     controller: bloc.scrollController,
                     orderList: bloc.orderList,
                     downStep: (

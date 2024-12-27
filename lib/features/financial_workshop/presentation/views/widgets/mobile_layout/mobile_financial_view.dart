@@ -6,9 +6,9 @@ class MobileFinancialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        CustomMobileAppBar(title: "النظام المالي",),
+        CustomMobileAppBar(title: "النظام المالي",openDrawer: (){},),
       ],
     );
   }

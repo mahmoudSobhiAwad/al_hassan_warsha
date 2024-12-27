@@ -48,6 +48,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<NavToAnlysisListEvent>(navToAnalysisList);
     on<ChangeCurrPageEvent>(changeCurrPage);
     on<GetAllAnalysisTransactionListEvent>(getAllAnalysisList);
+    on<ChangeSideBarActiveEvent>(changeSideBarActivation);
   }
   @override
   Future<void> close() async {
@@ -82,7 +83,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   SearchModel farzModel = SearchModel(valueArSearh: "الكل", valueEnSearh: "-1");
   SearchModel searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
   //
-
+  bool isSideBarActive=true;
   bool isLoading = false;
   bool isLoadingUpdateCounter = false;
   int currIndex = 0;
@@ -132,6 +133,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     currPage = event.pageIndex;
     emit(ChangeCurrPageState());
     add(GetAllAnalysisTransactionListEvent(index: event.indexType));
+  }
+  FutureOr<void> changeSideBarActivation(
+      ChangeSideBarActiveEvent event, Emitter<FinanicalState> emit) async {
+    isSideBarActive = event.isActiveState;
+    emit(ChangeSideBarActiveState());
   }
 
   FutureOr<void> changeStartOrEndDate(

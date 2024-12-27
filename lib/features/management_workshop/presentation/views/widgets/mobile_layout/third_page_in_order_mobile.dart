@@ -22,7 +22,7 @@ class ThirdPageInOrderMobile extends StatelessWidget {
   final bool enableController;
   final GlobalKey<FormState> formKey;
   final void Function()? onTapToChangeRemain;
-  final void Function(OptionPaymentWay)? onChangePayment;
+  final void Function(OptionPaymentWay) onChangePayment;
   final void Function(bool)? changeStepsCounter;
   final Widget actionButton;
 

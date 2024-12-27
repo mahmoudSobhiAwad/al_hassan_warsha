@@ -8,9 +8,11 @@ class ListOfOrdersInFinancial extends StatelessWidget {
     required this.controller,
     required this.orderList,
     required this.downStep,
+    this.isTabletLayOut=false,
   });
 
   final ScrollController controller;
+  final bool isTabletLayOut;
   final List<OrderModel> orderList;
   final void Function({
     required String pillId,
@@ -29,29 +31,33 @@ class ListOfOrdersInFinancial extends StatelessWidget {
           scrollbarOrientation: ScrollbarOrientation.right,
           thumbVisibility: true,
           radius: const Radius.circular(10),
-          child: ScrollConfiguration(
-            behavior: const ScrollBehavior().copyWith(scrollbars: false),
-            child: ListView.separated(
-              controller: controller,
-              itemCount: orderList.length,
-              itemBuilder: (context, index) {
-                return ContentOfFinancialTable(
-                  downStep: (
-                      {required String addedAmount,
-                      required String pillId,
-                      required String totalPayedAmount}) {
-                    downStep(
-                        totalPayedAmount: totalPayedAmount,
-                        pillId: pillId,
-                        addedAmount: addedAmount);
-                  },
-                  orderName: orderList[index].orderName,
-                  pillModel: orderList[index].pillModel!,
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const Padding(padding: EdgeInsets.only(bottom: 16));
-              },
+          child: Padding(
+            padding: const EdgeInsets.only(right:20.0),
+            child: ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(scrollbars: false),
+              child: ListView.separated(
+                controller: controller,
+                itemCount: orderList.length,
+                itemBuilder: (context, index) {
+                  return ContentOfFinancialTable(
+                    isTabletLayOut: isTabletLayOut,
+                    downStep: (
+                        {required String addedAmount,
+                        required String pillId,
+                        required String totalPayedAmount}) {
+                      downStep(
+                          totalPayedAmount: totalPayedAmount,
+                          pillId: pillId,
+                          addedAmount: addedAmount);
+                    },
+                    orderName: orderList[index].orderName,
+                    pillModel: orderList[index].pillModel!,
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const Padding(padding: EdgeInsets.only(bottom: 16));
+                },
+              ),
             ),
           ),
         ),
