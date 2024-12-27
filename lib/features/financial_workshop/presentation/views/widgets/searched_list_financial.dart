@@ -1,16 +1,29 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/list_order_financial.dart';
+import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:flutter/material.dart';
 
 class SearchedListInFinancial extends StatelessWidget {
   const SearchedListInFinancial({
     super.key,
-    required this.bloc,
+    required this.searchKeyWord,
+    required this.controlSearchState,
+    required this.searchedList,
+    required this.scrollController,
+    required this.downStep,
+    this.isTabletLayOut=false,
   });
 
-  final FinanicalBloc bloc;
+  final String searchKeyWord;
+  final void Function() controlSearchState;
+  final List<OrderModel> searchedList;
+  final ScrollController scrollController;
+  final bool isTabletLayOut;
+  final void Function(
+      {required String addedAmount,
+      required String pillId,
+      required String totalPayedAmount}) downStep;
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +37,12 @@ class SearchedListInFinancial extends StatelessWidget {
                 style: AppFontStyles.bold18(context),
               ),
               Text(
-                bloc.searchKeyWord,
+                searchKeyWord,
                 style: AppFontStyles.bold18(context),
               ),
               const Spacer(),
               TextButton(
-                onPressed: () {
-                  bloc.add(EnableOrDisableSearchEvent(status: false));
-                },
+                onPressed: controlSearchState,
                 child: Text(
                   "العودة للرئيسية ",
                   style: AppFontStyles.bold18(context)
@@ -43,20 +54,12 @@ class SearchedListInFinancial extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          bloc.searchedList.isNotEmpty
+          searchedList.isNotEmpty
               ? ListOfOrdersInFinancial(
-                  controller: bloc.scrollController,
-                  orderList: bloc.searchedList,
-                  downStep: (
-                      {required String addedAmount,
-                      required String pillId,
-                      required String totalPayedAmount}) {
-                    bloc.add(DownStepCounterEvent(
-                        pillId: pillId,
-                        totalPayedAmount: totalPayedAmount,
-                        payedAmount: addedAmount));
-                  },
-                )
+                isTabletLayOut:isTabletLayOut ,
+                  controller: scrollController,
+                  orderList: searchedList,
+                  downStep: downStep)
               : Center(
                   child: Text(
                     "لا يوجد اي فواتير مستحقة ",

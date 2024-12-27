@@ -72,7 +72,24 @@ class FinancialBody extends StatelessWidget {
           ),
           switch (bloc.searchMood) {
             true => !bloc.isLoadingSearch
-                ? SearchedListInFinancial(bloc: bloc)
+                ? SearchedListInFinancial(
+                    isTabletLayOut: isTabletLayOut,
+                    searchKeyWord: bloc.searchKeyWord,
+                    scrollController: bloc.scrollController,
+                    searchedList: bloc.searchedList,
+                    downStep: (
+                        {required String addedAmount,
+                        required String pillId,
+                        required String totalPayedAmount}) {
+                      bloc.add(DownStepCounterEvent(
+                          pillId: pillId,
+                          totalPayedAmount: totalPayedAmount,
+                          payedAmount: addedAmount));
+                    },
+                    controlSearchState: () {
+                      bloc.add(EnableOrDisableSearchEvent(status: false));
+                    },
+                  )
                 : const Center(
                     child: CircularProgressIndicator(),
                   ),

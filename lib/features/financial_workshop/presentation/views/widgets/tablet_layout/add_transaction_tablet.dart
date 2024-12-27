@@ -9,8 +9,8 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:flutter/material.dart';
 
-class AddTransaction extends StatelessWidget {
-  const AddTransaction(
+class AddTransactionInTabletLayout extends StatelessWidget {
+  const AddTransactionInTabletLayout(
       {super.key,
       required this.transactionModel,
       required this.onChangeDate,
@@ -36,7 +36,7 @@ class AddTransaction extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: CustomContainerWithDropDownList(
                   headerText: "نوع المعاملة",
                   primaryText: switch (transactionModel.allTransactionTypes) {
@@ -67,6 +67,13 @@ class AddTransaction extends StatelessWidget {
                 child: TransactionMoneyAmount(
                     formKey: formKey, transactionModel: transactionModel)),
             const Expanded(child: SizedBox()),
+          ],
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Row(
+          children: [
             Expanded(
                 flex: 2,
                 child: CustomContainerWithDropDownList(

@@ -10,8 +10,12 @@ import 'package:intl/intl.dart';
 
 class ContentInTransactionHistory extends StatelessWidget {
   const ContentInTransactionHistory(
-      {super.key, required this.model, this.deleteTrans});
+      {super.key,
+      required this.model,
+      this.deleteTrans,
+      this.isTabletLayout = false});
   final TransactionModel model;
+  final bool isTabletLayout;
   final void Function(String id)? deleteTrans;
   @override
   Widget build(BuildContext context) {
@@ -35,20 +39,19 @@ class ContentInTransactionHistory extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Expanded(
-                    flex: 4,
+                    flex: 2,
                     child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: switch (model.allTransactionTypes) {
-                          AllTransactionTypes.interior => "مقدم",
-                          AllTransactionTypes.stepDown => "تنزيل قسط",
-                          AllTransactionTypes.pills => "فواتير",
-                          AllTransactionTypes.salaries => "مرتبات",
-                          AllTransactionTypes.buys => "مشتريات",
-                          AllTransactionTypes.other => model.transactionName,
-                        })),
+                      AllTransactionTypes.interior => "مقدم",
+                      AllTransactionTypes.stepDown => "تنزيل قسط",
+                      AllTransactionTypes.pills => "فواتير",
+                      AllTransactionTypes.salaries => "مرتبات",
+                      AllTransactionTypes.buys => "مشتريات",
+                      AllTransactionTypes.other => model.transactionName,
+                    })),
                 const Expanded(child: SizedBox()),
                 Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -60,18 +63,15 @@ class ContentInTransactionHistory extends StatelessWidget {
                         ),
                         Text(
                           "جنية",
-                          style: AppFontStyles.extraBoldNew16(context),
+                          style:  AppFontStyles.extraBold14(context),
                         ),
                       ],
                     )),
                 const Expanded(child: SizedBox()),
                 Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: CustomTextWithTheSameStyle(
                       letterSpacing: 3,
-                      textStyle: AppFontStyles.extraBoldNew16(
-                        context,
-                      ),
                       text: DateFormat('d MMMM y - h:mm a', 'ar')
                           .format(model.transactionTime ?? DateTime.now()),
                     )),
@@ -80,7 +80,6 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 2,
                     child: Center(
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text:
                             model.transactionMethod == TransactionMethod.caching
                                 ? "كاش"
@@ -92,7 +91,6 @@ class ContentInTransactionHistory extends StatelessWidget {
                     flex: 2,
                     child: Center(
                       child: CustomTextWithTheSameStyle(
-                        textStyle: AppFontStyles.extraBoldNew16(context),
                         text: model.transactionType == TransactionType.buy
                             ? "دفع"
                             : "استلام",
@@ -135,14 +133,16 @@ class ContentInTransactionHistory extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Flexible(
-                        child: Text(
-                          "حذف التحويل",
-                          style: AppFontStyles.extraBoldNew16(context).copyWith(
-                            color: AppColors.red,
+                      if (!isTabletLayout)
+                        Flexible(
+                          child: Text(
+                            "حذف التحويل",
+                            style:
+                                AppFontStyles.extraBoldNew16(context).copyWith(
+                              color: AppColors.red,
+                            ),
                           ),
                         ),
-                      ),
                       const SizedBox(
                         width: 5,
                       ),

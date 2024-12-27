@@ -74,6 +74,7 @@ class FinancialDesktopLayOuts extends StatelessWidget {
                   bloc: bloc,
                 ),
                 TranscationView(
+                  isTabletLayout: isTabletLayOut,
                   bloc: bloc,
                 ),
                 AddEditSalaryView(

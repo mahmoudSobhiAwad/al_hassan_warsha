@@ -3,6 +3,7 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/tablet_layout/add_transaction_tablet.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_widgets/add_transaction.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/header_transaction.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_widgets/content_in_transaction_history.dart';
@@ -13,8 +14,10 @@ class TranscationView extends StatelessWidget {
   const TranscationView({
     super.key,
     required this.bloc,
+    this.isTabletLayout = false,
   });
   final FinanicalBloc bloc;
+  final bool isTabletLayout;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -50,7 +53,10 @@ class TranscationView extends StatelessWidget {
                   const SizedBox(
                     height: 24,
                   ),
-                  const HeaderForTransactionHistory(),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 20.0),
+                    child: HeaderForTransactionHistory(),
+                  ),
                   const SizedBox(
                     height: 12,
                   ),
@@ -68,7 +74,9 @@ class TranscationView extends StatelessWidget {
                               behavior: const ScrollBehavior()
                                   .copyWith(scrollbars: false),
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
+                                padding: const EdgeInsets.only(
+                                  right: 20.0,
+                                ),
                                 child: ListView.separated(
                                     controller: bloc.scrollController,
                                     padding: const EdgeInsets.symmetric(
@@ -76,6 +84,7 @@ class TranscationView extends StatelessWidget {
                                     itemCount: bloc.transactionList.length,
                                     itemBuilder: (context, index) {
                                       return ContentInTransactionHistory(
+                                        isTabletLayout: isTabletLayout,
                                         deleteTrans: (id) {
                                           bloc.add(DeleteTransactionEvent(
                                               transactionId: id));
@@ -103,22 +112,47 @@ class TranscationView extends StatelessWidget {
                   ),
                   Form(
                     key: bloc.formKey,
-                    child: AddTransaction(
-                      formKey: bloc.formKey,
-                      transactionModel: bloc.transactionModel,
-                      onChangeDate: (DateTime time) {
-                        bloc.add(ChangeHistoryOfTransactionEvent(time: time));
-                      },
-                      onChangeTransactionMethod: (TransactionMethod method) {
-                        bloc.add(ChangeTransactionMethodEvent(method: method));
-                      },
-                      onChangeTransactionType: (TransactionType method) {
-                        bloc.add(ChangePaymentTypeEvent(type: method));
-                      },
-                      onChangeAllTransactionType: (method) {
-                        bloc.add(ChangeAllTransactionTypesEvent(type: method));
-                      },
-                    ),
+                    child: isTabletLayout
+                        ? AddTransactionInTabletLayout(
+                            formKey: bloc.formKey,
+                            transactionModel: bloc.transactionModel,
+                            onChangeDate: (DateTime time) {
+                              bloc.add(
+                                  ChangeHistoryOfTransactionEvent(time: time));
+                            },
+                            onChangeTransactionMethod:
+                                (TransactionMethod method) {
+                              bloc.add(
+                                  ChangeTransactionMethodEvent(method: method));
+                            },
+                            onChangeTransactionType: (TransactionType method) {
+                              bloc.add(ChangePaymentTypeEvent(type: method));
+                            },
+                            onChangeAllTransactionType: (method) {
+                              bloc.add(
+                                  ChangeAllTransactionTypesEvent(type: method));
+                            },
+                          )
+                        : AddTransaction(
+                            formKey: bloc.formKey,
+                            transactionModel: bloc.transactionModel,
+                            onChangeDate: (DateTime time) {
+                              bloc.add(
+                                  ChangeHistoryOfTransactionEvent(time: time));
+                            },
+                            onChangeTransactionMethod:
+                                (TransactionMethod method) {
+                              bloc.add(
+                                  ChangeTransactionMethodEvent(method: method));
+                            },
+                            onChangeTransactionType: (TransactionType method) {
+                              bloc.add(ChangePaymentTypeEvent(type: method));
+                            },
+                            onChangeAllTransactionType: (method) {
+                              bloc.add(
+                                  ChangeAllTransactionTypesEvent(type: method));
+                            },
+                          ),
                   ),
                   const SizedBox(
                     height: 16,
