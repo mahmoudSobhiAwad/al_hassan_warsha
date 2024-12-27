@@ -11,10 +11,12 @@ class CustomContainerWithDropDownList extends StatelessWidget {
       this.onSelected,
       this.headerStyle,
       this.enableDropDwon=true,
+      this.primaryStyle,
       this.dropDownList = const []});
   final String primaryText;
   final String? headerText;
   final TextStyle?headerStyle;
+  final TextStyle?primaryStyle;
   final void Function(SearchModel)? onSelected;
   final List<SearchModel> dropDownList;
   final bool enableDropDwon;
@@ -45,7 +47,7 @@ class CustomContainerWithDropDownList extends StatelessWidget {
               Flexible(
                 child: Text(
                   primaryText,
-                  style: AppFontStyles.extraBoldNew16(context),
+                  style:primaryStyle?? AppFontStyles.extraBoldNew16(context),
                 ),
               ),
             enableDropDwon?  PopupMenuButton(

@@ -7,8 +7,10 @@ import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/act
 import 'package:flutter/material.dart';
 
 class AddEditSalaryView extends StatelessWidget {
-  const AddEditSalaryView({super.key, required this.bloc});
+  const AddEditSalaryView(
+      {super.key, required this.bloc, this.isTabletLayOut = false});
   final FinanicalBloc bloc;
+  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -79,6 +81,7 @@ class AddEditSalaryView extends StatelessWidget {
                                     primary: true,
                                     itemBuilder: (context, index) {
                                       return OneEmployeeItem(
+                                        isTabletLayOut: isTabletLayOut,
                                         workerModel: bloc.workersList[index],
                                         changeSalaryType: (type) {
                                           bloc.add(ChangeSalaryTypeEvent(
@@ -183,9 +186,10 @@ class AddEditSalaryView extends StatelessWidget {
                           : Text(
                               "دفع المرتبات المحددة",
                               style: AppFontStyles.extraBoldNew24(context)
-                                  .copyWith(color: AppColors.white),
+                                  .copyWith(color: AppColors.white,fontSize: isTabletLayOut?18:null),
                             ),
                       text_2: "تعديل",
+                      fontSize: isTabletLayOut?18:null,
                       color_2: AppColors.blue,
                     ),
                 }

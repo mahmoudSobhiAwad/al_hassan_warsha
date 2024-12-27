@@ -8,11 +8,13 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
     required this.text,
     this.textStyle,
     this.letterSpacing,
+    this.maxLine,
   });
 
   final String text;
   final TextStyle? textStyle;
   final double? letterSpacing;
+  final int? maxLine;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CustomTextWithTheSameStyle extends StatelessWidget {
     return Text(
       text,
       style: (textStyle ?? adaptiveTextStyle).copyWith(letterSpacing: letterSpacing),
-      maxLines: 2,
+      maxLines:maxLine?? 2,
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.start,
     );

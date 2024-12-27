@@ -16,31 +16,24 @@ class OneEmployeeItem extends StatelessWidget {
       required this.workerModel,
       required this.changeSalaryType,
       required this.selectItem,
+      this.isTabletLayOut = false,
       required this.deleteItem});
   final WorkerModel workerModel;
   final void Function(SalaryType) changeSalaryType;
   final void Function() deleteItem;
   final void Function(bool) selectItem;
+  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        IconButton(
-          onPressed: () {
-            selectItem(workerModel.isSelected);
-          },
-          icon: workerModel.isSelected
-              ? const Icon(
-                  Icons.check_box,
-                  color: AppColors.green,
-                  size: 35,
-                )
-              : const Icon(
-                  Icons.check_box_outline_blank,
-                  size: 35,
-                ),
-        ),
+        Checkbox(
+            activeColor: AppColors.green,
+            value: workerModel.isSelected,
+            onChanged: (v) {
+              selectItem(workerModel.isSelected);
+            }),
         const SizedBox(
           width: 12,
         ),
@@ -51,13 +44,12 @@ class OneEmployeeItem extends StatelessWidget {
               enableBorder: true,
               borderWidth: 2,
               textLabel: '',
-              textInnerStyle: AppFontStyles.bold18(context),
+              textInnerStyle: isTabletLayOut?AppFontStyles.bold10(context): AppFontStyles.bold16(context),
               readOnly: !workerModel.enableEdit,
               controller: TextEditingController(text: workerModel.workerName),
               onChanged: (value) {
                 workerModel.workerName = value ?? "";
               },
-              textStyle: AppFontStyles.extraBoldNew20(context),
               maxLine: 1,
             )),
         const Expanded(flex: 1, child: SizedBox()),
@@ -72,10 +64,8 @@ class OneEmployeeItem extends StatelessWidget {
                 workerModel.salaryAmount = value ?? "";
               },
               borderWidth: 2,
-              textStyle: AppFontStyles.extraBoldNew20(context),
               textLabel: '',
-              textInnerStyle:
-                  AppFontStyles.extraBoldNew20(context).copyWith(letterSpacing: 3),
+              textInnerStyle: isTabletLayOut?AppFontStyles.bold12(context): AppFontStyles.bold16(context),
               textInputType: TextInputType.number,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -90,8 +80,7 @@ class OneEmployeeItem extends StatelessWidget {
             flex: 3,
             child: CustomColumnWithTextInAddNewType(
               text: "رقم الهاتف ",
-              textInnerStyle:
-                  AppFontStyles.bold18(context).copyWith(letterSpacing: 3),
+              textInnerStyle: isTabletLayOut?AppFontStyles.bold10(context): AppFontStyles.bold16(context),
               readOnly: !workerModel.enableEdit,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -106,7 +95,6 @@ class OneEmployeeItem extends StatelessWidget {
               onChanged: (value) {
                 workerModel.workerPhone = value ?? "";
               },
-              textStyle: AppFontStyles.extraBoldNew20(context),
               textLabel: '',
               maxLine: 1,
             )),
@@ -114,6 +102,7 @@ class OneEmployeeItem extends StatelessWidget {
         Expanded(
           flex: 3,
           child: CustomContainerWithDropDownList(
+            primaryStyle: isTabletLayOut?AppFontStyles.bold10(context): AppFontStyles.bold16(context),
             enableDropDwon: workerModel.enableEdit,
             primaryText: switch (workerModel.salaryType) {
               SalaryType.daily => "يومي",
@@ -124,7 +113,9 @@ class OneEmployeeItem extends StatelessWidget {
             onSelected: (model) {
               changeSalaryType(model.valueEnSearh);
             },
-            headerStyle: AppFontStyles.extraBoldNew20(context),
+            headerStyle: isTabletLayOut
+                ? AppFontStyles.bold10(context)
+                : AppFontStyles.extraBoldNew14(context),
             dropDownList: [
               SearchModel(valueArSearh: "يومي", valueEnSearh: SalaryType.daily),
               SearchModel(
@@ -137,22 +128,23 @@ class OneEmployeeItem extends StatelessWidget {
         const SizedBox(
           width: 10,
         ),
-        Tooltip(
-            padding: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              color: AppColors.veryLightGray,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            textStyle: AppFontStyles.extraBoldNew16(context),
-            message: workerModel.lastAddedSalary == null
-                ? "تاريخ اخر قبض غير محدد"
-                : DateFormat('d MMMM y, h:mm a', 'ar')
-                    .format(workerModel.lastAddedSalary ?? DateTime.now()),
-            child: const Icon(
-              Icons.info,
-              color: AppColors.orange,
-              size: 33,
-            )),
+        if (!isTabletLayOut)
+          Tooltip(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: AppColors.veryLightGray,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              textStyle: AppFontStyles.extraBoldNew16(context),
+              message: workerModel.lastAddedSalary == null
+                  ? "تاريخ اخر قبض غير محدد"
+                  : DateFormat('d MMMM y, h:mm a', 'ar')
+                      .format(workerModel.lastAddedSalary ?? DateTime.now()),
+              child: const Icon(
+                Icons.info,
+                color: AppColors.orange,
+                size: 33,
+              )),
         const SizedBox(
           width: 10,
         ),
