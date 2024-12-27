@@ -14,6 +14,7 @@ class AnalysisView extends StatelessWidget {
       required this.onTap,
       this.startDate,
       this.endDate,
+      this.isTabletLayOut=false,
       required this.makeAnalysis});
   final AnalysisModelData? analysisModelData;
   final void Function(DateTime) changeStartDate;
@@ -23,6 +24,7 @@ class AnalysisView extends StatelessWidget {
   final DateTime? endDate;
   final void Function() makeAnalysis;
   final bool isLoading;
+  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -46,12 +48,13 @@ class AnalysisView extends StatelessWidget {
                 children: [
                   Text(
                     "حدد الفترة الزمنية",
-                    style: AppFontStyles.extraBoldNew26(context),
+                    style:isTabletLayOut?AppFontStyles.extraBoldNew18(context): AppFontStyles.extraBoldNew26(context),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   HeaderOfAnalysis(
+                    isTabletLayOut: isTabletLayOut,
                     startDate: startDate,
                     endDate: endDate,
                     changeStartDate: (start) {
@@ -69,6 +72,7 @@ class AnalysisView extends StatelessWidget {
                       ? const Center(child: CircularProgressIndicator())
                       : analysisModelData != null
                           ? ContentOfAnalysis(
+                            isTabletLayOut: isTabletLayOut,
                               onTap: (index, {required String type}) {
                                 onTap(index, type: type);
                               },
@@ -77,7 +81,7 @@ class AnalysisView extends StatelessWidget {
                           : Center(
                               child: Text(
                                 "اختار المدي الزمني لتحليل النتائج ",
-                                style: AppFontStyles.extraBoldNew38(context),
+                                style:isTabletLayOut?AppFontStyles.extraBoldNew20(context): AppFontStyles.extraBoldNew38(context),
                               ),
                             ),
                 ],

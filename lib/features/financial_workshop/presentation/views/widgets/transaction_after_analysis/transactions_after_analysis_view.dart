@@ -53,8 +53,9 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                           child: Center(
                                             child: Text(
                                               "لا يوجد اي معاملات من هذا النوع لهذه الفترة ",
-                                              style: AppFontStyles.extraBoldNew26(
-                                                  context),
+                                              style:
+                                                  AppFontStyles.extraBoldNew26(
+                                                      context),
                                             ),
                                           ),
                                         )
@@ -67,15 +68,16 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                             scrollbarOrientation:
                                                 ScrollbarOrientation.right,
                                             child: ScrollConfiguration(
-                                              behavior:const ScrollBehavior().copyWith(
+                                              behavior: const ScrollBehavior()
+                                                  .copyWith(
                                                 scrollbars: false,
                                               ),
                                               child: ListView.separated(
-                                                primary: true,
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          vertical: 12),
-                                                  itemBuilder: (context, index) {
+                                                  primary: true,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 12),
+                                                  itemBuilder:
+                                                      (context, index) {
                                                     return ContentInTransactionHistory(
                                                       model:
                                                           bloc.analysisTransactionList[

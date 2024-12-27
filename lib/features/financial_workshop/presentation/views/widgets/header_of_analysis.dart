@@ -9,6 +9,7 @@ class HeaderOfAnalysis extends StatelessWidget {
     required this.changeEndDate,
     this.startDate,
     this.endDate,
+    this.isTabletLayOut=false,
     required this.makeAnalysis,
   });
   final void Function(DateTime) changeStartDate;
@@ -16,14 +17,15 @@ class HeaderOfAnalysis extends StatelessWidget {
   final DateTime? startDate;
   final DateTime? endDate;
   final void Function() makeAnalysis;
+  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        const Expanded(flex: 2, child: SizedBox()),
+        const Expanded(flex: 1, child: SizedBox()),
         Expanded(
-          flex: 2,
+          flex: 5,
           child: CustomDatePicker(
             isReadOnly: false,
             labelText: "البداية",
@@ -33,7 +35,7 @@ class HeaderOfAnalysis extends StatelessWidget {
         ),
         const Expanded(flex: 1, child: SizedBox()),
         Expanded(
-          flex: 2,
+          flex: 5,
           child: CustomDatePicker(
             isReadOnly: false,
             startDate: startDate,
@@ -44,16 +46,17 @@ class HeaderOfAnalysis extends StatelessWidget {
         ),
         const Expanded(flex: 1, child: SizedBox()),
          Expanded(
-            flex: 2,
+            flex: 3,
             child: CustomPushContainerButton(
               pushButtomText: "بحث",
+              pushButtomTextFontSize: isTabletLayOut?16:null,
               onTap: makeAnalysis,
               iconBehind: Icons.search,
               padding:const EdgeInsets.symmetric(vertical: 8),
               borderRadius: 12,
               iconSize: 30,
             )),
-        const Expanded(flex: 2, child: SizedBox()),
+        const Expanded(flex: 1, child: SizedBox()),
       ],
     );
   }

@@ -82,6 +82,7 @@ class FinancialDesktopLayOuts extends StatelessWidget {
                   bloc: bloc,
                 ),
                 AnalysisView(
+                  isTabletLayOut: isTabletLayOut,
                   onTap: (index, {required String type}) {
                     bloc.add(NavToAnlysisListEvent(index: index, type: type));
                   },
