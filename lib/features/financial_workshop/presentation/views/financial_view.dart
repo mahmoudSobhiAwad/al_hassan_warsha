@@ -59,10 +59,17 @@ class FinancialView extends StatelessWidget {
         var bloc = context.read<FinanicalBloc>();
         return Expanded(
           child: CustomAdaptiveLayout(
-              desktopLayout: (context, [constraint]) =>
+              desktopLayout: (
+                context,
+              ) =>
                   FinancialDesktopLayOuts(bloc: bloc),
-              mobileLayout: (context) => const MobileFinancialView(),
-              tabletLayout: (context, [constraint]) => FinancialDesktopLayOuts(
+              mobileLayout: (context) => MobileFinancialView(
+                    bloc: bloc,
+                  ),
+              tabletLayout: (
+                context,
+              ) =>
+                  FinancialDesktopLayOuts(
                     bloc: bloc,
                     isTabletLayOut: true,
                   )),

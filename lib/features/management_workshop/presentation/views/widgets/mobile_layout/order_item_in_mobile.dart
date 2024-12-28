@@ -34,18 +34,24 @@ class OrderItemInMobile extends StatelessWidget {
           const SizedBox(
             height: 5,
           ),
-          DetailsInOrderItemMobile(
-              title: orderModel.customerModel?.customerName ?? "",
-              iconData: Icons.person),
-          DetailsInOrderItemMobile(
-              title: DateFormat('d MMMM y', 'ar')
-                  .format(orderModel.recieveTime ?? DateTime.now()),
-              iconData: Icons.calendar_month_rounded),
-          DetailsInOrderItemMobile(
-            textStyle: AppFontStyles.extraBold14(context).copyWith(color: AppColors.white,letterSpacing: 3),
-              title:
-                  '${convertToArabicNumbers(orderModel.pillModel!.remian)}جنية',
-              iconData: FontAwesomeIcons.sackDollar),
+          Flexible(
+            child: DetailsInOrderItemMobile(
+                title: orderModel.customerModel?.customerName ?? "",
+                iconData: Icons.person),
+          ),
+          Flexible(
+            child: DetailsInOrderItemMobile(
+                title: DateFormat('d MMMM y', 'ar')
+                    .format(orderModel.recieveTime ?? DateTime.now()),
+                iconData: Icons.calendar_month_rounded),
+          ),
+          Flexible(
+            child: DetailsInOrderItemMobile(
+              textStyle: AppFontStyles.extraBold14(context).copyWith(color: AppColors.white,letterSpacing: 3),
+                title:
+                    '${convertToArabicNumbers(orderModel.pillModel!.remian)}جنية',
+                iconData: FontAwesomeIcons.sackDollar),
+          ),
         ],
       ),
     );
@@ -54,33 +60,36 @@ class OrderItemInMobile extends StatelessWidget {
 
 class DetailsInOrderItemMobile extends StatelessWidget {
   const DetailsInOrderItemMobile(
-      {super.key, required this.title, required this.iconData,this.textStyle});
+      {super.key, required this.title, required this.iconData,this.textStyle,this.color,this.width,this.maxLines});
   final String title;
   final TextStyle?textStyle;
   final IconData iconData;
+  final Color?color;
+  final double?width;
+  final int? maxLines;
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          IconButton(
-            onPressed: null,
-            icon: Icon(
-              iconData,
-              color: AppColors.white,
-            ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        IconButton(
+          onPressed: null,
+          icon: Icon(
+            iconData,
+            color: color??AppColors.white,
           ),
-          Text(
+        ),
+        SizedBox(
+          width:width,
+          child: Text(
             title,
-            maxLines: 1,
+            maxLines:maxLines?? 1,
             overflow: TextOverflow.ellipsis,
             style:
-              textStyle??  AppFontStyles.semiBold14(context).copyWith(color: AppColors.white),
+              textStyle??  AppFontStyles.semiBold14(context).copyWith(color: color??AppColors.white),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

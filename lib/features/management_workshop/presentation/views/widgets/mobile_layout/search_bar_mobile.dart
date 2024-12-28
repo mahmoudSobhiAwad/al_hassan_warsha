@@ -2,7 +2,6 @@ import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_snack_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
-import 'package:al_hassan_warsha/features/management_workshop/presentation/manager/bloc/management_bloc.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/custom_box_shadow.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_field_in_search_bar.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/search_menu_in_search_bar.dart';
@@ -11,11 +10,18 @@ import 'package:flutter/material.dart';
 class SearchBarInMobileManagement extends StatelessWidget {
   const SearchBarInMobileManagement({
     super.key,
-    required this.bloc,
+    required this.searchKeyWord,
+    required this.searchKey,
+    required this.enableSearch,
+    required this.changeSearchKeyWord,
+    required this.changeSearchKey,
   });
 
-  final ManagementBloc bloc;
-
+  final String searchKeyWord;
+  final SearchModel searchKey;
+  final void Function() enableSearch;
+  final void Function(String) changeSearchKeyWord;
+  final void Function(SearchModel) changeSearchKey;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,19 +37,18 @@ class SearchBarInMobileManagement extends StatelessWidget {
             child: SearchFieldInSearchBar(
               textStyle: AppFontStyles.bold12(context),
               searchFunc: () {
-                if (bloc.searchKeyWord.trim().isNotEmpty &&
-                    bloc.searchKey.valueArSearh.isNotEmpty) {
-                  bloc.add(SearchForOrderEvent(enable: true));
+                if (searchKeyWord.trim().isNotEmpty &&
+                    searchKey.valueArSearh.isNotEmpty) {
+                  enableSearch();
                 } else {
-                  showCustomSnackBar(
-                      context, "حدد كلمة البحث او نوع البحث ",
+                  showCustomSnackBar(context, "حدد كلمة البحث او نوع البحث ",
                       backgroundColor: AppColors.orange);
                 }
               },
-              searchKeyWord: bloc.searchKeyWord,
-              searchKey: bloc.searchKey,
+              searchKeyWord: searchKeyWord,
+              searchKey: searchKey,
               changeSearchText: (text) {
-                bloc.searchKeyWord = text;
+                changeSearchKeyWord(text);
               },
               enableSuffiex: false,
             ),
@@ -52,10 +57,10 @@ class SearchBarInMobileManagement extends StatelessWidget {
         const Expanded(child: SizedBox()),
         SearchMenuInSearchBar(
           searchedStyle: AppFontStyles.bold12(context),
-          searchedKey: bloc.searchKey.valueArSearh,
+          searchedKey: searchKey.valueArSearh,
           searchList: searchListInOrders,
           changeSearchType: (text) {
-            bloc.add(ChangeSearchKeyEvent(searchKey: text));
+            changeSearchKey(text);
           },
         ),
         const Expanded(flex: 1, child: SizedBox()),

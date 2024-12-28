@@ -1,5 +1,5 @@
-String convertToEnglishNumbers(String arabicNumber) {
-  if (arabicNumber.isNotEmpty) {
+String convertToEnglishNumbers(String? arabicNumber) {
+  if (arabicNumber!=null && arabicNumber.isNotEmpty) {
     const arabicToEnglishMap = {
       '٠': '0',
       '١': '1',
