@@ -47,8 +47,6 @@ class CustomDatePicker extends StatelessWidget {
       text: labelText ?? " تاريخ الاستلام ",
       enableBorder: true,
       readOnly: true,
-     
-      textStyle: aboveTextStyle ?? AppFontStyles.extraBoldNew16(context),
       textLabel: "",
       suffixIcon: IconButton(
         onPressed: !isReadOnly

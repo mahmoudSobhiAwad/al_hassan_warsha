@@ -1,5 +1,7 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_adaptive_layout.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_pagination.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/header_transaction.dart';
@@ -30,10 +32,28 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                 backgroundColor: AppColors.white,
                 body: Column(
                   children: [
-                    AppBarWithLinking(items: [
-                      "كل التحويلات",
-                      transactionType,
-                    ]),
+                    CustomAdaptiveLayout(desktopLayout: (context) {
+                      return AppBarWithLinking(items: [
+                        "كل التحويلات",
+                        transactionType,
+                      ]);
+                    }, mobileLayout: (context) {
+                      return AppBarWithLinking(
+                          iconSize: 24,
+                          fontSize: 14,
+                          items: [
+                            "كل التحويلات",
+                            transactionType,
+                          ]);
+                    }, tabletLayout: (context) {
+                      return AppBarWithLinking(
+                          iconSize: 30,
+                          fontSize: 18,
+                          items: [
+                            "كل التحويلات",
+                            transactionType,
+                          ]);
+                    }),
                     const SizedBox(
                       height: 12,
                     ),
@@ -72,27 +92,30 @@ class TransactionsAfterAnalysisView extends StatelessWidget {
                                                   .copyWith(
                                                 scrollbars: false,
                                               ),
-                                              child: ListView.separated(
-                                                  primary: true,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 12),
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ContentInTransactionHistory(
-                                                      model:
-                                                          bloc.analysisTransactionList[
-                                                              index],
-                                                    );
-                                                  },
-                                                  separatorBuilder:
-                                                      (context, index) {
-                                                    return const SizedBox(
-                                                      height: 20,
-                                                    );
-                                                  },
-                                                  itemCount: bloc
-                                                      .analysisTransactionList
-                                                      .length),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(right: 20.0),
+                                                child: ListView.separated(
+                                                    primary: true,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 12),
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return ContentInTransactionHistory(
+                                                        model:
+                                                            bloc.analysisTransactionList[
+                                                                index],
+                                                      );
+                                                    },
+                                                    separatorBuilder:
+                                                        (context, index) {
+                                                      return const SizedBox(
+                                                        height: 20,
+                                                      );
+                                                    },
+                                                    itemCount: bloc
+                                                        .analysisTransactionList
+                                                        .length),
+                                              ),
                                             ),
                                           ),
                                         ),

@@ -40,6 +40,7 @@ class AppBarWithLinking extends StatelessWidget {
                 ...List.generate(
                     items.length,
                     (index) => CustomItemInCustomLinkingAppBar(
+                      iconSize: iconSize,
                       enableColor: enableColor,
                       fontSize: fontSize,
                           text: items[index],

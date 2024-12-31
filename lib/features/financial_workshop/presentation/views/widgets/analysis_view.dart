@@ -1,4 +1,3 @@
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/content_analysis.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/header_of_analysis.dart';
@@ -14,7 +13,6 @@ class AnalysisView extends StatelessWidget {
       required this.onTap,
       this.startDate,
       this.endDate,
-      this.isTabletLayOut=false,
       required this.makeAnalysis});
   final AnalysisModelData? analysisModelData;
   final void Function(DateTime) changeStartDate;
@@ -24,7 +22,6 @@ class AnalysisView extends StatelessWidget {
   final DateTime? endDate;
   final void Function() makeAnalysis;
   final bool isLoading;
-  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -38,23 +35,21 @@ class AnalysisView extends StatelessWidget {
         child: ScrollConfiguration(
           behavior: const ScrollBehavior().copyWith(scrollbars: false),
           child: Padding(
-            padding:const EdgeInsets.only(right: 20),
+            padding: const EdgeInsets.only(right: 20),
             child: SingleChildScrollView(
               primary: true,
-              
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "حدد الفترة الزمنية",
-                    style:isTabletLayOut?AppFontStyles.extraBoldNew18(context): AppFontStyles.extraBoldNew26(context),
+                    style: contentInAnalysisItem(context),
                   ),
                   const SizedBox(
                     height: 24,
                   ),
                   HeaderOfAnalysis(
-                    isTabletLayOut: isTabletLayOut,
                     startDate: startDate,
                     endDate: endDate,
                     changeStartDate: (start) {
@@ -72,7 +67,6 @@ class AnalysisView extends StatelessWidget {
                       ? const Center(child: CircularProgressIndicator())
                       : analysisModelData != null
                           ? ContentOfAnalysis(
-                            isTabletLayOut: isTabletLayOut,
                               onTap: (index, {required String type}) {
                                 onTap(index, type: type);
                               },
@@ -81,7 +75,7 @@ class AnalysisView extends StatelessWidget {
                           : Center(
                               child: Text(
                                 "اختار المدي الزمني لتحليل النتائج ",
-                                style:isTabletLayOut?AppFontStyles.extraBoldNew20(context): AppFontStyles.extraBoldNew38(context),
+                                style: contentInAnalysisItem(context),
                               ),
                             ),
                 ],

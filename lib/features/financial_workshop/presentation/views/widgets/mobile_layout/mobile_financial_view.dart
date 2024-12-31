@@ -37,7 +37,6 @@ class MobileFinancialView extends StatelessWidget {
                             ),
                             const SalaryForWorkersMobileLayOut(),
                             AnalysisView(
-                              isTabletLayOut: true,
                               onTap: (index, {required String type}) {
                                 bloc.add(NavToAnlysisListEvent(
                                     index: index, type: type));

@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/widgets/custom_push_button.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_time_picker.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/content_analysis.dart';
 import 'package:flutter/material.dart';
 
 class HeaderOfAnalysis extends StatelessWidget {
@@ -9,7 +10,6 @@ class HeaderOfAnalysis extends StatelessWidget {
     required this.changeEndDate,
     this.startDate,
     this.endDate,
-    this.isTabletLayOut=false,
     required this.makeAnalysis,
   });
   final void Function(DateTime) changeStartDate;
@@ -17,7 +17,6 @@ class HeaderOfAnalysis extends StatelessWidget {
   final DateTime? startDate;
   final DateTime? endDate;
   final void Function() makeAnalysis;
-  final bool isTabletLayOut;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -46,10 +45,10 @@ class HeaderOfAnalysis extends StatelessWidget {
         ),
         const Expanded(flex: 1, child: SizedBox()),
          Expanded(
-            flex: 3,
+            flex: 4,
             child: CustomPushContainerButton(
               pushButtomText: "بحث",
-              pushButtomTextFontSize: isTabletLayOut?16:null,
+              pushButtomTextFontSize: contentInAnalysisItem(context).fontSize,
               onTap: makeAnalysis,
               iconBehind: Icons.search,
               padding:const EdgeInsets.symmetric(vertical: 8),

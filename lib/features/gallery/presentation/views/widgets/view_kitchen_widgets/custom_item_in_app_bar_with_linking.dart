@@ -4,11 +4,12 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:flutter/material.dart';
 class CustomItemInCustomLinkingAppBar extends StatelessWidget {
   const CustomItemInCustomLinkingAppBar(
-      {super.key, required this.text, this.isLast = false,this.enableColor=true,this.fontSize});
+      {super.key, required this.text, this.isLast = false,this.enableColor=true,this.fontSize,this.iconSize});
   final String text;
   final bool isLast;
   final bool enableColor;
   final double ? fontSize;
+  final double?iconSize;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -31,7 +32,7 @@ class CustomItemInCustomLinkingAppBar extends StatelessWidget {
                 icon: Icon(
                   color: enableColor ? AppColors.white : AppColors.black,
                   Icons.arrow_forward_ios_rounded,
-                  size: 40,
+                  size:iconSize?? 40,
                 ))
             : const SizedBox(),
       ],

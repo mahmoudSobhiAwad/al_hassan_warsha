@@ -57,7 +57,6 @@ class CustomTextFormField extends StatelessWidget {
   final bool readOnly;
   final Widget Function(BuildContext, EditableTextState)? contextMenuBuilder;
   final void Function()? onTap;
-  // final EdgeInsets?scrollPadding;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -123,7 +122,7 @@ TextStyle getAdaptiveFontStyle(
   BuildContext context,
 ) {
   if (AppFontsLayout.isMobile(context)) {
-    return AppFontStyles.extraBold14(context);
+    return AppFontStyles.bold12(context);
   } else if (AppFontsLayout.isTablet(context)) {
     return AppFontStyles.bold16(context);
   } else if (AppFontsLayout.isDesktop(context)) {
