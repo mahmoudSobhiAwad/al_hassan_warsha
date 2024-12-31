@@ -121,8 +121,8 @@ class ContentOfFinancialTable extends StatelessWidget {
           pillModel: pillModel,
           downStep: downStep,
           textStyle: isTabletLayOut
-              ? AppFontStyles.extraBold12(context)
-              : AppFontStyles.extraBold14(context),
+              ? AppFontStyles.extraBold12(context).copyWith(color: AppColors.white)
+              : AppFontStyles.extraBold14(context).copyWith(color: AppColors.white),
         )
       ],
     );

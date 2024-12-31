@@ -9,10 +9,12 @@ class TransactionMoneyAmount extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.transactionModel,
+    this.headerTextStyle,
   });
 
   final GlobalKey<FormState> formKey;
   final TransactionModel transactionModel;
+  final TextStyle? headerTextStyle ;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class TransactionMoneyAmount extends StatelessWidget {
               r'[0-9\u0660-\u0669\u06F0-\u06F9]'), // Allow Arabic and English numerals only
         ),
       ],
-      textStyle: AppFontStyles.extraBoldNew16(context),
+      textStyle:headerTextStyle?? AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
       text: "قيمة المبلغ",
       textLabel: ".......................",

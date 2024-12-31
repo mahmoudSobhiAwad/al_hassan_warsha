@@ -1,4 +1,3 @@
-import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/step_down_in_each_order.dart';
@@ -26,9 +25,11 @@ class CustomerBillItem extends StatelessWidget {
         border: Border.all(color: AppColors.lightGray1, width: 1.5),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            spacing: 8,
+            runSpacing: 10,
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -36,8 +37,6 @@ class CustomerBillItem extends StatelessWidget {
                     color: AppColors.veryLightGray2,
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 child: DetailsInOrderItemMobile(
-                  width: context.screenWidth * 0.2,
-                  maxLines: 2,
                   title: orderModel.pillModel?.customerName ?? "",
                   iconData: Icons.person,
                   color: AppColors.black,
@@ -49,8 +48,6 @@ class CustomerBillItem extends StatelessWidget {
                     color: AppColors.veryLightGray2,
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 child: DetailsInOrderItemMobile(
-                  maxLines: 2,
-                  width: context.screenWidth * 0.2,
                   title: orderModel.orderName,
                   iconData: Icons.shopping_cart_rounded,
                   color: AppColors.black,
@@ -62,7 +59,6 @@ class CustomerBillItem extends StatelessWidget {
                     color: AppColors.veryLightGray2,
                     borderRadius: BorderRadius.all(Radius.circular(4))),
                 child: DetailsInOrderItemMobile(
-                  width: context.screenWidth * 0.15,
                   title: orderModel.pillModel?.remian ?? "",
                   iconData: FontAwesomeIcons.database,
                   color: AppColors.black,

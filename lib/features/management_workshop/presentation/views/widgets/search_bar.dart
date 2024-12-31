@@ -13,21 +13,19 @@ class SearchBarInManagment extends StatelessWidget {
     super.key,
     required this.changeSearchType,
     required this.searchFunc,
-    this.searchKeyWord,
-    required this.changeSearchText,
     required this.searchList,
     required this.searchKey,
     this.enableCreateTable = true,
     this.textStyle,
+    required this.searchTextController,
   });
 
   final void Function(SearchModel) changeSearchType;
-  final void Function(String) changeSearchText;
   final void Function() searchFunc;
   final SearchModel searchKey;
-  final String? searchKeyWord;
   final List<SearchModel> searchList;
   final bool enableCreateTable;
+  final TextEditingController searchTextController;
   final TextStyle? textStyle;
 
   @override
@@ -43,16 +41,18 @@ class SearchBarInManagment extends StatelessWidget {
               customLowBoxShadow(),
             ]),
             child: SearchFieldInSearchBar(
+                textEditingController: searchTextController,
                 textStyle: textStyle,
-                changeSearchText: changeSearchText,
-                searchKeyWord: searchKeyWord,
                 searchKey: searchKey,
                 searchFunc: searchFunc),
           ),
         ),
         const Expanded(child: SizedBox()),
         SearchMenuInSearchBar(
-            changeSearchType: changeSearchType, searchList: searchList,searchedStyle: textStyle,),
+          changeSearchType: changeSearchType,
+          searchList: searchList,
+          searchedStyle: textStyle,
+        ),
         const Expanded(child: SizedBox()),
         if (enableCreateTable)
           CustomPushContainerButton(

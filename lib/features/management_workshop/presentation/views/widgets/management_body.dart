@@ -61,7 +61,7 @@ class ManagmentBody extends StatelessWidget {
                       bloc.add(ChangeSearchKeyEvent(searchKey: text));
                     },
                     searchFunc: () {
-                      if (bloc.searchKeyWord.trim().isNotEmpty &&
+                      if (bloc.searchTextController.text.trim().isNotEmpty &&
                           bloc.searchKey.valueArSearh.isNotEmpty) {
                         bloc.add(SearchForOrderEvent(enable: true));
                       } else {
@@ -70,11 +70,8 @@ class ManagmentBody extends StatelessWidget {
                             backgroundColor: AppColors.orange);
                       }
                     },
-                    searchKeyWord: bloc.searchKeyWord,
                     searchKey: bloc.searchKey,
-                    changeSearchText: (text) {
-                      bloc.searchKeyWord = text;
-                    },
+                    searchTextController: bloc.searchTextController,
                   ),
                   const SizedBox(
                     height: 24,
@@ -83,7 +80,7 @@ class ManagmentBody extends StatelessWidget {
                     true => Expanded(
                         child: SearchedOrderResutl(
                           enableAddress: enableAddress,
-                          searchKey: bloc.searchKeyWord,
+                          searchKey: bloc.searchTextController.text,
                           bloc: bloc,
                           backToMain: () {
                             bloc.add(SearchForOrderEvent(enable: false));

@@ -63,7 +63,7 @@ class ContentInTransactionHistory extends StatelessWidget {
                         ),
                         Text(
                           "جنية",
-                          style:  AppFontStyles.extraBold14(context),
+                          style: AppFontStyles.extraBold14(context),
                         ),
                       ],
                     )),
@@ -100,35 +100,15 @@ class ContentInTransactionHistory extends StatelessWidget {
             ),
           ),
         ),
-        const Expanded(child: SizedBox()),
+        if (deleteTrans != null) const Expanded(child: SizedBox()),
         deleteTrans != null
             ? Expanded(
                 flex: 2,
                 child: InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            child: CustomAlert(
-                              enableIcon: false,
-                              actionButtonsInstead:
-                                  DialogAddNewTypeActionButton(
-                                onPressed_2: () {
-                                  Navigator.pop(context);
-                                },
-                                text_1: "تأكيد ",
-                                text_2: "الغاء",
-                                onPressed_1: () {
-                                  deleteTrans!(model.transactionId!);
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              title:
-                                  "هل تريد حذف التحويل نهائي سيتم حذفة من الحسابات ايضا !!",
-                            ),
-                          );
-                        });
+                  onTap: () async {
+                    if (await checkBeforeRemoveTransaction(context)) {
+                       deleteTrans!(model.transactionId??"");
+                    }
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -159,4 +139,35 @@ class ContentInTransactionHistory extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<bool> checkBeforeRemoveTransaction(
+  BuildContext context,{double?fontSize}
+) async {
+  bool checkValue = false;
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: CustomAlert(
+            titleSize: fontSize,
+            enableIcon: false,
+            actionButtonsInstead: DialogAddNewTypeActionButton(
+              onPressed_2: () {
+                Navigator.pop(context);
+                checkValue = false;
+              },
+              text_1: "تأكيد ",
+              text_2: "الغاء",
+              onPressed_1: () {
+                Navigator.pop(context);
+                checkValue = true;
+              },
+            ),
+            title: "هل تريد حذف التحويل نهائي سيتم حذفة من الحسابات ايضا !!",
+          ),
+        );
+      }).then((v) {
+    return checkValue;
+  });
 }

@@ -75,24 +75,11 @@ class AddTransactionInTabletLayout extends StatelessWidget {
         Row(
           children: [
             Expanded(
-                flex: 2,
-                child: CustomContainerWithDropDownList(
-                  headerText: "دفع/استلام",
-                  primaryText: transactionModel.transactionType ==
-                          TransactionType.recieve
-                      ? "استلام"
-                      : "دفع",
-                  onSelected: (value) {
-                    onChangeTransactionType(value.valueEnSearh);
-                  },
-                  dropDownList: [
-                    SearchModel(
-                        valueArSearh: "استلام",
-                        valueEnSearh: TransactionType.recieve),
-                    SearchModel(
-                        valueArSearh: "دفع", valueEnSearh: TransactionType.buy),
-                  ],
-                )),
+              flex: 2,
+              child: PayOrRecieveOption(
+                  transactionModel: transactionModel,
+                  onChangeTransactionType: onChangeTransactionType),
+            ),
             const Expanded(child: SizedBox()),
             Expanded(
                 flex: 3,
@@ -137,6 +124,42 @@ class AddTransactionInTabletLayout extends StatelessWidget {
                 )),
           ],
         )
+      ],
+    );
+  }
+}
+
+class PayOrRecieveOption extends StatelessWidget {
+  const PayOrRecieveOption({
+    super.key,
+    required this.transactionModel,
+    required this.onChangeTransactionType,
+    this.headerStyle,
+    this.primaryStyle,
+  });
+
+  final TransactionModel transactionModel;
+  final void Function(TransactionType method) onChangeTransactionType;
+  final TextStyle?headerStyle;
+  final TextStyle?primaryStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomContainerWithDropDownList(
+      primaryStyle: primaryStyle,
+      headerStyle: headerStyle,
+      headerText: "دفع/استلام",
+      primaryText:
+          transactionModel.transactionType == TransactionType.recieve
+              ? "استلام"
+              : "دفع",
+      onSelected: (value) {
+        onChangeTransactionType(value.valueEnSearh);
+      },
+      dropDownList: [
+        SearchModel(
+            valueArSearh: "استلام", valueEnSearh: TransactionType.recieve),
+        SearchModel(valueArSearh: "دفع", valueEnSearh: TransactionType.buy),
       ],
     );
   }

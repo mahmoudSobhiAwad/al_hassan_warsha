@@ -10,18 +10,18 @@ import 'package:flutter/material.dart';
 class SearchBarInMobileManagement extends StatelessWidget {
   const SearchBarInMobileManagement({
     super.key,
-    required this.searchKeyWord,
     required this.searchKey,
     required this.enableSearch,
-    required this.changeSearchKeyWord,
+    required this.searchTextController,
     required this.changeSearchKey,
+    this.searchedList,
   });
 
-  final String searchKeyWord;
   final SearchModel searchKey;
   final void Function() enableSearch;
-  final void Function(String) changeSearchKeyWord;
   final void Function(SearchModel) changeSearchKey;
+  final TextEditingController searchTextController;
+  final List<SearchModel>?searchedList;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -35,9 +35,10 @@ class SearchBarInMobileManagement extends StatelessWidget {
               customLowBoxShadow(),
             ]),
             child: SearchFieldInSearchBar(
+              textEditingController: searchTextController,
               textStyle: AppFontStyles.bold12(context),
               searchFunc: () {
-                if (searchKeyWord.trim().isNotEmpty &&
+                if (searchTextController.text.trim().isNotEmpty &&
                     searchKey.valueArSearh.isNotEmpty) {
                   enableSearch();
                 } else {
@@ -45,11 +46,7 @@ class SearchBarInMobileManagement extends StatelessWidget {
                       backgroundColor: AppColors.orange);
                 }
               },
-              searchKeyWord: searchKeyWord,
               searchKey: searchKey,
-              changeSearchText: (text) {
-                changeSearchKeyWord(text);
-              },
               enableSuffiex: false,
             ),
           ),
@@ -58,7 +55,7 @@ class SearchBarInMobileManagement extends StatelessWidget {
         SearchMenuInSearchBar(
           searchedStyle: AppFontStyles.bold12(context),
           searchedKey: searchKey.valueArSearh,
-          searchList: searchListInOrders,
+          searchList:searchedList?? searchListInOrders,
           changeSearchType: (text) {
             changeSearchKey(text);
           },

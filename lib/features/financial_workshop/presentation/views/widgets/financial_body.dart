@@ -37,21 +37,18 @@ class FinancialBody extends StatelessWidget {
                 isTabletLayOut ? AppFontStyles.extraBoldNew18(context) : null,
             enableCreateTable: false,
             searchList: searchListInFinanical,
-            searchKeyWord: bloc.searchKeyWord,
+            searchTextController: bloc.searchTextController,
             changeSearchType: (model) {
               bloc.add(ChangeSearchModelEvent(model: model));
             },
             searchFunc: () {
               if (bloc.searchModel.valueEnSearh.isNotEmpty &&
-                  bloc.searchKeyWord.trim().isNotEmpty) {
+                  bloc.searchTextController.text.trim().isNotEmpty) {
                 bloc.add(EnableOrDisableSearchEvent(status: true));
               } else {
                 showCustomSnackBar(context, "حدد كلمة البحث او نوع البحث ",
                     backgroundColor: AppColors.orange);
               }
-            },
-            changeSearchText: (value) {
-              bloc.add(ChangeSearchKeyWordEvent(text: value));
             },
             searchKey: bloc.searchModel,
           ),
@@ -74,7 +71,7 @@ class FinancialBody extends StatelessWidget {
             true => !bloc.isLoadingSearch
                 ? SearchedListInFinancial(
                     isTabletLayOut: isTabletLayOut,
-                    searchKeyWord: bloc.searchKeyWord,
+                    searchKeyWord: bloc.searchTextController.text,
                     scrollController: bloc.scrollController,
                     searchedList: bloc.searchedList,
                     downStep: (

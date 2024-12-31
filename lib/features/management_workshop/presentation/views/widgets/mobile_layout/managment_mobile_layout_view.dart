@@ -13,7 +13,6 @@ class ManagmentMobileView extends StatelessWidget {
   final ManagementBloc bloc;
   @override
   Widget build(BuildContext context) {
-    //TODO:add on change function on bloc to track change in search keyword!
     return Column(
       children: [
         const CustomMobileAppBar(
@@ -24,17 +23,14 @@ class ManagmentMobileView extends StatelessWidget {
           height: 10,
         ),
         SearchBarInMobileManagement(
-          searchKeyWord: bloc.searchKeyWord,
           searchKey: bloc.searchKey,
           enableSearch: () {
             bloc.add(SearchForOrderEvent(enable: true));
           },
-          changeSearchKeyWord: (keyWord) {
-            bloc.searchKeyWord = keyWord;
-          },
           changeSearchKey: (searchKey) {
             bloc.add(ChangeSearchKeyEvent(searchKey: searchKey));
           },
+          searchTextController: bloc.searchTextController,
         ),
         const SizedBox(
           height: 15,
@@ -51,7 +47,7 @@ class ManagmentMobileView extends StatelessWidget {
                   ),
                   Flexible(
                     child: Text(
-                      bloc.searchKeyWord,
+                      bloc.searchTextController.text,
                       style: AppFontStyles.semiBold14(context),
                       overflow: TextOverflow.ellipsis,
                     ),

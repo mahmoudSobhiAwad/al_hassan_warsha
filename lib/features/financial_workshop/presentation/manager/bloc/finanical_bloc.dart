@@ -25,7 +25,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<ChangePageInFetchOrderEvent>(changePageInFetchOrder);
     on<EnableOrDisableSearchEvent>(changeSearchMood);
     on<ChangeSearchModelEvent>(changeSearchModel);
-    on<ChangeSearchKeyWordEvent>(changeSearchKeyWord);
     on<ChangePaymentTypeEvent>(changePaymentType);
     on<ChangeHistoryOfTransactionEvent>(changeHistoryOfTransaction);
     on<ChangeTransactionMethodEvent>(changeTransactionMethod);
@@ -79,11 +78,12 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   List<OrderModel> searchedList = [];
   bool searchMood = false;
   bool isLoadingSearch = false;
-  String searchKeyWord = '';
+
+  final TextEditingController searchTextController = TextEditingController();
   SearchModel farzModel = SearchModel(valueArSearh: "الكل", valueEnSearh: "-1");
   SearchModel searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
   //
-  bool isSideBarActive=true;
+  bool isSideBarActive = false;
   bool isLoading = false;
   bool isLoadingUpdateCounter = false;
   int currIndex = 0;
@@ -103,7 +103,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   //analysis function :
   FutureOr<void> navToAnalysisList(
       NavToAnlysisListEvent event, Emitter<FinanicalState> emit) async {
-    emit(NavToAnlysisListState(type: event.type,typedIndex: event.index));
+    emit(NavToAnlysisListState(type: event.type, typedIndex: event.index));
     add(GetAllAnalysisTransactionListEvent(index: event.index));
   }
 
@@ -122,7 +122,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       isLoadingFetchAnalysisList = false;
       emit(SuccessGetAllTransactionState());
     }, (error) {
-      
       isLoadingFetchAnalysisList = false;
       emit(FailureGetAllTransactionState());
     });
@@ -134,6 +133,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     emit(ChangeCurrPageState());
     add(GetAllAnalysisTransactionListEvent(index: event.indexType));
   }
+
   FutureOr<void> changeSideBarActivation(
       ChangeSideBarActiveEvent event, Emitter<FinanicalState> emit) async {
     isSideBarActive = event.isActiveState;
@@ -431,7 +431,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       searchMood = true;
       emit(LoadingFetchOrderState());
       final result = await financialRepoImpl.searchForOrder(
-          searchKeyWord: searchKeyWord,
+          searchKeyWord: searchTextController.text,
           parameterSearch: searchModel.valueEnSearh);
       result.fold((list) {
         searchedList.addAll(list);
@@ -441,16 +441,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       });
     } else {
       searchedList.clear();
-      searchKeyWord = "";
+      searchTextController.clear();
       searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
       searchMood = false;
     }
     emit(ChangeSearchMoodState());
-  }
-
-  FutureOr<void> changeSearchKeyWord(
-      ChangeSearchKeyWordEvent event, Emitter<FinanicalState> emit) async {
-    searchKeyWord = event.text;
   }
 
 //-----------------------------------//
@@ -464,10 +459,12 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     final result = await financialRepoImpl.getAllTransaction(
         month: currTransMonth, year: currTransYear);
     result.fold((list) {
+      isLoadingTransaction = false;
       transactionList.clear();
       transactionList.addAll(list);
       emit(SuccessGetAllTransactionState());
     }, (error) {
+      isLoadingTransaction = false;
       emit(FailureGetAllTransactionState(errMessage: error));
     });
   }
@@ -499,22 +496,28 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
   FutureOr<void> addNewTransaction(
       AddNewTransactionEvent event, Emitter<FinanicalState> emit) async {
-    emit(LoadingAddTransactionState());
-    transactionModel.transactionId = const Uuid().v4();
-    final result =
-        await financialRepoImpl.addTransaction(model: transactionModel);
-    result.fold((model) {
-      if (model.transactionTime!.month == currTransMonth) {
-        transactionList.add(model);
-      }
+    
+    if (!isLoadingTransaction) {
+      isLoadingTransaction = true;
+      emit(LoadingAddTransactionState());
 
-      transactionModel.transactionAmount = '0';
-      transactionModel.transactionName = '';
-      transactionModel.transactionTime = null;
-      emit(SuccessAddTransactionState());
-    }, (error) {
-      emit(FailureAddTransactionState(errMessage: error));
-    });
+      transactionModel.transactionId = const Uuid().v4();
+      final result =
+          await financialRepoImpl.addTransaction(model: transactionModel);
+      result.fold((model) {
+        if (model.transactionTime!.month == currTransMonth) {
+          transactionList.add(model);
+        }
+        transactionModel.transactionAmount = '0';
+        transactionModel.transactionName = '';
+        transactionModel.transactionTime = null;
+        isLoadingTransaction = false;
+        emit(SuccessAddTransactionState());
+      }, (error) {
+        isLoadingTransaction = false;
+        emit(FailureAddTransactionState(errMessage: error));
+      });
+    }
   }
 
   FutureOr<void> changeCurrentMonth(

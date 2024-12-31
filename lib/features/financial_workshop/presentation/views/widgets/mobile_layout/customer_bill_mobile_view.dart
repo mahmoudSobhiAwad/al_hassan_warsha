@@ -1,5 +1,6 @@
 import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/constants.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/order_list_customer_pills.dart';
 import 'package:al_hassan_warsha/features/management_workshop/presentation/views/widgets/mobile_layout/search_bar_mobile.dart';
@@ -17,23 +18,21 @@ class CustomerBillsMobileView extends StatelessWidget {
         children: [
           Text(
             "فواتير العملاء",
-            style: AppFontStyles.extraBoldNew16(context),
+            style: AppFontStyles.extraBoldNew18(context),
           ),
           const SizedBox(
             height: 10,
           ),
           SearchBarInMobileManagement(
-            searchKeyWord: bloc.searchKeyWord,
+            searchedList: searchListInFinanical,
             searchKey: bloc.searchModel,
             enableSearch: () {
               bloc.add(EnableOrDisableSearchEvent(status: true));
             },
-            changeSearchKeyWord: (keyWord) {
-              bloc.searchKeyWord = keyWord;
-            },
             changeSearchKey: (searchKey) {
               bloc.add(ChangeSearchModelEvent(model: searchKey));
             },
+            searchTextController: bloc.searchTextController,
           ),
           const SizedBox(
             height: 12,
@@ -46,7 +45,7 @@ class CustomerBillsMobileView extends StatelessWidget {
                   style: AppFontStyles.bold18(context),
                 ),
                 Text(
-                  bloc.searchKeyWord,
+                  bloc.searchTextController.text,
                   style: AppFontStyles.bold18(context),
                 ),
                 const Spacer(),

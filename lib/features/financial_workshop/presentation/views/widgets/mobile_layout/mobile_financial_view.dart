@@ -1,7 +1,9 @@
 import 'package:al_hassan_warsha/core/utils/functions/extentions.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_mobile_app_bar.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/manager/bloc/finanical_bloc.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/analysis_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/customer_bill_mobile_view.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/transaction_history_mobile.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/side_bar_financial.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +17,8 @@ class MobileFinancialView extends StatelessWidget {
         CustomMobileAppBar(
           title: "النظام المالي",
           openDrawer: () {
-            bloc.add(ChangeSideBarActiveEvent(isActiveState: true));
+            bloc.add(
+                ChangeSideBarActiveEvent(isActiveState: !bloc.isSideBarActive));
           },
           enableActionButton: false,
         ),
@@ -24,11 +27,39 @@ class MobileFinancialView extends StatelessWidget {
             : Expanded(
                 child: Stack(
                   children: [
-                    PageView(
-                      children: [
-                        CustomerBillsMobileView(bloc: bloc),
-                      ],
-                    ),
+                    PageView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          return [
+                            CustomerBillsMobileView(bloc: bloc),
+                            TransactionHistoryMobile(
+                              bloc: bloc,
+                            ),
+                            const SalaryForWorkersMobileLayOut(),
+                            AnalysisView(
+                              isTabletLayOut: true,
+                              onTap: (index, {required String type}) {
+                                bloc.add(NavToAnlysisListEvent(
+                                    index: index, type: type));
+                              },
+                              analysisModelData: bloc.analysisModelData,
+                              startDate: bloc.startDate,
+                              endDate: bloc.endDate,
+                              changeStartDate: (start) {
+                                bloc.add(ChangeStartOrEndDateEvent(
+                                    startDate: start));
+                              },
+                              changeEndDate: (end) {
+                                bloc.add(
+                                    ChangeStartOrEndDateEvent(endDate: end));
+                              },
+                              makeAnalysis: () {
+                                bloc.add(MakeAnalysisEvent());
+                              },
+                              isLoading: bloc.isAnalysisLoading,
+                            ),
+                          ][bloc.currIndex];
+                        }),
                     if (bloc.isSideBarActive)
                       SideBarInFinancial(
                         width: context.screenWidth * 0.5,

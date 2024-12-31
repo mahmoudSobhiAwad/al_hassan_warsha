@@ -137,6 +137,7 @@ final class StepDownMoneyEvent extends ManagementEvent {
 final class ChangeCurrPageInMobile extends ManagementEvent {
   final bool isForward;
   final PageController controller;
-  ChangeCurrPageInMobile({required this.isForward,required this.controller});
+  ChangeCurrPageInMobile({required this.isForward, required this.controller});
 }
+
 final class SetCurrPageIndexToZero extends ManagementEvent {}

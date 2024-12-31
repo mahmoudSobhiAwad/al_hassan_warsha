@@ -59,7 +59,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
   //filter
   List<OrderModel> categorizedList = [];
   SearchModel searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
-  String searchKeyWord = '';
+  final TextEditingController searchTextController = TextEditingController();
   int currIndex = 0;
   List<OrderModel> searchList = [];
   bool enableSearchMode = false;
@@ -507,7 +507,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       isSearchLoading = true;
       emit(LoadingGetSearchedOrderState());
       final result = await managementRepoImpl.searchForOrders(
-          searchKeyWord, searchKey.valueEnSearh);
+          searchTextController.text, searchKey.valueEnSearh);
       result.fold((orders) {
         isSearchLoading = false;
         searchList.addAll(orders);
@@ -518,7 +518,7 @@ class ManagementBloc extends Bloc<ManagementEvent, ManagementState> {
       });
     } else {
       enableSearchMode = false;
-      searchKeyWord = '';
+      searchTextController.clear();
       searchKey = SearchModel(valueArSearh: '', valueEnSearh: '');
       emit(CloseSearchState());
     }

@@ -6,20 +6,18 @@ import 'package:flutter/material.dart';
 class SearchFieldInSearchBar extends StatelessWidget {
   const SearchFieldInSearchBar({
     super.key,
-    required this.changeSearchText,
-    required this.searchKeyWord,
+    required this.textEditingController,
     required this.searchKey,
     required this.searchFunc,
     this.enableSuffiex = true,
     this.textStyle,
   });
 
-  final void Function(String p1) changeSearchText;
-  final String? searchKeyWord;
   final SearchModel searchKey;
   final void Function() searchFunc;
   final bool enableSuffiex;
   final TextStyle?textStyle;
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +27,7 @@ class SearchFieldInSearchBar extends StatelessWidget {
       fillColor: Colors.white,
       borderRadius: 12,
       textStyle: textStyle,
-      onChanged: changeSearchText,
-      controller: TextEditingController(text: searchKeyWord),
+      controller: textEditingController,
       contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       labelWidget: Text(
         "ادخل بعض البيانات للبحث عن ........",

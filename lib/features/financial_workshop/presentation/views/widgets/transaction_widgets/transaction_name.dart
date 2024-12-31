@@ -2,15 +2,18 @@ import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
+
 class TransactionNameInAddingOne extends StatelessWidget {
   const TransactionNameInAddingOne({
     super.key,
     required this.formKey,
     required this.transactionModel,
+    this.headerStyle,
   });
 
   final GlobalKey<FormState> formKey;
   final TransactionModel transactionModel;
+  final TextStyle?headerStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,7 @@ class TransactionNameInAddingOne extends StatelessWidget {
         transactionModel.transactionName = value ?? "";
       },
       controller: TextEditingController(text: transactionModel.transactionName),
-      textStyle: AppFontStyles.extraBoldNew16(context),
+      textStyle:headerStyle?? AppFontStyles.extraBoldNew16(context),
       enableBorder: true,
       text: "المعاملة",
       borderWidth: 2,
@@ -35,4 +38,3 @@ class TransactionNameInAddingOne extends StatelessWidget {
     );
   }
 }
-
