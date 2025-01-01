@@ -4,6 +4,7 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/manage
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/analysis_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/customer_bill_mobile_view.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/transaction_history_mobile.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/workers_management_mobile.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/side_bar_financial.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,9 @@ class MobileFinancialView extends StatelessWidget {
                             TransactionHistoryMobile(
                               bloc: bloc,
                             ),
-                            const SalaryForWorkersMobileLayOut(),
+                            SalaryForWorkersMobileLayOut(
+                              bloc: bloc,
+                            ),
                             AnalysisView(
                               onTap: (index, {required String type}) {
                                 bloc.add(NavToAnlysisListEvent(

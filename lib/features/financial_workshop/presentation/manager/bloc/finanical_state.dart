@@ -86,6 +86,7 @@ final class FailureFetchAllWorkersDateState extends FinanicalState {
   FailureFetchAllWorkersDateState({this.errMessage});
 }
 
+final class PrepareBeforeEditOrAddWorkerState extends FinanicalState {}
 final class LoadingRemoveWorkersData extends FinanicalState {}
 
 final class SuccessRemoveWorkersData extends FinanicalState {}

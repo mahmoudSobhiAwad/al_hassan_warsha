@@ -113,13 +113,29 @@ final class EnableEditForWorkersEvent extends FinanicalEvent {
 
 final class SaveChangesAddOrEditEvent extends FinanicalEvent {}
 
+final class PrepareToSaveChangesFromMobile extends FinanicalEvent {
+  final bool isEdit;
+  final int index;
+  PrepareToSaveChangesFromMobile({this.isEdit=false,this.index=-1});
+
+}
+
 final class ChangeSalaryTypeEvent extends FinanicalEvent {
   final SalaryType type;
   final int index;
-  ChangeSalaryTypeEvent({required this.type, required this.index});
+  final bool isMobile;
+  ChangeSalaryTypeEvent({required this.type, required this.index,this.isMobile=false});
 }
 
 final class PayAllSalariesEvent extends FinanicalEvent {}
+
+final class PrepareBeforeAddWorkerInMobileLayout extends FinanicalEvent {}
+
+final class PrepareBeforeEditWorkerInMobileLayout extends FinanicalEvent {
+  final int index;
+
+  PrepareBeforeEditWorkerInMobileLayout({required this.index});
+}
 
 final class ChangeStartOrEndDateEvent extends FinanicalEvent {
   final DateTime? startDate;

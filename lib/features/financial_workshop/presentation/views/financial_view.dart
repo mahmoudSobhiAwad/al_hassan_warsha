@@ -45,6 +45,11 @@ class FinancialView extends StatelessWidget {
         } else if (state is FailureAnalysisState) {
           showCustomSnackBar(context, state.errMessage ?? "",
               backgroundColor: AppColors.orange);
+        } else if (state is SuccessEditWorkersData) {
+          showCustomSnackBar(
+            context,
+            "تم تعديل بيانات الموظفين بنجاح",
+          );
         } else if (state is NavToAnlysisListState) {
           Navigator.push(
               context,

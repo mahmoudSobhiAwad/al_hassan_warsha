@@ -128,21 +128,3 @@ class TransactionHistoryMobile extends StatelessWidget {
   }
 }
 
-
-
-
-class SalaryForWorkersMobileLayOut extends StatelessWidget {
-  const SalaryForWorkersMobileLayOut({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          " المرتبات والموظفين",
-          style: AppFontStyles.extraBoldNew18(context),
-        ),
-      ],
-    );
-  }
-}

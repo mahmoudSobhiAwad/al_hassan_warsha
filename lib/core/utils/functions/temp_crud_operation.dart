@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:al_hassan_warsha/core/utils/functions/copy_media_in_directory.dart';
 import 'package:al_hassan_warsha/core/utils/functions/save_paths.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/worker_model.dart';
 import 'package:al_hassan_warsha/features/gallery/data/constants.dart';
 import 'package:al_hassan_warsha/features/gallery/data/models/kitchen_model.dart';
 import 'package:al_hassan_warsha/features/home/data/constants.dart';

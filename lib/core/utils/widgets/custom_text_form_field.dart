@@ -124,7 +124,7 @@ TextStyle getAdaptiveFontStyle(
   if (AppFontsLayout.isMobile(context)) {
     return AppFontStyles.bold12(context);
   } else if (AppFontsLayout.isTablet(context)) {
-    return AppFontStyles.bold16(context);
+    return AppFontStyles.bold14(context);
   } else if (AppFontsLayout.isDesktop(context)) {
     return AppFontStyles.extraBoldNew16(context);
   } else {

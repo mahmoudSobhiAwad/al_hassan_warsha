@@ -1,6 +1,6 @@
-import 'package:al_hassan_warsha/core/utils/style/app_colors.dart';
 import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/core/utils/widgets/custom_drop_down.dart';
+import 'package:al_hassan_warsha/core/utils/widgets/custom_widget_title.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/constants.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/mobile_layout/pay_recieve_option_with_payment_method.dart';
@@ -9,7 +9,6 @@ import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/
 import 'package:al_hassan_warsha/features/financial_workshop/presentation/views/widgets/transaction_widgets/transaction_name.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddTransactionInMobile extends StatelessWidget {
   const AddTransactionInMobile({
@@ -40,21 +39,8 @@ class AddTransactionInMobile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              const Expanded(child: SizedBox()),
-              Text(
-                "اضافة تحويل",
-                style: AppFontStyles.bold16(context),
-              ),
-              const Expanded(child: SizedBox()),
-              IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    FontAwesomeIcons.circleXmark,
-                    color: AppColors.red,
-                  ))
-            ],
+          const DialogTitleWithNav(
+            title: "اضافة تحويل",
           ),
           const SizedBox(
             height: 8,
@@ -120,3 +106,4 @@ class AddTransactionInMobile extends StatelessWidget {
     );
   }
 }
+

@@ -72,9 +72,9 @@ class SideBarFinancialInTabletLayOut extends StatelessWidget {
             ),
           )
         : Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            margin:const EdgeInsets.only(right: 10,bottom: 20),
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              margin: const EdgeInsets.only(right: 10, bottom: 20),
               decoration: const BoxDecoration(
                 color: AppColors.veryLightGray2,
                 shape: BoxShape.circle,
@@ -83,8 +83,11 @@ class SideBarFinancialInTabletLayOut extends StatelessWidget {
                   onPressed: () {
                     enableOrDisableSideBar(true);
                   },
-                  icon: const Icon(Icons.expand_rounded,size: 30,)),
+                  icon: const Icon(
+                    Icons.expand_rounded,
+                    size: 30,
+                  )),
             ),
-        );
+          );
   }
 }

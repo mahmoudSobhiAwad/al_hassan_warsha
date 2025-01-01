@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/worker_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo_impl.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';
@@ -40,7 +40,10 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
     on<DeleteWorkerEvent>(deleteWorker);
     on<ChangeSalaryTypeEvent>(changeSalaryType);
     on<SaveChangesAddOrEditEvent>(saveChanges);
+    on<PrepareToSaveChangesFromMobile>(saveChangesInMobile);
     on<EnableEditForWorkersEvent>(enableEditForWorkers);
+    on<PrepareBeforeAddWorkerInMobileLayout>(prepareBeforeAddWorker);
+    on<PrepareBeforeEditWorkerInMobileLayout>(prepareBeforeEditWorker);
     on<PayAllSalariesEvent>(payAllSalaries);
     on<ChangeStartOrEndDateEvent>(changeStartOrEndDate);
     on<MakeAnalysisEvent>(makeAnalysis);
@@ -82,6 +85,7 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   final TextEditingController searchTextController = TextEditingController();
   SearchModel farzModel = SearchModel(valueArSearh: "الكل", valueEnSearh: "-1");
   SearchModel searchModel = SearchModel(valueArSearh: "", valueEnSearh: "");
+
   //
   bool isSideBarActive = false;
   bool isLoading = false;
@@ -99,6 +103,11 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
   bool isAllSelected = false;
   List<WorkerModel> workersList = [];
   bool isEditEnabled = false;
+  final TextEditingController workerNameController = TextEditingController();
+  final TextEditingController workerSalaryController = TextEditingController();
+  final TextEditingController workerPhoneController = TextEditingController();
+  SalaryType salaryType = SalaryType.daily;
+
   //                //
   //analysis function :
   FutureOr<void> navToAnalysisList(
@@ -222,8 +231,29 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
   FutureOr<void> changeSalaryType(
       ChangeSalaryTypeEvent event, Emitter<FinanicalState> emit) async {
-    workersList[event.index].salaryType = event.type;
+    event.isMobile
+        ? salaryType = event.type
+        : workersList[event.index].salaryType = event.type;
     emit(ChangeSalaryTypeState());
+  }
+
+  FutureOr<void> prepareBeforeAddWorker(
+      PrepareBeforeAddWorkerInMobileLayout event,
+      Emitter<FinanicalState> emit) async {
+    workerNameController.clear();
+    workerSalaryController.clear();
+    workerPhoneController.clear();
+    emit(PrepareBeforeEditOrAddWorkerState());
+  }
+
+  FutureOr<void> prepareBeforeEditWorker(
+      PrepareBeforeEditWorkerInMobileLayout event,
+      Emitter<FinanicalState> emit) async {
+    workerNameController.text = workersList[event.index].workerName;
+    workerSalaryController.text = workersList[event.index].salaryAmount;
+    workerPhoneController.text = workersList[event.index].workerPhone ?? "";
+    salaryType = workersList[event.index].salaryType;
+    emit(PrepareBeforeEditOrAddWorkerState());
   }
 
   FutureOr<void> enableEditForWorkers(
@@ -242,6 +272,34 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
       }
     }
     emit(ChangeEnableEditState());
+  }
+
+  FutureOr<void> saveChangesInMobile(PrepareToSaveChangesFromMobile event,
+      Emitter<FinanicalState> emit) async {
+    if (workerNameController.text.trim().isEmpty ||
+        workerSalaryController.text.trim().isEmpty) {
+      emit(FailureEditWorkersData(
+          errMessage: "هناك بعض البيانات مثل الاسم او المرتب فارغة"));
+    } else {
+      if (event.isEdit) {
+        workersList[event.index]=workersList[event.index].copyWith(
+            workerName: workerNameController.text,
+            salaryAmount: workerSalaryController.text,
+            salaryType: salaryType,
+            workerPhone: workerPhoneController.text,
+            isSelected: true);
+            
+      } else {
+        workersList.add(WorkerModel(
+            workerId: null,
+            workerName: workerNameController.text,
+            workerPhone: workerPhoneController.text,
+            salaryAmount: workerSalaryController.text,
+            salaryType: salaryType,
+            isSelected: true));
+      }
+      add(SaveChangesAddOrEditEvent());
+    }
   }
 
   FutureOr<void> saveChanges(
@@ -496,7 +554,6 @@ class FinanicalBloc extends Bloc<FinanicalEvent, FinanicalState> {
 
   FutureOr<void> addNewTransaction(
       AddNewTransactionEvent event, Emitter<FinanicalState> emit) async {
-    
     if (!isLoadingTransaction) {
       isLoadingTransaction = true;
       emit(LoadingAddTransactionState());

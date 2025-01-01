@@ -1,5 +1,5 @@
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/worker_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/order_model.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/pill_model.dart';

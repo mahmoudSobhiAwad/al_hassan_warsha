@@ -1,4 +1,3 @@
-import 'package:al_hassan_warsha/core/utils/style/app_fonts.dart';
 import 'package:al_hassan_warsha/features/gallery/presentation/views/widgets/custom_text_form_with_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

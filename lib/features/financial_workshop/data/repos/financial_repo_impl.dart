@@ -2,7 +2,7 @@ import 'package:al_hassan_warsha/core/utils/functions/conver_en_to_ar.dart';
 import 'package:al_hassan_warsha/core/utils/functions/data_base_helper.dart';
 import 'package:al_hassan_warsha/core/utils/functions/temp_crud_operation.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/analysis_model.dart';
-import 'package:al_hassan_warsha/features/financial_workshop/data/models/salary_model.dart';
+import 'package:al_hassan_warsha/features/financial_workshop/data/models/worker_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/models/transaction_model.dart';
 import 'package:al_hassan_warsha/features/financial_workshop/data/repos/financial_repo.dart';
 import 'package:al_hassan_warsha/features/management_workshop/data/models/constants.dart';

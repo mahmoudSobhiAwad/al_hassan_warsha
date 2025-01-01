@@ -26,7 +26,8 @@ class WorkerModel {
       "salaryType": salaryType.index,
       "salaryAmount": salaryAmount,
       if (workerPhone != null) "workerPhone": workerPhone,
-      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary!.toIso8601String(),
+      if (lastAddedSalary != null)
+        "lastAddedSalary": lastAddedSalary!.toIso8601String(),
     };
   }
 
@@ -37,7 +38,8 @@ class WorkerModel {
       "salaryType": salaryType.index,
       "salaryAmount": convertToEnglishNumbers(salaryAmount),
       if (workerPhone != null) "workerPhone": workerPhone,
-      if (lastAddedSalary != null) "lastAddedSalary": lastAddedSalary!.toIso8601String(),
+      if (lastAddedSalary != null)
+        "lastAddedSalary": lastAddedSalary!.toIso8601String(),
     };
   }
 
@@ -53,6 +55,21 @@ class WorkerModel {
           ? DateTime.parse(json['lastAddedSalary'] as String)
           : null,
     );
+  }
+  WorkerModel copyWith({
+    String? workerName,
+    String? salaryAmount,
+    String? workerPhone,
+    SalaryType? salaryType,
+    bool? isSelected,
+  }) {
+    return WorkerModel(
+        isSelected: isSelected ?? this.isSelected,
+        workerId: workerId,
+        workerName: workerName ?? this.workerName,
+        workerPhone: workerPhone ?? this.workerPhone,
+        salaryAmount: salaryAmount ?? this.salaryAmount,
+        salaryType: salaryType ?? this.salaryType);
   }
 }
 

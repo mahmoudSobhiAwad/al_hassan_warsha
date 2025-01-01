@@ -186,10 +186,12 @@ class AddEditSalaryView extends StatelessWidget {
                           : Text(
                               "دفع المرتبات المحددة",
                               style: AppFontStyles.extraBoldNew24(context)
-                                  .copyWith(color: AppColors.white,fontSize: isTabletLayOut?18:null),
+                                  .copyWith(
+                                      color: AppColors.white,
+                                      fontSize: isTabletLayOut ? 18 : null),
                             ),
                       text_2: "تعديل",
-                      fontSize: isTabletLayOut?18:null,
+                      fontSize: isTabletLayOut ? 18 : null,
                       color_2: AppColors.blue,
                     ),
                 }
